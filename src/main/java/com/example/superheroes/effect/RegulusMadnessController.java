@@ -36,13 +36,10 @@ public final class RegulusMadnessController {
 	private static final long READING_DURATION_MS = 5000L;
 	private static final long MANA_LOCK_DURATION_MS = 20_000L;
 	private static final int COUNTER_FREEZE_TICKS = 12;
-	private static final int COUNTER_LAUNCH_TICKS = 12;
-	private static final int COUNTER_SLAM_TICKS = 30;
+	private static final int COUNTER_SLAM_TICKS = 60;
+	private static final double LAUNCH_HEIGHT = 18.0;
 	private static final double CRATER_RADIUS = 4.0;
 	private static final int CRATER_DEPTH = 20;
-	private static final int DODGE_COOLDOWN_TICKS = 40;
-
-	private static final Map<UUID, Long> DODGE_COOLDOWN = new ConcurrentHashMap<>();
 
 	private static final Map<UUID, CounterState> COUNTERS = new ConcurrentHashMap<>();
 
@@ -70,61 +67,45 @@ public final class RegulusMadnessController {
 				return true;
 			}
 			RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
-			if (state.isReading()) {
-				return false;
-			}
-			if (!isRegulus(player) || !state.madness()) {
-				return true;
-			}
-			HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-			Entity attacker = source.getEntity();
-			if (!(attacker instanceof LivingEntity living) || attacker == player) {
-				return true;
-			}
-			Long cd = DODGE_COOLDOWN.get(player.getUUID());
-			if (cd != null && cd > player.tickCount) {
-				return true;
-			}
-			if (data.energy() <= 0) {
-				return true;
-			}
-			triggerCounter(player, living);
-			return false;
+			return !state.isReading();
 		});
 	}
 
 	private static void tickPlayer(ServerPlayer player) {
 		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
-		if (state.isReading()) {
-			player.setDeltaMovement(Vec3.ZERO);
-			player.hurtMarked = true;
-			player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 8, 4, true, false, false));
-			player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 8, 250, true, false, false));
-			ServerLevel level = (ServerLevel) player.level();
-			if (player.tickCount % 2 == 0) {
-				level.sendParticles(ParticleTypes.END_ROD,
-						player.getX(), player.getY() + 1.0, player.getZ(),
-						6, 0.8, 1.2, 0.8, 0.05);
-				level.sendParticles(ParticleTypes.ENCHANT,
-						player.getX(), player.getY() + 1.5, player.getZ(),
-						12, 1.0, 1.5, 1.0, 0.4);
-				level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
-						player.getX(), player.getY() + 1.0, player.getZ(),
-						3, 0.6, 1.0, 0.6, 0.02);
-			}
-			if (player.tickCount % 30 == 0) {
-				level.playSound(null, player.getX(), player.getY(), player.getZ(),
-						SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 1.0f, 0.7f);
-				LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
-				if (bolt != null) {
-					double angle = level.random.nextDouble() * Math.PI * 2;
-					double r = 2.5 + level.random.nextDouble() * 1.5;
-					bolt.moveTo(player.getX() + Math.cos(angle) * r, player.getY(), player.getZ() + Math.sin(angle) * r);
-					bolt.setVisualOnly(true);
-					level.addFreshEntity(bolt);
+		long readingUntil = state.readingUntilMs();
+		if (readingUntil > 0L) {
+			long now = System.currentTimeMillis();
+			if (now < readingUntil) {
+				player.setDeltaMovement(Vec3.ZERO);
+				player.hurtMarked = true;
+				player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 8, 4, true, false, false));
+				player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 8, 250, true, false, false));
+				ServerLevel level = (ServerLevel) player.level();
+				if (player.tickCount % 2 == 0) {
+					level.sendParticles(ParticleTypes.END_ROD,
+							player.getX(), player.getY() + 1.0, player.getZ(),
+							6, 0.8, 1.2, 0.8, 0.05);
+					level.sendParticles(ParticleTypes.ENCHANT,
+							player.getX(), player.getY() + 1.5, player.getZ(),
+							12, 1.0, 1.5, 1.0, 0.4);
+					level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+							player.getX(), player.getY() + 1.0, player.getZ(),
+							3, 0.6, 1.0, 0.6, 0.02);
 				}
-			}
-			if (System.currentTimeMillis() >= state.readingUntilMs()) {
+				if (player.tickCount % 30 == 0) {
+					level.playSound(null, player.getX(), player.getY(), player.getZ(),
+							SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 1.0f, 0.7f);
+					LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
+					if (bolt != null) {
+						double angle = level.random.nextDouble() * Math.PI * 2;
+						double r = 2.5 + level.random.nextDouble() * 1.5;
+						bolt.moveTo(player.getX() + Math.cos(angle) * r, player.getY(), player.getZ() + Math.sin(angle) * r);
+						bolt.setVisualOnly(true);
+						level.addFreshEntity(bolt);
+					}
+				}
+			} else {
 				finishReading(player);
 			}
 		}
@@ -163,6 +144,7 @@ public final class RegulusMadnessController {
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
 
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -180,6 +162,7 @@ public final class RegulusMadnessController {
 			player.removeEffect(MobEffects.MOVEMENT_SPEED);
 			player.removeEffect(MobEffects.DAMAGE_BOOST);
 			player.removeEffect(MobEffects.JUMP);
+			player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 		}
 		player.setAttached(ModAttachments.REGULUS_MADNESS, RegulusMadnessState.EMPTY);
 		sync(player);
@@ -211,14 +194,13 @@ public final class RegulusMadnessController {
 		));
 	}
 
-	private static void triggerCounter(ServerPlayer player, LivingEntity attacker) {
+	public static void executeCounter(ServerPlayer player, LivingEntity attacker) {
 		long now = System.currentTimeMillis();
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-		player.setAttached(ModAttachments.HERO_DATA, data.withMana(0f).withEnergy(0f));
+		player.setAttached(ModAttachments.HERO_DATA, data.withMana(0f));
 		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS)
 				.withManaLock(now + MANA_LOCK_DURATION_MS);
 		player.setAttached(ModAttachments.REGULUS_MADNESS, state);
-		DODGE_COOLDOWN.put(player.getUUID(), (long) (player.tickCount + DODGE_COOLDOWN_TICKS));
 
 		Vec3 attackerLook = attacker.getViewVector(1.0f);
 		Vec3 behind = attacker.position().subtract(attackerLook.x, 0, attackerLook.z).add(-attackerLook.x * 0.5, 0, -attackerLook.z * 0.5);
@@ -281,40 +263,22 @@ public final class RegulusMadnessController {
 								4, 0.5, 0.8, 0.5, 0.05);
 					}
 					if (tick >= COUNTER_FREEZE_TICKS) {
-						boolean onGround = attacker.onGround();
-						if (onGround) {
-							attacker.setDeltaMovement(0, 3.5, 0);
-							attacker.hurtMarked = true;
-							attacker.hurt(level.damageSources().playerAttack(player), 30f);
-							level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
-									SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 1.5f);
-							phase = Phase.LAUNCH;
-							tick = 0;
-						} else {
-							phase = Phase.SLAM;
-							tick = 0;
-							if (attacker instanceof Mob mob) {
-								mob.setNoAi(attackerWasNoAi);
-							}
-							attacker.setDeltaMovement(0, -3.5, 0);
-							attacker.hurtMarked = true;
-							attacker.hurt(level.damageSources().playerAttack(player), 50f);
-						}
-					}
-				}
-				case LAUNCH -> {
-					if (tick >= COUNTER_LAUNCH_TICKS) {
 						if (attacker instanceof Mob mob) {
 							mob.setNoAi(attackerWasNoAi);
 						}
-						attacker.setDeltaMovement(0, -3.5, 0);
+						attacker.teleportTo(snapshotX, snapshotY + LAUNCH_HEIGHT, snapshotZ);
+						attacker.setDeltaMovement(0, 0, 0);
 						attacker.hurtMarked = true;
-						attacker.hurt(level.damageSources().playerAttack(player), 50f);
+						attacker.hurt(level.damageSources().playerAttack(player), 30f);
+						level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
+								SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 1.5f);
 						phase = Phase.SLAM;
 						tick = 0;
 					}
 				}
 				case SLAM -> {
+					attacker.setDeltaMovement(attacker.getDeltaMovement().x, -2.5, attacker.getDeltaMovement().z);
+					attacker.hurtMarked = true;
 					if (attacker.onGround() || attacker.verticalCollision || tick >= COUNTER_SLAM_TICKS) {
 						return finalSlam(level, player, attacker);
 					}
@@ -357,6 +321,6 @@ public final class RegulusMadnessController {
 			}
 		}
 
-		enum Phase { FREEZE, LAUNCH, SLAM }
+		enum Phase { FREEZE, SLAM }
 	}
 }

@@ -17,6 +17,8 @@ public final class AbilityIds {
 	public static final ResourceLocation LION_HEART = ModId.of("lion_heart");
 	public static final ResourceLocation MANIA_OF_GREED = ModId.of("mania_of_greed");
 	public static final ResourceLocation LION_ROAR = ModId.of("lion_roar");
+	public static final ResourceLocation COUNTER_STRIKE = ModId.of("counter_strike");
+	public static final ResourceLocation SUPER_JUMP = ModId.of("super_jump");
 
 	private AbilityIds() {
 	}

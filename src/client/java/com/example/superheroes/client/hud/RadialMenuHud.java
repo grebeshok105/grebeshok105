@@ -1,7 +1,9 @@
 package com.example.superheroes.client.hud;
 
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ModKeys;
+import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.hero.HeroTheme;
 import com.example.superheroes.network.ActivateAbilityC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -11,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class RadialMenuHud {
@@ -34,13 +37,24 @@ public final class RadialMenuHud {
 	private RadialMenuHud() {
 	}
 
+	private static List<ResourceLocation> visibleAbilities() {
+		List<ResourceLocation> all = ClientHeroState.abilities();
+		boolean madness = ClientMadnessState.isMadness();
+		List<ResourceLocation> out = new ArrayList<>(all.size());
+		for (ResourceLocation id : all) {
+			if (id.equals(AbilityIds.COUNTER_STRIKE) && !madness) continue;
+			out.add(id);
+		}
+		return out;
+	}
+
 	public static void clientTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) {
 			closeWithoutActivate();
 			return;
 		}
 		boolean down = ModKeys.RADIAL != null && ModKeys.RADIAL.isDown();
-		List<ResourceLocation> abilities = ClientHeroState.abilities();
+		List<ResourceLocation> abilities = visibleAbilities();
 		if (down && !open) {
 			if (abilities.isEmpty()) {
 				return;
@@ -100,7 +114,7 @@ public final class RadialMenuHud {
 		if (!open) {
 			return;
 		}
-		List<ResourceLocation> abilities = ClientHeroState.abilities();
+		List<ResourceLocation> abilities = visibleAbilities();
 		if (abilities.isEmpty()) {
 			return;
 		}
