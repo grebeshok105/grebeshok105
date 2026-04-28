@@ -32,6 +32,14 @@ public final class RegulusTotemController {
 				return true;
 			}
 			if (TOTEM_USED.contains(player.getUUID())) {
+				if (RegulusMadnessController.consumeBonusLife(player)) {
+					player.setHealth(player.getMaxHealth() * 0.5f);
+					player.removeAllEffects();
+					player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 600, 1));
+					player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 1));
+					player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 600, 0));
+					return false;
+				}
 				return true;
 			}
 			TOTEM_USED.add(player.getUUID());

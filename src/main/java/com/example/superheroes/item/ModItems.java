@@ -47,6 +47,11 @@ public final class ModItems {
 			new RegulusSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
 	);
 
+	public static final EvangelionItem EVANGELION = register(
+			"evangelion",
+			new EvangelionItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
 	private ModItems() {
 	}
 

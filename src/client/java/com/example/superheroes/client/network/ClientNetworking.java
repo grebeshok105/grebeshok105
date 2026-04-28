@@ -4,7 +4,9 @@ import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientReactorState;
 import com.example.superheroes.client.RemoteHeroSkins;
+import com.example.superheroes.network.MadnessSyncS2CPayload;
 import com.example.superheroes.network.ReactorStateS2CPayload;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.fx.ScreenShakeManager;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
@@ -66,5 +68,10 @@ public final class ClientNetworking {
 
 		ClientPlayNetworking.registerGlobalReceiver(ReactorStateS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> ClientReactorState.update(payload.active(), payload.progressTicks(), payload.totalTicks(), payload.hasStock())));
+
+		ClientPlayNetworking.registerGlobalReceiver(MadnessSyncS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> ClientMadnessState.update(
+						payload.madness(), payload.bonusLifeAvailable(),
+						payload.readingUntilMs(), payload.manaLockUntilMs())));
 	}
 }

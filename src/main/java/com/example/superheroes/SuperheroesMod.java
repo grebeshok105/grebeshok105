@@ -44,6 +44,8 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.IronManReactorTracker.init();
 		com.example.superheroes.effect.IronManAutoEjectController.init();
 		com.example.superheroes.effect.RegulusTotemController.init();
+		com.example.superheroes.effect.RegulusGreedController.init();
+		com.example.superheroes.effect.RegulusMadnessController.init();
 		SuperheroesCommands.init();
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

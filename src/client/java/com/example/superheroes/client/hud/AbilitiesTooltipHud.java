@@ -186,7 +186,8 @@ public final class AbilitiesTooltipHud {
 		int nameColor = applyAlpha(0xFFE8E9F2, alpha, 1.0f);
 		int bulletColor = applyAlpha(theme.energyIcon(), alpha, 1.0f);
 		g.drawString(mc.font, Component.literal("▸ ").withStyle(ChatFormatting.BOLD), x, y + 1, bulletColor, true);
-		g.drawString(mc.font, name, x + 10, y + 1, nameColor, true);
+		int maxTextWidth = PANEL_WIDTH - PADDING_X * 2 - 10;
+		g.drawString(mc.font, ellipsize(mc, name, maxTextWidth), x + 10, y + 1, nameColor, true);
 	}
 
 	private static void drawAbilityRow(GuiGraphics g, Minecraft mc, int x, int y, int width, ResourceLocation abilityId, HeroTheme theme, int alpha) {
@@ -199,13 +200,26 @@ public final class AbilitiesTooltipHud {
 				x + ICON_SIZE / 2, y + (ICON_SIZE - 8) / 2, iconBorder);
 
 		int textX = x + ICON_SIZE + 6;
+		int maxTextWidth = width - ICON_SIZE - 6;
 		int nameColor = applyAlpha(0xFFF4F5FC, alpha, 1.0f);
-		g.drawString(mc.font, Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD),
+		g.drawString(mc.font,
+				ellipsize(mc, Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD), maxTextWidth),
 				textX, y + 1, nameColor, true);
 
 		int descColor = applyAlpha(0xFFA2A6B8, alpha, 1.0f);
-		g.drawString(mc.font, Component.translatable(AbilityDescriptions.descKey(abilityId)),
+		g.drawString(mc.font,
+				ellipsize(mc, Component.translatable(AbilityDescriptions.descKey(abilityId)), maxTextWidth),
 				textX, y + 11, descColor, true);
+	}
+
+	private static Component ellipsize(Minecraft mc, Component component, int maxWidth) {
+		String text = component.getString();
+		if (mc.font.width(component) <= maxWidth) {
+			return component;
+		}
+		String trimmed = mc.font.plainSubstrByWidth(text, Math.max(0, maxWidth - mc.font.width("…")));
+		net.minecraft.network.chat.Style style = component.getStyle();
+		return Component.literal(trimmed + "…").setStyle(style);
 	}
 
 	private static int applyAlpha(int argb, int alpha, float mult) {

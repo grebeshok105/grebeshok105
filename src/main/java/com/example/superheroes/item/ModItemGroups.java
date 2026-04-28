@@ -26,6 +26,7 @@ public final class ModItemGroups {
 				output.accept(ModItems.URANIUM_ISOTOPE);
 				output.accept(ModItems.URANIUM_DAGGER);
 				output.accept(ModItems.REGULUS_SUIT);
+				output.accept(ModItems.EVANGELION);
 			})
 			.build();
 
