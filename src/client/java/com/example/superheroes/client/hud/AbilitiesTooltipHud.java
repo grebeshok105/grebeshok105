@@ -33,13 +33,22 @@ public final class AbilitiesTooltipHud {
 
 	private static float progress = 0f;
 	private static float lastProgress = 0f;
+	private static boolean userVisible = true;
 
 	private AbilitiesTooltipHud() {
 	}
 
+	public static void toggleVisible() {
+		userVisible = !userVisible;
+	}
+
+	public static boolean isUserVisible() {
+		return userVisible;
+	}
+
 	public static void tick() {
 		lastProgress = progress;
-		boolean visible = ClientHeroState.data().hasHero();
+		boolean visible = userVisible && ClientHeroState.data().hasHero();
 		float delta = 1f / ANIM_TICKS;
 		if (visible) {
 			progress = Math.min(1f, progress + delta);
@@ -49,7 +58,7 @@ public final class AbilitiesTooltipHud {
 	}
 
 	public static void render(GuiGraphics graphics, DeltaTracker tracker) {
-		if (!ClientHeroState.data().hasHero() && progress <= 0f) {
+		if ((!userVisible || !ClientHeroState.data().hasHero()) && progress <= 0f) {
 			return;
 		}
 		float partial = tracker.getGameTimeDeltaPartialTick(false);
@@ -193,14 +202,6 @@ public final class AbilitiesTooltipHud {
 		int nameColor = applyAlpha(0xFFF4F5FC, alpha, 1.0f);
 		g.drawString(mc.font, Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD),
 				textX, y + 1, nameColor, true);
-
-		String cost = AbilityDescriptions.costLabel(abilityId);
-		if (!cost.isEmpty()) {
-			int costColor = applyAlpha(theme.energyIcon(), alpha, 1.0f);
-			Component costText = Component.literal(cost);
-			int costWidth = mc.font.width(costText);
-			g.drawString(mc.font, costText, x + width - costWidth, y + 1, costColor, true);
-		}
 
 		int descColor = applyAlpha(0xFFA2A6B8, alpha, 1.0f);
 		g.drawString(mc.font, Component.translatable(AbilityDescriptions.descKey(abilityId)),

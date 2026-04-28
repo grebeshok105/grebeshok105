@@ -77,6 +77,9 @@ public class SuperheroesClient implements ClientModInitializer {
 					client.setScreen(new BindingsScreen());
 				}
 			}
+			while (ModKeys.TOGGLE_TOOLTIPS.consumeClick()) {
+				AbilitiesTooltipHud.toggleVisible();
+			}
 			for (int i = 0; i < ModKeys.ABILITY_SLOTS.length; i++) {
 				while (ModKeys.ABILITY_SLOTS[i].consumeClick()) {
 					if (client.player == null || !ClientHeroState.data().hasHero()) {

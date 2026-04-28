@@ -17,6 +17,8 @@ public final class HeroAttributes {
 	public static final ResourceLocation IRON_MAN_SPEED = ModId.of("modifiers/iron_man/speed");
 	public static final ResourceLocation IRON_MAN_KNOCKBACK = ModId.of("modifiers/iron_man/knockback_resistance");
 
+	public static final ResourceLocation REGULUS_ARMOR = ModId.of("modifiers/regulus/armor");
+
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_VALUE)
@@ -30,6 +32,10 @@ public final class HeroAttributes {
 			.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet REGULUS = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, REGULUS_ARMOR, 15.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	private HeroAttributes() {
