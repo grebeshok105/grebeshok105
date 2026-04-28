@@ -66,6 +66,7 @@ public final class HomelanderHero implements Hero {
 		HeroAttributes.HOMELANDER.apply(player);
 		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
 	}
 
 	@Override
@@ -73,6 +74,7 @@ public final class HomelanderHero implements Hero {
 		HeroAttributes.HOMELANDER.remove(player);
 		player.removeEffect(MobEffects.REGENERATION);
 		player.removeEffect(MobEffects.FIRE_RESISTANCE);
+		player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 	}
 
 	@Override

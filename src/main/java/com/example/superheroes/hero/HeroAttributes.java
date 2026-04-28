@@ -10,6 +10,8 @@ public final class HeroAttributes {
 	public static final ResourceLocation HOMELANDER_TOUGHNESS = ModId.of("modifiers/homelander/toughness");
 	public static final ResourceLocation HOMELANDER_DAMAGE = ModId.of("modifiers/homelander/damage");
 	public static final ResourceLocation HOMELANDER_SPEED = ModId.of("modifiers/homelander/speed");
+	public static final ResourceLocation HOMELANDER_HP = ModId.of("modifiers/homelander/max_health");
+	public static final ResourceLocation HOMELANDER_KNOCKBACK = ModId.of("modifiers/homelander/knockback_resistance");
 
 	public static final ResourceLocation IRON_MAN_ARMOR = ModId.of("modifiers/iron_man/armor");
 	public static final ResourceLocation IRON_MAN_TOUGHNESS = ModId.of("modifiers/iron_man/toughness");
@@ -23,10 +25,12 @@ public final class HeroAttributes {
 	public static final ResourceLocation REGULUS_MADNESS_DAMAGE = ModId.of("modifiers/regulus/madness_damage");
 
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 50.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_DAMAGE, HOMELANDER_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, HOMELANDER_SPEED, 0.20, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, HOMELANDER_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, HOMELANDER_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet IRON_MAN = AttributeModifierSet.builder()

@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public final class CounterStrikeAbility implements Ability {
-	private static final double SEARCH_RANGE = 24.0;
+	private static final double SEARCH_RANGE = 120.0;
 
 	@Override
 	public ResourceLocation getId() {
@@ -55,6 +55,10 @@ public final class CounterStrikeAbility implements Ability {
 	}
 
 	private static LivingEntity findTarget(ServerPlayer player) {
+		LivingEntity tracked = RegulusMadnessController.getLastDamager(player);
+		if (tracked != null && tracked.distanceTo(player) <= SEARCH_RANGE) {
+			return tracked;
+		}
 		LivingEntity last = player.getLastHurtByMob();
 		if (last != null && last.isAlive() && last.distanceTo(player) <= SEARCH_RANGE) {
 			return last;
