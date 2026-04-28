@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Set;
 
 public final class ObjectProjectileAbility implements Ability {
-	private static final double RAY_RANGE = 5.0;
+	private static final double RAY_RANGE = 8.0;
 	private static final double PROJECTILE_SPEED = 3.0;
 
 	private static final Set<net.minecraft.world.level.block.Block> ALLOWED = Set.of(
@@ -78,6 +78,7 @@ public final class ObjectProjectileAbility implements Ability {
 
 		RegulusProjectileEntity projectile = new RegulusProjectileEntity(ModEntities.REGULUS_PROJECTILE, level);
 		projectile.setOwner(player);
+		projectile.setItem(new net.minecraft.world.item.ItemStack(state.getBlock()));
 		Vec3 spawnPos = eye.add(dir.scale(0.8));
 		projectile.setPos(spawnPos.x, spawnPos.y - 0.1, spawnPos.z);
 		projectile.setDeltaMovement(dir.scale(PROJECTILE_SPEED));

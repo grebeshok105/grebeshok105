@@ -15,9 +15,11 @@ public class UraniumIsotopeItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Component.translatable("item.superheroes.uranium_isotope.lore.line1").withStyle(ChatFormatting.GREEN, ChatFormatting.ITALIC));
-		tooltip.add(Component.translatable("item.superheroes.uranium_isotope.lore.line2").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+		TooltipFrame.openDivider(tooltip, ChatFormatting.GREEN);
+		tooltip.add(TooltipFrame.flavor("item.superheroes.uranium_isotope.lore.line1", ChatFormatting.GREEN));
+		tooltip.add(TooltipFrame.flavor("item.superheroes.uranium_isotope.lore.line2", ChatFormatting.DARK_GRAY));
 		tooltip.add(Component.empty());
-		tooltip.add(Component.translatable("item.superheroes.uranium_isotope.lore.usage").withStyle(ChatFormatting.GOLD));
+		tooltip.add(TooltipFrame.bullet("item.superheroes.uranium_isotope.lore.usage", ChatFormatting.GOLD));
+		TooltipFrame.closeDivider(tooltip, ChatFormatting.GREEN);
 	}
 }

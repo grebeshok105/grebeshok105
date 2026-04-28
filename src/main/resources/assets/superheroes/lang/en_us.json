@@ -99,10 +99,14 @@
 	"item.superheroes.regulus_suit.lore.untransform": "Sneak + right-click to revert.",
 	"hero.superheroes.regulus": "Regulus Corneas",
 	"hero.superheroes.regulus.passive.1": "Regeneration I",
-	"hero.superheroes.regulus.passive.2": "Lion's Plating (+15 armor)",
-	"hero.superheroes.regulus.passive.3": "Lion's Heart (one-time death save)",
+	"hero.superheroes.regulus.passive.2": "Lion's Plating",
+	"hero.superheroes.regulus.passive.3": "Archbishop's Boons",
+	"hero.superheroes.regulus.passive.4": "Lion's Heart (one-time death save)",
 	"ability.superheroes.lion_heart": "Lion Heart",
+	"ability.superheroes.lion_heart.desc": "Greed of the world — invulnerable while active",
 	"ability.superheroes.object_projectile": "Object Projectile",
+	"ability.superheroes.object_projectile.desc": "Launches the block ahead as a projectile",
 	"ability.superheroes.lion_roar": "Lion's Roar",
+	"ability.superheroes.lion_roar.desc": "Sonic blast that knocks back foes",
 	"entity.superheroes.regulus_projectile": "Regulus Projectile"
 }
