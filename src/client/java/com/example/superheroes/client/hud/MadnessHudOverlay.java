@@ -12,28 +12,43 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Random;
 
 public final class MadnessHudOverlay {
-	private static final String[] VOICES = new String[]{
-			"Желай больше.",
-			"Лев не делится.",
-			"Никто не достоин.",
-			"Всё — моё.",
-			"Откажись… или возьми всё.",
-			"Жадность — добродетель.",
-			"Я — закон.",
-			"Корнеас",
-			"Голод не утолить."
+	private static final Component[] VOICES = new Component[]{
+			Component.translatable("superheroes.madness.voice.1"),
+			Component.translatable("superheroes.madness.voice.2"),
+			Component.translatable("superheroes.madness.voice.3"),
+			Component.translatable("superheroes.madness.voice.4"),
+			Component.translatable("superheroes.madness.voice.5"),
+			Component.translatable("superheroes.madness.voice.6"),
+			Component.translatable("superheroes.madness.voice.7"),
+			Component.translatable("superheroes.madness.voice.8"),
+			Component.translatable("superheroes.madness.voice.9"),
+			Component.translatable("superheroes.madness.voice.10"),
+			Component.translatable("superheroes.madness.voice.11"),
+			Component.translatable("superheroes.madness.voice.12"),
+			Component.translatable("superheroes.madness.voice.13"),
+			Component.translatable("superheroes.madness.voice.14"),
+			Component.translatable("superheroes.madness.voice.15"),
+			Component.translatable("superheroes.madness.voice.16"),
+			Component.translatable("superheroes.madness.voice.17"),
+			Component.translatable("superheroes.madness.voice.18"),
 	};
 
 	private static final String[] FLOATING_SYMBOLS = new String[]{
-			"卐", "✟", "Ω", "Жадность", "Корнеас", "罪", "Лев", "Я", "獅"
+			"卐", "✟", "Ω", "\u2620", "\u2695",
+			"\u26B0", "\u2694", "罪", "獅", "\u2623",
+			"Жадность", "Корнеас", "Лев", "Я", "Грех", "Regulus"
 	};
+
+	private static final long HEARTBEAT_RAMP_MS = 180_000L;
+	private static final double HEARTBEAT_INTERVAL_START_MS = 1100.0;
+	private static final double HEARTBEAT_INTERVAL_END_MS = 160.0;
 
 	private static long lastBeatMs = 0L;
 	private static long lastVoiceMs = 0L;
-	private static String currentVoice = null;
+	private static Component currentVoice = null;
+	private static long currentVoiceStartedMs = 0L;
 	private static long currentVoiceUntilMs = 0L;
 	private static final Random RNG = new Random();
-	private static long readingFlashMs = 0L;
 
 	private MadnessHudOverlay() {
 	}
@@ -55,73 +70,139 @@ public final class MadnessHudOverlay {
 		}
 		long now = System.currentTimeMillis();
 		long elapsed = now - ClientMadnessState.madnessStartedAtMs();
-		double phase = Math.min(1.0, elapsed / 60_000.0);
-		double interval = 5000.0 - phase * 4500.0;
-		long interv = (long) interval;
+		double phase = Math.min(1.0, elapsed / (double) HEARTBEAT_RAMP_MS);
+		double eased = phase * phase * (3.0 - 2.0 * phase);
+		double interval = HEARTBEAT_INTERVAL_START_MS
+				- (HEARTBEAT_INTERVAL_START_MS - HEARTBEAT_INTERVAL_END_MS) * eased;
+		long interv = Math.max(120L, (long) interval);
 		if (lastBeatMs == 0L) lastBeatMs = now - interv;
-		float beatStrength = 0f;
+		float beatStrength;
 		if (now - lastBeatMs >= interv) {
 			lastBeatMs = now;
+			float volume = 0.6f + (float) eased * 0.7f;
+			float pitch = 1.0f - (float) eased * 0.25f;
 			mc.level.playLocalSound(p.getX(), p.getY(), p.getZ(),
 					SoundEvents.WARDEN_HEARTBEAT, net.minecraft.sounds.SoundSource.PLAYERS,
-					0.6f + (float) phase * 0.6f, 1.0f - (float) phase * 0.2f, false);
+					volume, pitch, false);
+			if (eased > 0.65 && RNG.nextInt(3) == 0) {
+				mc.level.playLocalSound(p.getX(), p.getY(), p.getZ(),
+						SoundEvents.ELDER_GUARDIAN_HURT, net.minecraft.sounds.SoundSource.PLAYERS,
+						0.35f, 1.3f, false);
+			}
 			beatStrength = 1f;
 		} else {
 			float t = (now - lastBeatMs) / (float) interv;
 			beatStrength = Math.max(0f, 1f - t * 4f);
 		}
 
-		float alphaMax = 0.15f + (float) phase * 0.45f;
-		int redA = (int) (beatStrength * alphaMax * 255f);
+		float alphaBase = 0.18f + (float) eased * 0.55f;
+		float pulse = beatStrength * alphaBase;
+		int redA = (int) (pulse * 255f);
 		if (redA > 4) {
 			int color = (Math.min(255, redA) << 24) | 0x00DD0000;
 			graphics.fill(0, 0, sw, sh, color);
 		}
 
-		if (currentVoice == null || now > currentVoiceUntilMs) {
-			if (now - lastVoiceMs > 18_000L && RNG.nextInt(160) == 0) {
-				currentVoice = VOICES[RNG.nextInt(VOICES.length)];
-				currentVoiceUntilMs = now + 3000L;
-				lastVoiceMs = now;
-			} else if (now - lastVoiceMs > 60_000L) {
-				currentVoice = VOICES[RNG.nextInt(VOICES.length)];
-				currentVoiceUntilMs = now + 3000L;
-				lastVoiceMs = now;
-			}
-		}
-		if (currentVoice != null && now <= currentVoiceUntilMs) {
-			float fade = 1f;
-			long left = currentVoiceUntilMs - now;
-			if (left < 600L) fade = left / 600f;
-			int va = (int) (fade * 200f);
-			int color = (Math.max(0, Math.min(255, va)) << 24) | 0x00FFD700;
-			Component msg = Component.literal(currentVoice).withStyle(ChatFormatting.ITALIC);
-			int w = mc.font.width(msg);
-			graphics.drawString(mc.font, msg, sw / 2 - w / 2, sh / 4, color, true);
-		}
+		float vigStrength = 0.25f + (float) eased * 0.45f + beatStrength * 0.2f;
+		drawVignette(graphics, sw, sh, vigStrength);
 
-		long seed = (now / 600L);
+		drawEdgeCracks(graphics, sw, sh, (float) eased, beatStrength);
+
+		tickAndDrawVoice(graphics, mc, sw, sh, now, eased);
+
+		long seed = (now / 450L);
 		Random r = new Random(seed);
-		int symbolCount = 4;
+		int symbolCount = 5 + (int) (eased * 6);
 		for (int i = 0; i < symbolCount; i++) {
 			String sym = FLOATING_SYMBOLS[r.nextInt(FLOATING_SYMBOLS.length)];
 			int x = r.nextInt(Math.max(1, sw - 80)) + 20;
 			int y = r.nextInt(Math.max(1, sh - 80)) + 20;
-			int alpha = 30 + r.nextInt(50);
+			int alpha = 30 + r.nextInt(60);
 			int color = (alpha << 24) | 0x00BB0011;
 			graphics.drawString(mc.font, sym, x, y, color, false);
 		}
 
 		if (ClientMadnessState.isBonusLifeAvailable()) {
-			Component lifeText = Component.literal("◆ ДОП. ЖИЗНЬ").withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD);
+			Component lifeText = Component.literal("\u25C6 \u0414\u041E\u041F. \u0416\u0418\u0417\u041D\u042C")
+					.withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD);
 			int w = mc.font.width(lifeText);
 			graphics.drawString(mc.font, lifeText, sw - w - 8, sh - 32, 0xFFFFD700, true);
 		}
-		if (ClientMadnessState.isManaLocked()) {
-			long left = ClientMadnessState.manaLockUntilMs() - now;
-			Component lockText = Component.literal("Мана заблокирована: " + (left / 1000L + 1) + "с").withStyle(ChatFormatting.RED);
-			int w = mc.font.width(lockText);
-			graphics.drawString(mc.font, lockText, sw - w - 8, sh - 22, 0xFFFF6060, true);
+	}
+
+	private static void drawVignette(GuiGraphics graphics, int sw, int sh, float strength) {
+		int layers = 14;
+		for (int i = 0; i < layers; i++) {
+			float t = i / (float) layers;
+			int a = (int) ((strength * (1f - t) * 0.6f) * 255f);
+			if (a <= 2) continue;
+			int inset = (int) (Math.min(sw, sh) * 0.5f * t);
+			int color = (Math.min(255, a) << 24) | 0x00100000;
+			graphics.fill(0, 0, sw, inset, color);
+			graphics.fill(0, sh - inset, sw, sh, color);
+			graphics.fill(0, inset, inset, sh - inset, color);
+			graphics.fill(sw - inset, inset, sw, sh - inset, color);
+		}
+	}
+
+	private static void drawEdgeCracks(GuiGraphics graphics, int sw, int sh, float phase, float beat) {
+		int intensity = Math.round(phase * 255f + beat * 60f);
+		if (intensity < 20) return;
+		int a = Math.min(200, intensity);
+		int color = (a << 24) | 0x00400000;
+		int bandH = 4;
+		for (int i = 0; i < 3; i++) {
+			int y = i * (sh / 18);
+			graphics.fill(0, y, sw, y + bandH, color);
+			graphics.fill(0, sh - y - bandH, sw, sh - y, color);
+		}
+		int bandW = 3;
+		for (int i = 0; i < 3; i++) {
+			int x = i * (sw / 24);
+			graphics.fill(x, 0, x + bandW, sh, color);
+			graphics.fill(sw - x - bandW, 0, sw - x, sh, color);
+		}
+	}
+
+	private static void tickAndDrawVoice(GuiGraphics graphics, Minecraft mc, int sw, int sh, long now, double eased) {
+		long interval = (long) (9000.0 - 5000.0 * eased);
+		if (currentVoice == null || now > currentVoiceUntilMs) {
+			if (now - lastVoiceMs > interval) {
+				currentVoice = VOICES[RNG.nextInt(VOICES.length)];
+				currentVoiceStartedMs = now;
+				currentVoiceUntilMs = now + 2800L;
+				lastVoiceMs = now;
+				if (mc.player != null && mc.level != null) {
+					mc.level.playLocalSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(),
+							SoundEvents.EVOKER_CAST_SPELL, net.minecraft.sounds.SoundSource.PLAYERS,
+							0.35f, 0.7f + RNG.nextFloat() * 0.4f, false);
+					mc.level.playLocalSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(),
+							SoundEvents.SCULK_CLICKING, net.minecraft.sounds.SoundSource.PLAYERS,
+							0.45f, 0.6f, false);
+				}
+			}
+		}
+		if (currentVoice != null && now <= currentVoiceUntilMs) {
+			long sinceStart = now - currentVoiceStartedMs;
+			float fadeIn = Math.min(1f, sinceStart / 180f);
+			long left = currentVoiceUntilMs - now;
+			float fadeOut = left < 600L ? left / 600f : 1f;
+			float fade = fadeIn * fadeOut;
+			float scale = 1f + (1f - fadeIn) * 0.3f;
+			int va = (int) (fade * 220f);
+			int color = (Math.max(0, Math.min(255, va)) << 24) | 0x00FFC0C0;
+			int shadowColor = (Math.max(0, Math.min(255, va / 2)) << 24) | 0x00400000;
+			Component msg = Component.empty().append(currentVoice).withStyle(ChatFormatting.ITALIC);
+			int w = mc.font.width(msg);
+			int drawX = sw / 2 - (int) (w * scale / 2);
+			int drawY = sh / 4;
+			graphics.pose().pushPose();
+			graphics.pose().translate(sw / 2f, drawY, 0);
+			graphics.pose().scale(scale, scale, 1f);
+			graphics.pose().translate(-sw / 2f, -drawY, 0);
+			graphics.drawString(mc.font, msg, drawX + 1, drawY + 1, shadowColor, false);
+			graphics.drawString(mc.font, msg, drawX, drawY, color, true);
+			graphics.pose().popPose();
 		}
 	}
 
@@ -133,12 +214,8 @@ public final class MadnessHudOverlay {
 		int color = (Math.min(255, gold) << 24) | 0x00FFD700;
 		graphics.fill(0, 0, sw, sh, color);
 		Minecraft mc = Minecraft.getInstance();
-		Component msg = Component.literal("Чтение Евангелия…").withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD);
+		Component msg = Component.translatable("superheroes.madness.reading").withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD);
 		int w = mc.font.width(msg);
-		int sec = (int) (left / 1000L) + 1;
-		graphics.drawString(mc.font, msg, sw / 2 - w / 2, sh / 3, 0xFFFFD700, true);
-		Component sub = Component.literal(sec + " …").withStyle(ChatFormatting.YELLOW);
-		int w2 = mc.font.width(sub);
-		graphics.drawString(mc.font, sub, sw / 2 - w2 / 2, sh / 3 + 16, 0xFFFFE680, true);
+		graphics.drawString(mc.font, msg, sw / 2 - w / 2, sh / 3, 0xFFFFE47A, true);
 	}
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public final class ManiaOfGreedAbility implements Ability {
-	private static final double RAY_RANGE = 24.0;
+	private static final double RAY_RANGE = 100.0;
 
 	@Override
 	public ResourceLocation getId() {

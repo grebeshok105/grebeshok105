@@ -74,7 +74,7 @@ public final class RegulusHero implements Hero {
 
 	@Override
 	public List<ResourceLocation> getAbilities() {
-		return List.of(AbilityIds.LION_HEART, AbilityIds.MANIA_OF_GREED, AbilityIds.LION_ROAR);
+		return List.of(AbilityIds.LION_HEART, AbilityIds.MANIA_OF_GREED, AbilityIds.LION_ROAR, AbilityIds.COUNTER_STRIKE);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package com.example.superheroes.effect;
 
+import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.hero.RegulusHero;
+import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -42,6 +45,10 @@ public final class SuperJumpController {
 	}
 
 	public static void activate(ServerPlayer player) {
+		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		if (!data.hasHero() || !RegulusHero.ID.equals(data.heroId())) {
+			return;
+		}
 		UUID id = player.getUUID();
 		Integer ready = COOLDOWN.get(id);
 		if (ready != null && player.tickCount < ready) {
@@ -57,15 +64,20 @@ public final class SuperJumpController {
 
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 0.6f);
+				SoundEvents.WITHER_SHOOT, SoundSource.PLAYERS, 1.0f, 1.2f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.8f, 1.6f);
+				SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 1.0f, 1.4f);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.6f, 1.7f);
 		level.sendParticles(ParticleTypes.CLOUD,
 				player.getX(), player.getY(), player.getZ(),
 				40, 0.6, 0.05, 0.6, 0.4);
 		level.sendParticles(ParticleTypes.LARGE_SMOKE,
 				player.getX(), player.getY(), player.getZ(),
 				20, 0.8, 0.05, 0.8, 0.05);
+		level.sendParticles(ParticleTypes.FIREWORK,
+				player.getX(), player.getY() + 0.1, player.getZ(),
+				25, 0.6, 0.1, 0.6, 0.2);
 	}
 
 	public static boolean hasFallImmunity(Player player) {

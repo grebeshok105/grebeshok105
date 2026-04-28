@@ -4,6 +4,7 @@ import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.hero.HeroAttributes;
 import com.example.superheroes.hero.RegulusHero;
 import com.example.superheroes.network.MadnessSyncS2CPayload;
+import com.example.superheroes.network.MadnessVisualS2CPayload;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -34,13 +35,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class RegulusMadnessController {
 	private static final long READING_DURATION_MS = 5000L;
-	private static final long MANA_LOCK_DURATION_MS = 20_000L;
-	private static final int COUNTER_FREEZE_TICKS = 12;
-	private static final int COUNTER_LAUNCH_TICKS = 12;
-	private static final int COUNTER_SLAM_TICKS = 30;
+	private static final int COUNTER_LIFT_TICKS = 20;
+	private static final double COUNTER_LIFT_HEIGHT = 30.0;
+	private static final int COUNTER_ARRIVE_TICKS = 20;
+	private static final int COUNTER_SLAM_TICKS = 120;
 	private static final double CRATER_RADIUS = 4.0;
 	private static final int CRATER_DEPTH = 20;
-	private static final int DODGE_COOLDOWN_TICKS = 40;
+	private static final int DODGE_COOLDOWN_TICKS = 60;
 
 	private static final Map<UUID, Long> DODGE_COOLDOWN = new ConcurrentHashMap<>();
 
@@ -73,24 +74,12 @@ public final class RegulusMadnessController {
 			if (state.isReading()) {
 				return false;
 			}
-			if (!isRegulus(player) || !state.madness()) {
-				return true;
-			}
-			HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-			Entity attacker = source.getEntity();
-			if (!(attacker instanceof LivingEntity living) || attacker == player) {
-				return true;
-			}
-			Long cd = DODGE_COOLDOWN.get(player.getUUID());
-			if (cd != null && cd > player.tickCount) {
-				return true;
-			}
-			if (data.energy() <= 0) {
-				return true;
-			}
-			triggerCounter(player, living);
-			return false;
+			return true;
 		});
+	}
+
+	public static boolean isAnyCounterActive() {
+		return !COUNTERS.isEmpty();
 	}
 
 	private static void tickPlayer(ServerPlayer player) {
@@ -127,10 +116,51 @@ public final class RegulusMadnessController {
 		} else if (state.readingUntilMs() > 0L && !state.madness()) {
 			finishReading(player);
 		}
-		// Mana lock: zero mana while locked
-		if (state.isManaRegenLocked() && player.getAttachedOrCreate(ModAttachments.HERO_DATA).mana() > 0f) {
-			HeroData d = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-			player.setAttached(ModAttachments.HERO_DATA, d.withMana(0f));
+		if (state.madness() && isRegulus(player)) {
+			tickMadnessAmbient(player);
+		}
+	}
+
+	private static void tickMadnessAmbient(ServerPlayer player) {
+		ServerLevel level = (ServerLevel) player.level();
+		int t = player.tickCount;
+		if (t % 2 == 0) {
+			level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+					player.getX(), player.getY() + 0.2, player.getZ(),
+					2, 0.4, 0.2, 0.4, 0.01);
+			level.sendParticles(ParticleTypes.SMOKE,
+					player.getX(), player.getY() + 0.4, player.getZ(),
+					1, 0.3, 0.2, 0.3, 0.0);
+		}
+		if (t % 6 == 0) {
+			level.sendParticles(ParticleTypes.ENCHANT,
+					player.getX(), player.getY() + 1.2, player.getZ(),
+					6, 0.8, 1.0, 0.8, 0.4);
+			level.sendParticles(ParticleTypes.END_ROD,
+					player.getX(), player.getY() + 1.0, player.getZ(),
+					2, 0.6, 0.8, 0.6, 0.02);
+			level.sendParticles(ParticleTypes.LAVA,
+					player.getX(), player.getY() + 0.1, player.getZ(),
+					1, 0.3, 0.05, 0.3, 0.0);
+		}
+		if (t % 20 == 0) {
+			level.sendParticles(ParticleTypes.ANGRY_VILLAGER,
+					player.getX(), player.getY() + 1.9, player.getZ(),
+					2, 0.3, 0.1, 0.3, 0.0);
+		}
+		if (t % 60 == 0 && level.random.nextInt(3) == 0) {
+			level.playSound(null, player.getX(), player.getY(), player.getZ(),
+					SoundEvents.WARDEN_AMBIENT, SoundSource.AMBIENT, 0.4f, 0.6f);
+		}
+		if (t % 100 == 0 && level.random.nextInt(4) == 0) {
+			LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
+			if (bolt != null) {
+				double angle = level.random.nextDouble() * Math.PI * 2;
+				double r = 4.0 + level.random.nextDouble() * 3.0;
+				bolt.moveTo(player.getX() + Math.cos(angle) * r, player.getY(), player.getZ() + Math.sin(angle) * r);
+				bolt.setVisualOnly(true);
+				level.addFreshEntity(bolt);
+			}
 		}
 	}
 
@@ -171,6 +201,7 @@ public final class RegulusMadnessController {
 		level.sendParticles(ParticleTypes.FLASH, player.getX(), player.getY() + 1.0, player.getZ(), 3, 0, 0, 0, 0);
 		level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, player.getX(), player.getY() + 1.0, player.getZ(),
 				80, 1.5, 2.0, 1.5, 0.05);
+		ServerPlayNetworking.send(player, new MadnessVisualS2CPayload(MadnessVisualS2CPayload.EVENT_ENTER));
 		sync(player);
 	}
 
@@ -185,6 +216,7 @@ public final class RegulusMadnessController {
 			player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 		}
 		player.setAttached(ModAttachments.REGULUS_MADNESS, RegulusMadnessState.EMPTY);
+		ServerPlayNetworking.send(player, new MadnessVisualS2CPayload(MadnessVisualS2CPayload.EVENT_EXIT));
 		sync(player);
 	}
 
@@ -214,18 +246,8 @@ public final class RegulusMadnessController {
 		));
 	}
 
-	private static void triggerCounter(ServerPlayer player, LivingEntity attacker) {
-		long now = System.currentTimeMillis();
-		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-		player.setAttached(ModAttachments.HERO_DATA, data.withMana(0f).withEnergy(0f));
-		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS)
-				.withManaLock(now + MANA_LOCK_DURATION_MS);
-		player.setAttached(ModAttachments.REGULUS_MADNESS, state);
+	public static void triggerCounter(ServerPlayer player, LivingEntity attacker) {
 		DODGE_COOLDOWN.put(player.getUUID(), (long) (player.tickCount + DODGE_COOLDOWN_TICKS));
-
-		Vec3 attackerLook = attacker.getViewVector(1.0f);
-		Vec3 behind = attacker.position().subtract(attackerLook.x, 0, attackerLook.z).add(-attackerLook.x * 0.5, 0, -attackerLook.z * 0.5);
-		player.connection.teleport(behind.x, attacker.getY(), behind.z, (float) Math.toDegrees(Math.atan2(attackerLook.x, -attackerLook.z)) + 180f, 0f);
 
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
@@ -245,9 +267,11 @@ public final class RegulusMadnessController {
 		final UUID attackerId;
 		final net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dim;
 		int tick = 0;
-		Phase phase = Phase.FREEZE;
+		Phase phase = Phase.LIFT;
 		boolean attackerWasNoAi;
-		double snapshotX, snapshotY, snapshotZ;
+		boolean attackerWasNoGravity;
+		boolean playerWasNoGravity;
+		double liftStartY;
 
 		CounterState(UUID playerId, UUID attackerId, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dim) {
 			this.playerId = playerId;
@@ -261,69 +285,102 @@ public final class RegulusMadnessController {
 			ServerPlayer player = server.getPlayerList().getPlayer(playerId);
 			Entity ae = level.getEntity(attackerId);
 			if (player == null || !(ae instanceof LivingEntity attacker) || !attacker.isAlive()) {
+				restoreOnAbort(level);
 				return true;
 			}
 			tick++;
 			switch (phase) {
-				case FREEZE -> {
+				case LIFT -> {
 					if (tick == 1) {
-						snapshotX = attacker.getX();
-						snapshotY = attacker.getY();
-						snapshotZ = attacker.getZ();
+						liftStartY = attacker.getY();
 						if (attacker instanceof Mob mob) {
 							attackerWasNoAi = mob.isNoAi();
 							mob.setNoAi(true);
 						}
+						attackerWasNoGravity = attacker.isNoGravity();
+						attacker.setNoGravity(true);
+						playerWasNoGravity = player.isNoGravity();
 					}
-					attacker.setDeltaMovement(Vec3.ZERO);
-					attacker.teleportTo(snapshotX, snapshotY, snapshotZ);
-					player.setDeltaMovement(Vec3.ZERO);
+					double liftStep = COUNTER_LIFT_HEIGHT / (double) COUNTER_LIFT_TICKS;
+					double targetY = Math.min(liftStartY + tick * liftStep, liftStartY + COUNTER_LIFT_HEIGHT);
+					attacker.setDeltaMovement(0, 0, 0);
+					attacker.teleportTo(attacker.getX(), targetY, attacker.getZ());
+					attacker.hurtMarked = true;
 					if (tick % 3 == 0) {
 						level.sendParticles(ParticleTypes.END_ROD,
-								attacker.getX(), attacker.getY() + 1.0, attacker.getZ(),
-								4, 0.5, 0.8, 0.5, 0.05);
+								attacker.getX(), attacker.getY() + 0.5, attacker.getZ(),
+								5, 0.5, 0.8, 0.5, 0.05);
+						level.sendParticles(ParticleTypes.GLOW,
+								attacker.getX(), attacker.getY() + 0.5, attacker.getZ(),
+								3, 0.4, 0.6, 0.4, 0.02);
 					}
-					if (tick >= COUNTER_FREEZE_TICKS) {
-						boolean onGround = attacker.onGround();
-						if (onGround) {
-							attacker.setDeltaMovement(0, 3.5, 0);
-							attacker.hurtMarked = true;
-							attacker.hurt(level.damageSources().playerAttack(player), 30f);
-							level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
-									SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 1.5f);
-							phase = Phase.LAUNCH;
-							tick = 0;
-						} else {
-							phase = Phase.SLAM;
-							tick = 0;
-							if (attacker instanceof Mob mob) {
-								mob.setNoAi(attackerWasNoAi);
-							}
-							attacker.setDeltaMovement(0, -3.5, 0);
-							attacker.hurtMarked = true;
-							attacker.hurt(level.damageSources().playerAttack(player), 50f);
-						}
+					if (tick >= COUNTER_LIFT_TICKS) {
+						phase = Phase.ARRIVE;
+						tick = 0;
+						player.setNoGravity(true);
+						player.setDeltaMovement(0, 0, 0);
+						Vec3 look = attacker.getViewVector(1.0f);
+						double bx = attacker.getX() - look.x * 1.2;
+						double bz = attacker.getZ() - look.z * 1.2;
+						float yaw = (float) Math.toDegrees(Math.atan2(look.x, -look.z)) + 180f;
+						player.connection.teleport(bx, attacker.getY(), bz, yaw, 10f);
+						level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
+								SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.2f, 0.7f);
+						level.sendParticles(ParticleTypes.REVERSE_PORTAL,
+								player.getX(), player.getY() + 1.0, player.getZ(),
+								40, 0.5, 1.0, 0.5, 0.2);
 					}
 				}
-				case LAUNCH -> {
-					if (tick >= COUNTER_LAUNCH_TICKS) {
+				case ARRIVE -> {
+					attacker.setDeltaMovement(0, 0, 0);
+					player.setDeltaMovement(0, 0, 0);
+					player.setNoGravity(true);
+					if (tick % 2 == 0) {
+						level.sendParticles(ParticleTypes.FLASH,
+								attacker.getX(), attacker.getY() + 1.0, attacker.getZ(),
+								1, 0, 0, 0, 0);
+					}
+					if (tick >= COUNTER_ARRIVE_TICKS) {
+						phase = Phase.SLAM;
+						tick = 0;
 						if (attacker instanceof Mob mob) {
 							mob.setNoAi(attackerWasNoAi);
 						}
+						attacker.setNoGravity(attackerWasNoGravity);
 						attacker.setDeltaMovement(0, -3.5, 0);
 						attacker.hurtMarked = true;
-						attacker.hurt(level.damageSources().playerAttack(player), 50f);
-						phase = Phase.SLAM;
-						tick = 0;
+						attacker.hurt(level.damageSources().playerAttack(player), 30f);
+						player.setNoGravity(playerWasNoGravity);
+						level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
+								SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.4f, 0.9f);
 					}
 				}
 				case SLAM -> {
+					if (!attacker.onGround() && !attacker.verticalCollision) {
+						if (attacker.getDeltaMovement().y > -3.0) {
+							attacker.setDeltaMovement(attacker.getDeltaMovement().x, -3.5, attacker.getDeltaMovement().z);
+							attacker.hurtMarked = true;
+						}
+						level.sendParticles(ParticleTypes.LARGE_SMOKE,
+								attacker.getX(), attacker.getY() + 0.2, attacker.getZ(),
+								3, 0.3, 0.1, 0.3, 0.0);
+					}
 					if (attacker.onGround() || attacker.verticalCollision || tick >= COUNTER_SLAM_TICKS) {
 						return finalSlam(level, player, attacker);
 					}
 				}
 			}
 			return false;
+		}
+
+		void restoreOnAbort(ServerLevel level) {
+			ServerPlayer player = level.getServer().getPlayerList().getPlayer(playerId);
+			if (player != null) player.setNoGravity(playerWasNoGravity);
+			Entity ae = level.getEntity(attackerId);
+			if (ae instanceof LivingEntity attacker) {
+				attacker.setNoGravity(attackerWasNoGravity);
+				if (attacker instanceof Mob mob) mob.setNoAi(attackerWasNoAi);
+			}
 		}
 
 		boolean finalSlam(ServerLevel level, ServerPlayer player, LivingEntity attacker) {
@@ -360,6 +417,6 @@ public final class RegulusMadnessController {
 			}
 		}
 
-		enum Phase { FREEZE, LAUNCH, SLAM }
+		enum Phase { LIFT, ARRIVE, SLAM }
 	}
 }
