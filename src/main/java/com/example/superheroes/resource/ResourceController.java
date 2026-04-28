@@ -39,7 +39,7 @@ public final class ResourceController {
 		float energy = data.energy();
 		float mana = data.mana();
 		boolean dirty = false;
-		if (energy < hero.getEnergyMax()) {
+		if (energy < hero.getEnergyMax() && !EnergyLocks.isLocked(player)) {
 			energy = Math.min(hero.getEnergyMax(), energy + hero.getEnergyRegenPerTick());
 			dirty = true;
 		}

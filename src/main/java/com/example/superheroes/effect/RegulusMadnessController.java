@@ -389,6 +389,7 @@ public final class RegulusMadnessController {
 			carveCrater(level, impact);
 			attacker.teleportTo(impact.getX() + 0.5, impact.getY() - CRATER_DEPTH + 1, impact.getZ() + 0.5);
 			attacker.hurt(level.damageSources().playerAttack(player), 80f);
+			com.example.superheroes.resource.EnergyLocks.lockTicks(player, 15 * 20);
 			level.playSound(null, impact.getX(), impact.getY(), impact.getZ(),
 					SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 2.0f, 0.4f);
 			level.playSound(null, impact.getX(), impact.getY(), impact.getZ(),

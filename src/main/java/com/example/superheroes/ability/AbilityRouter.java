@@ -5,6 +5,7 @@ import com.example.superheroes.effect.ModEffects;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
 import com.example.superheroes.network.ModNetworking;
+import com.example.superheroes.resource.EnergyLocks;
 import com.example.superheroes.resource.ResourceController;
 import com.example.superheroes.resource.ResourceKind;
 import com.example.superheroes.transform.HeroData;
@@ -35,10 +36,17 @@ public final class AbilityRouter {
 			deactivate(player, abilityId);
 			return;
 		}
+		if (AbilityCooldowns.isOnCooldown(player, abilityId)) {
+			return;
+		}
+		ResourceKind binding = data.binding(abilityId, hero.getDefaultBinding(abilityId));
+		if (EnergyLocks.isLocked(player) && binding == ResourceKind.ENERGY
+				&& (ability.costOnActivate() > 0f || ability.costPerTick() > 0f)) {
+			return;
+		}
 		float cost = ability.costOnActivate();
 		if (cost > 0f) {
 			if (!abilityId.equals(AbilityIds.UNIBEAM) && hero.getAbilities().contains(AbilityIds.UNIBEAM)) {
-				ResourceKind binding = data.binding(abilityId, hero.getDefaultBinding(abilityId));
 				if (binding == ResourceKind.ENERGY && data.energy() < cost + 100f) {
 					return;
 				}

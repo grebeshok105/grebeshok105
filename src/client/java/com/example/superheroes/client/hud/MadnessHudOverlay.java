@@ -106,8 +106,6 @@ public final class MadnessHudOverlay {
 		float vigStrength = 0.25f + (float) eased * 0.45f + beatStrength * 0.2f;
 		drawVignette(graphics, sw, sh, vigStrength);
 
-		drawEdgeCracks(graphics, sw, sh, (float) eased, beatStrength);
-
 		tickAndDrawVoice(graphics, mc, sw, sh, now, eased);
 
 		long seed = (now / 450L);
@@ -131,36 +129,24 @@ public final class MadnessHudOverlay {
 	}
 
 	private static void drawVignette(GuiGraphics graphics, int sw, int sh, float strength) {
-		int layers = 14;
-		for (int i = 0; i < layers; i++) {
-			float t = i / (float) layers;
-			int a = (int) ((strength * (1f - t) * 0.6f) * 255f);
-			if (a <= 2) continue;
-			int inset = (int) (Math.min(sw, sh) * 0.5f * t);
-			int color = (Math.min(255, a) << 24) | 0x00100000;
-			graphics.fill(0, 0, sw, inset, color);
-			graphics.fill(0, sh - inset, sw, sh, color);
-			graphics.fill(0, inset, inset, sh - inset, color);
-			graphics.fill(sw - inset, inset, sw, sh - inset, color);
-		}
-	}
+		int baseA = (int) Math.min(255f, strength * 200f);
+		if (baseA < 4) return;
+		int tintColor = 0x00200000;
+		int topColor = (baseA << 24) | tintColor;
+		int transparent = 0x00000000;
+		int bandH = (int) (sh * 0.45f);
+		graphics.fillGradient(0, 0, sw, bandH, topColor, transparent);
+		graphics.fillGradient(0, sh - bandH, sw, sh, transparent, topColor);
 
-	private static void drawEdgeCracks(GuiGraphics graphics, int sw, int sh, float phase, float beat) {
-		int intensity = Math.round(phase * 255f + beat * 60f);
-		if (intensity < 20) return;
-		int a = Math.min(200, intensity);
-		int color = (a << 24) | 0x00400000;
-		int bandH = 4;
-		for (int i = 0; i < 3; i++) {
-			int y = i * (sh / 18);
-			graphics.fill(0, y, sw, y + bandH, color);
-			graphics.fill(0, sh - y - bandH, sw, sh - y, color);
-		}
-		int bandW = 3;
-		for (int i = 0; i < 3; i++) {
-			int x = i * (sw / 24);
-			graphics.fill(x, 0, x + bandW, sh, color);
-			graphics.fill(sw - x - bandW, 0, sw - x, sh, color);
+		int sideW = (int) (sw * 0.28f);
+		for (int i = 0; i < sideW; i++) {
+			float t = 1f - (i / (float) sideW);
+			float eased = t * t;
+			int a = (int) (baseA * eased * 0.85f);
+			if (a < 2) continue;
+			int color = (a << 24) | tintColor;
+			graphics.fill(i, 0, i + 1, sh, color);
+			graphics.fill(sw - i - 1, 0, sw - i, sh, color);
 		}
 	}
 
