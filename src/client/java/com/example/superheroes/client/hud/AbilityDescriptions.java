@@ -29,7 +29,7 @@ public final class AbilityDescriptions {
 	static {
 		HERO_PASSIVE_COUNT.put("homelander", 3);
 		HERO_PASSIVE_COUNT.put("iron_man", 3);
-		HERO_PASSIVE_COUNT.put("regulus", 3);
+		HERO_PASSIVE_COUNT.put("regulus", 4);
 	}
 
 	private AbilityDescriptions() {

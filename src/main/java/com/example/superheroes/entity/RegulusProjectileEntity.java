@@ -1,17 +1,25 @@
 package com.example.superheroes.entity;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class RegulusProjectileEntity extends Projectile {
+public class RegulusProjectileEntity extends Projectile implements ItemSupplier {
+	private static final EntityDataAccessor<ItemStack> DATA_ITEM = SynchedEntityData.defineId(
+			RegulusProjectileEntity.class, EntityDataSerializers.ITEM_STACK);
+
 	private static final int MAX_LIFE = 80;
 	private static final float DAMAGE = 28.0f;
 
@@ -24,6 +32,18 @@ public class RegulusProjectileEntity extends Projectile {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_ITEM, new ItemStack(Items.COBBLESTONE));
+	}
+
+	public void setItem(ItemStack stack) {
+		ItemStack copy = stack.copy();
+		copy.setCount(1);
+		this.entityData.set(DATA_ITEM, copy);
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return this.entityData.get(DATA_ITEM);
 	}
 
 	@Override
@@ -59,9 +79,11 @@ public class RegulusProjectileEntity extends Projectile {
 
 		setPos(end);
 
+		setXRot((float) (Math.atan2(motion.y, motion.horizontalDistance()) * 180.0 / Math.PI));
+		setYRot((float) (Math.atan2(motion.x, motion.z) * 180.0 / Math.PI));
+
 		if (level().isClientSide) {
 			level().addParticle(ParticleTypes.CRIT, end.x, end.y, end.z, 0.0, 0.0, 0.0);
-			level().addParticle(ParticleTypes.SMOKE, end.x, end.y, end.z, 0.0, 0.0, 0.0);
 		}
 	}
 
@@ -75,6 +97,9 @@ public class RegulusProjectileEntity extends Projectile {
 			sl.sendParticles(ParticleTypes.CRIT,
 					target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
 					16, 0.4, 0.4, 0.4, 0.1);
+			sl.sendParticles(ParticleTypes.POOF,
+					target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
+					12, 0.3, 0.3, 0.3, 0.05);
 		}
 		discard();
 	}

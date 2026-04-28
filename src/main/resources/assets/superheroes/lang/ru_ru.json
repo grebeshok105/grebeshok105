@@ -99,10 +99,14 @@
 	"item.superheroes.regulus_suit.lore.untransform": "Shift + ПКМ — обратное превращение.",
 	"hero.superheroes.regulus": "Регулус Корнеас",
 	"hero.superheroes.regulus.passive.1": "Регенерация I",
-	"hero.superheroes.regulus.passive.2": "Броня Льва (+15)",
-	"hero.superheroes.regulus.passive.3": "Сердце Льва (одноразовое спасение от смерти)",
+	"hero.superheroes.regulus.passive.2": "Броня Льва",
+	"hero.superheroes.regulus.passive.3": "Дары Архиепископа",
+	"hero.superheroes.regulus.passive.4": "Сердце Льва (одноразовое спасение от смерти)",
 	"ability.superheroes.lion_heart": "Львиное Сердце",
+	"ability.superheroes.lion_heart.desc": "Жадность мира — неуязвимость пока активно",
 	"ability.superheroes.object_projectile": "Манипуляция предметами",
+	"ability.superheroes.object_projectile.desc": "Запускает блок впереди как метательный снаряд",
 	"ability.superheroes.lion_roar": "Львиный Рёв",
+	"ability.superheroes.lion_roar.desc": "Звуковой импульс, отбрасывающий врагов",
 	"entity.superheroes.regulus_projectile": "Снаряд Регулуса"
 }

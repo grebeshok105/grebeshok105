@@ -17,10 +17,12 @@ public class RegulusSuitItem extends TransformationItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Component.translatable("item.superheroes.regulus_suit.lore.line1").withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
-		tooltip.add(Component.translatable("item.superheroes.regulus_suit.lore.line2").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+		TooltipFrame.openDivider(tooltip, ChatFormatting.GOLD);
+		tooltip.add(TooltipFrame.flavor("item.superheroes.regulus_suit.lore.line1", ChatFormatting.GOLD));
+		tooltip.add(TooltipFrame.flavor("item.superheroes.regulus_suit.lore.line2", ChatFormatting.DARK_GRAY));
 		tooltip.add(Component.empty());
-		tooltip.add(Component.translatable("item.superheroes.regulus_suit.lore.usage").withStyle(ChatFormatting.YELLOW));
-		tooltip.add(Component.translatable("item.superheroes.regulus_suit.lore.untransform").withStyle(ChatFormatting.GOLD));
+		tooltip.add(TooltipFrame.bullet("item.superheroes.regulus_suit.lore.usage", ChatFormatting.YELLOW));
+		tooltip.add(TooltipFrame.bullet("item.superheroes.regulus_suit.lore.untransform", ChatFormatting.GOLD));
+		TooltipFrame.closeDivider(tooltip, ChatFormatting.GOLD);
 	}
 }
