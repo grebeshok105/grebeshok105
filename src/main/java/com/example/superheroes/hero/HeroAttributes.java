@@ -42,7 +42,7 @@ public final class HeroAttributes {
 			.build();
 
 	public static final AttributeModifierSet REGULUS_MADNESS = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, REGULUS_MADNESS_ARMOR, 5.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, REGULUS_MADNESS_ARMOR, 10.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MAX_HEALTH, REGULUS_MADNESS_HP, 0.20, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.ATTACK_DAMAGE, REGULUS_MADNESS_DAMAGE, 0.40, AttributeModifier.Operation.ADD_VALUE)
 			.build();

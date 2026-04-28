@@ -124,9 +124,8 @@ public final class RegulusMadnessController {
 					level.addFreshEntity(bolt);
 				}
 			}
-			if (System.currentTimeMillis() >= state.readingUntilMs()) {
-				finishReading(player);
-			}
+		} else if (state.readingUntilMs() > 0L && !state.madness()) {
+			finishReading(player);
 		}
 		// Mana lock: zero mana while locked
 		if (state.isManaRegenLocked() && player.getAttachedOrCreate(ModAttachments.HERO_DATA).mana() > 0f) {
@@ -163,6 +162,8 @@ public final class RegulusMadnessController {
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
 
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -180,6 +181,8 @@ public final class RegulusMadnessController {
 			player.removeEffect(MobEffects.MOVEMENT_SPEED);
 			player.removeEffect(MobEffects.DAMAGE_BOOST);
 			player.removeEffect(MobEffects.JUMP);
+			player.removeEffect(MobEffects.REGENERATION);
+			player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 		}
 		player.setAttached(ModAttachments.REGULUS_MADNESS, RegulusMadnessState.EMPTY);
 		sync(player);
