@@ -1,6 +1,7 @@
 package com.example.superheroes.mixin;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.effect.SuperJumpController;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
 import com.example.superheroes.transform.HeroData;
@@ -19,6 +20,10 @@ public abstract class LivingEntityFallDamageMixin {
 			CallbackInfoReturnable<Boolean> cir) {
 		LivingEntity self = (LivingEntity) (Object) this;
 		if (!(self instanceof Player player)) {
+			return;
+		}
+		if (SuperJumpController.hasFallImmunity(player)) {
+			cir.setReturnValue(false);
 			return;
 		}
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);

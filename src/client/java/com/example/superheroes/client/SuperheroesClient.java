@@ -19,6 +19,7 @@ import com.example.superheroes.client.render.RepulsorBeamRenderer;
 import com.example.superheroes.client.render.lightning.SuperheroLightningRenderer;
 import com.example.superheroes.client.screen.BindingsScreen;
 import com.example.superheroes.network.ActivateAbilityC2SPayload;
+import com.example.superheroes.network.SuperJumpC2SPayload;
 import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
@@ -78,6 +79,11 @@ public class SuperheroesClient implements ClientModInitializer {
 			}
 			while (ModKeys.TOGGLE_TOOLTIPS.consumeClick()) {
 				AbilitiesTooltipHud.toggleVisible();
+			}
+			while (ModKeys.SUPER_JUMP.consumeClick()) {
+				if (client.player != null) {
+					ClientPlayNetworking.send(SuperJumpC2SPayload.INSTANCE);
+				}
 			}
 			for (int i = 0; i < ModKeys.ABILITY_SLOTS.length; i++) {
 				while (ModKeys.ABILITY_SLOTS[i].consumeClick()) {

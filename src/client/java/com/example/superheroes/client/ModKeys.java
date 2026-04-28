@@ -11,6 +11,7 @@ public final class ModKeys {
 	public static KeyMapping RADIAL;
 	public static KeyMapping BINDINGS;
 	public static KeyMapping TOGGLE_TOOLTIPS;
+	public static KeyMapping SUPER_JUMP;
 	public static KeyMapping[] ABILITY_SLOTS;
 
 	private static final int[] DEFAULT_SLOT_KEYS = {
@@ -38,6 +39,11 @@ public final class ModKeys {
 				"key.superheroes.toggle_tooltips",
 				InputConstants.Type.KEYSYM,
 				GLFW.GLFW_KEY_H,
+				CATEGORY));
+		SUPER_JUMP = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+				"key.superheroes.super_jump",
+				InputConstants.Type.KEYSYM,
+				GLFW.GLFW_KEY_G,
 				CATEGORY));
 		ABILITY_SLOTS = new KeyMapping[DEFAULT_SLOT_KEYS.length];
 		for (int i = 0; i < DEFAULT_SLOT_KEYS.length; i++) {
