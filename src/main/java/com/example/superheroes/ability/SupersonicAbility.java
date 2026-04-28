@@ -29,7 +29,7 @@ public final class SupersonicAbility implements Ability {
 
 	@Override
 	public float costPerTick() {
-		return 3.0f;
+		return 6.0f;
 	}
 
 	@Override

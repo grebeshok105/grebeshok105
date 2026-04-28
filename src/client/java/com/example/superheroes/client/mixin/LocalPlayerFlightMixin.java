@@ -64,6 +64,9 @@ public abstract class LocalPlayerFlightMixin {
 		float strafe = player.xxa;
 		boolean jumping = player.input != null && player.input.jumping;
 		boolean sneaking = player.input != null && player.input.shiftKeyDown;
+		if (supersonic && forward < 1.0f) {
+			forward = 1.0f;
+		}
 
 		float yawRad = (float) Math.toRadians(player.getYRot());
 		float pitchRad = (float) Math.toRadians(player.getXRot());

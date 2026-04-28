@@ -4,6 +4,8 @@ import com.example.superheroes.ModId;
 import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.resource.ResourceKind;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -76,10 +78,14 @@ public final class RegulusHero implements Hero {
 
 	@Override
 	public void applyPassives(Player player) {
+		HeroAttributes.REGULUS.apply(player);
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
 	}
 
 	@Override
 	public void removePassives(Player player) {
+		HeroAttributes.REGULUS.remove(player);
+		player.removeEffect(MobEffects.REGENERATION);
 	}
 
 	@Override
