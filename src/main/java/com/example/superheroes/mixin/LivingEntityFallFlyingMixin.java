@@ -16,9 +16,6 @@ public abstract class LivingEntityFallFlyingMixin {
 	@Shadow
 	protected int fallFlyTicks;
 
-	@Shadow
-	protected abstract void setSharedFlag(int flag, boolean value);
-
 	@Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
 	private void superheroes$keepFallFlying(CallbackInfo ci) {
 		LivingEntity self = (LivingEntity) (Object) this;
@@ -27,7 +24,7 @@ public abstract class LivingEntityFallFlyingMixin {
 		}
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		if (data.hasHero() && (data.isActive(AbilityIds.FLIGHT) || data.isActive(AbilityIds.IRON_MAN_FLIGHT) || data.isActive(AbilityIds.SUPERSONIC))) {
-			setSharedFlag(7, true);
+			player.startFallFlying();
 			this.fallFlyTicks++;
 			ci.cancel();
 		}
