@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public final class ManiaOfGreedAbility implements Ability {
 	private static final double RAY_RANGE = 100.0;
+	public static final int COOLDOWN_TICKS = 25 * 20;
 
 	@Override
 	public ResourceLocation getId() {
@@ -59,6 +60,7 @@ public final class ManiaOfGreedAbility implements Ability {
 	@Override
 	public void onDeactivate(ServerPlayer player) {
 		RegulusGreedController.releaseAndFreeze(player);
+		AbilityCooldowns.setCooldownTicks(player, AbilityIds.MANIA_OF_GREED, COOLDOWN_TICKS);
 	}
 
 	private static LivingEntity findTarget(ServerPlayer player) {

@@ -37,6 +37,8 @@ public final class CounterStrikeAbility implements Ability {
 		return 0f;
 	}
 
+	public static final int COOLDOWN_TICKS = 30 * 20;
+
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
 		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
@@ -48,6 +50,7 @@ public final class CounterStrikeAbility implements Ability {
 			return false;
 		}
 		RegulusMadnessController.triggerCounter(player, target);
+		AbilityCooldowns.setCooldownTicks(player, AbilityIds.COUNTER_STRIKE, COOLDOWN_TICKS);
 		return true;
 	}
 
