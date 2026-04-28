@@ -104,9 +104,15 @@
 	"hero.superheroes.regulus.passive.4": "Lion's Heart (one-time death save)",
 	"ability.superheroes.lion_heart": "Lion Heart",
 	"ability.superheroes.lion_heart.desc": "Greed of the world — invulnerable while active",
-	"ability.superheroes.object_projectile": "Object Projectile",
-	"ability.superheroes.object_projectile.desc": "Launches the block ahead as a projectile",
+	"ability.superheroes.mania_of_greed": "Mania of Greed",
+	"ability.superheroes.mania_of_greed.desc": "Pull a target and freeze time — damage delayed",
 	"ability.superheroes.lion_roar": "Lion's Roar",
 	"ability.superheroes.lion_roar.desc": "Sonic blast that knocks back foes",
-	"entity.superheroes.regulus_projectile": "Regulus Projectile"
+	"item.superheroes.evangelion": "Evangelion",
+	"item.superheroes.evangelion.lore.line1": "\"Greed is the only truth.\"",
+	"item.superheroes.evangelion.lore.line2": "The forbidden book of the Sin Archbishop of Greed",
+	"item.superheroes.evangelion.lore.usage": "▶ Right-click — read (Regulus only)",
+	"item.superheroes.evangelion.lore.warning": "Opens Madness. There is no going back.",
+	"item.superheroes.evangelion.not_regulus": "The book is silent for you.",
+	"item.superheroes.evangelion.already": "Madness is already awakened."
 }

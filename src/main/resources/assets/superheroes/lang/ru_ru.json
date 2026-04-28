@@ -104,9 +104,15 @@
 	"hero.superheroes.regulus.passive.4": "Сердце Льва (одноразовое спасение от смерти)",
 	"ability.superheroes.lion_heart": "Львиное Сердце",
 	"ability.superheroes.lion_heart.desc": "Жадность мира — неуязвимость пока активно",
-	"ability.superheroes.object_projectile": "Манипуляция предметами",
-	"ability.superheroes.object_projectile.desc": "Запускает блок впереди как метательный снаряд",
+	"ability.superheroes.mania_of_greed": "Мания Жадности",
+	"ability.superheroes.mania_of_greed.desc": "Притянуть цель и заморозить время — отложенный урон",
 	"ability.superheroes.lion_roar": "Львиный Рёв",
 	"ability.superheroes.lion_roar.desc": "Звуковой импульс, отбрасывающий врагов",
-	"entity.superheroes.regulus_projectile": "Снаряд Регулуса"
+	"item.superheroes.evangelion": "Евангелие",
+	"item.superheroes.evangelion.lore.line1": "«Жадность — единственная истина».",
+	"item.superheroes.evangelion.lore.line2": "Запретная книга Архиепископа Жадности",
+	"item.superheroes.evangelion.lore.usage": "▶ ПКМ — прочесть (только Регулус)",
+	"item.superheroes.evangelion.lore.warning": "Открывает Безумие. Не имеет обратного хода.",
+	"item.superheroes.evangelion.not_regulus": "Книга молчит для тебя.",
+	"item.superheroes.evangelion.already": "Безумие уже пробуждено."
 }

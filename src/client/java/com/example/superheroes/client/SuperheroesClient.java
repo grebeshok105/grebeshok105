@@ -2,6 +2,7 @@ package com.example.superheroes.client;
 
 import com.example.superheroes.client.hud.AbilitiesTooltipHud;
 import com.example.superheroes.client.hud.JarvisOverlayHud;
+import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
 import com.example.superheroes.client.hud.ReactorOverlayHud;
 import com.example.superheroes.client.hud.ResourceBarHud;
@@ -14,10 +15,8 @@ import com.example.superheroes.client.render.HeroSkinLayer;
 import com.example.superheroes.client.render.IronManEspRenderer;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.LocalLaserOverlay;
-import com.example.superheroes.client.render.RegulusProjectileRenderer;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
 import com.example.superheroes.client.render.lightning.SuperheroLightningRenderer;
-import com.example.superheroes.entity.ModEntities;
 import com.example.superheroes.client.screen.BindingsScreen;
 import com.example.superheroes.network.ActivateAbilityC2SPayload;
 import com.example.superheroes.particle.ModParticles;
@@ -45,7 +44,6 @@ public class SuperheroesClient implements ClientModInitializer {
 		LocalLaserOverlay.register();
 		IronManEspRenderer.register();
 		EntityRendererRegistry.register(EntityType.LIGHTNING_BOLT, SuperheroLightningRenderer::new);
-		EntityRendererRegistry.register(ModEntities.REGULUS_PROJECTILE, RegulusProjectileRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.TRANSFORM_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.LASER_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.REPULSOR_SPARK, EndRodParticle.Provider::new);
@@ -66,6 +64,7 @@ public class SuperheroesClient implements ClientModInitializer {
 			ScreenFlashHud.render(graphics, tracker);
 			SunWindupHud.render(graphics, tracker);
 			ReactorOverlayHud.render(graphics, tracker);
+			MadnessHudOverlay.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
