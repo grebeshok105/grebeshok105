@@ -5,8 +5,10 @@ import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientReactorState;
 import com.example.superheroes.client.RemoteHeroSkins;
 import com.example.superheroes.network.MadnessSyncS2CPayload;
+import com.example.superheroes.network.MadnessVisualS2CPayload;
 import com.example.superheroes.network.ReactorStateS2CPayload;
 import com.example.superheroes.client.ClientMadnessState;
+import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.fx.ScreenShakeManager;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
@@ -73,5 +75,14 @@ public final class ClientNetworking {
 				context.client().execute(() -> ClientMadnessState.update(
 						payload.madness(), payload.bonusLifeAvailable(),
 						payload.readingUntilMs(), payload.manaLockUntilMs())));
+
+		ClientPlayNetworking.registerGlobalReceiver(MadnessVisualS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> {
+					if (payload.event() == MadnessVisualS2CPayload.EVENT_ENTER) {
+						BloodRainHud.trigger();
+					} else if (payload.event() == MadnessVisualS2CPayload.EVENT_EXIT) {
+						BloodRainHud.clear();
+					}
+				}));
 	}
 }

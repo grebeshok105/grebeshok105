@@ -1,6 +1,7 @@
 package com.example.superheroes.mixin;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.effect.RegulusMadnessController;
 import com.example.superheroes.effect.SuperJumpController;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
@@ -22,7 +23,8 @@ public abstract class LivingEntityFallDamageMixin {
 		if (!(self instanceof Player player)) {
 			return;
 		}
-		if (SuperJumpController.hasFallImmunity(player)) {
+		boolean counterActive = RegulusMadnessController.isAnyCounterActive();
+		if (SuperJumpController.hasFallImmunity(player) && !counterActive) {
 			cir.setReturnValue(false);
 			return;
 		}
@@ -34,7 +36,7 @@ public abstract class LivingEntityFallDamageMixin {
 		if (hero == null) {
 			return;
 		}
-		if (hero.cancelsFallDamage(player)) {
+		if (hero.cancelsFallDamage(player) && !counterActive) {
 			cir.setReturnValue(false);
 		}
 	}

@@ -22,6 +22,7 @@ public final class AbilityRegistry {
 	public static final LionHeartAbility LION_HEART = new LionHeartAbility();
 	public static final ManiaOfGreedAbility MANIA_OF_GREED = new ManiaOfGreedAbility();
 	public static final LionRoarAbility LION_ROAR = new LionRoarAbility();
+	public static final CounterStrikeAbility COUNTER_STRIKE = new CounterStrikeAbility();
 
 	private AbilityRegistry() {
 	}
@@ -38,6 +39,7 @@ public final class AbilityRegistry {
 		register(LION_HEART);
 		register(MANIA_OF_GREED);
 		register(LION_ROAR);
+		register(COUNTER_STRIKE);
 	}
 
 	public static void register(Ability ability) {

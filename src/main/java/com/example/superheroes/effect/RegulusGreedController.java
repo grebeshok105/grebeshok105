@@ -13,7 +13,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +28,36 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class RegulusGreedController {
 	private static final int FREEZE_TICKS = 200;
 	private static final double PULL_STRENGTH = 0.6;
+	private static final double MAX_MAGNET_DISTANCE = 110.0;
+
+	private static final ResourceLocation KNOCKBACK_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath("superheroes", "greed_knockback");
+	private static final AttributeModifier KNOCKBACK_MODIFIER =
+			new AttributeModifier(KNOCKBACK_MODIFIER_ID, 2.0, AttributeModifier.Operation.ADD_VALUE);
 
 	private static final Map<UUID, MagnetState> MAGNETS = new ConcurrentHashMap<>();
 	private static final Map<UUID, FreezeState> FREEZES = new ConcurrentHashMap<>();
+	private static final Map<UUID, Integer> CASTER_FREEZE_UNTIL = new ConcurrentHashMap<>();
 
 	private RegulusGreedController() {
 	}
 
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			for (ServerPlayer caster : server.getPlayerList().getPlayers()) {
+				UUID uid = caster.getUUID();
+				boolean hasMagnet = MAGNETS.containsKey(uid);
+				Integer freezeUntil = CASTER_FREEZE_UNTIL.get(uid);
+				boolean hasFreeze = freezeUntil != null && caster.tickCount < freezeUntil;
+				if (hasMagnet || hasFreeze) {
+					Vec3 dm = caster.getDeltaMovement();
+					caster.setDeltaMovement(0, Math.min(0, dm.y), 0);
+					caster.hurtMarked = true;
+				} else if (freezeUntil != null) {
+					removeKnockback(caster);
+					CASTER_FREEZE_UNTIL.remove(uid);
+				}
+			}
+
 			List<UUID> toRelease = new ArrayList<>();
 			for (Map.Entry<UUID, FreezeState> e : FREEZES.entrySet()) {
 				FreezeState st = e.getValue();
@@ -92,7 +117,7 @@ public final class RegulusGreedController {
 			return;
 		}
 		LivingEntity victim = (LivingEntity) ((ServerLevel) player.level()).getEntity(m.victimId);
-		if (victim == null || !victim.isAlive() || victim.distanceTo(player) > 32) {
+		if (victim == null || !victim.isAlive() || victim.distanceTo(player) > MAX_MAGNET_DISTANCE) {
 			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.removeEffect(MobEffects.JUMP);
 			MAGNETS.remove(player.getUUID());
@@ -123,10 +148,11 @@ public final class RegulusGreedController {
 		if (victim == null || !victim.isAlive()) {
 			return;
 		}
-		// Buff regulus
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, FREEZE_TICKS, 4, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, FREEZE_TICKS, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, FREEZE_TICKS, 1, true, false, true));
+		applyKnockback(player);
+		CASTER_FREEZE_UNTIL.put(player.getUUID(), player.tickCount + FREEZE_TICKS);
 
 		FreezeState st = new FreezeState(victim.getUUID(), victim.getX(), victim.getY(), victim.getZ(), FREEZE_TICKS);
 		boolean wasNoAi = false;
@@ -140,6 +166,20 @@ public final class RegulusGreedController {
 		sl.playSound(null, victim.getX(), victim.getY(), victim.getZ(),
 				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.7f, 1.4f);
 		sl.sendParticles(ParticleTypes.FLASH, victim.getX(), victim.getY() + 1.0, victim.getZ(), 1, 0, 0, 0, 0);
+	}
+
+	private static void applyKnockback(ServerPlayer player) {
+		AttributeInstance attr = player.getAttribute(Attributes.ATTACK_KNOCKBACK);
+		if (attr == null) return;
+		if (!attr.hasModifier(KNOCKBACK_MODIFIER_ID)) {
+			attr.addTransientModifier(KNOCKBACK_MODIFIER);
+		}
+	}
+
+	private static void removeKnockback(ServerPlayer player) {
+		AttributeInstance attr = player.getAttribute(Attributes.ATTACK_KNOCKBACK);
+		if (attr == null) return;
+		attr.removeModifier(KNOCKBACK_MODIFIER_ID);
 	}
 
 	private record MagnetState(UUID victimId, int startTick) {

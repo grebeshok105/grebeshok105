@@ -1,6 +1,8 @@
 package com.example.superheroes.client.hud;
 
+import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ModKeys;
 import com.example.superheroes.hero.HeroTheme;
 import com.example.superheroes.network.ActivateAbilityC2SPayload;
@@ -40,7 +42,7 @@ public final class RadialMenuHud {
 			return;
 		}
 		boolean down = ModKeys.RADIAL != null && ModKeys.RADIAL.isDown();
-		List<ResourceLocation> abilities = ClientHeroState.abilities();
+		List<ResourceLocation> abilities = visibleAbilities();
 		if (down && !open) {
 			if (abilities.isEmpty()) {
 				return;
@@ -96,11 +98,24 @@ public final class RadialMenuHud {
 		return open;
 	}
 
+	private static List<ResourceLocation> visibleAbilities() {
+		List<ResourceLocation> base = ClientHeroState.abilities();
+		if (ClientMadnessState.isMadness()) {
+			return base;
+		}
+		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
+		for (ResourceLocation id : base) {
+			if (AbilityIds.COUNTER_STRIKE.equals(id)) continue;
+			out.add(id);
+		}
+		return out;
+	}
+
 	public static void render(GuiGraphics graphics, DeltaTracker tracker) {
 		if (!open) {
 			return;
 		}
-		List<ResourceLocation> abilities = ClientHeroState.abilities();
+		List<ResourceLocation> abilities = visibleAbilities();
 		if (abilities.isEmpty()) {
 			return;
 		}

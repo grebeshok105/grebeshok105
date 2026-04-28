@@ -1,6 +1,7 @@
 package com.example.superheroes.client;
 
 import com.example.superheroes.client.hud.AbilitiesTooltipHud;
+import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.hud.JarvisOverlayHud;
 import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
@@ -66,6 +67,7 @@ public class SuperheroesClient implements ClientModInitializer {
 			SunWindupHud.render(graphics, tracker);
 			ReactorOverlayHud.render(graphics, tracker);
 			MadnessHudOverlay.render(graphics, tracker);
+			BloodRainHud.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
