@@ -15,6 +15,11 @@ triggers: ["model"]
 - НЕ описывать структуру проекта в комментариях / правилах — она видна через filesystem
 - НЕ использовать deprecated API Minecraft / Fabric / Loom
 
+## Ассеты
+- **Перед тем как рисовать/искать текстуру или звук — проверить `art-source/`**. Там лежат сырые ассеты (FX, текстуры, модели) от пользователя. Детали — см. skill `art-source`.
+- Звуки в рантайме — только OGG Vorbis. MP3 от пользователя — конвертировать через `ffmpeg -c:a libvorbis -qscale:a 5`.
+- Новые runtime-ассеты класть в `src/main/resources/assets/superheroes/...`, оригиналы — в `art-source/`.
+
 ## Стиль коммитов / PR
 - Коммиты на английском, conventional-style: `feat(scope): ...`, `fix(scope): ...`
 - Branch: `devin/$(date +%s)-<short-name>` (это уже дефолт у Devin)

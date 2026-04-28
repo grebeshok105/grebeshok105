@@ -1,0 +1,34 @@
+{
+  "entity.lightning_bolt.thunder": {
+    "replace": true,
+    "subtitle": "subtitles.entity.lightning_bolt.thunder",
+    "sounds": [
+      {
+        "name": "entity/lightning_bolt/custom_thunder_strike",
+        "stream": true,
+        "weight": 1
+      },
+      {
+        "name": "entity/lightning_bolt/custom_thunder_echoy",
+        "stream": true,
+        "weight": 1
+      }
+    ]
+  },
+  "entity.lightning_bolt.impact": {
+    "replace": true,
+    "subtitle": "subtitles.entity.lightning_bolt.impact",
+    "sounds": [
+      {
+        "name": "entity/lightning_bolt/custom_thunder_strike",
+        "stream": true,
+        "weight": 1
+      },
+      {
+        "name": "entity/lightning_bolt/custom_thunder_echoy",
+        "stream": true,
+        "weight": 1
+      }
+    ]
+  }
+}
