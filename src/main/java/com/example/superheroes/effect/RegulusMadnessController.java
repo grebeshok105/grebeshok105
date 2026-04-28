@@ -47,6 +47,10 @@ public final class RegulusMadnessController {
 
 	private static final Map<UUID, CounterState> COUNTERS = new ConcurrentHashMap<>();
 
+	private static final Map<UUID, UUID> LAST_DAMAGER = new ConcurrentHashMap<>();
+	private static final Map<UUID, Integer> LAST_DAMAGER_TICK = new ConcurrentHashMap<>();
+	private static final int LAST_DAMAGER_TIMEOUT_TICKS = 200;
+
 	private RegulusMadnessController() {
 	}
 
@@ -74,12 +78,65 @@ public final class RegulusMadnessController {
 			if (state.isReading()) {
 				return false;
 			}
+			if (isRegulus(player)) {
+				Entity cause = source.getEntity();
+				Entity direct = source.getDirectEntity();
+				LivingEntity damager = null;
+				if (cause instanceof LivingEntity le && le != player) {
+					damager = le;
+				} else if (direct instanceof LivingEntity le && le != player) {
+					damager = le;
+				}
+				if (damager != null) {
+					LAST_DAMAGER.put(player.getUUID(), damager.getUUID());
+					LAST_DAMAGER_TICK.put(player.getUUID(), player.tickCount);
+				}
+			}
 			return true;
 		});
 	}
 
+	public static LivingEntity getLastDamager(ServerPlayer player) {
+		UUID damagerId = LAST_DAMAGER.get(player.getUUID());
+		if (damagerId == null) return null;
+		Integer tick = LAST_DAMAGER_TICK.get(player.getUUID());
+		if (tick == null || player.tickCount - tick > LAST_DAMAGER_TIMEOUT_TICKS) {
+			LAST_DAMAGER.remove(player.getUUID());
+			LAST_DAMAGER_TICK.remove(player.getUUID());
+			return null;
+		}
+		Entity found = ((ServerLevel) player.level()).getEntity(damagerId);
+		if (found instanceof LivingEntity le && le.isAlive()) {
+			return le;
+		}
+		return null;
+	}
+
 	public static boolean isAnyCounterActive() {
 		return !COUNTERS.isEmpty();
+	}
+
+	private static void stripFlight(LivingEntity target) {
+		if (!(target instanceof ServerPlayer sp)) return;
+		try {
+			com.example.superheroes.ability.AbilityRouter.deactivate(sp, com.example.superheroes.ability.AbilityIds.FLIGHT);
+		} catch (Throwable ignored) {
+		}
+		try {
+			com.example.superheroes.ability.AbilityRouter.deactivate(sp, com.example.superheroes.ability.AbilityIds.IRON_MAN_FLIGHT);
+		} catch (Throwable ignored) {
+		}
+		try {
+			com.example.superheroes.ability.AbilityRouter.deactivate(sp, com.example.superheroes.ability.AbilityIds.SUPERSONIC);
+		} catch (Throwable ignored) {
+		}
+		net.minecraft.world.entity.player.Abilities a = sp.getAbilities();
+		a.flying = false;
+		if (sp.gameMode.getGameModeForPlayer() != net.minecraft.world.level.GameType.CREATIVE) {
+			a.mayfly = false;
+		}
+		sp.onUpdateAbilities();
+		sp.stopFallFlying();
 	}
 
 	private static void tickPlayer(ServerPlayer player) {
@@ -248,6 +305,7 @@ public final class RegulusMadnessController {
 
 	public static void triggerCounter(ServerPlayer player, LivingEntity attacker) {
 		DODGE_COOLDOWN.put(player.getUUID(), (long) (player.tickCount + DODGE_COOLDOWN_TICKS));
+		stripFlight(attacker);
 
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
@@ -388,7 +446,7 @@ public final class RegulusMadnessController {
 			level.explode(player, impact.getX(), impact.getY(), impact.getZ(), 6.0f, Level.ExplosionInteraction.NONE);
 			carveCrater(level, impact);
 			attacker.teleportTo(impact.getX() + 0.5, impact.getY() - CRATER_DEPTH + 1, impact.getZ() + 0.5);
-			attacker.hurt(level.damageSources().playerAttack(player), 80f);
+			attacker.hurt(level.damageSources().playerAttack(player), 27f);
 			com.example.superheroes.resource.EnergyLocks.lockTicks(player, 15 * 20);
 			level.playSound(null, impact.getX(), impact.getY(), impact.getZ(),
 					SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 2.0f, 0.4f);

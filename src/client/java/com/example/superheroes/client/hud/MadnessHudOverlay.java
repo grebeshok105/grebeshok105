@@ -34,9 +34,22 @@ public final class MadnessHudOverlay {
 	};
 
 	private static final String[] FLOATING_SYMBOLS = new String[]{
-			"卐", "✟", "Ω", "\u2620", "\u2695",
-			"\u26B0", "\u2694", "罪", "獅", "\u2623",
-			"Жадность", "Корнеас", "Лев", "Я", "Грех", "Regulus"
+			// occult / religious
+			"卐", "✟", "\u2620", "\u2695", "\u26B0", "\u2694", "\u2623",
+			// greek / math
+			"Ω", "Σ", "Δ", "Ψ", "Λ", "Θ", "Ξ", "∞", "⊗", "⟁",
+			// kanji / sin / pride
+			"罪", "獅", "王", "血", "狂", "神", "死",
+			// runic / ogham / cuneiform
+			"ᚱ", "ᛉ", "ᚦ", "ᛟ", "ᛞ", "ᛊ", "ᛜ",
+			"𐎀", "𐎁", "𐎂", "𐎃", "𐎄",
+			// zalgo / combining diacritics (noise glyphs)
+			"R̷̢̡͞", "Ȩ̷͞", "G̵̢͠", "U̶̧̧̢", "L̸̨", "U̵̧", "S̴̢",
+			// encrypted/nonsense words
+			"Жадность", "Корнеас", "Лев", "Грех", "Regulus",
+			"Х̴р̶и̸з̵о̴с̴", "Х̸о̷м̶", "А̴м̸е̶н̴", "In̷f̴e̸r̶n̷u̴m̸",
+			// occult text fragments (looks encrypted)
+			"ΨΛΞΣ", "RΞGᐖ⌘", "▲▽▲▽", "ᚨᚺᛋ", "Ꮷ⎺⎺ᗰ", "𓂀𓁹𓆣", "⌇⌇⌇"
 	};
 
 	private static final long HEARTBEAT_RAMP_MS = 180_000L;
@@ -110,14 +123,35 @@ public final class MadnessHudOverlay {
 
 		long seed = (now / 450L);
 		Random r = new Random(seed);
-		int symbolCount = 5 + (int) (eased * 6);
+		int symbolCount = 12 + (int) (eased * 14);
 		for (int i = 0; i < symbolCount; i++) {
 			String sym = FLOATING_SYMBOLS[r.nextInt(FLOATING_SYMBOLS.length)];
 			int x = r.nextInt(Math.max(1, sw - 80)) + 20;
 			int y = r.nextInt(Math.max(1, sh - 80)) + 20;
-			int alpha = 30 + r.nextInt(60);
-			int color = (alpha << 24) | 0x00BB0011;
-			graphics.drawString(mc.font, sym, x, y, color, false);
+			int alpha = 140 + r.nextInt(90);
+			int paletteRoll = r.nextInt(100);
+			int tint;
+			if (paletteRoll < 55) tint = 0x00FF1010;
+			else if (paletteRoll < 78) tint = 0x00FF5050;
+			else if (paletteRoll < 92) tint = 0x00B0000A;
+			else tint = 0x00200000;
+			int color = (alpha << 24) | tint;
+			graphics.drawString(mc.font, sym, x, y, color, true);
+		}
+
+		// burning high-contrast mid-screen glyphs, flicker with heartbeat
+		int flickerAlpha = (int) (beatStrength * 220f);
+		if (flickerAlpha > 15) {
+			long seed2 = now / 180L;
+			Random r2 = new Random(seed2);
+			int flashCount = 2 + r2.nextInt(3);
+			for (int i = 0; i < flashCount; i++) {
+				String sym = FLOATING_SYMBOLS[r2.nextInt(FLOATING_SYMBOLS.length)];
+				int x = r2.nextInt(Math.max(1, sw - 40)) + 10;
+				int y = r2.nextInt(Math.max(1, sh - 40)) + 10;
+				int flashColor = (Math.min(240, flickerAlpha) << 24) | 0x00FFD0D0;
+				graphics.drawString(mc.font, sym, x, y, flashColor, true);
+			}
 		}
 
 		if (ClientMadnessState.isBonusLifeAvailable()) {
