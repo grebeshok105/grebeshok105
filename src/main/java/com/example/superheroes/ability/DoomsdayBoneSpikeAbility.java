@@ -1,5 +1,6 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -73,7 +74,7 @@ public final class DoomsdayBoneSpikeAbility implements Ability {
 		}
 
 		if (hit != null && hit.getEntity() instanceof LivingEntity living) {
-			living.hurt(level.damageSources().playerAttack(player), DAMAGE);
+			living.hurt(ModDamageTypes.doomsdayBoneSpike(level, player), DAMAGE);
 			living.knockback(0.4, -dir.x, -dir.z);
 			living.hurtMarked = true;
 			level.sendParticles(ParticleTypes.DAMAGE_INDICATOR, impactPos.x, impactPos.y, impactPos.z, 8, 0.2, 0.2, 0.2, 0.0);

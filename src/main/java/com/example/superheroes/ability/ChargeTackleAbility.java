@@ -1,5 +1,6 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -90,7 +91,7 @@ public final class ChargeTackleAbility implements Ability {
 				e -> e != player && e.isAlive() && !ac.hits.contains(e.getUUID()));
 		for (LivingEntity e : hits) {
 			ac.hits.add(e.getUUID());
-			e.hurt(level.damageSources().mobAttack(player), DAMAGE);
+			e.hurt(ModDamageTypes.doomsdayChargeTackle(level, player), DAMAGE);
 			Vec3 kb = ac.dir.scale(KNOCKBACK).add(0, 0.6, 0);
 			e.push(kb.x, kb.y, kb.z);
 			e.hurtMarked = true;

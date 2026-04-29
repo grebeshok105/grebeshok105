@@ -1,6 +1,7 @@
 package com.example.superheroes.effect;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.network.ModNetworking;
 import com.example.superheroes.particle.ModParticles;
 import com.example.superheroes.sound.ModSounds;
@@ -362,7 +363,7 @@ public final class UnibeamController {
 			if (radial > BEAM_RADIUS + e.getBbWidth() * 0.5) {
 				continue;
 			}
-			e.hurt(level.damageSources().playerAttack(player), DIRECT_HIT_DAMAGE_PER_TICK);
+			e.hurt(ModDamageTypes.unibeam(level, player), DIRECT_HIT_DAMAGE_PER_TICK);
 			applyDebuffs(e, AOE_DEBUFFS, 80, 1, true);
 		}
 	}
@@ -400,7 +401,7 @@ public final class UnibeamController {
 	private static void finalizeBlast(ServerPlayer player, ServerLevel level, Vec3 origin, Vec3 dir) {
 		LivingEntity directHit = pickDirectHit(player, level, origin, dir);
 		if (directHit != null) {
-			directHit.hurt(level.damageSources().playerAttack(player), 80f);
+			directHit.hurt(ModDamageTypes.unibeam(level, player), 80f);
 			applyDebuffs(directHit, AOE_DEBUFFS, 240, 2, true);
 		}
 		AABB aoeBox = player.getBoundingBox().inflate(DEBUFF_RADIUS);

@@ -1,5 +1,6 @@
 package com.example.superheroes.entity;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -333,6 +334,19 @@ public class ShadowSoldierEntity extends PathfinderMob {
 			return false;
 		}
 		return super.hurt(source, amount);
+	}
+
+	@Override
+	public boolean doHurtTarget(Entity target) {
+		if (!(this.level() instanceof ServerLevel sl)) {
+			return super.doHurtTarget(target);
+		}
+		float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		boolean dealt = target.hurt(ModDamageTypes.shadowAttack(sl, this), damage);
+		if (dealt) {
+			this.setLastHurtMob(target);
+		}
+		return dealt;
 	}
 
 	@Override

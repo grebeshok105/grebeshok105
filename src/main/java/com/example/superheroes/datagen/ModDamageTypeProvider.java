@@ -15,7 +15,18 @@ public final class ModDamageTypeProvider extends FabricDynamicRegistryProvider {
 
 	@Override
 	protected void configure(HolderLookup.Provider registries, Entries entries) {
-		entries.add(registries.lookupOrThrow(Registries.DAMAGE_TYPE), ModDamageTypes.EYE_LASER);
+		var lookup = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
+		entries.add(lookup, ModDamageTypes.EYE_LASER);
+		entries.add(lookup, ModDamageTypes.REPULSOR);
+		entries.add(lookup, ModDamageTypes.UNIBEAM);
+		entries.add(lookup, ModDamageTypes.COUNTER_STRIKE);
+		entries.add(lookup, ModDamageTypes.LION_ROAR);
+		entries.add(lookup, ModDamageTypes.DOOMSDAY_SMASH);
+		entries.add(lookup, ModDamageTypes.DOOMSDAY_ROAR);
+		entries.add(lookup, ModDamageTypes.DOOMSDAY_BONE_SPIKE);
+		entries.add(lookup, ModDamageTypes.DOOMSDAY_CHARGE_TACKLE);
+		entries.add(lookup, ModDamageTypes.DOOMSDAY_DOOM_GRIP);
+		entries.add(lookup, ModDamageTypes.SHADOW_ATTACK);
 	}
 
 	@Override

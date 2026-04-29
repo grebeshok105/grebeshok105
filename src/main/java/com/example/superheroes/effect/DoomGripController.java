@@ -1,5 +1,6 @@
 package com.example.superheroes.effect;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -81,7 +82,7 @@ public final class DoomGripController {
 				target.removeEffect(MobEffects.LEVITATION);
 
 				if ((state.tick - LUNGE_END) % HIT_INTERVAL == 0) {
-					target.hurt(level.damageSources().mobAttack(doomsday), HIT_DAMAGE);
+					target.hurt(ModDamageTypes.doomsdayDoomGrip(level, doomsday), HIT_DAMAGE);
 					level.playSound(null, target.getX(), target.getY(), target.getZ(),
 							SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1.4f, 0.7f);
 					level.sendParticles(ParticleTypes.DAMAGE_INDICATOR,

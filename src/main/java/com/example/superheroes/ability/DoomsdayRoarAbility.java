@@ -1,5 +1,6 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -60,7 +61,7 @@ public final class DoomsdayRoarAbility implements Ability {
 			double dist = to.length();
 			if (dist > RADIUS || dist < 0.001) continue;
 			Vec3 push = to.normalize().scale(KNOCKBACK);
-			entity.hurt(level.damageSources().playerAttack(player), DAMAGE);
+			entity.hurt(ModDamageTypes.doomsdayRoar(level, player), DAMAGE);
 			entity.push(push.x, 0.6, push.z);
 			entity.hurtMarked = true;
 			if (entity instanceof LivingEntity living) {
