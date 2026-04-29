@@ -14,6 +14,14 @@ public interface Ability {
 
 	boolean tryActivate(ServerPlayer player);
 
+	/**
+	 * Pre-check called by {@link AbilityRouter} before resource consumption.
+	 * Return {@code false} to silently abort the activation without spending energy/mana.
+	 */
+	default boolean canActivate(ServerPlayer player) {
+		return true;
+	}
+
 	default void onTickActive(ServerPlayer player) {
 	}
 
