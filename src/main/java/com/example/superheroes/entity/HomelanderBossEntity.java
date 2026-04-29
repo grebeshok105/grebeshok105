@@ -1,9 +1,12 @@
 package com.example.superheroes.entity;
 
+import com.example.superheroes.entity.ai.HomelanderBlockThrowGoal;
 import com.example.superheroes.entity.ai.HomelanderEyeLaserGoal;
 import com.example.superheroes.entity.ai.HomelanderFlightGoal;
+import com.example.superheroes.entity.ai.HomelanderGroundMagnetGoal;
 import com.example.superheroes.entity.ai.HomelanderHeatVisionSweepGoal;
 import com.example.superheroes.entity.ai.HomelanderLightningCallGoal;
+import com.example.superheroes.entity.ai.HomelanderRoarGoal;
 import com.example.superheroes.entity.ai.HomelanderShockwaveDiveGoal;
 import com.example.superheroes.entity.ai.HomelanderSonicSlamGoal;
 import com.example.superheroes.item.ModItems;
@@ -42,6 +45,9 @@ public class HomelanderBossEntity extends Monster {
 	private int sweepCooldown;
 	private int lightningCooldown;
 	private int slamCooldown;
+	private int magnetCooldown;
+	private int throwCooldown;
+	private int roarCooldown;
 
 	public HomelanderBossEntity(EntityType<? extends HomelanderBossEntity> type, Level level) {
 		super(type, level);
@@ -52,6 +58,9 @@ public class HomelanderBossEntity extends Monster {
 		this.sweepCooldown = 240;
 		this.lightningCooldown = 100;
 		this.slamCooldown = 160;
+		this.magnetCooldown = 280;
+		this.throwCooldown = 200;
+		this.roarCooldown = 220;
 	}
 
 	@Override
@@ -78,11 +87,14 @@ public class HomelanderBossEntity extends Monster {
 
 	@Override
 	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new HomelanderRoarGoal(this));
+		this.goalSelector.addGoal(1, new HomelanderGroundMagnetGoal(this));
 		this.goalSelector.addGoal(1, new HomelanderShockwaveDiveGoal(this));
 		this.goalSelector.addGoal(1, new HomelanderHeatVisionSweepGoal(this));
 		this.goalSelector.addGoal(1, new HomelanderSonicSlamGoal(this));
 		this.goalSelector.addGoal(2, new HomelanderEyeLaserGoal(this));
 		this.goalSelector.addGoal(2, new HomelanderLightningCallGoal(this));
+		this.goalSelector.addGoal(2, new HomelanderBlockThrowGoal(this));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.4, true));
 		this.goalSelector.addGoal(4, new HomelanderFlightGoal(this));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 24f));
@@ -98,6 +110,9 @@ public class HomelanderBossEntity extends Monster {
 		if (sweepCooldown > 0) sweepCooldown--;
 		if (lightningCooldown > 0) lightningCooldown--;
 		if (slamCooldown > 0) slamCooldown--;
+		if (magnetCooldown > 0) magnetCooldown--;
+		if (throwCooldown > 0) throwCooldown--;
+		if (roarCooldown > 0) roarCooldown--;
 	}
 
 	@Override
@@ -192,5 +207,29 @@ public class HomelanderBossEntity extends Monster {
 
 	public void setSlamCooldown(int ticks) {
 		this.slamCooldown = ticks;
+	}
+
+	public int getMagnetCooldown() {
+		return magnetCooldown;
+	}
+
+	public void setMagnetCooldown(int ticks) {
+		this.magnetCooldown = ticks;
+	}
+
+	public int getThrowCooldown() {
+		return throwCooldown;
+	}
+
+	public void setThrowCooldown(int ticks) {
+		this.throwCooldown = ticks;
+	}
+
+	public int getRoarCooldown() {
+		return roarCooldown;
+	}
+
+	public void setRoarCooldown(int ticks) {
+		this.roarCooldown = ticks;
 	}
 }

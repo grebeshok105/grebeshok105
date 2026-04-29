@@ -23,7 +23,7 @@ git checkout baseline && git pull origin baseline
 
 3. **Собрать** (см. skill `build-mod`)
 ```bash
-export JAVA_HOME=/tmp/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME=/home/ubuntu/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
 ./gradlew build --no-daemon -x test
 ls build/libs/superheroes-<X>.jar  # проверить что собрался
 ```

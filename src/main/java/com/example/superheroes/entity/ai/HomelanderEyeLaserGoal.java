@@ -1,28 +1,34 @@
 package com.example.superheroes.entity.ai;
 
 import com.example.superheroes.entity.HomelanderBossEntity;
+import com.example.superheroes.network.ModNetworking;
 import com.example.superheroes.particle.ModParticles;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 
 import java.util.EnumSet;
 
 public class HomelanderEyeLaserGoal extends Goal {
-	private static final int LOCK_TICKS = 10;
-	private static final int BEAM_TICKS = 30;
-	private static final int CYCLE = LOCK_TICKS + BEAM_TICKS;
+	private static final int CHARGE_TICKS = 6;
+	private static final int FIRE_TICKS = 30;
+	private static final int CYCLE = CHARGE_TICKS + FIRE_TICKS;
 	private static final int CD_AFTER = 60;
-	private static final float DAMAGE_PER_TICK = 7.0f;
-	private static final double RANGE = 32.0;
-	private static final DustParticleOptions RED_DUST =
-			new DustParticleOptions(new Vector3f(1.0f, 0.05f, 0.05f), 1.6f);
+	private static final double RANGE = 64.0;
+	private static final double CHEST_FRACTION = 0.7;
+	private static final float MIN_DPS = 14.0f;
+	private static final float MAX_DPS = 30.0f;
+	private static final float DAMAGE_MULT = 20.0f;
 
 	private final HomelanderBossEntity boss;
 	private int phaseTick;
@@ -34,25 +40,24 @@ public class HomelanderEyeLaserGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		LivingEntity target = boss.getTarget();
-		if (target == null || !target.isAlive()) {
-			return false;
-		}
-		if (boss.getLaserCooldown() > 0) {
-			return false;
-		}
-		return boss.distanceToSqr(target) <= RANGE * RANGE && boss.hasLineOfSight(target);
+		LivingEntity t = boss.getTarget();
+		if (t == null || !t.isAlive()) return false;
+		if (boss.getLaserCooldown() > 0) return false;
+		return boss.distanceToSqr(t) <= RANGE * RANGE && boss.hasLineOfSight(t);
 	}
 
 	@Override
 	public boolean canContinueToUse() {
-		LivingEntity target = boss.getTarget();
-		return target != null && target.isAlive() && phaseTick < CYCLE;
+		LivingEntity t = boss.getTarget();
+		return t != null && t.isAlive() && phaseTick < CYCLE;
 	}
 
 	@Override
 	public void start() {
 		phaseTick = 0;
+		ServerLevel level = (ServerLevel) boss.level();
+		level.playSound(null, boss.getX(), boss.getY(), boss.getZ(),
+				SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 1.4f, 1.6f);
 	}
 
 	@Override
@@ -69,50 +74,68 @@ public class HomelanderEyeLaserGoal extends Goal {
 	@Override
 	public void tick() {
 		LivingEntity target = boss.getTarget();
-		if (target == null) {
-			return;
-		}
-		boss.getLookControl().setLookAt(target, 60f, 60f);
-		ServerLevel world = (ServerLevel) boss.level();
-		Vec3 eye = boss.getEyePosition();
-		Vec3 to = target.getEyePosition();
+		if (target == null) return;
+		boss.getLookControl().setLookAt(target, 90f, 90f);
 
-		if (phaseTick < LOCK_TICKS) {
-			if (phaseTick == 0) {
-				world.playSound(null, boss.getX(), boss.getY(), boss.getZ(),
-						SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 1.4f, 1.6f);
-			}
-			world.sendParticles(RED_DUST,
-					eye.x, eye.y, eye.z,
-					4, 0.12, 0.12, 0.12, 0.0);
+		if (phaseTick < CHARGE_TICKS) {
+			ServerLevel level = (ServerLevel) boss.level();
+			Vec3 eye = boss.getEyePosition();
+			level.sendParticles(ModParticles.LASER_SPARK,
+					eye.x, eye.y, eye.z, 2, 0.10, 0.10, 0.10, 0.04);
 		} else {
-			Vec3 dir = to.subtract(eye);
-			double len = dir.length();
-			if (len > 0.01) {
-				Vec3 step = dir.scale(1.0 / len);
-				Vec3 right = step.cross(new Vec3(0, 1, 0)).normalize().scale(0.12);
-				Vec3 up = right.cross(step).normalize().scale(0.12);
-				int steps = (int) Math.min(48, len * 1.5);
-				for (int i = 1; i <= steps; i++) {
-					Vec3 p = eye.add(step.scale(len * i / steps));
-					world.sendParticles(RED_DUST, p.x, p.y, p.z, 1, 0.0, 0.0, 0.0, 0.0);
-					Vec3 a = p.add(right);
-					Vec3 b = p.subtract(right);
-					Vec3 c = p.add(up);
-					world.sendParticles(RED_DUST, a.x, a.y, a.z, 1, 0.0, 0.0, 0.0, 0.0);
-					world.sendParticles(RED_DUST, b.x, b.y, b.z, 1, 0.0, 0.0, 0.0, 0.0);
-					world.sendParticles(RED_DUST, c.x, c.y, c.z, 1, 0.0, 0.0, 0.0, 0.0);
-				}
-				world.sendParticles(ModParticles.LASER_SPARK,
-						to.x, to.y, to.z, 6, 0.3, 0.3, 0.3, 0.0);
+			fireBeam();
+			if ((phaseTick - CHARGE_TICKS) % 6 == 0) {
+				ServerLevel level = (ServerLevel) boss.level();
+				level.playSound(null, boss.getX(), boss.getY(), boss.getZ(),
+						SoundEvents.BEACON_AMBIENT, SoundSource.HOSTILE, 0.7f, 1.6f);
 			}
-			if (phaseTick % 4 == 0) {
-				world.playSound(null, target.getX(), target.getY(), target.getZ(),
-						SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 1.0f, 1.4f);
-			}
-			DamageSource ds = boss.damageSources().mobAttack(boss);
-			target.hurt(ds, DAMAGE_PER_TICK);
 		}
 		phaseTick++;
+	}
+
+	private void fireBeam() {
+		ServerLevel level = (ServerLevel) boss.level();
+		Vec3 eye = boss.getEyePosition();
+		LivingEntity target = boss.getTarget();
+		Vec3 forward;
+		if (target != null) {
+			Vec3 chest = new Vec3(target.getX(),
+					target.getY() + target.getBbHeight() * CHEST_FRACTION, target.getZ());
+			Vec3 dir = chest.subtract(eye);
+			double len = dir.length();
+			forward = len > 0.001 ? dir.scale(1.0 / len) : boss.getViewVector(1f);
+		} else {
+			forward = boss.getViewVector(1f);
+		}
+		Vec3 end = eye.add(forward.scale(RANGE));
+
+		BlockHitResult blockHit = level.clip(new ClipContext(
+				eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, boss));
+		Vec3 entitySearchEnd = blockHit.getType() == HitResult.Type.BLOCK
+				? blockHit.getLocation() : end;
+		AABB box = boss.getBoundingBox().expandTowards(forward.scale(RANGE)).inflate(1.0);
+		EntityHitResult hit = ProjectileUtil.getEntityHitResult(
+				level, boss, eye, entitySearchEnd, box,
+				e -> e instanceof LivingEntity && e.isAlive() && e != boss && !e.isSpectator());
+
+		Vec3 actualEnd = entitySearchEnd;
+		float damage = damagePerTick() * DAMAGE_MULT;
+		if (hit != null) {
+			LivingEntity hitTarget = (LivingEntity) hit.getEntity();
+			DamageSource ds = boss.damageSources().mobAttack(boss);
+			hitTarget.hurt(ds, damage);
+			actualEnd = new Vec3(hitTarget.getX(),
+					hitTarget.getY() + hitTarget.getBbHeight() * CHEST_FRACTION,
+					hitTarget.getZ());
+			level.sendParticles(ModParticles.LASER_SPARK,
+					actualEnd.x, actualEnd.y, actualEnd.z,
+					3, 0.10, 0.10, 0.10, 0.04);
+		}
+		ModNetworking.broadcastLaserFromEntity(boss, eye, actualEnd);
+	}
+
+	private float damagePerTick() {
+		float dps = (MIN_DPS + MAX_DPS) * 0.5f;
+		return dps / 20f;
 	}
 }

@@ -15,7 +15,7 @@ triggers: ["model"]
 ## Версии
 - Minecraft: `1.21`
 - Loader: Fabric (`fabric-loader 0.19.2`, `fabric-api 0.102.0+1.21`)
-- Java: 21 (на VM лежит в `/tmp/jdk-21.0.2`)
+- Java: 21 (на VM лежит в `/home/ubuntu/jdk-21.0.2`)
 - Mappings: Mojang (Yarn не используется)
 - Loom: `1.16-SNAPSHOT`
 

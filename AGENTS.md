@@ -51,7 +51,7 @@
 | Minecraft | `1.21` |
 | Fabric Loader | `>=0.19.2` |
 | Fabric API | `0.102.0+1.21` |
-| Java | 21 (на VM `/tmp/jdk-21.0.2`) |
+| Java | 21 (на VM `/home/ubuntu/jdk-21.0.2`) |
 | Mappings | Mojang (Yarn НЕ используем) |
 | Loom | `1.16-SNAPSHOT` |
 | License | CC0-1.0 |
