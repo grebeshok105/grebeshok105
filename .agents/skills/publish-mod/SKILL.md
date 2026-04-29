@@ -16,7 +16,7 @@ GitHub releases — см. skill `release-mod`. Этот скилл — про в
 
 ```bash
 cd /home/ubuntu/repos/mymodhero
-export JAVA_HOME=/tmp/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME=/home/ubuntu/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
 ./gradlew build --no-daemon -x test
 ./gradlew publishMods --no-daemon  # mod-publish-plugin
 # или

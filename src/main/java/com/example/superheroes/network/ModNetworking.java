@@ -96,6 +96,13 @@ public final class ModNetworking {
 		}
 	}
 
+	public static void broadcastLaserFromEntity(net.minecraft.world.entity.Entity shooter, Vec3 start, Vec3 end) {
+		LaserFiredS2CPayload payload = new LaserFiredS2CPayload(shooter.getUUID(), start, end);
+		for (ServerPlayer observer : PlayerLookup.tracking(shooter)) {
+			ServerPlayNetworking.send(observer, payload);
+		}
+	}
+
 	public static void broadcastRepulsor(ServerPlayer shooter, Vec3 start, Vec3 end) {
 		RepulsorBlastS2CPayload payload = new RepulsorBlastS2CPayload(shooter.getUUID(), start, end);
 		ServerPlayNetworking.send(shooter, payload);

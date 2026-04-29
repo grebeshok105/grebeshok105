@@ -11,7 +11,7 @@ description: Use when running data generation for blockstates, models, recipes, 
 
 ```bash
 cd /home/ubuntu/repos/mymodhero
-export JAVA_HOME=/tmp/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME=/home/ubuntu/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
 ./gradlew runDatagen --no-daemon
 ```
 
