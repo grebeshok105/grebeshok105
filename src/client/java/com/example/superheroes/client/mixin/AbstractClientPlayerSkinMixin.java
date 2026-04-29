@@ -2,10 +2,13 @@ package com.example.superheroes.client.mixin;
 
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.RemoteHeroSkins;
+import com.example.superheroes.hero.Hero;
+import com.example.superheroes.hero.Heroes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,14 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractClientPlayer.class)
 public abstract class AbstractClientPlayerSkinMixin {
 	@Inject(method = "getSkin", at = @At("RETURN"), cancellable = true)
-	private void superheroes$forceDefaultSteve(CallbackInfoReturnable<PlayerSkin> cir) {
+	private void superheroes$forceHeroSkin(CallbackInfoReturnable<PlayerSkin> cir) {
 		AbstractClientPlayer self = (AbstractClientPlayer) (Object) this;
-		if (!superheroes$hasHero(self)) {
+		ResourceLocation heroId = superheroes$heroIdFor(self);
+		if (heroId == null) {
 			return;
 		}
+		ResourceLocation heroTexture = superheroes$heroTexture(heroId);
 		PlayerSkin orig = cir.getReturnValue();
 		cir.setReturnValue(new PlayerSkin(
-				DefaultPlayerSkin.getDefaultTexture(),
+				heroTexture != null ? heroTexture : DefaultPlayerSkin.getDefaultTexture(),
 				null,
 				null,
 				null,
@@ -32,11 +37,17 @@ public abstract class AbstractClientPlayerSkinMixin {
 	}
 
 	@Unique
-	private static boolean superheroes$hasHero(AbstractClientPlayer player) {
+	private static ResourceLocation superheroes$heroIdFor(AbstractClientPlayer player) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player != null && player.getUUID().equals(mc.player.getUUID())) {
-			return ClientHeroState.data().hasHero();
+			return ClientHeroState.data().hasHero() ? ClientHeroState.data().heroId() : null;
 		}
-		return RemoteHeroSkins.get(player.getUUID()) != null;
+		return RemoteHeroSkins.get(player.getUUID());
+	}
+
+	@Unique
+	private static ResourceLocation superheroes$heroTexture(ResourceLocation heroId) {
+		Hero hero = Heroes.get(heroId);
+		return hero != null ? hero.getSkinTexture() : null;
 	}
 }
