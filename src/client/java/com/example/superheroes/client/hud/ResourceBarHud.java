@@ -56,6 +56,19 @@ public final class ResourceBarHud {
 
 	private static void renderInner(GuiGraphics graphics, DeltaTracker tracker) {
 		HeroTheme theme = ClientHeroState.theme();
+		int themePanelTop = ClientHudGlitch.tintColor(theme.panelTop());
+		int themePanelBottom = ClientHudGlitch.tintColor(theme.panelBottom());
+		int themePanelBorder = ClientHudGlitch.tintColor(theme.panelBorder());
+		int themePanelHighlight = ClientHudGlitch.tintColor(theme.panelHighlight());
+		int themeHeroNameColor = ClientHudGlitch.tintColor(theme.heroNameColor());
+		int themeEnergyIcon = ClientHudGlitch.tintColor(theme.energyIcon());
+		int themeEnergyDark = ClientHudGlitch.tintColor(theme.energyDark());
+		int themeEnergyBright = ClientHudGlitch.tintColor(theme.energyBright());
+		int themeEnergyGlow = ClientHudGlitch.tintColor(theme.energyGlow());
+		int themeManaIcon = ClientHudGlitch.tintColor(theme.manaIcon());
+		int themeManaDark = ClientHudGlitch.tintColor(theme.manaDark());
+		int themeManaBright = ClientHudGlitch.tintColor(theme.manaBright());
+		int themeManaGlow = ClientHudGlitch.tintColor(theme.manaGlow());
 		float energyMax = ClientHeroState.energyMax();
 		float manaMax = ClientHeroState.manaMax();
 		float energy = ClientHeroState.data().energy();
@@ -70,42 +83,42 @@ public final class ResourceBarHud {
 
 		int panelHeight = showMana ? PANEL_HEIGHT_DUAL : PANEL_HEIGHT_SOLO;
 		HudUtil.dropShadow(graphics, X, Y, PANEL_WIDTH, panelHeight, 3, SHADOW);
-		HudUtil.roundedRectGradient(graphics, X, Y, PANEL_WIDTH, panelHeight, theme.panelTop(), theme.panelBottom());
-		HudUtil.roundedRectBorder(graphics, X, Y, PANEL_WIDTH, panelHeight, theme.panelBorder());
-		graphics.fill(X + 3, Y + 2, X + PANEL_WIDTH - 3, Y + 3, theme.panelHighlight());
+		HudUtil.roundedRectGradient(graphics, X, Y, PANEL_WIDTH, panelHeight, themePanelTop, themePanelBottom);
+		HudUtil.roundedRectBorder(graphics, X, Y, PANEL_WIDTH, panelHeight, themePanelBorder);
+		graphics.fill(X + 3, Y + 2, X + PANEL_WIDTH - 3, Y + 3, themePanelHighlight);
 
-		graphics.drawString(mc.font, heroName, X + 12, Y + 6, theme.heroNameColor(), true);
-		graphics.fill(X + 12, Y + 18, X + PANEL_WIDTH - 12, Y + 19, (theme.panelBorder() & 0x00FFFFFF) | 0x33000000);
+		graphics.drawString(mc.font, heroName, X + 12, Y + 6, themeHeroNameColor, true);
+		graphics.fill(X + 12, Y + 18, X + PANEL_WIDTH - 12, Y + 19, (themePanelBorder & 0x00FFFFFF) | 0x33000000);
 
 		int row1Y = Y + 26;
-		drawIcon(graphics, X + 12, row1Y - 4, theme.energyIcon(), "E");
-		drawBar(graphics, mc, X + BAR_X_OFFSET, row1Y, energyPct, theme.energyDark(), theme.energyBright(), theme.energyGlow());
+		drawIcon(graphics, X + 12, row1Y - 4, themeEnergyIcon, "E");
+		drawBar(graphics, mc, X + BAR_X_OFFSET, row1Y, energyPct, themeEnergyDark, themeEnergyBright, themeEnergyGlow);
 		drawValue(graphics, mc, X + BAR_X_OFFSET + BAR_WIDTH + VALUE_GAP, row1Y - 1, energy, energyMax);
 
 		if (showMana) {
 			int row2Y = Y + 48;
-			drawIcon(graphics, X + 12, row2Y - 4, theme.manaIcon(), "M");
-			drawBar(graphics, mc, X + BAR_X_OFFSET, row2Y, manaPct, theme.manaDark(), theme.manaBright(), theme.manaGlow());
+			drawIcon(graphics, X + 12, row2Y - 4, themeManaIcon, "M");
+			drawBar(graphics, mc, X + BAR_X_OFFSET, row2Y, manaPct, themeManaDark, themeManaBright, themeManaGlow);
 			drawValue(graphics, mc, X + BAR_X_OFFSET + BAR_WIDTH + VALUE_GAP, row2Y - 1, mana, manaMax);
 		}
 
-		drawHeroBadge(graphics, theme);
+		drawHeroBadge(graphics, theme, themeEnergyIcon, themeManaIcon, themeEnergyDark);
 	}
 
-	private static void drawHeroBadge(GuiGraphics g, HeroTheme theme) {
-		int bx = X + PANEL_WIDTH - HERO_BADGE_SIZE - 6;
-		int by = Y + 3;
+	private static void drawHeroBadge(GuiGraphics g, HeroTheme theme, int energyIcon, int manaIcon, int energyDark) {
+		int bx = X + PANEL_WIDTH - HERO_BADGE_SIZE - 6 + ClientHudGlitch.badgeJitterX();
+		int by = Y + 3 + ClientHudGlitch.badgeJitterY();
 		HudUtil.roundedRectFill(g, bx, by, HERO_BADGE_SIZE, HERO_BADGE_SIZE, 0xFF0A0408);
-		HudUtil.roundedRectBorder(g, bx, by, HERO_BADGE_SIZE, HERO_BADGE_SIZE, theme.energyIcon());
+		HudUtil.roundedRectBorder(g, bx, by, HERO_BADGE_SIZE, HERO_BADGE_SIZE, energyIcon);
 		int cx = bx + HERO_BADGE_SIZE / 2;
 		int cy = by + HERO_BADGE_SIZE / 2;
-		g.fill(cx - 3, cy - 4, cx + 3, cy - 3, theme.manaIcon());
-		g.fill(cx - 4, cy - 3, cx - 2, cy + 1, theme.manaIcon());
-		g.fill(cx + 2, cy - 3, cx + 4, cy + 1, theme.manaIcon());
-		g.fill(cx - 1, cy - 1, cx, cy, theme.energyDark());
-		g.fill(cx + 1, cy - 1, cx + 2, cy, theme.energyDark());
-		g.fill(cx - 3, cy + 2, cx + 3, cy + 3, theme.energyIcon());
-		g.fill(cx - 1, cy + 3, cx + 1, cy + 4, theme.energyIcon());
+		g.fill(cx - 3, cy - 4, cx + 3, cy - 3, manaIcon);
+		g.fill(cx - 4, cy - 3, cx - 2, cy + 1, manaIcon);
+		g.fill(cx + 2, cy - 3, cx + 4, cy + 1, manaIcon);
+		g.fill(cx - 1, cy - 1, cx, cy, energyDark);
+		g.fill(cx + 1, cy - 1, cx + 2, cy, energyDark);
+		g.fill(cx - 3, cy + 2, cx + 3, cy + 3, energyIcon);
+		g.fill(cx - 1, cy + 3, cx + 1, cy + 4, energyIcon);
 	}
 
 	private static void drawIcon(GuiGraphics g, int x, int y, int color, String letter) {

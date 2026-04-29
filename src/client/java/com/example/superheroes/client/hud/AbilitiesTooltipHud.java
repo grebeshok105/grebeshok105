@@ -184,57 +184,66 @@ public final class AbilitiesTooltipHud {
 		int shadowAlpha = Math.min(0x88, alpha / 2);
 		HudUtil.dropShadow(g, x, y, w, h, 3, (shadowAlpha << 24) | 0x000000);
 
-		int top = applyAlpha(theme.panelTop(), alpha, 0.55f);
-		int bottom = applyAlpha(theme.panelBottom(), alpha, 0.55f);
+		int top = applyAlpha(ClientHudGlitch.tintColor(theme.panelTop()), alpha, 0.55f);
+		int bottom = applyAlpha(ClientHudGlitch.tintColor(theme.panelBottom()), alpha, 0.55f);
 		HudUtil.roundedRectGradient(g, x, y, w, h, top, bottom);
 
-		int border = applyAlpha(theme.panelBorder(), alpha, 0.9f);
+		int border = applyAlpha(ClientHudGlitch.tintColor(theme.panelBorder()), alpha, 0.9f);
 		HudUtil.roundedRectBorder(g, x, y, w, h, border);
 
-		int hi = applyAlpha(theme.panelHighlight(), alpha, 1.0f);
+		int hi = applyAlpha(ClientHudGlitch.tintColor(theme.panelHighlight()), alpha, 1.0f);
 		g.fill(x + 3, y + 2, x + w - 3, y + 3, hi);
 	}
 
 	private static void drawSectionHeader(GuiGraphics g, Minecraft mc, int x, int y, int width, Component label, HeroTheme theme, int alpha) {
-		int color = applyAlpha(theme.heroNameColor(), alpha, 1.0f);
-		g.drawString(mc.font, Component.empty().append(label).withStyle(ChatFormatting.BOLD), x, y, color, true);
-		int line = applyAlpha(theme.panelBorder(), alpha, 0.35f);
+		int color = applyAlpha(ClientHudGlitch.tintColor(theme.heroNameColor()), alpha, 1.0f);
+		Component shown = ClientHudGlitch.maybeObfuscate(
+				Component.empty().append(label).withStyle(ChatFormatting.BOLD));
+		g.drawString(mc.font, shown, x, y, color, true);
+		int line = applyAlpha(ClientHudGlitch.tintColor(theme.panelBorder()), alpha, 0.35f);
 		g.fill(x, y + 10, x + width, y + 11, line);
 	}
 
 	private static void drawPassiveRow(GuiGraphics g, Minecraft mc, int x, int y, Component name, HeroTheme theme, int alpha) {
-		int nameColor = applyAlpha(0xFFE8E9F2, alpha, 1.0f);
-		int bulletColor = applyAlpha(theme.energyIcon(), alpha, 1.0f);
+		int nameColor = applyAlpha(ClientHudGlitch.tintColor(0xFFE8E9F2), alpha, 1.0f);
+		int bulletColor = applyAlpha(ClientHudGlitch.tintColor(theme.energyIcon()), alpha, 1.0f);
 		g.drawString(mc.font, Component.literal("▸ ").withStyle(ChatFormatting.BOLD), x, y + 1, bulletColor, true);
 		int maxTextWidth = PANEL_WIDTH - PADDING_X * 2 - 10;
-		g.drawString(mc.font, ellipsize(mc, name, maxTextWidth), x + 10, y + 1, nameColor, true);
+		Component shown = ClientHudGlitch.maybeObfuscate(ellipsize(mc, name, maxTextWidth));
+		g.drawString(mc.font, shown, x + 10, y + 1, nameColor, true);
 	}
 
 	private static void drawAbilityRow(GuiGraphics g, Minecraft mc, int x, int y, int width, ResourceLocation abilityId, HeroTheme theme, int alpha) {
 		AbilityDescriptions.Kind kind = AbilityDescriptions.kindOf(abilityId);
 		boolean glitchSecret = AbilityIds.COUNTER_STRIKE.equals(abilityId) && !ClientMadnessState.isMadness();
 		int iconBg = applyAlpha(0xFF0A0B14, alpha, 1.0f);
-		int iconBorder = applyAlpha(kind == AbilityDescriptions.Kind.TOGGLE ? theme.manaIcon() : theme.energyIcon(), alpha, 1.0f);
-		HudUtil.roundedRectFill(g, x, y, ICON_SIZE, ICON_SIZE, iconBg);
-		HudUtil.roundedRectBorder(g, x, y, ICON_SIZE, ICON_SIZE, iconBorder);
+		int iconBorder = applyAlpha(
+				ClientHudGlitch.tintColor(kind == AbilityDescriptions.Kind.TOGGLE ? theme.manaIcon() : theme.energyIcon()),
+				alpha, 1.0f);
+		int badgeX = x + ClientHudGlitch.badgeJitterX();
+		int badgeY = y + ClientHudGlitch.badgeJitterY();
+		HudUtil.roundedRectFill(g, badgeX, badgeY, ICON_SIZE, ICON_SIZE, iconBg);
+		HudUtil.roundedRectBorder(g, badgeX, badgeY, ICON_SIZE, ICON_SIZE, iconBorder);
 		Component badge = glitchSecret
 				? Component.literal("?").withStyle(ChatFormatting.OBFUSCATED, ChatFormatting.BOLD)
 				: Component.literal(kind.badge()).withStyle(ChatFormatting.BOLD);
-		g.drawCenteredString(mc.font, badge, x + ICON_SIZE / 2, y + (ICON_SIZE - 8) / 2, iconBorder);
+		g.drawCenteredString(mc.font, badge, badgeX + ICON_SIZE / 2, badgeY + (ICON_SIZE - 8) / 2, iconBorder);
 
 		int textX = x + ICON_SIZE + 6;
 		int maxTextWidth = width - ICON_SIZE - 6;
-		int nameColor = applyAlpha(0xFFF4F5FC, alpha, 1.0f);
+		int nameColor = applyAlpha(ClientHudGlitch.tintColor(0xFFF4F5FC), alpha, 1.0f);
 		Component name = glitchSecret
 				? Component.literal("????????").withStyle(ChatFormatting.OBFUSCATED, ChatFormatting.BOLD)
 				: Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD);
-		g.drawString(mc.font, ellipsize(mc, name, maxTextWidth), textX, y + 1, nameColor, true);
+		Component nameShown = glitchSecret ? name : ClientHudGlitch.maybeObfuscate(ellipsize(mc, name, maxTextWidth));
+		g.drawString(mc.font, glitchSecret ? ellipsize(mc, name, maxTextWidth) : nameShown, textX, y + 1, nameColor, true);
 
-		int descColor = applyAlpha(0xFFA2A6B8, alpha, 1.0f);
+		int descColor = applyAlpha(ClientHudGlitch.tintColor(0xFFA2A6B8), alpha, 1.0f);
 		Component desc = glitchSecret
 				? Component.literal("????????????????????").withStyle(ChatFormatting.OBFUSCATED)
 				: Component.translatable(AbilityDescriptions.descKey(abilityId));
-		g.drawString(mc.font, ellipsize(mc, desc, maxTextWidth), textX, y + 11, descColor, true);
+		Component descShown = glitchSecret ? desc : ClientHudGlitch.maybeObfuscate(ellipsize(mc, desc, maxTextWidth));
+		g.drawString(mc.font, glitchSecret ? ellipsize(mc, desc, maxTextWidth) : descShown, textX, y + 11, descColor, true);
 	}
 
 	private static Component ellipsize(Minecraft mc, Component component, int maxWidth) {
