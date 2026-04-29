@@ -1,8 +1,6 @@
 package com.example.superheroes.ability;
 
-import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.RegulusMadnessController;
-import com.example.superheroes.effect.RegulusMadnessState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,10 +39,6 @@ public final class CounterStrikeAbility implements Ability {
 
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
-		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
-		if (!state.madness()) {
-			return false;
-		}
 		LivingEntity target = findTarget(player);
 		if (target == null) {
 			return false;

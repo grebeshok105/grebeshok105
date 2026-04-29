@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class HomelanderBossRenderer extends MobRenderer<HomelanderBossEntity, PlayerModel<HomelanderBossEntity>> {
-	private static final ResourceLocation TEXTURE = ModId.of("textures/entity/hero/homelander.png");
+	private static final ResourceLocation TEXTURE = ModId.of("textures/entity/hero/infected_homelander.png");
 
 	public HomelanderBossRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx, new PlayerModel<>(ctx.bakeLayer(ModelLayers.PLAYER), false), 0.5f);

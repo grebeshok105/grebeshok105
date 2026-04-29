@@ -61,7 +61,7 @@ public final class ModItems {
 
 	public static final SpawnEggItem HOMELANDER_BOSS_SPAWN_EGG = register(
 			"homelander_boss_spawn_egg",
-			new SpawnEggItem(ModEntities.HOMELANDER_BOSS, 0xCC0000, 0xFFFFFF,
+			new SpawnEggItem(ModEntities.HOMELANDER_BOSS, 0x2FB200, 0x6BD43A,
 					new Item.Properties().rarity(Rarity.EPIC))
 	);
 
