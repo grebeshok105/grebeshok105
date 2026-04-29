@@ -27,12 +27,17 @@ public class HomelanderFlightGoal extends Goal {
 	}
 
 	@Override
+	public boolean requiresUpdateEveryTick() {
+		return true;
+	}
+
+	@Override
 	public void tick() {
 		if (recalc > 0) {
 			recalc--;
 			return;
 		}
-		recalc = 8;
+		recalc = 3;
 		LivingEntity target = boss.getTarget();
 		if (target == null) {
 			return;
@@ -40,15 +45,15 @@ public class HomelanderFlightGoal extends Goal {
 		double dx = target.getX() - boss.getX();
 		double dz = target.getZ() - boss.getZ();
 		double horiz = Math.sqrt(dx * dx + dz * dz);
-		double desiredDist = 9.0;
-		double height = 4.0;
+		double desiredDist = 6.0;
+		double height = 3.0;
 		double tx;
 		double tz;
-		if (horiz > desiredDist + 1.0) {
-			double f = (horiz - desiredDist) / Math.max(horiz, 0.01);
+		if (horiz > desiredDist + 0.5) {
+			double f = Math.min(1.0, (horiz - desiredDist) / Math.max(horiz, 0.01));
 			tx = boss.getX() + dx * f;
 			tz = boss.getZ() + dz * f;
-		} else if (horiz < desiredDist - 2.0) {
+		} else if (horiz < desiredDist - 1.0) {
 			double f = (desiredDist - horiz) / Math.max(horiz, 0.01);
 			tx = boss.getX() - dx * f;
 			tz = boss.getZ() - dz * f;
@@ -57,7 +62,7 @@ public class HomelanderFlightGoal extends Goal {
 			tz = boss.getZ();
 		}
 		double ty = target.getY() + height;
-		boss.getMoveControl().setWantedPosition(tx, ty, tz, 1.0);
-		boss.getLookControl().setLookAt(target, 30f, 30f);
+		boss.getMoveControl().setWantedPosition(tx, ty, tz, 1.6);
+		boss.getLookControl().setLookAt(target, 60f, 60f);
 	}
 }
