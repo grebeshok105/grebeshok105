@@ -1,5 +1,6 @@
 package com.example.superheroes.entity.ai;
 
+import com.example.superheroes.effect.UraniumDefenseController;
 import com.example.superheroes.entity.HomelanderBossEntity;
 import com.example.superheroes.network.ModNetworking;
 import com.example.superheroes.particle.ModParticles;
@@ -120,6 +121,10 @@ public class HomelanderEyeLaserGoal extends Goal {
 
 		Vec3 actualEnd = entitySearchEnd;
 		float damage = damagePerTick() * DAMAGE_MULT;
+		if (hit != null && hit.getEntity() instanceof net.minecraft.world.entity.player.Player victim
+				&& UraniumDefenseController.hasUraniumDagger(victim)) {
+			damage *= 0.5f;
+		}
 		if (hit != null) {
 			LivingEntity hitTarget = (LivingEntity) hit.getEntity();
 			DamageSource ds = boss.damageSources().mobAttack(boss);

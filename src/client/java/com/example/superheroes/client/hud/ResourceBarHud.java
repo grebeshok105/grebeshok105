@@ -36,6 +36,25 @@ public final class ResourceBarHud {
 		if (!ClientHeroState.data().hasHero()) {
 			return;
 		}
+		float ramp = ClientHudGlitch.ramp();
+		if (ramp > 0.001f) {
+			graphics.pose().pushPose();
+			graphics.pose().translate(ClientHudGlitch.jitterX(), ClientHudGlitch.jitterY(), 0f);
+			renderInner(graphics, tracker);
+			graphics.pose().popPose();
+			if (ClientHudGlitch.ghostDouble()) {
+				int gx = ClientHudGlitch.ghostOffsetX();
+				graphics.pose().pushPose();
+				graphics.pose().translate(gx, 0f, 0f);
+				renderInner(graphics, tracker);
+				graphics.pose().popPose();
+			}
+			return;
+		}
+		renderInner(graphics, tracker);
+	}
+
+	private static void renderInner(GuiGraphics graphics, DeltaTracker tracker) {
 		HeroTheme theme = ClientHeroState.theme();
 		float energyMax = ClientHeroState.energyMax();
 		float manaMax = ClientHeroState.manaMax();

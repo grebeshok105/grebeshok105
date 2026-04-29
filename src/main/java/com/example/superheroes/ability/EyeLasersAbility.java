@@ -3,6 +3,7 @@ package com.example.superheroes.ability;
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.effect.ModEffects;
+import com.example.superheroes.effect.UraniumDefenseController;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
 import com.example.superheroes.network.ModNetworking;
@@ -86,9 +87,17 @@ public final class EyeLasersAbility implements Ability {
 				e -> e instanceof LivingEntity && e.isAlive() && e != player && !e.isSpectator());
 		Vec3 actualEnd = entitySearchEnd;
 		float damage = damagePerTick(player) * (madness ? MADNESS_DAMAGE_MUL : 1f);
+		boolean choppy = false;
+		if (hit != null && hit.getEntity() instanceof net.minecraft.world.entity.player.Player victim
+				&& UraniumDefenseController.hasUraniumDagger(victim)) {
+			damage *= 0.5f;
+			int phase = player.tickCount % 15;
+			choppy = phase < 5;
+			if (choppy) damage = 0f;
+		}
 		if (hit != null) {
 			LivingEntity target = (LivingEntity) hit.getEntity();
-			target.hurt(ModDamageTypes.eyeLaser(level, player), damage);
+			if (damage > 0f) target.hurt(ModDamageTypes.eyeLaser(level, player), damage);
 			actualEnd = new Vec3(target.getX(), target.getY() + target.getBbHeight() * CHEST_FRACTION, target.getZ());
 			level.sendParticles(ModParticles.LASER_SPARK,
 					actualEnd.x, actualEnd.y, actualEnd.z,
@@ -108,7 +117,7 @@ public final class EyeLasersAbility implements Ability {
 			}
 			placeFireRing(level, actualEnd, 3);
 		}
-		ModNetworking.broadcastLaser(player, eye, actualEnd);
+		if (!choppy) ModNetworking.broadcastLaser(player, eye, actualEnd);
 	}
 
 	private static void placeFireRing(ServerLevel level, Vec3 center, int radius) {

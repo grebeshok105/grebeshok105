@@ -50,6 +50,8 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.AutoSaturationController.init();
 		com.example.superheroes.effect.HomelanderRegenController.init();
 		com.example.superheroes.effect.IronFistsController.init();
+		com.example.superheroes.effect.UraniumDefenseController.init();
+		com.example.superheroes.effect.UraniumOffhandController.init();
 		SuperheroesCommands.init();
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

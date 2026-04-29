@@ -36,7 +36,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class RegulusMadnessController {
-	private static final long READING_DURATION_MS = 5000L;
+	private static final long READING_DURATION_MS = 10000L;
 	private static final int COUNTER_LIFT_TICKS = 20;
 	private static final double COUNTER_LIFT_HEIGHT = 30.0;
 	private static final int COUNTER_ARRIVE_TICKS = 20;

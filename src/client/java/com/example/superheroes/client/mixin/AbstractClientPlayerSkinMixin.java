@@ -1,9 +1,12 @@
 package com.example.superheroes.client.mixin;
 
+import com.example.superheroes.ModId;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientUraniumPressureState;
 import com.example.superheroes.client.RemoteHeroSkins;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
+import com.example.superheroes.hero.HomelanderHero;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -17,6 +20,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractClientPlayer.class)
 public abstract class AbstractClientPlayerSkinMixin {
+	@Unique
+	private static final ResourceLocation WOUNDED_HOMELANDER = ModId.of("textures/entity/hero/infected_homelander_wounded.png");
+
 	@Inject(method = "getSkin", at = @At("RETURN"), cancellable = true)
 	private void superheroes$forceHeroSkin(CallbackInfoReturnable<PlayerSkin> cir) {
 		AbstractClientPlayer self = (AbstractClientPlayer) (Object) this;
@@ -25,6 +31,9 @@ public abstract class AbstractClientPlayerSkinMixin {
 			return;
 		}
 		ResourceLocation heroTexture = superheroes$heroTexture(heroId);
+		if (HomelanderHero.ID.equals(heroId) && ClientUraniumPressureState.isPressured(self.getUUID())) {
+			heroTexture = WOUNDED_HOMELANDER;
+		}
 		PlayerSkin orig = cir.getReturnValue();
 		cir.setReturnValue(new PlayerSkin(
 				heroTexture != null ? heroTexture : DefaultPlayerSkin.getDefaultTexture(),

@@ -1,6 +1,8 @@
 package com.example.superheroes.client.hud;
 
+import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.hero.HeroTheme;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
@@ -61,6 +63,24 @@ public final class AbilitiesTooltipHud {
 		if ((!userVisible || !ClientHeroState.data().hasHero()) && progress <= 0f) {
 			return;
 		}
+		float ramp = ClientHudGlitch.ramp();
+		if (ramp > 0.001f) {
+			graphics.pose().pushPose();
+			graphics.pose().translate(ClientHudGlitch.jitterX(), ClientHudGlitch.jitterY(), 0f);
+			renderInner(graphics, tracker);
+			graphics.pose().popPose();
+			if (ClientHudGlitch.ghostDouble()) {
+				graphics.pose().pushPose();
+				graphics.pose().translate(ClientHudGlitch.ghostOffsetX(), 0f, 0f);
+				renderInner(graphics, tracker);
+				graphics.pose().popPose();
+			}
+			return;
+		}
+		renderInner(graphics, tracker);
+	}
+
+	private static void renderInner(GuiGraphics graphics, DeltaTracker tracker) {
 		float partial = tracker.getGameTimeDeltaPartialTick(false);
 		float p = lastProgress + (progress - lastProgress) * partial;
 		if (p <= 0.001f) {
@@ -192,24 +212,29 @@ public final class AbilitiesTooltipHud {
 
 	private static void drawAbilityRow(GuiGraphics g, Minecraft mc, int x, int y, int width, ResourceLocation abilityId, HeroTheme theme, int alpha) {
 		AbilityDescriptions.Kind kind = AbilityDescriptions.kindOf(abilityId);
+		boolean glitchSecret = AbilityIds.COUNTER_STRIKE.equals(abilityId) && !ClientMadnessState.isMadness();
 		int iconBg = applyAlpha(0xFF0A0B14, alpha, 1.0f);
 		int iconBorder = applyAlpha(kind == AbilityDescriptions.Kind.TOGGLE ? theme.manaIcon() : theme.energyIcon(), alpha, 1.0f);
 		HudUtil.roundedRectFill(g, x, y, ICON_SIZE, ICON_SIZE, iconBg);
 		HudUtil.roundedRectBorder(g, x, y, ICON_SIZE, ICON_SIZE, iconBorder);
-		g.drawCenteredString(mc.font, Component.literal(kind.badge()).withStyle(ChatFormatting.BOLD),
-				x + ICON_SIZE / 2, y + (ICON_SIZE - 8) / 2, iconBorder);
+		Component badge = glitchSecret
+				? Component.literal("?").withStyle(ChatFormatting.OBFUSCATED, ChatFormatting.BOLD)
+				: Component.literal(kind.badge()).withStyle(ChatFormatting.BOLD);
+		g.drawCenteredString(mc.font, badge, x + ICON_SIZE / 2, y + (ICON_SIZE - 8) / 2, iconBorder);
 
 		int textX = x + ICON_SIZE + 6;
 		int maxTextWidth = width - ICON_SIZE - 6;
 		int nameColor = applyAlpha(0xFFF4F5FC, alpha, 1.0f);
-		g.drawString(mc.font,
-				ellipsize(mc, Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD), maxTextWidth),
-				textX, y + 1, nameColor, true);
+		Component name = glitchSecret
+				? Component.literal("????????").withStyle(ChatFormatting.OBFUSCATED, ChatFormatting.BOLD)
+				: Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD);
+		g.drawString(mc.font, ellipsize(mc, name, maxTextWidth), textX, y + 1, nameColor, true);
 
 		int descColor = applyAlpha(0xFFA2A6B8, alpha, 1.0f);
-		g.drawString(mc.font,
-				ellipsize(mc, Component.translatable(AbilityDescriptions.descKey(abilityId)), maxTextWidth),
-				textX, y + 11, descColor, true);
+		Component desc = glitchSecret
+				? Component.literal("????????????????????").withStyle(ChatFormatting.OBFUSCATED)
+				: Component.translatable(AbilityDescriptions.descKey(abilityId));
+		g.drawString(mc.font, ellipsize(mc, desc, maxTextWidth), textX, y + 11, descColor, true);
 	}
 
 	private static Component ellipsize(Minecraft mc, Component component, int maxWidth) {

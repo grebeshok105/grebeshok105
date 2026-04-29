@@ -2,6 +2,7 @@ package com.example.superheroes.client;
 
 import com.example.superheroes.client.hud.AbilitiesTooltipHud;
 import com.example.superheroes.client.hud.BloodRainHud;
+import com.example.superheroes.client.hud.EvangelionZoomHud;
 import com.example.superheroes.client.hud.JarvisOverlayHud;
 import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
@@ -62,12 +63,16 @@ public class SuperheroesClient implements ClientModInitializer {
 			ReactorOverlayHud.render(graphics, tracker);
 			MadnessHudOverlay.render(graphics, tracker);
 			BloodRainHud.render(graphics, tracker);
+			EvangelionZoomHud.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			ScreenShakeManager.tick();
 			AbilitiesTooltipHud.tick();
 			RadialMenuHud.clientTick(client);
+			if (ClientMadnessState.isReading() && client.screen instanceof net.minecraft.client.gui.screens.inventory.InventoryScreen) {
+				client.setScreen(null);
+			}
 			while (ModKeys.BINDINGS.consumeClick()) {
 				if (client.player != null && ClientHeroState.data().hasHero()) {
 					client.setScreen(new BindingsScreen());

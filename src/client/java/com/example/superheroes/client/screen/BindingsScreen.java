@@ -1,6 +1,8 @@
 package com.example.superheroes.client.screen;
 
+import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.network.BindAbilityResourceC2SPayload;
 import com.example.superheroes.resource.ResourceKind;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -9,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BindingsScreen extends Screen {
@@ -22,7 +25,13 @@ public class BindingsScreen extends Screen {
 
 	@Override
 	protected void init() {
-		List<ResourceLocation> abilities = ClientHeroState.abilities();
+		List<ResourceLocation> source = ClientHeroState.abilities();
+		List<ResourceLocation> abilities = new ArrayList<>(source.size());
+		boolean madness = ClientMadnessState.isMadness();
+		for (ResourceLocation id : source) {
+			if (!madness && AbilityIds.COUNTER_STRIKE.equals(id)) continue;
+			abilities.add(id);
+		}
 		int rows = abilities.size();
 		int totalHeight = rows * BUTTON_HEIGHT + Math.max(0, rows - 1) * ROW_GAP;
 		int yStart = this.height / 2 - totalHeight / 2;

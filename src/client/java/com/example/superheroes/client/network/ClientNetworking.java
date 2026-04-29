@@ -84,5 +84,8 @@ public final class ClientNetworking {
 						BloodRainHud.clear();
 					}
 				}));
+
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.UraniumPressureS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> com.example.superheroes.client.ClientUraniumPressureState.update(payload.pressuredHomelanders())));
 	}
 }
