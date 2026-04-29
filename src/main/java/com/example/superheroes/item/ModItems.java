@@ -1,10 +1,12 @@
 package com.example.superheroes.item;
 
 import com.example.superheroes.ModId;
+import com.example.superheroes.entity.ModEntities;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SpawnEggItem;
 
 public final class ModItems {
 	public static final HomelanderSuitItem HOMELANDER_SUIT = register(
@@ -50,6 +52,17 @@ public final class ModItems {
 	public static final EvangelionItem EVANGELION = register(
 			"evangelion",
 			new EvangelionItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final VoughtSignalItem VOUGHT_SIGNAL = register(
+			"vought_signal",
+			new VoughtSignalItem(new Item.Properties().stacksTo(4).rarity(Rarity.EPIC))
+	);
+
+	public static final SpawnEggItem HOMELANDER_BOSS_SPAWN_EGG = register(
+			"homelander_boss_spawn_egg",
+			new SpawnEggItem(ModEntities.HOMELANDER_BOSS, 0xCC0000, 0xFFFFFF,
+					new Item.Properties().rarity(Rarity.EPIC))
 	);
 
 	private ModItems() {

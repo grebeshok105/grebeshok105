@@ -29,8 +29,8 @@ public class SuperheroesMod implements ModInitializer {
 		ModEffects.init();
 		Heroes.init();
 		AbilityRegistry.init();
-		ModItems.init();
 		com.example.superheroes.entity.ModEntities.init();
+		ModItems.init();
 		ModItemGroups.init();
 		ModParticles.init();
 		ModSounds.init();
