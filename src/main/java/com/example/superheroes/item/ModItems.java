@@ -65,6 +65,11 @@ public final class ModItems {
 					new Item.Properties().rarity(Rarity.EPIC))
 	);
 
+	public static final ShadowMonarchsCloakItem SHADOW_MONARCHS_CLOAK = register(
+			"shadow_monarchs_cloak",
+			new ShadowMonarchsCloakItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
 	private ModItems() {
 	}
 

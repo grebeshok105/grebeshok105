@@ -29,6 +29,7 @@ public final class ModItemGroups {
 				output.accept(ModItems.EVANGELION);
 				output.accept(ModItems.VOUGHT_SIGNAL);
 				output.accept(ModItems.HOMELANDER_BOSS_SPAWN_EGG);
+				output.accept(ModItems.SHADOW_MONARCHS_CLOAK);
 			})
 			.build();
 

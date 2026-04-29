@@ -24,6 +24,13 @@ public final class HeroAttributes {
 	public static final ResourceLocation REGULUS_MADNESS_HP = ModId.of("modifiers/regulus/madness_max_health");
 	public static final ResourceLocation REGULUS_MADNESS_DAMAGE = ModId.of("modifiers/regulus/madness_damage");
 
+	public static final ResourceLocation SUNG_ARMOR = ModId.of("modifiers/sung_jinwoo/armor");
+	public static final ResourceLocation SUNG_TOUGHNESS = ModId.of("modifiers/sung_jinwoo/toughness");
+	public static final ResourceLocation SUNG_DAMAGE = ModId.of("modifiers/sung_jinwoo/damage");
+	public static final ResourceLocation SUNG_SPEED = ModId.of("modifiers/sung_jinwoo/speed");
+	public static final ResourceLocation SUNG_KNOCKBACK = ModId.of("modifiers/sung_jinwoo/knockback_resistance");
+	public static final ResourceLocation SUNG_ATTACK_SPEED = ModId.of("modifiers/sung_jinwoo/attack_speed");
+
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
@@ -49,6 +56,15 @@ public final class HeroAttributes {
 			.add(Attributes.ARMOR, REGULUS_MADNESS_ARMOR, 10.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MAX_HEALTH, REGULUS_MADNESS_HP, 0.20, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.ATTACK_DAMAGE, REGULUS_MADNESS_DAMAGE, 0.40, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet SUNG_JINWOO = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, SUNG_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, SUNG_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, SUNG_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, SUNG_SPEED, 0.20, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, SUNG_KNOCKBACK, 0.3, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, SUNG_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	private HeroAttributes() {
