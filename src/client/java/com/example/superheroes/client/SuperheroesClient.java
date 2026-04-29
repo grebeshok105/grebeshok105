@@ -12,7 +12,6 @@ import com.example.superheroes.client.hud.ScreenFlashHud;
 import com.example.superheroes.client.hud.SunWindupHud;
 import com.example.superheroes.client.fx.ScreenShakeManager;
 import com.example.superheroes.client.network.ClientNetworking;
-import com.example.superheroes.client.render.HeroSkinLayer;
 import com.example.superheroes.client.render.IronManEspRenderer;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.LocalLaserOverlay;
@@ -28,9 +27,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.minecraft.client.particle.EndRodParticle;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 
@@ -50,12 +47,6 @@ public class SuperheroesClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticles.LASER_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.REPULSOR_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.UNIBEAM_SPARK, EndRodParticle.Provider::new);
-
-		LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, helper, context) -> {
-			if (entityRenderer instanceof PlayerRenderer playerRenderer) {
-				helper.register(new HeroSkinLayer(playerRenderer));
-			}
-		});
 
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
 			LowResourceVignetteHud.render(graphics, tracker);
