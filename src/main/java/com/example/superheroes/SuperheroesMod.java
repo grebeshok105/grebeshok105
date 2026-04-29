@@ -57,7 +57,15 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.MonarchsDomainController.init();
 		com.example.superheroes.effect.DoomsdayAdaptationController.init();
 		com.example.superheroes.effect.DoomsdayFootstepsController.init();
+		com.example.superheroes.effect.DoomsdayTierController.init();
 		SuperheroesCommands.init();
+
+		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
+			com.example.superheroes.effect.DoomGripController.serverTick();
+			for (ServerPlayer p : server.getPlayerList().getPlayers()) {
+				com.example.superheroes.ability.ChargeTackleAbility.serverTick(p);
+			}
+		});
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			HeroTransformService.onPlayerJoin(handler.getPlayer());

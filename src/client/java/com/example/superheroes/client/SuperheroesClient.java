@@ -67,6 +67,7 @@ public class SuperheroesClient implements ClientModInitializer {
 			EvangelionZoomHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.UraniumThreatHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
+			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {

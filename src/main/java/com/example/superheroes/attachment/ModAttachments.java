@@ -1,6 +1,7 @@
 package com.example.superheroes.attachment;
 
 import com.example.superheroes.ModId;
+import com.example.superheroes.effect.DoomsdayProgress;
 import com.example.superheroes.effect.RegulusMadnessState;
 import com.example.superheroes.transform.HeroData;
 import com.mojang.serialization.Codec;
@@ -23,6 +24,12 @@ public final class ModAttachments {
 			.persistent(Codec.BOOL)
 			.copyOnDeath()
 			.buildAndRegister(ModId.of("regulus_bonus_life"));
+
+	public static final AttachmentType<DoomsdayProgress> DOOMSDAY_PROGRESS = AttachmentRegistry.<DoomsdayProgress>builder()
+			.initializer(() -> DoomsdayProgress.EMPTY)
+			.persistent(DoomsdayProgress.CODEC)
+			.copyOnDeath()
+			.buildAndRegister(ModId.of("doomsday_progress"));
 
 	private ModAttachments() {
 	}

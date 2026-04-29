@@ -189,6 +189,7 @@
 	"hero.superheroes.doomsday.adapted": "АДАПТАЦИЯ ▸ %s",
 	"hero.superheroes.doomsday.adapted.chat": "Думсдей адаптировался к: %s — всего адаптаций: %s",
 	"hero.superheroes.doomsday.passive.4": "Высокий прыжок + Супер прыжок (G) + тяжёлые шаги + не сбрасывается при смерти",
+	"hero.superheroes.doomsday.passive.5": "Эволюция: 7 тиров — каждая смерть делает сильнее (стат + способность), сброс только на детрансформации",
 	"ability.superheroes.doomsday_smash": "Слэм",
 	"ability.superheroes.doomsday_smash.desc": "Удар по земле — радиальный шоквейв с тяжёлым уроном",
 	"ability.superheroes.doomsday_roar": "Боевой Рёв",
@@ -196,5 +197,18 @@
 	"ability.superheroes.doomsday_berserk": "Берсерк",
 	"ability.superheroes.doomsday_berserk.desc": "Toggle: +12 к урону, +15% скорости, -15 брони — тратит энергию",
 	"ability.superheroes.doomsday_bone_spike": "Костяной Шип",
-	"ability.superheroes.doomsday_bone_spike.desc": "Бросок костяного шипа — дистанция 30 блоков, 18 урона при попадании"
+	"ability.superheroes.doomsday_bone_spike.desc": "Бросок костяного шипа — дистанция 30 блоков, 18 урона при попадании",
+	"ability.superheroes.doomsday_charge_tackle": "Таран",
+	"ability.superheroes.doomsday_charge_tackle.desc": "Рывок 20 блоков — 30 урона по линии и отброс на 5 блоков",
+	"ability.superheroes.doomsday_doom_grip": "Хват Гибели",
+	"ability.superheroes.doomsday_doom_grip.desc": "Захват цели в 8 блоках — 6 ударов по 18 урона за 3 секунды, финальный бросок и Замедление III",
+	"hero.superheroes.doomsday.tier.1": "Тир 1 — Зародыш",
+	"hero.superheroes.doomsday.tier.2": "Тир 2 — Воин",
+	"hero.superheroes.doomsday.tier.3": "Тир 3 — Зверь",
+	"hero.superheroes.doomsday.tier.4": "Тир 4 — Костяной",
+	"hero.superheroes.doomsday.tier.5": "Тир 5 — Хищник",
+	"hero.superheroes.doomsday.tier.6": "Тир 6 — Истребитель",
+	"hero.superheroes.doomsday.tier.7": "Тир 7 — Апокалипсис",
+	"hero.superheroes.doomsday.death.evolve": "%s умер от %s — эволюция: Тир %s/7",
+	"hero.superheroes.doomsday.death.simple": "%s умер от %s — эволюция уже на максимуме"
 }

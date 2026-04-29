@@ -38,6 +38,8 @@ public final class AbilityRegistry {
 	public static final DoomsdayRoarAbility DOOMSDAY_ROAR = new DoomsdayRoarAbility();
 	public static final DoomsdayBerserkAbility DOOMSDAY_BERSERK = new DoomsdayBerserkAbility();
 	public static final DoomsdayBoneSpikeAbility DOOMSDAY_BONE_SPIKE = new DoomsdayBoneSpikeAbility();
+	public static final ChargeTackleAbility DOOMSDAY_CHARGE_TACKLE = new ChargeTackleAbility();
+	public static final DoomGripAbility DOOMSDAY_DOOM_GRIP = new DoomGripAbility();
 
 	private AbilityRegistry() {
 	}
@@ -68,6 +70,8 @@ public final class AbilityRegistry {
 		register(DOOMSDAY_ROAR);
 		register(DOOMSDAY_BERSERK);
 		register(DOOMSDAY_BONE_SPIKE);
+		register(DOOMSDAY_CHARGE_TACKLE);
+		register(DOOMSDAY_DOOM_GRIP);
 	}
 
 	public static void register(Ability ability) {

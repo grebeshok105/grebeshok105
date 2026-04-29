@@ -57,29 +57,11 @@ public final class DoomsdayAdaptationController {
 				return false;
 			}
 
-			float health = player.getHealth();
-			boolean lethal = amount >= health;
-
-			if (lethal) {
-				registerAdaptation(player, typeKey, true);
-				player.setHealth(Math.max(1.0f, health));
-				player.invulnerableTime = 20;
-				return false;
-			}
-
-			Map<ResourceKey<DamageType>, Float> cum = CUMULATIVE.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
-			float total = cum.getOrDefault(typeKey, 0f) + amount;
-			if (total >= CUMULATIVE_THRESHOLD) {
-				cum.remove(typeKey);
-				registerAdaptation(player, typeKey, false);
-			} else {
-				cum.put(typeKey, total);
-			}
 			return true;
 		});
 	}
 
-	private static void registerAdaptation(ServerPlayer player, ResourceKey<DamageType> typeKey, boolean lethal) {
+	public static void registerAdaptation(ServerPlayer player, ResourceKey<DamageType> typeKey, boolean lethal) {
 		Set<ResourceKey<DamageType>> adapted = ADAPTED.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
 		if (!adapted.add(typeKey)) {
 			return;
