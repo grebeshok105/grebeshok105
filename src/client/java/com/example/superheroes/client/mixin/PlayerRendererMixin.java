@@ -1,6 +1,8 @@
 package com.example.superheroes.client.mixin;
 
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientShadowArmyState;
+import com.example.superheroes.hero.SungJinwooHero;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -37,6 +39,10 @@ public abstract class PlayerRendererMixin {
 			return null;
 		}
 		Hero hero = Heroes.get(ClientHeroState.data().heroId());
-		return hero == null ? null : hero.getSkinTexture();
+		if (hero == null) return null;
+		if (SungJinwooHero.ID.equals(hero.getId()) && ClientShadowArmyState.hasShadows(player.getUUID())) {
+			return SungJinwooHero.SKIN_PHASE_2;
+		}
+		return hero.getSkinTexture();
 	}
 }

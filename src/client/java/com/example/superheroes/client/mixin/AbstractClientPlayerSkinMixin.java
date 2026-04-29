@@ -2,11 +2,13 @@ package com.example.superheroes.client.mixin;
 
 import com.example.superheroes.ModId;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientShadowArmyState;
 import com.example.superheroes.client.ClientUraniumPressureState;
 import com.example.superheroes.client.RemoteHeroSkins;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
 import com.example.superheroes.hero.HomelanderHero;
+import com.example.superheroes.hero.SungJinwooHero;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -33,6 +35,9 @@ public abstract class AbstractClientPlayerSkinMixin {
 		ResourceLocation heroTexture = superheroes$heroTexture(heroId);
 		if (HomelanderHero.ID.equals(heroId) && ClientUraniumPressureState.isPressured(self.getUUID())) {
 			heroTexture = WOUNDED_HOMELANDER;
+		}
+		if (SungJinwooHero.ID.equals(heroId) && ClientShadowArmyState.hasShadows(self.getUUID())) {
+			heroTexture = SungJinwooHero.SKIN_PHASE_2;
 		}
 		PlayerSkin orig = cir.getReturnValue();
 		cir.setReturnValue(new PlayerSkin(

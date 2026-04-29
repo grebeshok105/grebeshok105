@@ -27,6 +27,13 @@ public final class AbilityRegistry {
 	public static final LionRoarAbility LION_ROAR = new LionRoarAbility();
 	public static final CounterStrikeAbility COUNTER_STRIKE = new CounterStrikeAbility();
 
+	public static final AriseAbility ARISE = new AriseAbility();
+	public static final ShadowExchangeAbility SHADOW_EXCHANGE = new ShadowExchangeAbility();
+	public static final SacrificeAbility SACRIFICE = new SacrificeAbility();
+	public static final RulersAuthorityAbility RULERS_AUTHORITY = new RulersAuthorityAbility();
+	public static final ShadowExtractionAbility SHADOW_EXTRACTION = new ShadowExtractionAbility();
+	public static final MonarchsDomainAbility MONARCHS_DOMAIN = new MonarchsDomainAbility();
+
 	private AbilityRegistry() {
 	}
 
@@ -46,6 +53,12 @@ public final class AbilityRegistry {
 		register(MANIA_OF_GREED);
 		register(LION_ROAR);
 		register(COUNTER_STRIKE);
+		register(ARISE);
+		register(SHADOW_EXCHANGE);
+		register(SACRIFICE);
+		register(RULERS_AUTHORITY);
+		register(SHADOW_EXTRACTION);
+		register(MONARCHS_DOMAIN);
 	}
 
 	public static void register(Ability ability) {

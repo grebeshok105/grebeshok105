@@ -90,5 +90,9 @@ public final class ClientNetworking {
 
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.UraniumThreatS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> com.example.superheroes.client.ClientUraniumThreatState.update(payload.self(), payload.sourceCount())));
+
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SungShadowArmyS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> com.example.superheroes.client.ClientShadowArmyState.update(
+						payload.playerId(), payload.hasShadows(), payload.count())));
 	}
 }
