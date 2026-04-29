@@ -42,5 +42,47 @@
 				"name": "superheroes:unibeam/unibeam_blast"
 			}
 		]
+	},
+	"homelander.roar": {
+		"subtitle": "subtitles.superheroes.homelander.roar",
+		"sounds": [
+			{
+				"name": "superheroes:homelander/roar",
+				"stream": true
+			}
+		]
+	},
+	"homelander.roar.deep": {
+		"subtitle": "subtitles.superheroes.homelander.roar",
+		"sounds": [
+			{
+				"name": "superheroes:homelander/roar_deep",
+				"stream": true
+			}
+		]
+	},
+	"homelander.hand_clap": {
+		"subtitle": "subtitles.superheroes.homelander.hand_clap",
+		"sounds": [
+			{
+				"name": "superheroes:homelander/hand_clap"
+			}
+		]
+	},
+	"homelander.iron_fists.impact": {
+		"subtitle": "subtitles.superheroes.homelander.iron_fists",
+		"sounds": [
+			{
+				"name": "superheroes:homelander/iron_fists_impact"
+			}
+		]
+	},
+	"homelander.iron_fists.charge": {
+		"subtitle": "subtitles.superheroes.homelander.iron_fists",
+		"sounds": [
+			{
+				"name": "superheroes:homelander/iron_fists_charge"
+			}
+		]
 	}
 }

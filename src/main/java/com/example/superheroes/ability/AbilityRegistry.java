@@ -13,6 +13,9 @@ public final class AbilityRegistry {
 	public static final FlightAbility FLIGHT = new FlightAbility();
 	public static final EyeLasersAbility EYE_LASERS = new EyeLasersAbility();
 	public static final XRayAbility X_RAY = new XRayAbility();
+	public static final IronFistsAbility IRON_FISTS = new IronFistsAbility();
+	public static final HandClapAbility HAND_CLAP = new HandClapAbility();
+	public static final StunningRoarAbility STUNNING_ROAR = new StunningRoarAbility();
 	public static final IronManFlightAbility IRON_MAN_FLIGHT = new IronManFlightAbility();
 	public static final SupersonicAbility SUPERSONIC = new SupersonicAbility();
 	public static final RepulsorAbility REPULSOR = new RepulsorAbility();
@@ -31,6 +34,9 @@ public final class AbilityRegistry {
 		register(FLIGHT);
 		register(EYE_LASERS);
 		register(X_RAY);
+		register(IRON_FISTS);
+		register(HAND_CLAP);
+		register(STUNNING_ROAR);
 		register(IRON_MAN_FLIGHT);
 		register(SUPERSONIC);
 		register(REPULSOR);
