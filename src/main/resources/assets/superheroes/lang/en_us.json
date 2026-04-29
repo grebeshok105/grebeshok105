@@ -97,6 +97,8 @@
 	"item.superheroes.uranium_isotope.lore.line1": "Mined on a planet under FICSIT protectorate.",
 	"item.superheroes.uranium_isotope.lore.line2": "Ordinary uranium does nothing to superheroes — this isotope is the only thing that weakens them.",
 	"item.superheroes.uranium_isotope.lore.usage": "Craft into a Uranium Dagger.",
+	"item.superheroes.uranium_isotope.lore.offhand": "Hold in offhand for knockback resistance.",
+	"item.superheroes.uranium_isotope.lore.radiation": "Warning: 25 seconds of contact triggers Wither + Hunger.",
 	"item.superheroes.uranium_dagger": "Uranium Dagger",
 	"item.superheroes.uranium_dagger.lore.line1": "Forged from a single Uranium-238 isotope.",
 	"item.superheroes.uranium_dagger.lore.line2": "The radiant edge cuts through hero physiology like nothing else.",

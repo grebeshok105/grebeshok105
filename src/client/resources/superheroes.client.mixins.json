@@ -6,7 +6,8 @@
 		"PlayerRendererMixin",
 		"LocalPlayerFlightMixin",
 		"CameraMixin",
-		"AbstractClientPlayerSkinMixin"
+		"AbstractClientPlayerSkinMixin",
+		"GameRendererFovMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

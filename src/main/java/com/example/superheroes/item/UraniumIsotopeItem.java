@@ -20,6 +20,8 @@ public class UraniumIsotopeItem extends Item {
 		tooltip.add(TooltipFrame.flavor("item.superheroes.uranium_isotope.lore.line2", ChatFormatting.DARK_GRAY));
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.uranium_isotope.lore.usage", ChatFormatting.GOLD));
+		tooltip.add(TooltipFrame.bullet("item.superheroes.uranium_isotope.lore.offhand", ChatFormatting.AQUA));
+		tooltip.add(TooltipFrame.bullet("item.superheroes.uranium_isotope.lore.radiation", ChatFormatting.RED));
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.GREEN);
 	}
 }

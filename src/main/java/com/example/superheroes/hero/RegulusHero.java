@@ -23,24 +23,24 @@ public final class RegulusHero implements Hero {
 	public static final ResourceLocation SKIN = ModId.of("textures/entity/hero/regulus.png");
 
 	public static final HeroTheme THEME = new HeroTheme(
-			0xFFB8860B,
-			0xFF503008,
-			0xFFFFD700,
-			0x44FFE680,
-			0xFFFFD700,
-			0xFFB8860B,
-			0xFFFFD700,
-			0x66FFD700,
-			0xFFFFD700,
-			0xFF503008,
-			0xFFFFEFB0,
-			0x66FFD27A,
-			0xFF503008,
-			0x66FFD27A,
-			0xFFFFD700,
-			0xFFFFD700,
-			0xFFFFF7C8,
-			0x66FFD700
+			0xFFFFFFFF,
+			0xFF606060,
+			0xFFFFFFFF,
+			0x44FFFFFF,
+			0xFFFFFFFF,
+			0xFFCCCCCC,
+			0xFFFFFFFF,
+			0x66FFFFFF,
+			0xFFFFFFFF,
+			0xFF555555,
+			0xFFFFFFFF,
+			0x66E0E0E0,
+			0xFF555555,
+			0x66E0E0E0,
+			0xFFFFFFFF,
+			0xFFFFFFFF,
+			0xFFFFFFFF,
+			0x66FFFFFF
 	);
 
 	@Override

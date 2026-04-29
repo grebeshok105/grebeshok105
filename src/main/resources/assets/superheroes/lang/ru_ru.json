@@ -97,6 +97,8 @@
 	"item.superheroes.uranium_isotope.lore.line1": "Добыто с планеты под протекторатом FICSIT.",
 	"item.superheroes.uranium_isotope.lore.line2": "Обычный уран на супергероев не действует, а этот изотоп — единственное, что их ослабляет.",
 	"item.superheroes.uranium_isotope.lore.usage": "Используется для крафта Уранового Кинжала.",
+	"item.superheroes.uranium_isotope.lore.offhand": "В левой руке: сопротивление отбрасыванию.",
+	"item.superheroes.uranium_isotope.lore.radiation": "Опасно: после 25 секунд контакта — Wither и голод.",
 	"item.superheroes.uranium_dagger": "Урановый Кинжал",
 	"item.superheroes.uranium_dagger.lore.line1": "Выкован из единственного изотопа Урана-238.",
 	"item.superheroes.uranium_dagger.lore.line2": "Сияющее лезвие режет физиологию героя как ничто другое.",
