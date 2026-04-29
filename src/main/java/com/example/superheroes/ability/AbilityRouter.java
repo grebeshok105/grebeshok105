@@ -28,6 +28,10 @@ public final class AbilityRouter {
 		if (hero == null || !hero.getAbilities().contains(abilityId)) {
 			return;
 		}
+		if (hero instanceof com.example.superheroes.hero.DoomsdayHero dh
+				&& !dh.isAbilityUnlocked(player, abilityId)) {
+			return;
+		}
 		Ability ability = AbilityRegistry.get(abilityId);
 		if (ability == null) {
 			return;

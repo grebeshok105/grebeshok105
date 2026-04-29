@@ -77,8 +77,10 @@ public final class DoomsdayHero implements Hero {
                 return List.of(
                                 AbilityIds.DOOMSDAY_SMASH,
                                 AbilityIds.DOOMSDAY_ROAR,
+                                AbilityIds.DOOMSDAY_BONE_SPIKE,
+                                AbilityIds.DOOMSDAY_CHARGE_TACKLE,
                                 AbilityIds.DOOMSDAY_BERSERK,
-                                AbilityIds.DOOMSDAY_BONE_SPIKE);
+                                AbilityIds.DOOMSDAY_DOOM_GRIP);
         }
 
         @Override
@@ -88,9 +90,35 @@ public final class DoomsdayHero implements Hero {
 
         @Override
         public void applyPassives(Player player) {
-                HeroAttributes.DOOMSDAY.apply(player);
+                int tier = getTier(player);
+                HeroAttributes.DOOMSDAY.remove(player);
+                HeroAttributes.buildDoomsdayTierSet(tier).apply(player);
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
-                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
+                if (tier >= 5) {
+                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
+                } else {
+                        player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                }
+                if (player instanceof ServerPlayer sp) {
+                        com.example.superheroes.effect.DoomsdayTierController.sync(sp);
+                }
+        }
+
+        public static int getTier(Player player) {
+                com.example.superheroes.effect.DoomsdayProgress p = player.getAttachedOrCreate(
+                                com.example.superheroes.attachment.ModAttachments.DOOMSDAY_PROGRESS);
+                return Math.max(1, Math.min(7, p.tier()));
+        }
+
+        public boolean isAbilityUnlocked(Player player, ResourceLocation abilityId) {
+                int tier = getTier(player);
+                if (AbilityIds.DOOMSDAY_SMASH.equals(abilityId)) return tier >= 2;
+                if (AbilityIds.DOOMSDAY_ROAR.equals(abilityId)) return tier >= 3;
+                if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(abilityId)) return tier >= 4;
+                if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(abilityId)) return tier >= 5;
+                if (AbilityIds.DOOMSDAY_BERSERK.equals(abilityId)) return tier >= 6;
+                if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(abilityId)) return tier >= 7;
+                return false;
         }
 
         @Override
@@ -101,6 +129,9 @@ public final class DoomsdayHero implements Hero {
                 if (player instanceof ServerPlayer sp) {
                         com.example.superheroes.effect.DoomsdayAdaptationController.clear(sp);
                         com.example.superheroes.ability.DoomsdayBerserkAbility.clearBuff(sp);
+                        com.example.superheroes.effect.DoomsdayTierController.resetProgress(sp);
+                        com.example.superheroes.ability.ChargeTackleAbility.clear(sp);
+                        com.example.superheroes.effect.DoomGripController.clear(sp);
                 }
         }
 

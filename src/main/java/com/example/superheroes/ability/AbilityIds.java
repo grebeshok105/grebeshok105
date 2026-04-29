@@ -33,6 +33,8 @@ public final class AbilityIds {
 	public static final ResourceLocation DOOMSDAY_ROAR = ModId.of("doomsday_roar");
 	public static final ResourceLocation DOOMSDAY_BERSERK = ModId.of("doomsday_berserk");
 	public static final ResourceLocation DOOMSDAY_BONE_SPIKE = ModId.of("doomsday_bone_spike");
+	public static final ResourceLocation DOOMSDAY_CHARGE_TACKLE = ModId.of("doomsday_charge_tackle");
+	public static final ResourceLocation DOOMSDAY_DOOM_GRIP = ModId.of("doomsday_doom_grip");
 
 	private AbilityIds() {
 	}

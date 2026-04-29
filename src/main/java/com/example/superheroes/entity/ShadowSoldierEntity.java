@@ -239,10 +239,9 @@ public class ShadowSoldierEntity extends PathfinderMob {
 			double d2 = this.position().distanceToSqr(slotPos);
 			if (d2 > FOLLOW_RADIUS * FOLLOW_RADIUS) {
 				if (isGrounded()) {
-					this.getNavigation().moveTo(slotPos.x, slotPos.y, slotPos.z, 1.1);
+					this.getNavigation().moveTo(slotPos.x, slotPos.y, slotPos.z, 1.5);
 				} else {
-					Vec3 dir = slotPos.subtract(this.position()).normalize().scale(0.45);
-					this.move(MoverType.SELF, dir);
+					this.getMoveControl().setWantedPosition(slotPos.x, slotPos.y, slotPos.z, 1.5);
 				}
 			}
 		}

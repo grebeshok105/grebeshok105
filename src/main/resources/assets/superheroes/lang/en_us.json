@@ -187,6 +187,7 @@
 	"hero.superheroes.doomsday.passive.2": "Adaptation: each damage type kills him only once, +1 dmg per adaptation",
 	"hero.superheroes.doomsday.passive.3": "Regeneration I + immune to fall damage + landing shockwave",
 	"hero.superheroes.doomsday.passive.4": "High jump + Super Jump (G) + heavy footstep loop + persists through death",
+	"hero.superheroes.doomsday.passive.5": "Evolution: 7 tiers — each death grants more stats and a new ability, resets only on detransform",
 	"hero.superheroes.doomsday.adapted": "ADAPTED ▸ %s",
 	"hero.superheroes.doomsday.adapted.chat": "Doomsday adapted to %s — total adaptations: %s",
 	"ability.superheroes.doomsday_smash": "Smash",
@@ -196,5 +197,18 @@
 	"ability.superheroes.doomsday_berserk": "Berserk",
 	"ability.superheroes.doomsday_berserk.desc": "Toggle: +12 damage, +15% speed, -15 armor — drains energy",
 	"ability.superheroes.doomsday_bone_spike": "Bone Spike",
-	"ability.superheroes.doomsday_bone_spike.desc": "Hurl a bone shard — 30-block ranged spike, 18 damage on hit"
+	"ability.superheroes.doomsday_bone_spike.desc": "Hurl a bone shard — 30-block ranged spike, 18 damage on hit",
+	"ability.superheroes.doomsday_charge_tackle": "Charge Tackle",
+	"ability.superheroes.doomsday_charge_tackle.desc": "20-block dash — 30 line damage, 5-block knockback",
+	"ability.superheroes.doomsday_doom_grip": "Doom Grip",
+	"ability.superheroes.doomsday_doom_grip.desc": "Lock target within 8 blocks — 6 hits × 18 damage over 3s, final slam-throw + Slowness III",
+	"hero.superheroes.doomsday.tier.1": "Tier 1 — Embryo",
+	"hero.superheroes.doomsday.tier.2": "Tier 2 — Warrior",
+	"hero.superheroes.doomsday.tier.3": "Tier 3 — Beast",
+	"hero.superheroes.doomsday.tier.4": "Tier 4 — Boneform",
+	"hero.superheroes.doomsday.tier.5": "Tier 5 — Predator",
+	"hero.superheroes.doomsday.tier.6": "Tier 6 — Annihilator",
+	"hero.superheroes.doomsday.tier.7": "Tier 7 — Apocalypse",
+	"hero.superheroes.doomsday.death.evolve": "%s died from %s — evolution: Tier %s/7",
+	"hero.superheroes.doomsday.death.simple": "%s died from %s — already at max evolution"
 }
