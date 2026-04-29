@@ -1,5 +1,6 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -60,7 +61,7 @@ public final class LionRoarAbility implements Ability {
 			if (dot < CONE_HALF_ANGLE_COS) {
 				continue;
 			}
-			entity.hurt(level.damageSources().magic(), DAMAGE);
+			entity.hurt(ModDamageTypes.lionRoar(level, player), DAMAGE);
 			Vec3 push = forward.scale(KNOCKBACK);
 			entity.push(push.x, 0.5, push.z);
 			entity.hurtMarked = true;

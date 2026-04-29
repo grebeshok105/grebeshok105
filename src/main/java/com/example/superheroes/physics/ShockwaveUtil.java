@@ -93,13 +93,17 @@ public final class ShockwaveUtil {
 	}
 
 	public static void detonate(ServerPlayer source, Vec3 center, double radius, float damage, boolean breakBlocks) {
+		detonate(source, center, radius, damage, breakBlocks, source.damageSources().playerAttack(source));
+	}
+
+	public static void detonate(ServerPlayer source, Vec3 center, double radius, float damage, boolean breakBlocks, DamageSource damageSource) {
 		ServerLevel world = source.serverLevel();
 		AABB box = new AABB(
 				center.x - radius, center.y - 1.0, center.z - radius,
 				center.x + radius, center.y + 2.0, center.z + radius);
 		List<Entity> hits = world.getEntities(source, box);
 		double r2 = radius * radius;
-		DamageSource ds = source.damageSources().playerAttack(source);
+		DamageSource ds = damageSource;
 		for (Entity e : hits) {
 			Vec3 to = e.position().subtract(center);
 			double d2 = to.lengthSqr();

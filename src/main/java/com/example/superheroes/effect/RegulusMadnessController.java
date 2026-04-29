@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import com.example.superheroes.damage.ModDamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -433,7 +434,7 @@ public final class RegulusMadnessController {
 						attacker.setNoGravity(attackerWasNoGravity);
 						attacker.setDeltaMovement(0, -3.5, 0);
 						attacker.hurtMarked = true;
-						attacker.hurt(level.damageSources().playerAttack(player), 30f);
+						attacker.hurt(ModDamageTypes.counterStrike(level, player), 30f);
 						player.setNoGravity(playerWasNoGravity);
 						level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
 								SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.4f, 0.9f);
@@ -472,7 +473,7 @@ public final class RegulusMadnessController {
 			level.explode(player, impact.getX(), impact.getY(), impact.getZ(), 6.0f, Level.ExplosionInteraction.NONE);
 			carveCrater(level, impact);
 			attacker.teleportTo(impact.getX() + 0.5, impact.getY() - CRATER_DEPTH + 1, impact.getZ() + 0.5);
-			attacker.hurt(level.damageSources().playerAttack(player), 27f);
+			attacker.hurt(ModDamageTypes.counterStrike(level, player), 27f);
 			com.example.superheroes.resource.EnergyLocks.lockTicks(player, 15 * 20);
 			level.playSound(null, impact.getX(), impact.getY(), impact.getZ(),
 					SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 2.0f, 0.4f);

@@ -13,20 +13,87 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 
 public final class ModDamageTypes {
-	public static final ResourceKey<DamageType> EYE_LASER = ResourceKey.create(
-			Registries.DAMAGE_TYPE, ModId.of("eye_laser"));
+	public static final ResourceKey<DamageType> EYE_LASER = key("eye_laser");
+	public static final ResourceKey<DamageType> REPULSOR = key("repulsor");
+	public static final ResourceKey<DamageType> UNIBEAM = key("unibeam");
+	public static final ResourceKey<DamageType> COUNTER_STRIKE = key("counter_strike");
+	public static final ResourceKey<DamageType> LION_ROAR = key("lion_roar");
+	public static final ResourceKey<DamageType> DOOMSDAY_SMASH = key("doomsday_smash");
+	public static final ResourceKey<DamageType> DOOMSDAY_ROAR = key("doomsday_roar");
+	public static final ResourceKey<DamageType> DOOMSDAY_BONE_SPIKE = key("doomsday_bone_spike");
+	public static final ResourceKey<DamageType> DOOMSDAY_CHARGE_TACKLE = key("doomsday_charge_tackle");
+	public static final ResourceKey<DamageType> DOOMSDAY_DOOM_GRIP = key("doomsday_doom_grip");
+	public static final ResourceKey<DamageType> SHADOW_ATTACK = key("shadow_attack");
 
 	private ModDamageTypes() {
 	}
 
+	private static ResourceKey<DamageType> key(String name) {
+		return ResourceKey.create(Registries.DAMAGE_TYPE, ModId.of(name));
+	}
+
 	public static void bootstrap(BootstrapContext<DamageType> context) {
 		context.register(EYE_LASER, new DamageType("eye_laser", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(REPULSOR, new DamageType("repulsor", DamageScaling.NEVER, 0.0F));
+		context.register(UNIBEAM, new DamageType("unibeam", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(COUNTER_STRIKE, new DamageType("counter_strike", DamageScaling.NEVER, 0.0F));
+		context.register(LION_ROAR, new DamageType("lion_roar", DamageScaling.NEVER, 0.0F));
+		context.register(DOOMSDAY_SMASH, new DamageType("doomsday_smash", DamageScaling.NEVER, 0.0F));
+		context.register(DOOMSDAY_ROAR, new DamageType("doomsday_roar", DamageScaling.NEVER, 0.0F));
+		context.register(DOOMSDAY_BONE_SPIKE, new DamageType("doomsday_bone_spike", DamageScaling.NEVER, 0.0F));
+		context.register(DOOMSDAY_CHARGE_TACKLE, new DamageType("doomsday_charge_tackle", DamageScaling.NEVER, 0.0F));
+		context.register(DOOMSDAY_DOOM_GRIP, new DamageType("doomsday_doom_grip", DamageScaling.NEVER, 0.0F));
+		context.register(SHADOW_ATTACK, new DamageType("shadow_attack", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.0F));
 	}
 
 	public static DamageSource eyeLaser(ServerLevel level, Entity attacker) {
+		return source(level, EYE_LASER, attacker);
+	}
+
+	public static DamageSource repulsor(ServerLevel level, Entity attacker) {
+		return source(level, REPULSOR, attacker);
+	}
+
+	public static DamageSource unibeam(ServerLevel level, Entity attacker) {
+		return source(level, UNIBEAM, attacker);
+	}
+
+	public static DamageSource counterStrike(ServerLevel level, Entity attacker) {
+		return source(level, COUNTER_STRIKE, attacker);
+	}
+
+	public static DamageSource lionRoar(ServerLevel level, Entity attacker) {
+		return source(level, LION_ROAR, attacker);
+	}
+
+	public static DamageSource doomsdaySmash(ServerLevel level, Entity attacker) {
+		return source(level, DOOMSDAY_SMASH, attacker);
+	}
+
+	public static DamageSource doomsdayRoar(ServerLevel level, Entity attacker) {
+		return source(level, DOOMSDAY_ROAR, attacker);
+	}
+
+	public static DamageSource doomsdayBoneSpike(ServerLevel level, Entity attacker) {
+		return source(level, DOOMSDAY_BONE_SPIKE, attacker);
+	}
+
+	public static DamageSource doomsdayChargeTackle(ServerLevel level, Entity attacker) {
+		return source(level, DOOMSDAY_CHARGE_TACKLE, attacker);
+	}
+
+	public static DamageSource doomsdayDoomGrip(ServerLevel level, Entity attacker) {
+		return source(level, DOOMSDAY_DOOM_GRIP, attacker);
+	}
+
+	public static DamageSource shadowAttack(ServerLevel level, Entity attacker) {
+		return source(level, SHADOW_ATTACK, attacker);
+	}
+
+	private static DamageSource source(ServerLevel level, ResourceKey<DamageType> key, Entity attacker) {
 		Holder<DamageType> holder = level.registryAccess()
 				.registryOrThrow(Registries.DAMAGE_TYPE)
-				.getHolderOrThrow(EYE_LASER);
+				.getHolderOrThrow(key);
 		return new DamageSource(holder, attacker, attacker);
 	}
 }

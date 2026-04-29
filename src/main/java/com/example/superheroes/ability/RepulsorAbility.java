@@ -1,5 +1,6 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.network.ModNetworking;
 import com.example.superheroes.particle.ModParticles;
 import net.minecraft.core.particles.ParticleTypes;
@@ -55,7 +56,7 @@ public final class RepulsorAbility implements Ability {
 				e -> e instanceof LivingEntity && e.isAlive() && e != player && !e.isSpectator());
 		if (hit != null) {
 			LivingEntity target = (LivingEntity) hit.getEntity();
-			target.hurt(level.damageSources().playerAttack(player), DAMAGE);
+			target.hurt(ModDamageTypes.repulsor(level, player), DAMAGE);
 			actualEnd = hit.getLocation();
 			Vec3 push = dir.scale(0.6);
 			target.push(push.x, 0.2, push.z);

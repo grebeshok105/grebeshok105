@@ -1,5 +1,6 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.physics.ShockwaveUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +45,8 @@ public final class DoomsdaySmashAbility implements Ability {
 		ServerLevel level = player.serverLevel();
 		Vec3 origin = player.position();
 
-		ShockwaveUtil.detonate(player, origin, RADIUS, DAMAGE, false);
+		ShockwaveUtil.detonate(player, origin, RADIUS, DAMAGE, false,
+				ModDamageTypes.doomsdaySmash(level, player));
 
 		level.playSound(null, origin.x, origin.y, origin.z,
 				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.6f, 0.5f);

@@ -32,6 +32,27 @@ public final class DoomsdayAdaptationController {
 	private static final float CUMULATIVE_THRESHOLD = 80f;
 	private static final float ADAPT_DAMAGE_BONUS = 1.0f;
 
+	/**
+	 * Generic damage types — слишком общие, чтобы писать на них постоянный иммун.
+	 * Если думсдей умер от player_attack/mob_attack/magic — тир апается, но
+	 * иммун не записывается; иначе один удар мечом давал бы иммун ко всем мечам.
+	 */
+	private static final Set<ResourceKey<DamageType>> GENERIC_TYPES = Set.of(
+			DamageTypes.PLAYER_ATTACK,
+			DamageTypes.MOB_ATTACK,
+			DamageTypes.MOB_ATTACK_NO_AGGRO,
+			DamageTypes.ARROW,
+			DamageTypes.TRIDENT,
+			DamageTypes.GENERIC,
+			DamageTypes.GENERIC_KILL,
+			DamageTypes.MAGIC,
+			DamageTypes.INDIRECT_MAGIC,
+			DamageTypes.THROWN,
+			DamageTypes.UNATTRIBUTED_FIREBALL,
+			DamageTypes.MOB_PROJECTILE,
+			DamageTypes.SONIC_BOOM
+	);
+
 	private static final Map<UUID, Set<ResourceKey<DamageType>>> ADAPTED = new ConcurrentHashMap<>();
 	private static final Map<UUID, Map<ResourceKey<DamageType>, Float>> CUMULATIVE = new ConcurrentHashMap<>();
 	private static final Map<UUID, Integer> ADAPT_COUNT = new ConcurrentHashMap<>();
@@ -62,6 +83,9 @@ public final class DoomsdayAdaptationController {
 	}
 
 	public static void registerAdaptation(ServerPlayer player, ResourceKey<DamageType> typeKey, boolean lethal) {
+		if (GENERIC_TYPES.contains(typeKey)) {
+			return;
+		}
 		Set<ResourceKey<DamageType>> adapted = ADAPTED.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
 		if (!adapted.add(typeKey)) {
 			return;
