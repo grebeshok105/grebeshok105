@@ -146,6 +146,17 @@ public final class HeroTransformService {
 		ModNetworking.syncHeroData(player, data);
 	}
 
+	public static void onPlayerRespawn(ServerPlayer newPlayer) {
+		HeroData data = newPlayer.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		if (data.hasHero()) {
+			Hero hero = Heroes.get(data.heroId());
+			if (hero != null) {
+				hero.applyPassives(newPlayer);
+			}
+		}
+		ModNetworking.syncHeroData(newPlayer, data);
+	}
+
 	private static void deactivateAll(ServerPlayer player, HeroData data) {
 		for (ResourceLocation activeId : data.activeAbilities()) {
 			Ability ability = AbilityRegistry.get(activeId);

@@ -60,7 +60,7 @@ public final class DoomsdayHero implements Hero {
 
         @Override
         public float getManaMax() {
-                return 100f;
+                return 0f;
         }
 
         @Override
@@ -90,12 +90,14 @@ public final class DoomsdayHero implements Hero {
         public void applyPassives(Player player) {
                 HeroAttributes.DOOMSDAY.apply(player);
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
+                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
         }
 
         @Override
         public void removePassives(Player player) {
                 HeroAttributes.DOOMSDAY.remove(player);
                 player.removeEffect(MobEffects.REGENERATION);
+                player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
                 if (player instanceof ServerPlayer sp) {
                         com.example.superheroes.effect.DoomsdayAdaptationController.clear(sp);
                         com.example.superheroes.ability.DoomsdayBerserkAbility.clearBuff(sp);

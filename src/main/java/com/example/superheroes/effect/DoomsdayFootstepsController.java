@@ -8,17 +8,15 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public final class DoomsdayFootstepsController {
-	private static final int STEP_INTERVAL_TICKS = 12;
-	private static final double MOVE_THRESHOLD = 0.04;
+	private static final int LOOP_INTERVAL_TICKS = 100;
 
-	private static final Map<UUID, Integer> NEXT_STEP = new HashMap<>();
+	private static final Map<UUID, Integer> NEXT_PLAY = new HashMap<>();
 
 	private DoomsdayFootstepsController() {
 	}
@@ -35,26 +33,16 @@ public final class DoomsdayFootstepsController {
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		UUID id = player.getUUID();
 		if (!data.hasHero() || !DoomsdayHero.ID.equals(data.heroId())) {
-			NEXT_STEP.remove(id);
+			NEXT_PLAY.remove(id);
 			return;
 		}
-		if (!player.onGround()) {
-			NEXT_STEP.remove(id);
-			return;
-		}
-		Vec3 v = player.getDeltaMovement();
-		double horiz = Math.sqrt(v.x * v.x + v.z * v.z);
-		if (horiz < MOVE_THRESHOLD) {
-			NEXT_STEP.remove(id);
-			return;
-		}
-		Integer next = NEXT_STEP.get(id);
+		Integer next = NEXT_PLAY.get(id);
 		if (next != null && player.tickCount < next) {
 			return;
 		}
 		ServerLevel level = player.serverLevel();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				ModSounds.HOMELANDER_IRON_FISTS_CHARGE, SoundSource.PLAYERS, 1.0f, 0.65f);
-		NEXT_STEP.put(id, player.tickCount + STEP_INTERVAL_TICKS);
+				ModSounds.HOMELANDER_IRON_FISTS_CHARGE, SoundSource.PLAYERS, 0.85f, 0.7f);
+		NEXT_PLAY.put(id, player.tickCount + LOOP_INTERVAL_TICKS);
 	}
 }

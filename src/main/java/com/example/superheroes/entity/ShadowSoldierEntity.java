@@ -80,8 +80,8 @@ public class ShadowSoldierEntity extends PathfinderMob {
 		return PathfinderMob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 20.0)
 				.add(Attributes.ARMOR, 5.0)
-				.add(Attributes.MOVEMENT_SPEED, 0.30)
-				.add(Attributes.FLYING_SPEED, 0.40)
+				.add(Attributes.MOVEMENT_SPEED, 0.45)
+				.add(Attributes.FLYING_SPEED, 0.65)
 				.add(Attributes.ATTACK_DAMAGE, 6.0)
 				.add(Attributes.FOLLOW_RANGE, 64.0)
 				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
@@ -210,6 +210,9 @@ public class ShadowSoldierEntity extends PathfinderMob {
 	@Override
 	public void aiStep() {
 		super.aiStep();
+		if (!this.level().isClientSide() && this.tickCount % 10 == 0) {
+			updatePursuitSpeed();
+		}
 		if (this.level().isClientSide()) {
 			if (this.tickCount % 4 == 0) {
 				double x = this.getX() + (this.random.nextDouble() - 0.5) * 0.3;
@@ -263,6 +266,26 @@ public class ShadowSoldierEntity extends PathfinderMob {
 			return ownersAttacker;
 		}
 		return null;
+	}
+
+	private static final net.minecraft.resources.ResourceLocation PURSUIT_MOD =
+			com.example.superheroes.ModId.of("shadow_soldier/pursuit_speed");
+
+	private void updatePursuitSpeed() {
+		net.minecraft.world.entity.ai.attributes.AttributeInstance moveAttr = this.getAttribute(Attributes.MOVEMENT_SPEED);
+		net.minecraft.world.entity.ai.attributes.AttributeInstance flyAttr = this.getAttribute(Attributes.FLYING_SPEED);
+		if (moveAttr != null) moveAttr.removeModifier(PURSUIT_MOD);
+		if (flyAttr != null) flyAttr.removeModifier(PURSUIT_MOD);
+		LivingEntity tgt = this.getTarget();
+		if (tgt == null || !tgt.isAlive()) return;
+		Vec3 v = tgt.getDeltaMovement();
+		double speed = Math.sqrt(v.x * v.x + v.z * v.z);
+		double extra = Math.max(0.30, speed * 6.0);
+		if (extra > 5.0) extra = 5.0;
+		net.minecraft.world.entity.ai.attributes.AttributeModifier mod = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+				PURSUIT_MOD, extra, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+		if (moveAttr != null) moveAttr.addTransientModifier(mod);
+		if (flyAttr != null) flyAttr.addTransientModifier(mod);
 	}
 
 	private boolean isOwner(LivingEntity e) {
