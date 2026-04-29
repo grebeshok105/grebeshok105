@@ -3,6 +3,7 @@ package com.example.superheroes.attachment;
 import com.example.superheroes.ModId;
 import com.example.superheroes.effect.RegulusMadnessState;
 import com.example.superheroes.transform.HeroData;
+import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
@@ -16,6 +17,12 @@ public final class ModAttachments {
 	public static final AttachmentType<RegulusMadnessState> REGULUS_MADNESS = AttachmentRegistry.<RegulusMadnessState>builder()
 			.initializer(() -> RegulusMadnessState.EMPTY)
 			.buildAndRegister(ModId.of("regulus_madness"));
+
+	public static final AttachmentType<Boolean> REGULUS_BONUS_LIFE = AttachmentRegistry.<Boolean>builder()
+			.initializer(() -> Boolean.FALSE)
+			.persistent(Codec.BOOL)
+			.copyOnDeath()
+			.buildAndRegister(ModId.of("regulus_bonus_life"));
 
 	private ModAttachments() {
 	}

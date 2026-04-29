@@ -260,9 +260,9 @@ public final class RegulusMadnessController {
 	private static void finishReading(ServerPlayer player) {
 		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS)
 				.withReading(0L)
-				.withMadness(true)
-				.withBonusLife(true);
+				.withMadness(true);
 		player.setAttached(ModAttachments.REGULUS_MADNESS, state);
+		player.setAttached(ModAttachments.REGULUS_BONUS_LIFE, Boolean.TRUE);
 
 		HeroAttributes.REGULUS_MADNESS.apply(player);
 		player.setHealth(player.getMaxHealth());
@@ -303,11 +303,11 @@ public final class RegulusMadnessController {
 	}
 
 	public static boolean consumeBonusLife(ServerPlayer player) {
-		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
-		if (!state.bonusLifeAvailable()) {
+		Boolean has = player.getAttachedOrCreate(ModAttachments.REGULUS_BONUS_LIFE);
+		if (has == null || !has) {
 			return false;
 		}
-		player.setAttached(ModAttachments.REGULUS_MADNESS, state.withBonusLife(false));
+		player.setAttached(ModAttachments.REGULUS_BONUS_LIFE, Boolean.FALSE);
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.6f, 0.8f);
@@ -320,9 +320,10 @@ public final class RegulusMadnessController {
 
 	public static void sync(ServerPlayer player) {
 		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
+		Boolean bonusLife = player.getAttachedOrCreate(ModAttachments.REGULUS_BONUS_LIFE);
 		ServerPlayNetworking.send(player, new MadnessSyncS2CPayload(
 				state.madness(),
-				state.bonusLifeAvailable(),
+				bonusLife != null && bonusLife,
 				state.readingUntilMs(),
 				state.manaRegenLockUntilMs()
 		));
