@@ -28,8 +28,8 @@ import net.minecraft.world.phys.Vec3;
 
 public final class EyeLasersAbility implements Ability {
 	private static final double RANGE = 64.0;
-	private static final float MIN_DPS = 5.0f;
-	private static final float MAX_DPS = 15.0f;
+	private static final float MIN_DPS = 14.0f;
+	private static final float MAX_DPS = 30.0f;
 	private static final float MADNESS_DAMAGE_MUL = 3.0f;
 	private static final double CHEST_FRACTION = 0.7;
 
@@ -45,12 +45,12 @@ public final class EyeLasersAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 2.5f;
+		return 4.0f;
 	}
 
 	@Override
 	public float costPerTick() {
-		return 0.75f;
+		return 1.5f;
 	}
 
 	@Override

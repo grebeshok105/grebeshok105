@@ -5,12 +5,10 @@
     "sounds": [
       {
         "name": "entity/lightning_bolt/custom_thunder_strike",
-        "stream": true,
         "weight": 1
       },
       {
         "name": "entity/lightning_bolt/custom_thunder_echoy",
-        "stream": true,
         "weight": 1
       }
     ]
@@ -21,12 +19,10 @@
     "sounds": [
       {
         "name": "entity/lightning_bolt/custom_thunder_strike",
-        "stream": true,
         "weight": 1
       },
       {
         "name": "entity/lightning_bolt/custom_thunder_echoy",
-        "stream": true,
         "weight": 1
       }
     ]
