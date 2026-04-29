@@ -7,7 +7,9 @@ import com.example.superheroes.network.MadnessSyncS2CPayload;
 import com.example.superheroes.network.MadnessVisualS2CPayload;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -68,6 +70,21 @@ public final class RegulusMadnessController {
 			for (UUID id : done) {
 				COUNTERS.remove(id);
 			}
+		});
+
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			ServerPlayer player = handler.getPlayer();
+			clearMadness(player);
+		});
+
+		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+			if (entity instanceof ServerPlayer player) {
+				clearMadness(player);
+			}
+		});
+
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			clearMadness(newPlayer);
 		});
 
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
@@ -181,6 +198,9 @@ public final class RegulusMadnessController {
 	private static void tickMadnessAmbient(ServerPlayer player) {
 		ServerLevel level = (ServerLevel) player.level();
 		int t = player.tickCount;
+		if (t % 40 == 0) {
+			applyMadnessEffects(player);
+		}
 		if (t % 2 == 0) {
 			level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
 					player.getX(), player.getY() + 0.2, player.getZ(),
@@ -246,11 +266,7 @@ public final class RegulusMadnessController {
 
 		HeroAttributes.REGULUS_MADNESS.apply(player);
 		player.setHealth(player.getMaxHealth());
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 2, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 2, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 2, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
+		applyMadnessEffects(player);
 
 		ServerLevel level = (ServerLevel) player.level();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -263,18 +279,27 @@ public final class RegulusMadnessController {
 	}
 
 	public static void clearMadness(ServerPlayer player) {
-		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
-		if (state.madness()) {
-			HeroAttributes.REGULUS_MADNESS.remove(player);
-			player.removeEffect(MobEffects.MOVEMENT_SPEED);
-			player.removeEffect(MobEffects.DAMAGE_BOOST);
-			player.removeEffect(MobEffects.JUMP);
-			player.removeEffect(MobEffects.REGENERATION);
-			player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-		}
+		HeroAttributes.REGULUS_MADNESS.remove(player);
+		player.removeEffect(MobEffects.MOVEMENT_SPEED);
+		player.removeEffect(MobEffects.DAMAGE_BOOST);
+		player.removeEffect(MobEffects.JUMP);
+		player.removeEffect(MobEffects.REGENERATION);
+		player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+		LAST_DAMAGER.remove(player.getUUID());
+		LAST_DAMAGER_TICK.remove(player.getUUID());
+		DODGE_COOLDOWN.remove(player.getUUID());
+		COUNTERS.remove(player.getUUID());
 		player.setAttached(ModAttachments.REGULUS_MADNESS, RegulusMadnessState.EMPTY);
 		ServerPlayNetworking.send(player, new MadnessVisualS2CPayload(MadnessVisualS2CPayload.EVENT_EXIT));
 		sync(player);
+	}
+
+	private static void applyMadnessEffects(ServerPlayer player) {
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 60, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.JUMP, 60, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 0, true, false, true));
 	}
 
 	public static boolean consumeBonusLife(ServerPlayer player) {
