@@ -76,7 +76,7 @@ public final class RulersAuthorityAbility implements Ability {
 		Vec3 p = target.position();
 		level.sendParticles(ParticleTypes.DRAGON_BREATH, p.x, p.y + 1, p.z, 80, 0.6, 0.6, 0.6, 0.05);
 		level.sendParticles(ParticleTypes.PORTAL, p.x, p.y + 1, p.z, 60, 0.6, 1.5, 0.6, 0.4);
-		level.playSound(null, p.x, p.y, p.z, SoundEvents.WITHER_SHOOT, SoundSource.PLAYERS, 1.0f, 1.4f);
+		level.playSound(null, p.x, p.y, p.z, SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 1.0f, 0.7f);
 		level.playSound(null, p.x, p.y, p.z, SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.2f, 0.6f);
 
 		AbilityCooldowns.setCooldownTicks(player, AbilityIds.RULERS_AUTHORITY, COOLDOWN_TICKS);

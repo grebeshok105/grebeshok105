@@ -1,5 +1,6 @@
 package com.example.superheroes.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -12,18 +13,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -33,22 +34,31 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Shadow Soldier — теневой солдат Сон Джи Ву. Летает, не наносит fall damage,
- * имеет хозяина и фокус-цель. 3 вариант текстуры (рандомно при создании).
+ * Теневой солдат Сон Джи Ву.
  *
- * Урон, который должен получить хозяин, перенаправляется на солдат через
- * {@link com.example.superheroes.effect.SungJinwooController} (без радиуса).
+ *  - Расширяет PathfinderMob (НЕ Monster), чтобы голем/волк/etc по умолчанию
+ *    не агрились на него. После того как сам солдат ударит моба — у этого
+ *    моба сработает HurtByTargetGoal и он начнёт бить тень в ответ.
+ *  - Полёт + наземные варианты (флаг grounded).
+ *  - Формация полукруга вокруг хозяина: каждый солдат хранит slotIndex/slotCount.
+ *  - Атакует: focus → последний хёрт-моб владельца → последний агрессор владельца.
+ *  - Урон от хозяина игнорирует.
  */
-public class ShadowSoldierEntity extends Monster {
+public class ShadowSoldierEntity extends PathfinderMob {
 	public static final int VARIANT_COUNT = 3;
-	public static final double FOLLOW_RADIUS = 12.0;
+	public static final double FOLLOW_RADIUS = 6.0;
 
 	private static final EntityDataAccessor<Byte> DATA_VARIANT =
+			SynchedEntityData.defineId(ShadowSoldierEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> DATA_GROUNDED =
 			SynchedEntityData.defineId(ShadowSoldierEntity.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Optional<UUID>> DATA_OWNER =
 			SynchedEntityData.defineId(ShadowSoldierEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 	private static final EntityDataAccessor<Optional<UUID>> DATA_FOCUS =
 			SynchedEntityData.defineId(ShadowSoldierEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+
+	private int slotIndex = 0;
+	private int slotCount = 1;
 
 	public ShadowSoldierEntity(EntityType<? extends ShadowSoldierEntity> type, Level level) {
 		super(type, level);
@@ -67,7 +77,7 @@ public class ShadowSoldierEntity extends Monster {
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
-		return Monster.createMonsterAttributes()
+		return PathfinderMob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 20.0)
 				.add(Attributes.ARMOR, 5.0)
 				.add(Attributes.MOVEMENT_SPEED, 0.30)
@@ -81,6 +91,7 @@ public class ShadowSoldierEntity extends Monster {
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_VARIANT, (byte) 0);
+		builder.define(DATA_GROUNDED, (byte) 0);
 		builder.define(DATA_OWNER, Optional.empty());
 		builder.define(DATA_FOCUS, Optional.empty());
 	}
@@ -91,6 +102,11 @@ public class ShadowSoldierEntity extends Monster {
 		this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+		// Тень мстит тому, кто её ударил — но targetSelector не должен
+		// сам сканировать чужих мобов. HurtByTargetGoal реагирует ТОЛЬКО на
+		// агрессора (после первого удара по тени), так что моба «по умолчанию»
+		// не атакуем — только в ответ.
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 	}
 
 	public int getVariant() {
@@ -99,6 +115,20 @@ public class ShadowSoldierEntity extends Monster {
 
 	public void setVariant(int variant) {
 		this.entityData.set(DATA_VARIANT, (byte) (variant % VARIANT_COUNT));
+	}
+
+	public boolean isGrounded() {
+		return this.entityData.get(DATA_GROUNDED) != 0;
+	}
+
+	public void setGrounded(boolean grounded) {
+		this.entityData.set(DATA_GROUNDED, (byte) (grounded ? 1 : 0));
+		this.setNoGravity(!grounded);
+	}
+
+	public void setSlot(int index, int count) {
+		this.slotIndex = index;
+		this.slotCount = Math.max(1, count);
 	}
 
 	@Nullable
@@ -139,7 +169,6 @@ public class ShadowSoldierEntity extends Monster {
 
 	@Override
 	public boolean checkSpawnRules(net.minecraft.world.level.LevelAccessor level, net.minecraft.world.entity.MobSpawnType spawnReason) {
-		// Не спавнятся натурально — только через Arise
 		return false;
 	}
 
@@ -160,22 +189,22 @@ public class ShadowSoldierEntity extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.WITHER_AMBIENT;
+		return null;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.WITHER_HURT;
+		return SoundEvents.ENDERMAN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.WITHER_DEATH;
+		return SoundEvents.ENDERMAN_DEATH;
 	}
 
 	@Override
 	protected float getSoundVolume() {
-		return 0.25f;
+		return 0.18f;
 	}
 
 	@Override
@@ -192,35 +221,93 @@ public class ShadowSoldierEntity extends Monster {
 		}
 
 		Player owner = getOwner();
-		LivingEntity focus = getFocus();
-
-		// Цель: focus → последний damager хозяина → null
-		LivingEntity target = (focus != null) ? focus : null;
-		if (target == null && owner != null) {
-			LivingEntity lastDamager = owner.getLastHurtByMob();
-			if (lastDamager != null && lastDamager.isAlive() && lastDamager != owner) {
-				target = lastDamager;
-			}
-		}
-		if (target != this.getTarget()) {
-			this.setTarget(target);
+		LivingEntity desired = chooseTarget(owner);
+		// Подхватываем активный агрессор-таргет (HurtByTargetGoal) — не сбрасываем его.
+		LivingEntity current = this.getTarget();
+		boolean keepingHurtTarget = current != null && current.isAlive()
+				&& current == this.getLastHurtByMob();
+		if (!keepingHurtTarget && desired != current) {
+			this.setTarget(desired);
 		}
 
-		// Если цели нет — следовать за хозяином в радиусе
-		if (target == null && owner != null) {
-			double d2 = this.distanceToSqr(owner);
+		// Если цели нет — занять свою позицию в полукруге за хозяином
+		if (this.getTarget() == null && owner != null) {
+			Vec3 slotPos = computeSlotPosition(owner);
+			double d2 = this.position().distanceToSqr(slotPos);
 			if (d2 > FOLLOW_RADIUS * FOLLOW_RADIUS) {
-				Vec3 dir = owner.position().add(0, 1.5, 0).subtract(this.position()).normalize().scale(0.5);
-				this.move(MoverType.SELF, dir);
+				if (isGrounded()) {
+					this.getNavigation().moveTo(slotPos.x, slotPos.y, slotPos.z, 1.1);
+				} else {
+					Vec3 dir = slotPos.subtract(this.position()).normalize().scale(0.45);
+					this.move(MoverType.SELF, dir);
+				}
 			}
 		}
 	}
 
+	@Nullable
+	private LivingEntity chooseTarget(@Nullable Player owner) {
+		LivingEntity focus = getFocus();
+		if (focus != null && focus.isAlive() && !isOwner(focus)) return focus;
+		if (owner == null) return null;
+		// Кого хозяин последним ударил
+		LivingEntity attackedByOwner = owner.getLastHurtMob();
+		if (attackedByOwner != null && attackedByOwner.isAlive() && !isOwner(attackedByOwner)
+				&& !(attackedByOwner instanceof ShadowSoldierEntity)) {
+			return attackedByOwner;
+		}
+		// Кто последний ударил хозяина
+		LivingEntity ownersAttacker = owner.getLastHurtByMob();
+		if (ownersAttacker != null && ownersAttacker.isAlive() && !isOwner(ownersAttacker)
+				&& !(ownersAttacker instanceof ShadowSoldierEntity)) {
+			return ownersAttacker;
+		}
+		return null;
+	}
+
+	private boolean isOwner(LivingEntity e) {
+		UUID id = getOwnerId();
+		return id != null && id.equals(e.getUUID());
+	}
+
+	private Vec3 computeSlotPosition(Player owner) {
+		double radius = isGrounded() ? 3.0 : 4.0;
+		// Полукруг сзади хозяина: yaw + 180 ± 90°
+		double baseYawRad = Math.toRadians(owner.getYRot() + 180.0);
+		double slotAngle = (slotCount > 1)
+				? (slotIndex - (slotCount - 1) / 2.0) * (Math.PI / Math.max(1, slotCount - 1)) * 0.95
+				: 0.0;
+		double angle = baseYawRad + slotAngle;
+		double dx = -Math.sin(angle) * radius;
+		double dz = Math.cos(angle) * radius;
+		double targetX = owner.getX() + dx;
+		double targetZ = owner.getZ() + dz;
+		double targetY;
+		if (isGrounded()) {
+			BlockPos here = BlockPos.containing(targetX, owner.getY() + 1.0, targetZ);
+			targetY = owner.getY();
+			// Найдём ближайшую стоячую поверхность
+			for (int i = 0; i < 4; i++) {
+				BlockPos below = here.below(i);
+				if (this.level().getBlockState(below).isSolid()) {
+					targetY = below.getY() + 1.0;
+					break;
+				}
+			}
+		} else {
+			targetY = owner.getY() + 2.5 + ((slotIndex % 3) * 0.4);
+		}
+		return new Vec3(targetX, targetY, targetZ);
+	}
+
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		// Не получать урон от хозяина
 		Entity ent = source.getEntity();
 		if (ent != null && ent.getUUID().equals(getOwnerId())) {
+			return false;
+		}
+		// Тени не бьют сами себя
+		if (ent instanceof ShadowSoldierEntity other && hasSameOwner(other)) {
 			return false;
 		}
 		return super.hurt(source, amount);
@@ -229,13 +316,23 @@ public class ShadowSoldierEntity extends Monster {
 	@Override
 	public boolean canAttack(LivingEntity target) {
 		if (target.getUUID().equals(getOwnerId())) return false;
+		if (target instanceof ShadowSoldierEntity other && hasSameOwner(other)) return false;
 		return super.canAttack(target);
+	}
+
+	private boolean hasSameOwner(ShadowSoldierEntity other) {
+		UUID a = this.getOwnerId();
+		UUID b = other.getOwnerId();
+		return a != null && a.equals(b);
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putByte("Variant", (byte) getVariant());
+		tag.putByte("Grounded", (byte) (isGrounded() ? 1 : 0));
+		tag.putInt("SlotIndex", slotIndex);
+		tag.putInt("SlotCount", slotCount);
 		UUID owner = getOwnerId();
 		if (owner != null) tag.putUUID("Owner", owner);
 	}
@@ -244,6 +341,9 @@ public class ShadowSoldierEntity extends Monster {
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		setVariant(tag.getByte("Variant"));
+		setGrounded(tag.getByte("Grounded") != 0);
+		this.slotIndex = tag.getInt("SlotIndex");
+		this.slotCount = Math.max(1, tag.getInt("SlotCount"));
 		if (tag.hasUUID("Owner")) {
 			setOwnerId(tag.getUUID("Owner"));
 		}
