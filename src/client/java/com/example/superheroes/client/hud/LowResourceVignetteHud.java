@@ -20,6 +20,10 @@ public final class LowResourceVignetteHud {
 		if (!ClientHeroState.data().hasHero()) {
 			return;
 		}
+		ResourceLocation heroId = ClientHeroState.data().heroId();
+		if (heroId != null && "homelander".equals(heroId.getPath())) {
+			return;
+		}
 		float energyMax = ClientHeroState.energyMax();
 		float manaMax = ClientHeroState.manaMax();
 		float energyPct = energyMax <= 0f ? 1f : ClientHeroState.data().energy() / energyMax;

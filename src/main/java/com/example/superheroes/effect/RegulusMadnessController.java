@@ -298,7 +298,7 @@ public final class RegulusMadnessController {
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 60, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.JUMP, 60, 2, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 0, true, false, true));
 	}
 

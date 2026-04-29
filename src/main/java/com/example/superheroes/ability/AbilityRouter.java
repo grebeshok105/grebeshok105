@@ -36,6 +36,9 @@ public final class AbilityRouter {
 			deactivate(player, abilityId);
 			return;
 		}
+		if (data.isActive(AbilityIds.IRON_FISTS) && !abilityId.equals(AbilityIds.IRON_FISTS)) {
+			return;
+		}
 		if (AbilityCooldowns.isOnCooldown(player, abilityId)) {
 			return;
 		}

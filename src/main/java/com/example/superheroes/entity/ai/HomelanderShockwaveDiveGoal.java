@@ -2,6 +2,7 @@ package com.example.superheroes.entity.ai;
 
 import com.example.superheroes.entity.HomelanderBossEntity;
 import com.example.superheroes.physics.ShockwaveUtil;
+import com.example.superheroes.sound.ModSounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -90,8 +91,11 @@ public class HomelanderShockwaveDiveGoal extends Goal {
 				double dz = diveTarget.z - boss.getZ();
 				double horiz2 = dx * dx + dz * dz;
 				if (boss.getY() <= diveTarget.y + 1.0 || (boss.onGround() && horiz2 < 4.0)) {
-					ShockwaveUtil.detonateMob(boss, (ServerLevel) boss.level(),
+					ServerLevel sl = (ServerLevel) boss.level();
+					ShockwaveUtil.detonateMob(boss, sl,
 							boss.position(), IMPACT_RADIUS, IMPACT_DAMAGE, false);
+					sl.playSound(null, boss.getX(), boss.getY(), boss.getZ(),
+							ModSounds.HOMELANDER_IRON_FISTS_IMPACT, SoundSource.HOSTILE, 1.6f, 0.85f);
 					phase = 2;
 				}
 			}
