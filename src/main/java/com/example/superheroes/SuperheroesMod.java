@@ -56,6 +56,7 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.SungJinwooController.init();
 		com.example.superheroes.effect.MonarchsDomainController.init();
 		com.example.superheroes.effect.DoomsdayAdaptationController.init();
+		com.example.superheroes.effect.DoomsdayFootstepsController.init();
 		SuperheroesCommands.init();
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

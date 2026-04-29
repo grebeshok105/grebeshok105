@@ -53,6 +53,10 @@ public final class FlightController {
 			ACTIVE_SINCE.remove(id);
 			return;
 		}
+		if (!UraniumDefenseController.isUnderUraniumThreat(player)) {
+			ACTIVE_SINCE.remove(id);
+			return;
+		}
 		if (!active) {
 			ACTIVE_SINCE.remove(id);
 			return;

@@ -92,6 +92,10 @@ public final class UraniumDefenseController {
 		});
 	}
 
+	public static boolean isUnderUraniumThreat(Player player) {
+		return lastPressured.contains(player.getUUID());
+	}
+
 	public static boolean isHomelander(Player player) {
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		return data.hasHero() && HomelanderHero.ID.equals(data.heroId());

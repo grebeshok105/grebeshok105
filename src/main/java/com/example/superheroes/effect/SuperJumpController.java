@@ -1,6 +1,7 @@
 package com.example.superheroes.effect;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.hero.DoomsdayHero;
 import com.example.superheroes.hero.RegulusHero;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -46,7 +47,10 @@ public final class SuperJumpController {
 
 	public static void activate(ServerPlayer player) {
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-		if (!data.hasHero() || !RegulusHero.ID.equals(data.heroId())) {
+		if (!data.hasHero()) {
+			return;
+		}
+		if (!RegulusHero.ID.equals(data.heroId()) && !DoomsdayHero.ID.equals(data.heroId())) {
 			return;
 		}
 		UUID id = player.getUUID();
