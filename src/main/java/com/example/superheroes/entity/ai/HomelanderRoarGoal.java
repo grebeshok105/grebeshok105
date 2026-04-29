@@ -1,6 +1,7 @@
 package com.example.superheroes.entity.ai;
 
 import com.example.superheroes.entity.HomelanderBossEntity;
+import com.example.superheroes.sound.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -53,7 +54,7 @@ public class HomelanderRoarGoal extends Goal {
 		fired = false;
 		ServerLevel sl = (ServerLevel) boss.level();
 		sl.playSound(null, boss.getX(), boss.getY(), boss.getZ(),
-				SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 1.6f, 0.8f);
+				ModSounds.HOMELANDER_ROAR_DEEP, SoundSource.HOSTILE, 1.8f, 0.95f);
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class HomelanderRoarGoal extends Goal {
 				e.push(push.x, push.y, push.z);
 				e.hurtMarked = true;
 				if (e instanceof Player) {
-					le.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 80, 0));
+					le.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0));
 					le.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
 					le.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 80, 0));
 				}
@@ -97,7 +98,9 @@ public class HomelanderRoarGoal extends Goal {
 			sl.sendParticles(ParticleTypes.SONIC_BOOM, c.x, c.y + 1.0, c.z,
 					1, 0.0, 0.0, 0.0, 0.0);
 			sl.playSound(null, c.x, c.y, c.z,
-					SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 1.4f, 0.7f);
+					ModSounds.HOMELANDER_ROAR, SoundSource.HOSTILE, 1.8f, 0.85f);
+			sl.playSound(null, c.x, c.y, c.z,
+					SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 1.0f, 0.7f);
 		}
 		phaseTick++;
 	}

@@ -4,6 +4,7 @@ import com.example.superheroes.entity.ai.HomelanderBlockThrowGoal;
 import com.example.superheroes.entity.ai.HomelanderEyeLaserGoal;
 import com.example.superheroes.entity.ai.HomelanderFlightGoal;
 import com.example.superheroes.entity.ai.HomelanderGroundMagnetGoal;
+import com.example.superheroes.entity.ai.HomelanderHandClapGoal;
 import com.example.superheroes.entity.ai.HomelanderHeatVisionSweepGoal;
 import com.example.superheroes.entity.ai.HomelanderLightningCallGoal;
 import com.example.superheroes.entity.ai.HomelanderRoarGoal;
@@ -48,6 +49,7 @@ public class HomelanderBossEntity extends Monster {
 	private int magnetCooldown;
 	private int throwCooldown;
 	private int roarCooldown;
+	private int handClapCooldown;
 
 	public HomelanderBossEntity(EntityType<? extends HomelanderBossEntity> type, Level level) {
 		super(type, level);
@@ -61,6 +63,7 @@ public class HomelanderBossEntity extends Monster {
 		this.magnetCooldown = 280;
 		this.throwCooldown = 200;
 		this.roarCooldown = 220;
+		this.handClapCooldown = 180;
 	}
 
 	@Override
@@ -92,6 +95,7 @@ public class HomelanderBossEntity extends Monster {
 		this.goalSelector.addGoal(1, new HomelanderShockwaveDiveGoal(this));
 		this.goalSelector.addGoal(1, new HomelanderHeatVisionSweepGoal(this));
 		this.goalSelector.addGoal(1, new HomelanderSonicSlamGoal(this));
+		this.goalSelector.addGoal(1, new HomelanderHandClapGoal(this));
 		this.goalSelector.addGoal(2, new HomelanderEyeLaserGoal(this));
 		this.goalSelector.addGoal(2, new HomelanderLightningCallGoal(this));
 		this.goalSelector.addGoal(2, new HomelanderBlockThrowGoal(this));
@@ -113,6 +117,7 @@ public class HomelanderBossEntity extends Monster {
 		if (magnetCooldown > 0) magnetCooldown--;
 		if (throwCooldown > 0) throwCooldown--;
 		if (roarCooldown > 0) roarCooldown--;
+		if (handClapCooldown > 0) handClapCooldown--;
 	}
 
 	@Override
@@ -231,5 +236,13 @@ public class HomelanderBossEntity extends Monster {
 
 	public void setRoarCooldown(int ticks) {
 		this.roarCooldown = ticks;
+	}
+
+	public int getHandClapCooldown() {
+		return handClapCooldown;
+	}
+
+	public void setHandClapCooldown(int ticks) {
+		this.handClapCooldown = ticks;
 	}
 }
