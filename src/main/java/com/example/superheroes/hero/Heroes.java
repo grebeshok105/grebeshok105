@@ -13,6 +13,7 @@ public final class Heroes {
 	public static final IronManHero IRON_MAN = new IronManHero();
 	public static final RegulusHero REGULUS = new RegulusHero();
 	public static final SungJinwooHero SUNG_JINWOO = new SungJinwooHero();
+	public static final DoomsdayHero DOOMSDAY = new DoomsdayHero();
 
 	private Heroes() {
 	}
@@ -22,6 +23,7 @@ public final class Heroes {
 		register(IRON_MAN);
 		register(REGULUS);
 		register(SUNG_JINWOO);
+		register(DOOMSDAY);
 	}
 
 	public static void register(Hero hero) {

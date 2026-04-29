@@ -34,6 +34,11 @@ public final class AbilityRegistry {
 	public static final ShadowExtractionAbility SHADOW_EXTRACTION = new ShadowExtractionAbility();
 	public static final MonarchsDomainAbility MONARCHS_DOMAIN = new MonarchsDomainAbility();
 
+	public static final DoomsdaySmashAbility DOOMSDAY_SMASH = new DoomsdaySmashAbility();
+	public static final DoomsdayRoarAbility DOOMSDAY_ROAR = new DoomsdayRoarAbility();
+	public static final DoomsdayBerserkAbility DOOMSDAY_BERSERK = new DoomsdayBerserkAbility();
+	public static final DoomsdayBoneSpikeAbility DOOMSDAY_BONE_SPIKE = new DoomsdayBoneSpikeAbility();
+
 	private AbilityRegistry() {
 	}
 
@@ -59,6 +64,10 @@ public final class AbilityRegistry {
 		register(RULERS_AUTHORITY);
 		register(SHADOW_EXTRACTION);
 		register(MONARCHS_DOMAIN);
+		register(DOOMSDAY_SMASH);
+		register(DOOMSDAY_ROAR);
+		register(DOOMSDAY_BERSERK);
+		register(DOOMSDAY_BONE_SPIKE);
 	}
 
 	public static void register(Ability ability) {
