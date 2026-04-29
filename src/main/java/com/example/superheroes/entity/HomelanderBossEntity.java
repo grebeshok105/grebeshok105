@@ -2,7 +2,10 @@ package com.example.superheroes.entity;
 
 import com.example.superheroes.entity.ai.HomelanderEyeLaserGoal;
 import com.example.superheroes.entity.ai.HomelanderFlightGoal;
+import com.example.superheroes.entity.ai.HomelanderHeatVisionSweepGoal;
+import com.example.superheroes.entity.ai.HomelanderLightningCallGoal;
 import com.example.superheroes.entity.ai.HomelanderShockwaveDiveGoal;
+import com.example.superheroes.entity.ai.HomelanderSonicSlamGoal;
 import com.example.superheroes.item.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,13 +39,19 @@ public class HomelanderBossEntity extends Monster {
 
 	private int laserCooldown;
 	private int shockwaveCooldown;
+	private int sweepCooldown;
+	private int lightningCooldown;
+	private int slamCooldown;
 
 	public HomelanderBossEntity(EntityType<? extends HomelanderBossEntity> type, Level level) {
 		super(type, level);
-		this.moveControl = new FlyingMoveControl(this, 20, true);
+		this.moveControl = new FlyingMoveControl(this, 30, true);
 		this.setNoGravity(true);
 		this.xpReward = 50;
 		this.shockwaveCooldown = 200;
+		this.sweepCooldown = 240;
+		this.lightningCooldown = 100;
+		this.slamCooldown = 160;
 	}
 
 	@Override
@@ -59,19 +68,22 @@ public class HomelanderBossEntity extends Monster {
 				.add(Attributes.MAX_HEALTH, 500.0)
 				.add(Attributes.ARMOR, 100.0)
 				.add(Attributes.ARMOR_TOUGHNESS, 12.0)
-				.add(Attributes.ATTACK_DAMAGE, 12.0)
-				.add(Attributes.ATTACK_KNOCKBACK, 1.5)
+				.add(Attributes.ATTACK_DAMAGE, 14.0)
+				.add(Attributes.ATTACK_KNOCKBACK, 2.0)
 				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
-				.add(Attributes.MOVEMENT_SPEED, 0.4)
-				.add(Attributes.FLYING_SPEED, 0.6)
-				.add(Attributes.FOLLOW_RANGE, 64.0);
+				.add(Attributes.MOVEMENT_SPEED, 0.8)
+				.add(Attributes.FLYING_SPEED, 1.4)
+				.add(Attributes.FOLLOW_RANGE, 96.0);
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new HomelanderShockwaveDiveGoal(this));
+		this.goalSelector.addGoal(1, new HomelanderHeatVisionSweepGoal(this));
+		this.goalSelector.addGoal(1, new HomelanderSonicSlamGoal(this));
 		this.goalSelector.addGoal(2, new HomelanderEyeLaserGoal(this));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2, true));
+		this.goalSelector.addGoal(2, new HomelanderLightningCallGoal(this));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.4, true));
 		this.goalSelector.addGoal(4, new HomelanderFlightGoal(this));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 24f));
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -81,12 +93,11 @@ public class HomelanderBossEntity extends Monster {
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (laserCooldown > 0) {
-			laserCooldown--;
-		}
-		if (shockwaveCooldown > 0) {
-			shockwaveCooldown--;
-		}
+		if (laserCooldown > 0) laserCooldown--;
+		if (shockwaveCooldown > 0) shockwaveCooldown--;
+		if (sweepCooldown > 0) sweepCooldown--;
+		if (lightningCooldown > 0) lightningCooldown--;
+		if (slamCooldown > 0) slamCooldown--;
 	}
 
 	@Override
@@ -157,5 +168,29 @@ public class HomelanderBossEntity extends Monster {
 
 	public void setShockwaveCooldown(int ticks) {
 		this.shockwaveCooldown = ticks;
+	}
+
+	public int getSweepCooldown() {
+		return sweepCooldown;
+	}
+
+	public void setSweepCooldown(int ticks) {
+		this.sweepCooldown = ticks;
+	}
+
+	public int getLightningCooldown() {
+		return lightningCooldown;
+	}
+
+	public void setLightningCooldown(int ticks) {
+		this.lightningCooldown = ticks;
+	}
+
+	public int getSlamCooldown() {
+		return slamCooldown;
+	}
+
+	public void setSlamCooldown(int ticks) {
+		this.slamCooldown = ticks;
 	}
 }
