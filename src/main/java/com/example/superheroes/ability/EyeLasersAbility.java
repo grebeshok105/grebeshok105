@@ -90,9 +90,10 @@ public final class EyeLasersAbility implements Ability {
 	@Override
 	public void onTickActive(ServerPlayer player) {
 		boolean madness = ModEffects.isMadness(player);
+		boolean uraniumThreat = UraniumDefenseController.isUnderUraniumThreat(player);
 		boolean fire;
 		boolean phaseStart = false;
-		if (madness) {
+		if (madness || !uraniumThreat) {
 			PULSE_TICK.remove(player.getUUID());
 			fire = true;
 		} else {
