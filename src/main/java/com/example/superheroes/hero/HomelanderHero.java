@@ -53,7 +53,13 @@ public final class HomelanderHero implements Hero {
 
 	@Override
 	public List<ResourceLocation> getAbilities() {
-		return List.of(AbilityIds.FLIGHT, AbilityIds.EYE_LASERS, AbilityIds.X_RAY);
+		return List.of(
+				AbilityIds.FLIGHT,
+				AbilityIds.EYE_LASERS,
+				AbilityIds.X_RAY,
+				AbilityIds.IRON_FISTS,
+				AbilityIds.HAND_CLAP,
+				AbilityIds.STUNNING_ROAR);
 	}
 
 	@Override
