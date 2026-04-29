@@ -136,5 +136,10 @@
 	"superheroes.madness.voice.15": "I will kill you two hundred times if I must.",
 	"superheroes.madness.voice.16": "Do not move. That is my right.",
 	"superheroes.madness.voice.17": "A sin? No. This is justice.",
-	"superheroes.madness.voice.18": "Every breath you take is my gift."
+	"superheroes.madness.voice.18": "Every breath you take is my gift.",
+	"entity.superheroes.homelander_boss": "Homelander",
+	"item.superheroes.vought_signal": "Vought Signal",
+	"item.superheroes.vought_signal.lore.line1": "Emergency beacon — Vought International.",
+	"item.superheroes.vought_signal.lore.usage": "▶ Right-click on a block — summons Homelander",
+	"item.superheroes.homelander_boss_spawn_egg": "Homelander Spawn Egg"
 }

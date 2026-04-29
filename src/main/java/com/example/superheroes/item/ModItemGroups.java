@@ -27,6 +27,8 @@ public final class ModItemGroups {
 				output.accept(ModItems.URANIUM_DAGGER);
 				output.accept(ModItems.REGULUS_SUIT);
 				output.accept(ModItems.EVANGELION);
+				output.accept(ModItems.VOUGHT_SIGNAL);
+				output.accept(ModItems.HOMELANDER_BOSS_SPAWN_EGG);
 			})
 			.build();
 
