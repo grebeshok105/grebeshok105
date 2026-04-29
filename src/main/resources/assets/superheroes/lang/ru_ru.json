@@ -137,9 +137,9 @@
 	"superheroes.madness.voice.16": "Не шевелись. Это моё право.",
 	"superheroes.madness.voice.17": "Грех? Нет. Это справедливость.",
 	"superheroes.madness.voice.18": "Каждый твой вздох — подарок от меня.",
-	"entity.superheroes.homelander_boss": "Хоумлендер",
+	"entity.superheroes.homelander_boss": "Заражённый Хоумлендер",
 	"item.superheroes.vought_signal": "Сигнал Vought",
-	"item.superheroes.vought_signal.lore.line1": "Аварийный маяк — Vought International.",
-	"item.superheroes.vought_signal.lore.usage": "▶ ПКМ по блоку — призывает Хоумлендера",
-	"item.superheroes.homelander_boss_spawn_egg": "Яйцо призыва: Хоумлендер"
+	"item.superheroes.vought_signal.lore.line1": "Карантинный маяк — Vought International.",
+	"item.superheroes.vought_signal.lore.usage": "▶ ПКМ по блоку — призывает Заражённого Хоумлендера",
+	"item.superheroes.homelander_boss_spawn_egg": "Яйцо призыва: Заражённый Хоумлендер"
 }

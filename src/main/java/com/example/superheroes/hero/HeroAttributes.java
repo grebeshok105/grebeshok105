@@ -25,8 +25,8 @@ public final class HeroAttributes {
 	public static final ResourceLocation REGULUS_MADNESS_DAMAGE = ModId.of("modifiers/regulus/madness_damage");
 
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_DAMAGE, HOMELANDER_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, HOMELANDER_SPEED, 0.20, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.MAX_HEALTH, HOMELANDER_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)

@@ -44,6 +44,9 @@ public final class AbilityRouter {
 				&& (ability.costOnActivate() > 0f || ability.costPerTick() > 0f)) {
 			return;
 		}
+		if (!ability.canActivate(player)) {
+			return;
+		}
 		float cost = ability.costOnActivate();
 		if (cost > 0f) {
 			if (!abilityId.equals(AbilityIds.UNIBEAM) && hero.getAbilities().contains(AbilityIds.UNIBEAM)) {

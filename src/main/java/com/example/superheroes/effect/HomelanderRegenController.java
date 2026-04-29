@@ -28,16 +28,21 @@ public final class HomelanderRegenController {
 
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			if (server.getTickCount() % CHECK_INTERVAL != 0) return;
+			boolean checkRegen = server.getTickCount() % CHECK_INTERVAL == 0;
 			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-				tickPlayer(player);
+				HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
+				boolean isHomelander = data.hasHero() && HomelanderHero.ID.equals(data.heroId());
+				if (isHomelander) {
+					player.getFoodData().setSaturation(0f);
+				}
+				if (checkRegen) {
+					tickPlayer(player, isHomelander);
+				}
 			}
 		});
 	}
 
-	private static void tickPlayer(ServerPlayer player) {
-		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
-		boolean isHomelander = data.hasHero() && HomelanderHero.ID.equals(data.heroId());
+	private static void tickPlayer(ServerPlayer player, boolean isHomelander) {
 		UUID id = player.getUUID();
 		if (!isHomelander) {
 			if (ACTIVE.remove(id)) {

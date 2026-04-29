@@ -37,7 +37,7 @@ import net.minecraft.world.level.Level;
 public class HomelanderBossEntity extends Monster {
 	private final ServerBossEvent bossEvent = new ServerBossEvent(
 			Component.translatable("entity.superheroes.homelander_boss"),
-			BossEvent.BossBarColor.RED,
+			BossEvent.BossBarColor.GREEN,
 			BossEvent.BossBarOverlay.NOTCHED_10);
 
 	private int laserCooldown;

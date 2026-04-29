@@ -8,11 +8,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
 
 public final class CounterStrikeAbility implements Ability {
 	private static final double SEARCH_RANGE = 120.0;
@@ -38,6 +35,15 @@ public final class CounterStrikeAbility implements Ability {
 	}
 
 	public static final int COOLDOWN_TICKS = 30 * 20;
+
+	@Override
+	public boolean canActivate(ServerPlayer player) {
+		RegulusMadnessState state = player.getAttachedOrCreate(ModAttachments.REGULUS_MADNESS);
+		if (!state.madness()) {
+			return false;
+		}
+		return findTarget(player) != null;
+	}
 
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
@@ -69,7 +75,7 @@ public final class CounterStrikeAbility implements Ability {
 		LivingEntity best = null;
 		double bestDist = SEARCH_RANGE * SEARCH_RANGE;
 		for (Entity e : level.getEntities(player, box, ent -> ent != player && ent.isAlive()
-				&& !ent.isSpectator() && ent instanceof LivingEntity && !(ent instanceof Player))) {
+				&& !ent.isSpectator() && ent instanceof LivingEntity)) {
 			double d = e.distanceToSqr(player);
 			if (d < bestDist) {
 				bestDist = d;
