@@ -44,6 +44,7 @@ public final class SungJinwooController {
 
 	private static final Map<UUID, List<UUID>> ARMY = new ConcurrentHashMap<>();
 	private static final Set<UUID> SUMMONED = ConcurrentHashMap.newKeySet();
+	private static final Set<UUID> PHASE2 = ConcurrentHashMap.newKeySet();
 	private static final Random RNG = new Random();
 
 	private SungJinwooController() {
@@ -63,9 +64,10 @@ public final class SungJinwooController {
 			if (victim == null) return true;
 			Entity src = source.getEntity();
 			if (src != null && src.getUUID().equals(victim.getUUID())) return true;
-			DamageSource diverted = src != null
-					? player.damageSources().mobAttack(victim)
-					: player.damageSources().generic();
+			DamageSource diverted = source;
+			if (src != null && src.getUUID().equals(player.getUUID())) {
+				diverted = player.damageSources().generic();
+			}
 			victim.hurt(diverted, amount);
 			ServerLevel level = player.serverLevel();
 			level.sendParticles(ParticleTypes.WARPED_SPORE, player.getX(), player.getY() + 1.0, player.getZ(),
@@ -103,6 +105,23 @@ public final class SungJinwooController {
 
 		boolean hasShadows = ids != null && !ids.isEmpty();
 		broadcastArmyState(player, hasShadows, ids == null ? 0 : ids.size());
+	}
+
+	public static void enterPhase2(ServerPlayer player) {
+		if (!isSung(player)) return;
+		if (PHASE2.add(player.getUUID())) {
+			List<UUID> ids = ARMY.get(player.getUUID());
+			boolean hasShadows = ids != null && !ids.isEmpty();
+			broadcastArmyState(player, hasShadows, ids == null ? 0 : ids.size());
+		}
+	}
+
+	public static boolean isPhase2(ServerPlayer player) {
+		return PHASE2.contains(player.getUUID());
+	}
+
+	public static void resetPhase(ServerPlayer player) {
+		PHASE2.remove(player.getUUID());
 	}
 
 	public static void summonInitialArmy(ServerPlayer player) {
@@ -222,14 +241,16 @@ public final class SungJinwooController {
 	}
 
 	private static void disbandIfPresent(ServerPlayer player) {
-		if (ARMY.containsKey(player.getUUID()) || SUMMONED.contains(player.getUUID())) {
+		if (ARMY.containsKey(player.getUUID()) || SUMMONED.contains(player.getUUID()) || PHASE2.contains(player.getUUID())) {
 			disbandAll(player);
+			PHASE2.remove(player.getUUID());
 			broadcastArmyState(player, false, 0);
 		}
 	}
 
 	private static void broadcastArmyState(ServerPlayer player, boolean hasShadows, int count) {
-		SungShadowArmyS2CPayload payload = new SungShadowArmyS2CPayload(player.getUUID(), hasShadows, count);
+		boolean phase2 = PHASE2.contains(player.getUUID());
+		SungShadowArmyS2CPayload payload = new SungShadowArmyS2CPayload(player.getUUID(), hasShadows, count, phase2);
 		for (ServerPlayer p : player.serverLevel().players()) {
 			ServerPlayNetworking.send(p, payload);
 		}

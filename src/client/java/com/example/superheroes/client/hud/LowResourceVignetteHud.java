@@ -21,7 +21,9 @@ public final class LowResourceVignetteHud {
 			return;
 		}
 		ResourceLocation heroId = ClientHeroState.data().heroId();
-		if (heroId != null && ("homelander".equals(heroId.getPath()) || "sung_jinwoo".equals(heroId.getPath()))) {
+		if (heroId != null && ("homelander".equals(heroId.getPath())
+				|| "sung_jinwoo".equals(heroId.getPath())
+				|| "doomsday".equals(heroId.getPath()))) {
 			return;
 		}
 		float energyMax = ClientHeroState.energyMax();

@@ -99,6 +99,9 @@ public final class SungJinwooHero implements Hero {
 		player.removeEffect(MobEffects.NIGHT_VISION);
 		player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 		player.removeEffect(MobEffects.REGENERATION);
+		if (player instanceof net.minecraft.server.level.ServerPlayer sp) {
+			com.example.superheroes.effect.SungJinwooController.resetPhase(sp);
+		}
 	}
 
 	@Override

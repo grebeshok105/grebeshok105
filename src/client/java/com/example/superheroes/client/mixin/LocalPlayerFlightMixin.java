@@ -50,9 +50,8 @@ public abstract class LocalPlayerFlightMixin {
 		}
 		if (ModEffects.isMadness(player)) {
 			speedMul *= MADNESS_SPEED_MUL;
-		}
-		if (homelanderFlight && !ironFlight && !supersonic && !ModEffects.isMadness(player)) {
-			speedMul *= HOMELANDER_NERF_MUL;
+		} else if (homelanderFlight && !ironFlight && !supersonic) {
+			speedMul *= MADNESS_SPEED_MUL;
 		}
 		if (ironFlight || supersonic) {
 			speedMul *= IRON_MAN_BASE_MUL;

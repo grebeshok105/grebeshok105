@@ -49,6 +49,7 @@ public final class MonarchsDomainAbility implements Ability {
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, DURATION_TICKS, 1, true, true, true));
 
 		MonarchsDomainController.activate(player, DURATION_TICKS);
+		com.example.superheroes.effect.SungJinwooController.enterPhase2(player);
 
 		level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, player.getX(), player.getY() + 1, player.getZ(),
 				200, 1.5, 1.5, 1.5, 0.2);

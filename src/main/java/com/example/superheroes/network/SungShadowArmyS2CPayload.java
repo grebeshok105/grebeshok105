@@ -15,13 +15,14 @@ import java.util.UUID;
  *  - hasShadows: есть ли живые тени (для авто-свапа фазы скина)
  *  - count: сколько живых теней (для HUD-индикатора)
  */
-public record SungShadowArmyS2CPayload(UUID playerId, boolean hasShadows, int count) implements CustomPacketPayload {
+public record SungShadowArmyS2CPayload(UUID playerId, boolean hasShadows, int count, boolean phase2) implements CustomPacketPayload {
 	public static final Type<SungShadowArmyS2CPayload> TYPE = new Type<>(ModId.of("sung_shadow_army"));
 
 	public static final StreamCodec<ByteBuf, SungShadowArmyS2CPayload> STREAM_CODEC = StreamCodec.composite(
 			UUIDUtil.STREAM_CODEC, SungShadowArmyS2CPayload::playerId,
 			ByteBufCodecs.BOOL, SungShadowArmyS2CPayload::hasShadows,
 			ByteBufCodecs.VAR_INT, SungShadowArmyS2CPayload::count,
+			ByteBufCodecs.BOOL, SungShadowArmyS2CPayload::phase2,
 			SungShadowArmyS2CPayload::new);
 
 	@Override

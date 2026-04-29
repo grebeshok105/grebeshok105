@@ -40,7 +40,7 @@ public abstract class PlayerRendererMixin {
 		}
 		Hero hero = Heroes.get(ClientHeroState.data().heroId());
 		if (hero == null) return null;
-		if (SungJinwooHero.ID.equals(hero.getId()) && ClientShadowArmyState.hasShadows(player.getUUID())) {
+		if (SungJinwooHero.ID.equals(hero.getId()) && ClientShadowArmyState.isPhase2(player.getUUID())) {
 			return SungJinwooHero.SKIN_PHASE_2;
 		}
 		return hero.getSkinTexture();

@@ -65,9 +65,18 @@ public class SuperheroesMod implements ModInitializer {
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof ServerPlayer serverPlayer) {
+				com.example.superheroes.transform.HeroData data = serverPlayer
+						.getAttachedOrCreate(com.example.superheroes.attachment.ModAttachments.HERO_DATA);
+				if (data.hasHero()
+						&& com.example.superheroes.hero.DoomsdayHero.ID.equals(data.heroId())) {
+					return;
+				}
 				HeroTransformService.forceUntransform(serverPlayer);
 			}
 		});
+
+		net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents.AFTER_RESPAWN.register(
+				(oldPlayer, newPlayer, alive) -> HeroTransformService.onPlayerRespawn(newPlayer));
 
 		EntityTrackingEvents.START_TRACKING.register((tracked, observer) -> {
 			if (tracked instanceof ServerPlayer trackedPlayer) {
