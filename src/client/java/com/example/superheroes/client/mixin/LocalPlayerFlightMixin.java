@@ -22,6 +22,7 @@ public abstract class LocalPlayerFlightMixin {
 	private static final double MADNESS_SPEED_MUL = 1.5;
 	private static final double IRON_MAN_BASE_MUL = 0.56;
 	private static final double SUPERSONIC_MUL = 2.6;
+	private static final double HOMELANDER_NERF_MUL = 0.4;
 	private static final double FRICTION_HORIZONTAL = 0.92;
 	private static final double FRICTION_VERTICAL = 0.90;
 
@@ -49,6 +50,9 @@ public abstract class LocalPlayerFlightMixin {
 		}
 		if (ModEffects.isMadness(player)) {
 			speedMul *= MADNESS_SPEED_MUL;
+		}
+		if (homelanderFlight && !ironFlight && !supersonic && !ModEffects.isMadness(player)) {
+			speedMul *= HOMELANDER_NERF_MUL;
 		}
 		if (ironFlight || supersonic) {
 			speedMul *= IRON_MAN_BASE_MUL;

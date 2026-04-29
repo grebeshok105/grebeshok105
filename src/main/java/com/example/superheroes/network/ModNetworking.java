@@ -35,6 +35,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(MadnessSyncS2CPayload.TYPE, MadnessSyncS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(MadnessVisualS2CPayload.TYPE, MadnessVisualS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(UraniumPressureS2CPayload.TYPE, UraniumPressureS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(UraniumThreatS2CPayload.TYPE, UraniumThreatS2CPayload.STREAM_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(ActivateAbilityC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();

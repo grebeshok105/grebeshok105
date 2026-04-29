@@ -1,5 +1,10 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.effect.FlightController;
+import com.example.superheroes.effect.ModEffects;
+import com.example.superheroes.hero.HomelanderHero;
+import com.example.superheroes.transform.HeroData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Abilities;
@@ -24,6 +29,16 @@ public final class FlightAbility implements Ability {
 	@Override
 	public float costPerTick() {
 		return 0.5f;
+	}
+
+	@Override
+	public boolean canActivate(ServerPlayer player) {
+		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		boolean isHomelander = data.hasHero() && HomelanderHero.ID.equals(data.heroId());
+		if (isHomelander && !ModEffects.isMadness(player) && FlightController.isOnCooldown(player)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

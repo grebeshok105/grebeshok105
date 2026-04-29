@@ -11,6 +11,10 @@ import com.example.superheroes.particle.ModParticles;
 import com.example.superheroes.transform.HeroData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -33,6 +37,20 @@ public final class EyeLasersAbility implements Ability {
 	private static final float MAX_DPS = 30.0f;
 	private static final float MADNESS_DAMAGE_MUL = 3.0f;
 	private static final double CHEST_FRACTION = 0.7;
+
+	/**
+	 * Пульсирующий паттерн (как у уставшего стрелка): 
+	 * 0..19 (20t = 1c) shoot → 20..29 (10t = 0.5c) pause →
+	 * 30..69 (40t = 2c) shoot → 70..79 (10t = 0.5c) pause → cycle.
+	 * Полный цикл = 80 тиков (4 секунды). Длинный сегмент даёт ощущение «всё-таки
+	 * стреляет», паузы — что не может стрелять непрерывно.
+	 */
+	private static final int PULSE_CYCLE_TICKS = 80;
+	private static final int PULSE_PHASE_SHOT1_END = 20;
+	private static final int PULSE_PHASE_PAUSE1_END = 30;
+	private static final int PULSE_PHASE_SHOT2_END = 70;
+
+	private static final Map<UUID, Integer> PULSE_TICK = new HashMap<>();
 
 	@Override
 	public ResourceLocation getId() {
@@ -59,16 +77,52 @@ public final class EyeLasersAbility implements Ability {
 		ServerLevel level = player.serverLevel();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.6f, 1.8f);
+		PULSE_TICK.put(player.getUUID(), 0);
 		fireBeam(player);
 		return true;
 	}
 
 	@Override
+	public void onDeactivate(ServerPlayer player) {
+		PULSE_TICK.remove(player.getUUID());
+	}
+
+	@Override
 	public void onTickActive(ServerPlayer player) {
-		fireBeam(player);
-		if (player.tickCount % 6 == 0) {
-			player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
-					SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.35f, 1.6f);
+		boolean madness = ModEffects.isMadness(player);
+		boolean fire;
+		boolean phaseStart = false;
+		if (madness) {
+			PULSE_TICK.remove(player.getUUID());
+			fire = true;
+		} else {
+			int phase = PULSE_TICK.getOrDefault(player.getUUID(), 0);
+			if (phase == 0 || phase == PULSE_PHASE_PAUSE1_END) {
+				phaseStart = true;
+			}
+			if (phase < PULSE_PHASE_SHOT1_END) {
+				fire = true;
+			} else if (phase < PULSE_PHASE_PAUSE1_END) {
+				fire = false;
+			} else if (phase < PULSE_PHASE_SHOT2_END) {
+				fire = true;
+			} else {
+				fire = false;
+			}
+			phase++;
+			if (phase >= PULSE_CYCLE_TICKS) phase = 0;
+			PULSE_TICK.put(player.getUUID(), phase);
+		}
+		if (fire) {
+			fireBeam(player);
+			if (phaseStart) {
+				player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
+						SoundEvents.GUARDIAN_ATTACK, SoundSource.PLAYERS, 0.5f, 1.4f);
+			}
+			if (player.tickCount % 6 == 0) {
+				player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
+						SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.35f, 1.6f);
+			}
 		}
 	}
 

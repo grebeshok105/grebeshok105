@@ -4,6 +4,7 @@ import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.ability.AbilityRouter;
 import com.example.superheroes.ability.IronFistsAbility;
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.entity.HomelanderBossEntity;
 import com.example.superheroes.network.ScreenShakeS2CPayload;
 import com.example.superheroes.physics.ShockwaveUtil;
 import com.example.superheroes.sound.ModSounds;
@@ -17,22 +18,39 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * §6 Iron Fists — обновлённая логика:
+ *  - При активации полная энергия уже потрачена (см. IronFistsAbility.tryActivate).
+ *  - НЕТ авто-таргета и авто-дэша. Игрок сам ловит цель ЛКМ.
+ *  - При ЛКМ-попадании по валидной цели (Player / HomelanderBoss / Monster / Golem):
+ *      → дэш в сторону цели,
+ *      → урон + кб,
+ *      → шоквейв,
+ *      → 40t (2c) cooldown между такими ЛКМ-выпадами.
+ *  - Animals / Villagers — обычный удар, без выпада/шоквейва (нет «эффекта»).
+ *  - Footsteps loop сохраняется — шум активной фазы.
+ *  - Другие способности заблокированы (AbilityRouter уже проверяет isActive(IRON_FISTS)).
+ */
 public final class IronFistsController {
-	private static final double SCAN_RADIUS = 30.0;
-	private static final double DASH_TRIGGER_DIST = 1.6;
-	private static final double DASH_FORCE = 0.55;
-	private static final int DASH_COOLDOWN_TICKS = 30;
+	private static final int LMB_COOLDOWN_TICKS = 40;
+	private static final double DASH_FORCE = 0.85;
+	private static final double DASH_LIFT = 0.15;
+	private static final double SHOCKWAVE_RADIUS = 4.5;
+	private static final float SHOCKWAVE_DAMAGE = 8.0f;
 	private static final int LOOP_INTERVAL_TICKS = 100;
 	private static final int AURA_INTERVAL_TICKS = 4;
-	private static final int CONE_DOT_THRESHOLD = 0;
 
 	private static final Map<UUID, Integer> ACTIVATE_TICK = new HashMap<>();
 	private static final Map<UUID, Integer> LAST_DASH = new HashMap<>();
@@ -63,7 +81,27 @@ public final class IronFistsController {
 			if (!(entity instanceof LivingEntity target) || target == sp) {
 				return InteractionResult.PASS;
 			}
+			boolean dashTarget = isDashTarget(target);
+
 			ServerLevel level = sp.serverLevel();
+			if (dashTarget) {
+				Integer last = LAST_DASH.get(sp.getUUID());
+				if (last != null && (sp.tickCount - last) < LMB_COOLDOWN_TICKS) {
+					return InteractionResult.FAIL;
+				}
+				LAST_DASH.put(sp.getUUID(), sp.tickCount);
+
+				// dash в сторону цели
+				Vec3 toTarget = target.position().add(0, target.getBbHeight() * 0.4, 0)
+						.subtract(sp.position()).normalize();
+				Vec3 newVel = toTarget.scale(DASH_FORCE).add(0.0, DASH_LIFT, 0.0);
+				sp.setDeltaMovement(newVel);
+				sp.hurtMarked = true;
+				sp.fallDistance = 0f;
+				sp.hasImpulse = true;
+			}
+
+			// удар + кб
 			target.hurt(level.damageSources().playerAttack(sp), IronFistsAbility.MELEE_DAMAGE);
 			Vec3 push = sp.getViewVector(1f).scale(IronFistsAbility.MELEE_KNOCKBACK);
 			target.push(push.x, 0.45, push.z);
@@ -75,6 +113,10 @@ public final class IronFistsController {
 			level.playSound(null, target.getX(), target.getY(), target.getZ(),
 					ModSounds.HOMELANDER_IRON_FISTS_IMPACT, SoundSource.PLAYERS, 1.0f, 1.0f);
 
+			if (dashTarget) {
+				ShockwaveUtil.detonate(sp, target.position(), SHOCKWAVE_RADIUS, SHOCKWAVE_DAMAGE, false);
+			}
+
 			if (target instanceof ServerPlayer victim) {
 				ServerPlayNetworking.send(victim, new ScreenShakeS2CPayload(2.0f, 18));
 			}
@@ -83,6 +125,21 @@ public final class IronFistsController {
 			sp.resetAttackStrengthTicker();
 			return InteractionResult.SUCCESS;
 		});
+	}
+
+	/**
+	 * Цели валидные для дэша/шоквейва: Player, HomelanderBoss, Monster, Golem (Iron/Snow).
+	 * Animals/Villagers — нет (обычный удар).
+	 */
+	private static boolean isDashTarget(LivingEntity target) {
+		if (target instanceof AbstractVillager) return false;
+		if (target instanceof Animal) return false;
+		if (target instanceof Player) return true;
+		if (target instanceof HomelanderBossEntity) return true;
+		if (target instanceof Monster) return true;
+		if (target instanceof IronGolem) return true;
+		if (target instanceof SnowGolem) return true;
+		return false;
 	}
 
 	public static void markActivated(ServerPlayer player) {
@@ -119,56 +176,6 @@ public final class IronFistsController {
 		if (elapsed % AURA_INTERVAL_TICKS == 0) {
 			spawnHandAura(player);
 		}
-
-		LivingEntity target = findForwardTarget(player);
-		if (target == null) return;
-
-		double dist = player.distanceTo(target);
-		if (dist > DASH_TRIGGER_DIST) {
-			Vec3 toTarget = target.position().add(0, target.getBbHeight() * 0.4, 0)
-					.subtract(player.position()).normalize();
-			Vec3 newVel = toTarget.scale(DASH_FORCE).add(0.0, 0.05, 0.0);
-			player.setDeltaMovement(newVel);
-			player.hurtMarked = true;
-			player.fallDistance = 0f;
-			player.hasImpulse = true;
-			level.sendParticles(ParticleTypes.END_ROD,
-					p.x, p.y + 0.5, p.z, 6, 0.3, 0.3, 0.3, 0.05);
-		} else {
-			Integer lastDash = LAST_DASH.get(id);
-			if (lastDash == null || (player.tickCount - lastDash) >= DASH_COOLDOWN_TICKS) {
-				LAST_DASH.put(id, player.tickCount);
-				Vec3 impactCenter = target.position();
-				ShockwaveUtil.detonate(player, impactCenter, 4.5, 8.0f, false);
-				level.playSound(null, impactCenter.x, impactCenter.y, impactCenter.z,
-						ModSounds.HOMELANDER_IRON_FISTS_IMPACT, SoundSource.PLAYERS, 1.4f, 0.95f);
-			}
-		}
-	}
-
-	private static LivingEntity findForwardTarget(ServerPlayer player) {
-		ServerLevel level = player.serverLevel();
-		Vec3 origin = player.getEyePosition();
-		Vec3 forward = player.getViewVector(1f).normalize();
-		AABB box = new AABB(origin, origin).inflate(SCAN_RADIUS);
-		List<LivingEntity> candidates = level.getEntitiesOfClass(LivingEntity.class, box,
-				e -> e != player && e.isAlive() && !e.isSpectator());
-		LivingEntity best = null;
-		double bestScore = Double.NEGATIVE_INFINITY;
-		for (LivingEntity e : candidates) {
-			Vec3 to = e.position().add(0, e.getBbHeight() * 0.5, 0).subtract(origin);
-			double d = to.length();
-			if (d < 0.001 || d > SCAN_RADIUS) continue;
-			Vec3 dir = to.scale(1.0 / d);
-			double dot = dir.dot(forward);
-			if (dot < CONE_DOT_THRESHOLD) continue;
-			double score = dot * 1.5 - d / SCAN_RADIUS;
-			if (score > bestScore) {
-				bestScore = score;
-				best = e;
-			}
-		}
-		return best;
 	}
 
 	private static void spawnHandAura(ServerPlayer player) {
