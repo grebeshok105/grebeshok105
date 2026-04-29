@@ -55,7 +55,7 @@ public final class MonarchsDomainAbility implements Ability {
 		level.sendParticles(ParticleTypes.PORTAL, player.getX(), player.getY() + 1, player.getZ(),
 				300, 4.0, 2.0, 4.0, 0.6);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 2.0f, 0.6f);
+				SoundEvents.WARDEN_EMERGE, SoundSource.PLAYERS, 1.4f, 0.7f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.6f, 0.7f);
 

@@ -76,7 +76,7 @@ public final class MonarchsDomainController {
 		player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 1, true, true, true));
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2, true, true, true));
 		player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.WITHER_HURT, SoundSource.PLAYERS, 0.6f, 0.7f);
+				SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.7f, 0.7f);
 	}
 
 	public static boolean isActive(ServerPlayer player) {

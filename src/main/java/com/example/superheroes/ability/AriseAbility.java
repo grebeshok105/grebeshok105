@@ -71,7 +71,7 @@ public final class AriseAbility implements Ability {
 
 		level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, pos.x, pos.y + 1, pos.z, 40, 0.5, 1.0, 0.5, 0.05);
 		level.sendParticles(ParticleTypes.PORTAL, pos.x, pos.y + 1, pos.z, 60, 0.6, 1.0, 0.6, 0.6);
-		level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 0.7f, 1.6f);
+		level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.7f, 0.6f);
 		level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.0f, 0.7f);
 
 		AbilityCooldowns.setCooldownTicks(player, AbilityIds.ARISE, COOLDOWN_TICKS);
