@@ -175,5 +175,26 @@
 	"ability.superheroes.shadow_extraction.desc": "Absorb essence: +HP, +shadow charges",
 	"ability.superheroes.monarchs_domain": "Monarch's Domain",
 	"ability.superheroes.monarchs_domain.desc": "Ultimate: for 10s spectral blades strike enemies in 25-block radius",
-	"entity.superheroes.shadow_soldier": "Shadow Soldier"
+	"entity.superheroes.shadow_soldier": "Shadow Soldier",
+
+	"item.superheroes.doomsday_genome": "Doomsday Genome",
+	"item.superheroes.doomsday_genome.lore.line1": "\"It cannot be killed twice the same way.\"",
+	"item.superheroes.doomsday_genome.lore.line2": "DC Comics — The Reign of the Supermen",
+	"item.superheroes.doomsday_genome.lore.usage": "▶ Right-click — Transform",
+	"item.superheroes.doomsday_genome.lore.untransform": "▶ Shift + Right-click — Revert",
+	"hero.superheroes.doomsday": "Doomsday",
+	"hero.superheroes.doomsday.passive.1": "Massive frame: x2.2 scale, +80 HP, +30 Armor",
+	"hero.superheroes.doomsday.passive.2": "Adaptation: each damage type kills him only once",
+	"hero.superheroes.doomsday.passive.3": "Regeneration I + immune to fall damage + landing shockwave",
+	"hero.superheroes.doomsday.passive.4": "Each adaptation grants +1 attack damage",
+	"hero.superheroes.doomsday.adapted": "ADAPTED ▸ %s",
+	"hero.superheroes.doomsday.adapted.chat": "Doomsday adapted to %s — total adaptations: %s",
+	"ability.superheroes.doomsday_smash": "Smash",
+	"ability.superheroes.doomsday_smash.desc": "Slam the ground — radial shockwave with heavy damage",
+	"ability.superheroes.doomsday_roar": "Battle Roar",
+	"ability.superheroes.doomsday_roar.desc": "AoE roar — knockback, Weakness II and Slowness II for 5s",
+	"ability.superheroes.doomsday_berserk": "Berserk",
+	"ability.superheroes.doomsday_berserk.desc": "Toggle: +12 damage, +15% speed, -15 armor — drains energy",
+	"ability.superheroes.doomsday_bone_spike": "Bone Spike",
+	"ability.superheroes.doomsday_bone_spike.desc": "Hurl a bone shard — 30-block ranged spike, 18 damage on hit"
 }

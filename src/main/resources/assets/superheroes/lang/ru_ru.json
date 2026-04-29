@@ -175,5 +175,26 @@
 	"ability.superheroes.shadow_extraction.desc": "Поглотить эссенцию: +HP, +заряды теней",
 	"ability.superheroes.monarchs_domain": "Домен Монарха",
 	"ability.superheroes.monarchs_domain.desc": "Ультимейт: 10с — призрачные клинки в радиусе 25 блоков",
-	"entity.superheroes.shadow_soldier": "Теневой Солдат"
+	"entity.superheroes.shadow_soldier": "Теневой Солдат",
+
+	"item.superheroes.doomsday_genome": "Геном Думсдея",
+	"item.superheroes.doomsday_genome.lore.line1": "\"Его нельзя убить дважды одним и тем же способом.\"",
+	"item.superheroes.doomsday_genome.lore.line2": "DC Comics — Reign of the Supermen",
+	"item.superheroes.doomsday_genome.lore.usage": "▶ ПКМ — превращение",
+	"item.superheroes.doomsday_genome.lore.untransform": "▶ Shift + ПКМ — обратное превращение",
+	"hero.superheroes.doomsday": "Думсдей",
+	"hero.superheroes.doomsday.passive.1": "Колоссальный размер: скейл x2.2, +80 HP, +30 брони",
+	"hero.superheroes.doomsday.passive.2": "Адаптация: каждый тип урона убивает его только однажды",
+	"hero.superheroes.doomsday.passive.3": "Регенерация I + иммун к урону от падения + шоквейв при приземлении",
+	"hero.superheroes.doomsday.adapted": "АДАПТАЦИЯ ▸ %s",
+	"hero.superheroes.doomsday.adapted.chat": "Думсдей адаптировался к: %s — всего адаптаций: %s",
+	"hero.superheroes.doomsday.passive.4": "Каждая адаптация даёт +1 к урону атаки",
+	"ability.superheroes.doomsday_smash": "Слэм",
+	"ability.superheroes.doomsday_smash.desc": "Удар по земле — радиальный шоквейв с тяжёлым уроном",
+	"ability.superheroes.doomsday_roar": "Боевой Рёв",
+	"ability.superheroes.doomsday_roar.desc": "AoE-рёв — отброс, Слабость II и Замедление II на 5 секунд",
+	"ability.superheroes.doomsday_berserk": "Берсерк",
+	"ability.superheroes.doomsday_berserk.desc": "Toggle: +12 к урону, +15% скорости, -15 брони — тратит энергию",
+	"ability.superheroes.doomsday_bone_spike": "Костяной Шип",
+	"ability.superheroes.doomsday_bone_spike.desc": "Бросок костяного шипа — дистанция 30 блоков, 18 урона при попадании"
 }

@@ -29,6 +29,11 @@ public final class AbilityIds {
 	public static final ResourceLocation SHADOW_EXTRACTION = ModId.of("shadow_extraction");
 	public static final ResourceLocation MONARCHS_DOMAIN = ModId.of("monarchs_domain");
 
+	public static final ResourceLocation DOOMSDAY_SMASH = ModId.of("doomsday_smash");
+	public static final ResourceLocation DOOMSDAY_ROAR = ModId.of("doomsday_roar");
+	public static final ResourceLocation DOOMSDAY_BERSERK = ModId.of("doomsday_berserk");
+	public static final ResourceLocation DOOMSDAY_BONE_SPIKE = ModId.of("doomsday_bone_spike");
+
 	private AbilityIds() {
 	}
 }

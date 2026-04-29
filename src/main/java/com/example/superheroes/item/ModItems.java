@@ -70,6 +70,11 @@ public final class ModItems {
 			new ShadowMonarchsCloakItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
 	);
 
+	public static final DoomsdaySuitItem DOOMSDAY_GENOME = register(
+			"doomsday_genome",
+			new DoomsdaySuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
 	private ModItems() {
 	}
 
