@@ -64,7 +64,6 @@ public final class HomelanderHero implements Hero {
 	@Override
 	public void applyPassives(Player player) {
 		HeroAttributes.HOMELANDER.apply(player);
-		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 0, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
 	}

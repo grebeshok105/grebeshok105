@@ -28,7 +28,7 @@ public class HomelanderEyeLaserGoal extends Goal {
 	private static final double CHEST_FRACTION = 0.7;
 	private static final float MIN_DPS = 14.0f;
 	private static final float MAX_DPS = 30.0f;
-	private static final float DAMAGE_MULT = 20.0f;
+	private static final float DAMAGE_MULT = 14.0f;
 
 	private final HomelanderBossEntity boss;
 	private int phaseTick;

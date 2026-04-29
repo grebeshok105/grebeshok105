@@ -15,8 +15,6 @@ public final class ModAttachments {
 
 	public static final AttachmentType<RegulusMadnessState> REGULUS_MADNESS = AttachmentRegistry.<RegulusMadnessState>builder()
 			.initializer(() -> RegulusMadnessState.EMPTY)
-			.persistent(RegulusMadnessState.CODEC)
-			.copyOnDeath()
 			.buildAndRegister(ModId.of("regulus_madness"));
 
 	private ModAttachments() {
