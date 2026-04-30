@@ -1,6 +1,8 @@
 package com.example.superheroes.client.hud;
 
+import com.example.superheroes.ModId;
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.hero.HeroTheme;
@@ -92,7 +94,7 @@ public final class AbilitiesTooltipHud {
 		if (heroId == null) {
 			return;
 		}
-		List<ResourceLocation> abilities = ClientHeroState.abilities();
+		List<ResourceLocation> abilities = filterByTier(ClientHeroState.abilities(), heroId);
 		int passiveCount = AbilityDescriptions.passiveCount(heroId);
 
 		int togglesCount = 0;
@@ -265,5 +267,27 @@ public final class AbilitiesTooltipHud {
 	private static float smoothstep(float x) {
 		float c = Math.max(0f, Math.min(1f, x));
 		return c * c * (3f - 2f * c);
+	}
+
+	private static List<ResourceLocation> filterByTier(List<ResourceLocation> base, ResourceLocation heroId) {
+		if (!ModId.of("doomsday").equals(heroId)) {
+			return base;
+		}
+		int tier = ClientDoomsdayState.tier();
+		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
+		for (ResourceLocation id : base) {
+			if (isDoomsdayUnlocked(id, tier)) out.add(id);
+		}
+		return out;
+	}
+
+	private static boolean isDoomsdayUnlocked(ResourceLocation id, int tier) {
+		if (AbilityIds.DOOMSDAY_SMASH.equals(id)) return tier >= 2;
+		if (AbilityIds.DOOMSDAY_ROAR.equals(id)) return tier >= 3;
+		if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(id)) return tier >= 4;
+		if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(id)) return tier >= 5;
+		if (AbilityIds.DOOMSDAY_BERSERK.equals(id)) return tier >= 6;
+		if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(id)) return tier >= 7;
+		return true;
 	}
 }

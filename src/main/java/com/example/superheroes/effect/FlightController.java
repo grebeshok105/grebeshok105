@@ -106,4 +106,9 @@ public final class FlightController {
 			}
 		}
 	}
+
+	public static void clear(UUID id) {
+		ACTIVE_SINCE.remove(id);
+		COOLDOWN_UNTIL.remove(id);
+	}
 }

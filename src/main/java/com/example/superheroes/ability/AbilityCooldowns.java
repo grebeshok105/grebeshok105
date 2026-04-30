@@ -39,4 +39,8 @@ public final class AbilityCooldowns {
 		long left = deadline - player.tickCount;
 		return left > 0 ? (int) left : 0;
 	}
+
+	public static void clear(UUID id) {
+		MAP.remove(id);
+	}
 }
