@@ -252,7 +252,8 @@ public final class AbilitiesTooltipHud {
 		int bulletColor = applyAlpha(ClientHudGlitch.tintColor(theme.energyIcon()), alpha, 1.0f);
 		g.drawString(mc.font, Component.literal("▸ ").withStyle(ChatFormatting.BOLD), x, y + NAME_Y_OFFSET, bulletColor, true);
 
-		List<FormattedCharSequence> lines = mc.font.split(name, maxTextWidth);
+		Component shown = ClientHudGlitch.maybeObfuscate(name);
+		List<FormattedCharSequence> lines = mc.font.split(shown, maxTextWidth);
 		int count = Math.min(MAX_PASSIVE_LINES, lines.size());
 		for (int i = 0; i < count; i++) {
 			FormattedCharSequence line = lines.get(i);
@@ -289,7 +290,7 @@ public final class AbilitiesTooltipHud {
 		int descColor = applyAlpha(ClientHudGlitch.tintColor(0xFFA2A6B8), alpha, 1.0f);
 		Component desc = glitchSecret
 				? Component.literal("????????????????????").withStyle(ChatFormatting.OBFUSCATED)
-				: Component.translatable(AbilityDescriptions.descKey(abilityId));
+				: ClientHudGlitch.maybeObfuscate(Component.translatable(AbilityDescriptions.descKey(abilityId)));
 
 		List<FormattedCharSequence> descLines = mc.font.split(desc, maxTextWidth);
 		int lineCount = Math.min(MAX_DESC_LINES, descLines.size());

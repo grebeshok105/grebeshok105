@@ -8,7 +8,6 @@ import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
 import com.example.superheroes.client.hud.ReactorOverlayHud;
 import com.example.superheroes.client.hud.ResourceBarHud;
-import com.example.superheroes.client.hud.LowResourceVignetteHud;
 import com.example.superheroes.client.hud.ScreenFlashHud;
 import com.example.superheroes.client.hud.SunWindupHud;
 import com.example.superheroes.client.fx.ScreenShakeManager;
@@ -52,6 +51,7 @@ public class SuperheroesClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntities.SHADOW_SOLDIER, com.example.superheroes.client.render.ShadowSoldierRenderer::new);
 		EntityRendererRegistry.register(ModEntities.KAGE_BUNSHIN, com.example.superheroes.client.render.KageBunshinRenderer::new);
 		EntityRendererRegistry.register(ModEntities.SHIELD_PROJECTILE, com.example.superheroes.client.render.ShieldProjectileRenderer::new);
+		EntityRendererRegistry.register(ModEntities.SLENDERMAN_CLOAK, com.example.superheroes.client.render.SlendermanCloakRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.TRANSFORM_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.LASER_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.REPULSOR_SPARK, EndRodParticle.Provider::new);
@@ -90,7 +90,6 @@ public class SuperheroesClient implements ClientModInitializer {
 		}, ModItems.VIBRANIUM_SHIELD);
 
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
-			LowResourceVignetteHud.render(graphics, tracker);
 			JarvisOverlayHud.render(graphics, tracker);
 			ResourceBarHud.render(graphics, tracker);
 			AbilitiesTooltipHud.render(graphics, tracker);
@@ -105,6 +104,7 @@ public class SuperheroesClient implements ClientModInitializer {
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.SlenderStaticHud.render(graphics, tracker);
+			com.example.superheroes.client.hud.SlenderFieldHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.SlenderJumpscareHud.render(graphics, tracker);
 		});
 

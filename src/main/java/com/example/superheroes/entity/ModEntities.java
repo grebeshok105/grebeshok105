@@ -47,6 +47,19 @@ public final class ModEntities {
 					.build("shield_projectile")
 	);
 
+	public static final EntityType<SlendermanCloakEntity> SLENDERMAN_CLOAK = Registry.register(
+			BuiltInRegistries.ENTITY_TYPE,
+			ModId.of("slenderman_cloak"),
+			EntityType.Builder.<SlendermanCloakEntity>of(SlendermanCloakEntity::new, MobCategory.MISC)
+					.sized(0.001f, 0.001f)
+					.clientTrackingRange(32)
+					.updateInterval(2)
+					.fireImmune()
+					.noSummon()
+					.noSave()
+					.build("slenderman_cloak")
+	);
+
 	private ModEntities() {
 	}
 

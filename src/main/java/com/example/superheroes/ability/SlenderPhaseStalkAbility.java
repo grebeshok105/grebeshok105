@@ -27,7 +27,7 @@ public final class SlenderPhaseStalkAbility implements Ability {
 
 	@Override
 	public float costPerTick() {
-		return 0.25f;
+		return 0.6f;
 	}
 
 	@Override
@@ -45,15 +45,21 @@ public final class SlenderPhaseStalkAbility implements Ability {
 			player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, true, false, false));
 		}
 		ServerLevel level = player.serverLevel();
+		level.sendParticles(ParticleTypes.SMOKE,
+				player.getX(), player.getY() + 0.05, player.getZ(),
+				3, 0.25, 0.02, 0.25, 0.0);
+		level.sendParticles(ParticleTypes.SQUID_INK,
+				player.getX(), player.getY() + 0.05, player.getZ(),
+				2, 0.2, 0.02, 0.2, 0.0);
+		if (player.tickCount % 4 == 0) {
+			level.sendParticles(ParticleTypes.LARGE_SMOKE,
+					player.getX(), player.getY() + 0.05, player.getZ(),
+					1, 0.15, 0.0, 0.15, 0.0);
+		}
 		double speedSq = player.getDeltaMovement().horizontalDistanceSqr();
-		if (speedSq > 0.005) {
-			level.sendParticles(ParticleTypes.SMOKE,
-					player.getX(), player.getY() + 0.1, player.getZ(),
-					2, 0.2, 0.05, 0.2, 0.0);
-			if (player.tickCount % 80 == 0) {
-				level.playSound(null, player.getX(), player.getY(), player.getZ(),
-						ModSounds.SLENDERMAN_BUSH, SoundSource.PLAYERS, 0.3f, 1.0f);
-			}
+		if (speedSq > 0.005 && player.tickCount % 80 == 0) {
+			level.playSound(null, player.getX(), player.getY(), player.getZ(),
+					ModSounds.SLENDERMAN_BUSH, SoundSource.PLAYERS, 0.4f, 1.0f);
 		}
 	}
 

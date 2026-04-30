@@ -62,6 +62,7 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.KawarimiController.init();
 		com.example.superheroes.effect.SlendermanStaticController.init();
 		com.example.superheroes.effect.SlendermanFieldController.init();
+		com.example.superheroes.effect.SlendermanCloakController.init();
 		SuperheroesCommands.init();
 
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {

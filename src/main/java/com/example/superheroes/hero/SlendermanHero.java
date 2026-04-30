@@ -34,7 +34,7 @@ public final class SlendermanHero implements Hero {
 
 	@Override
 	public float getManaMax() {
-		return 100f;
+		return 0f;
 	}
 
 	@Override
@@ -57,9 +57,6 @@ public final class SlendermanHero implements Hero {
 
 	@Override
 	public ResourceKind getDefaultBinding(ResourceLocation abilityId) {
-		if (abilityId.equals(AbilityIds.SLENDER_STATIC_FIELD)) {
-			return ResourceKind.MANA;
-		}
 		return ResourceKind.ENERGY;
 	}
 
