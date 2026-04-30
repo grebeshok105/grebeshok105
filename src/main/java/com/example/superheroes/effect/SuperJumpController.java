@@ -88,4 +88,9 @@ public final class SuperJumpController {
 		Integer until = FALL_IMMUNITY_UNTIL.get(player.getUUID());
 		return until != null && player.tickCount < until;
 	}
+
+	public static void clear(UUID id) {
+		COOLDOWN.remove(id);
+		FALL_IMMUNITY_UNTIL.remove(id);
+	}
 }

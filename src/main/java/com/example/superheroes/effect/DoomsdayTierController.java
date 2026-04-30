@@ -71,9 +71,21 @@ public final class DoomsdayTierController {
 	private static void handleRespawn(ServerPlayer player) {
 		DoomsdayProgress progress = player.getAttachedOrCreate(ModAttachments.DOOMSDAY_PROGRESS);
 
+		// Player entity was reconstructed on respawn; tickCount reset to 0.
+		// Any tick-based cooldowns keyed by UUID are now stuck at far-future deadlines.
+		// Clear them so abilities work again.
+		java.util.UUID id = player.getUUID();
+		com.example.superheroes.ability.AbilityCooldowns.clear(id);
+		SuperJumpController.clear(id);
+		FlightController.clear(id);
+		DoomGripController.clear(player);
+		com.example.superheroes.ability.ChargeTackleAbility.clear(player);
+
 		// Reapply tier passives (atomically rebuild)
 		HeroAttributes.DOOMSDAY.remove(player);
 		HeroAttributes.buildDoomsdayTierSet(progress.tier()).apply(player);
+		// Re-apply adapt damage modifier (depends on adapt count)
+		DoomsdayAdaptationController.reapplyDamageBonus(player);
 		player.setHealth(player.getMaxHealth());
 
 		if (progress.pendingRelocate()) {

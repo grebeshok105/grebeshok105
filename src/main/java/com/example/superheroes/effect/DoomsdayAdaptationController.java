@@ -29,7 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class DoomsdayAdaptationController {
-	private static final float CUMULATIVE_THRESHOLD = 80f;
+	private static final float CUMULATIVE_THRESHOLD = 30f;
 	private static final float ADAPT_DAMAGE_BONUS = 1.0f;
 
 	/**
@@ -53,6 +53,21 @@ public final class DoomsdayAdaptationController {
 			DamageTypes.SONIC_BOOM
 	);
 
+	/**
+	 * Группы родственных damage types — адаптация к любому в группе даёт иммун ко всей группе.
+	 * Например адаптация к in_fire блокирует и on_fire, lava, hot_floor, и т.д.
+	 */
+	private static final java.util.List<Set<ResourceKey<DamageType>>> RELATED_GROUPS = java.util.List.of(
+			Set.of(DamageTypes.IN_FIRE, DamageTypes.ON_FIRE, DamageTypes.LAVA, DamageTypes.HOT_FLOOR, DamageTypes.UNATTRIBUTED_FIREBALL, DamageTypes.FIREBALL),
+			Set.of(DamageTypes.FREEZE),
+			Set.of(DamageTypes.DROWN, DamageTypes.IN_WALL),
+			Set.of(DamageTypes.EXPLOSION, DamageTypes.PLAYER_EXPLOSION),
+			Set.of(DamageTypes.FALL, DamageTypes.FLY_INTO_WALL, DamageTypes.STALAGMITE, DamageTypes.FALLING_BLOCK, DamageTypes.FALLING_ANVIL, DamageTypes.FALLING_STALACTITE),
+			Set.of(DamageTypes.CACTUS, DamageTypes.SWEET_BERRY_BUSH),
+			Set.of(DamageTypes.WITHER, DamageTypes.WITHER_SKULL),
+			Set.of(DamageTypes.LIGHTNING_BOLT)
+	);
+
 	private static final Map<UUID, Set<ResourceKey<DamageType>>> ADAPTED = new ConcurrentHashMap<>();
 	private static final Map<UUID, Map<ResourceKey<DamageType>, Float>> CUMULATIVE = new ConcurrentHashMap<>();
 	private static final Map<UUID, Integer> ADAPT_COUNT = new ConcurrentHashMap<>();
@@ -74,12 +89,34 @@ public final class DoomsdayAdaptationController {
 			}
 
 			Set<ResourceKey<DamageType>> adapted = ADAPTED.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
-			if (adapted.contains(typeKey)) {
+			if (adapted.contains(typeKey) || isAdaptedRelated(adapted, typeKey)) {
 				return false;
+			}
+
+			// Auto-adapt: накапливаем урон по типу; при достижении порога — иммун.
+			if (!GENERIC_TYPES.contains(typeKey)) {
+				Map<ResourceKey<DamageType>, Float> perType = CUMULATIVE.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
+				float total = perType.getOrDefault(typeKey, 0f) + amount;
+				perType.put(typeKey, total);
+				if (total >= CUMULATIVE_THRESHOLD) {
+					registerAdaptation(player, typeKey, false);
+					perType.remove(typeKey);
+				}
 			}
 
 			return true;
 		});
+	}
+
+	private static boolean isAdaptedRelated(Set<ResourceKey<DamageType>> adapted, ResourceKey<DamageType> typeKey) {
+		for (Set<ResourceKey<DamageType>> group : RELATED_GROUPS) {
+			if (group.contains(typeKey)) {
+				for (ResourceKey<DamageType> related : group) {
+					if (adapted.contains(related)) return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static void registerAdaptation(ServerPlayer player, ResourceKey<DamageType> typeKey, boolean lethal) {
@@ -116,6 +153,14 @@ public final class DoomsdayAdaptationController {
 		double amount = ADAPT_DAMAGE_BONUS * count;
 		inst.addOrReplacePermanentModifier(new AttributeModifier(
 				HeroAttributes.DOOMSDAY_ADAPT_DAMAGE, amount, AttributeModifier.Operation.ADD_VALUE));
+	}
+
+	/** Вызывать на респавне — attribute modifier сбрасывается при remove/apply набора. */
+	public static void reapplyDamageBonus(ServerPlayer player) {
+		int count = ADAPT_COUNT.getOrDefault(player.getUUID(), 0);
+		if (count > 0) {
+			applyDamageBonus(player, count);
+		}
 	}
 
 	public static int getAdaptationCount(ServerPlayer player) {

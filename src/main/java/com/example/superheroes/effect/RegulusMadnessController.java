@@ -22,8 +22,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
@@ -179,14 +177,6 @@ public final class RegulusMadnessController {
 			if (player.tickCount % 30 == 0) {
 				level.playSound(null, player.getX(), player.getY(), player.getZ(),
 						SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 1.0f, 0.7f);
-				LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
-				if (bolt != null) {
-					double angle = level.random.nextDouble() * Math.PI * 2;
-					double r = 2.5 + level.random.nextDouble() * 1.5;
-					bolt.moveTo(player.getX() + Math.cos(angle) * r, player.getY(), player.getZ() + Math.sin(angle) * r);
-					bolt.setVisualOnly(true);
-					level.addFreshEntity(bolt);
-				}
 			}
 		} else if (state.readingUntilMs() > 0L && !state.madness()) {
 			finishReading(player);
@@ -226,19 +216,9 @@ public final class RegulusMadnessController {
 					player.getX(), player.getY() + 1.9, player.getZ(),
 					2, 0.3, 0.1, 0.3, 0.0);
 		}
-		if (t % 60 == 0 && level.random.nextInt(3) == 0) {
+		if (t % 30 == 0) {
 			level.playSound(null, player.getX(), player.getY(), player.getZ(),
-					SoundEvents.WARDEN_AMBIENT, SoundSource.AMBIENT, 0.4f, 0.6f);
-		}
-		if (t % 100 == 0 && level.random.nextInt(4) == 0) {
-			LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
-			if (bolt != null) {
-				double angle = level.random.nextDouble() * Math.PI * 2;
-				double r = 4.0 + level.random.nextDouble() * 3.0;
-				bolt.moveTo(player.getX() + Math.cos(angle) * r, player.getY(), player.getZ() + Math.sin(angle) * r);
-				bolt.setVisualOnly(true);
-				level.addFreshEntity(bolt);
-			}
+					SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 0.8f, 0.6f);
 		}
 	}
 

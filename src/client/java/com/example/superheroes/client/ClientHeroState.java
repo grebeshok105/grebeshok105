@@ -24,6 +24,10 @@ public final class ClientHeroState {
 		return abilities;
 	}
 
+	public static ResourceLocation heroId() {
+		return data.hasHero() ? data.heroId() : null;
+	}
+
 	public static synchronized void update(HeroData newData) {
 		boolean hadHero = data.hasHero();
 		data = newData;

@@ -1,6 +1,8 @@
 package com.example.superheroes.client.hud;
 
+import com.example.superheroes.ModId;
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ModKeys;
@@ -100,15 +102,25 @@ public final class RadialMenuHud {
 
 	private static List<ResourceLocation> visibleAbilities() {
 		List<ResourceLocation> base = ClientHeroState.abilities();
-		if (ClientMadnessState.isMadness()) {
-			return base;
-		}
+		boolean isDoomsday = ModId.of("doomsday").equals(ClientHeroState.heroId());
+		int doomsdayTier = isDoomsday ? ClientDoomsdayState.tier() : 0;
 		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
 		for (ResourceLocation id : base) {
-			if (AbilityIds.COUNTER_STRIKE.equals(id)) continue;
+			if (!ClientMadnessState.isMadness() && AbilityIds.COUNTER_STRIKE.equals(id)) continue;
+			if (isDoomsday && !isDoomsdayUnlocked(id, doomsdayTier)) continue;
 			out.add(id);
 		}
 		return out;
+	}
+
+	private static boolean isDoomsdayUnlocked(ResourceLocation id, int tier) {
+		if (AbilityIds.DOOMSDAY_SMASH.equals(id)) return tier >= 2;
+		if (AbilityIds.DOOMSDAY_ROAR.equals(id)) return tier >= 3;
+		if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(id)) return tier >= 4;
+		if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(id)) return tier >= 5;
+		if (AbilityIds.DOOMSDAY_BERSERK.equals(id)) return tier >= 6;
+		if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(id)) return tier >= 7;
+		return true;
 	}
 
 	public static void render(GuiGraphics graphics, DeltaTracker tracker) {
