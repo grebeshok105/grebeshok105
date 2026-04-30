@@ -15,6 +15,8 @@ import com.example.superheroes.client.fx.ScreenShakeManager;
 import com.example.superheroes.client.network.ClientNetworking;
 import com.example.superheroes.client.render.HomelanderBossRenderer;
 import com.example.superheroes.client.render.IronManEspRenderer;
+import com.example.superheroes.client.render.VibraniumShieldRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import com.example.superheroes.entity.ModEntities;
 import com.example.superheroes.item.ModItems;
 import com.example.superheroes.client.render.LaserBeamRenderer;
@@ -27,7 +29,6 @@ import com.example.superheroes.network.SuperJumpC2SPayload;
 import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -65,14 +66,10 @@ public class SuperheroesClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticles.CAP_SHIELD_TRAIL, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.CAP_SHIELD_SLAM_BURST, EndRodParticle.Provider::new);
 
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> switch (tintIndex) {
-			case 1 -> 0xFFC1272D;
-			case 2 -> 0xFFFFFFFF;
-			case 3 -> 0xFFC1272D;
-			case 4 -> 0xFF1A4F8B;
-			case 5 -> 0xFFFFFFFF;
-			default -> 0xFFFFFFFF;
-		}, ModItems.VIBRANIUM_SHIELD);
+		VibraniumShieldRenderer shieldRenderer = new VibraniumShieldRenderer();
+		BuiltinItemRendererRegistry.INSTANCE.register(ModItems.VIBRANIUM_SHIELD,
+				(stack, ctx, pose, buffers, light, overlay) ->
+						shieldRenderer.renderByItem(stack, ctx, pose, buffers, light, overlay));
 
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
 			LowResourceVignetteHud.render(graphics, tracker);
