@@ -38,7 +38,7 @@ public class ShieldProjectileRenderer extends EntityRenderer<ShieldProjectileEnt
 		Minecraft mc = Minecraft.getInstance();
 		ItemRenderer itemRenderer = mc.getItemRenderer();
 		ItemStack stack = new ItemStack(ModItems.VIBRANIUM_SHIELD);
-		itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, packedLight,
+		itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight,
 				OverlayTexture.NO_OVERLAY, pose, buffers, entity.level(), entity.getId());
 
 		pose.popPose();

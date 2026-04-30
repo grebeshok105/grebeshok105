@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 
 import java.util.List;
 
@@ -21,16 +22,22 @@ public final class AbilitiesTooltipHud {
 	private static final int RESOURCE_PANEL_HEIGHT_DUAL = 70;
 	private static final int RESOURCE_PANEL_HEIGHT_SOLO = 48;
 	private static final int GAP_BELOW_RESOURCE = 4;
-	private static final int PANEL_WIDTH = 260;
+	private static final int PANEL_WIDTH = 320;
 
 	private static final int PADDING_X = 12;
 	private static final int PADDING_TOP = 8;
 	private static final int PADDING_BOTTOM = 10;
 	private static final int SECTION_SPACING = 6;
-	private static final int ROW_HEIGHT = 22;
-	private static final int ROW_HEIGHT_COMPACT = 14;
 	private static final int ICON_SIZE = 16;
 	private static final int SECTION_HEADER_HEIGHT = 12;
+
+	private static final int LINE_HEIGHT = 9;
+	private static final int NAME_Y_OFFSET = 1;
+	private static final int DESC_Y_OFFSET = 11;
+	private static final int ABILITY_ROW_BOTTOM_PAD = 2;
+	private static final int PASSIVE_ROW_BOTTOM_PAD = 5;
+	private static final int MAX_DESC_LINES = 2;
+	private static final int MAX_PASSIVE_LINES = 2;
 
 	private static final int ANIM_TICKS = 10;
 	private static final int SLIDE_DISTANCE = 12;
@@ -108,15 +115,35 @@ public final class AbilitiesTooltipHud {
 			}
 		}
 
+		Minecraft mc = Minecraft.getInstance();
+		int contentWidth = PANEL_WIDTH - PADDING_X * 2;
+		int abilityTextWidth = contentWidth - ICON_SIZE - 6;
+		int passiveTextWidth = contentWidth - 10;
+
 		int panelHeight = PADDING_TOP;
 		if (passiveCount > 0) {
-			panelHeight += SECTION_HEADER_HEIGHT + passiveCount * ROW_HEIGHT_COMPACT + SECTION_SPACING;
+			panelHeight += SECTION_HEADER_HEIGHT;
+			for (int i = 1; i <= passiveCount; i++) {
+				Component name = Component.translatable(AbilityDescriptions.passiveKey(heroId, i));
+				panelHeight += passiveRowHeight(mc, name, passiveTextWidth);
+			}
+			panelHeight += SECTION_SPACING;
 		}
 		if (activesCount > 0) {
-			panelHeight += SECTION_HEADER_HEIGHT + activesCount * ROW_HEIGHT + SECTION_SPACING;
+			panelHeight += SECTION_HEADER_HEIGHT;
+			for (ResourceLocation id : abilities) {
+				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.ACTIVE) continue;
+				panelHeight += abilityRowHeight(mc, id, abilityTextWidth);
+			}
+			panelHeight += SECTION_SPACING;
 		}
 		if (togglesCount > 0) {
-			panelHeight += SECTION_HEADER_HEIGHT + togglesCount * ROW_HEIGHT + SECTION_SPACING;
+			panelHeight += SECTION_HEADER_HEIGHT;
+			for (ResourceLocation id : abilities) {
+				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.TOGGLE) continue;
+				panelHeight += abilityRowHeight(mc, id, abilityTextWidth);
+			}
+			panelHeight += SECTION_SPACING;
 		}
 		panelHeight = Math.max(panelHeight - SECTION_SPACING, 0) + PADDING_BOTTOM;
 
@@ -138,48 +165,62 @@ public final class AbilitiesTooltipHud {
 		HeroTheme theme = ClientHeroState.theme();
 		drawPanel(graphics, x, y, PANEL_WIDTH, panelHeight, theme, alpha);
 
-		Minecraft mc = Minecraft.getInstance();
 		int cursorY = y + PADDING_TOP;
 
 		if (passiveCount > 0) {
-			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, PANEL_WIDTH - PADDING_X * 2,
+			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, contentWidth,
 					Component.translatable("hud.superheroes.abilities.passives"), theme, alpha);
 			cursorY += SECTION_HEADER_HEIGHT;
 			for (int i = 1; i <= passiveCount; i++) {
-				drawPassiveRow(graphics, mc, x + PADDING_X, cursorY,
-						Component.translatable(AbilityDescriptions.passiveKey(heroId, i)),
-						theme, alpha);
-				cursorY += ROW_HEIGHT_COMPACT;
+				Component name = Component.translatable(AbilityDescriptions.passiveKey(heroId, i));
+				int rowHeight = passiveRowHeight(mc, name, passiveTextWidth);
+				drawPassiveRow(graphics, mc, x + PADDING_X, cursorY, name, passiveTextWidth, theme, alpha);
+				cursorY += rowHeight;
 			}
 			cursorY += SECTION_SPACING;
 		}
 
 		if (activesCount > 0) {
-			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, PANEL_WIDTH - PADDING_X * 2,
+			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, contentWidth,
 					Component.translatable("hud.superheroes.abilities.active"), theme, alpha);
 			cursorY += SECTION_HEADER_HEIGHT;
 			for (ResourceLocation id : abilities) {
 				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.ACTIVE) {
 					continue;
 				}
-				drawAbilityRow(graphics, mc, x + PADDING_X, cursorY, PANEL_WIDTH - PADDING_X * 2, id, theme, alpha);
-				cursorY += ROW_HEIGHT;
+				int rowHeight = abilityRowHeight(mc, id, abilityTextWidth);
+				drawAbilityRow(graphics, mc, x + PADDING_X, cursorY, contentWidth, id, theme, alpha);
+				cursorY += rowHeight;
 			}
 			cursorY += SECTION_SPACING;
 		}
 
 		if (togglesCount > 0) {
-			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, PANEL_WIDTH - PADDING_X * 2,
+			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, contentWidth,
 					Component.translatable("hud.superheroes.abilities.toggle"), theme, alpha);
 			cursorY += SECTION_HEADER_HEIGHT;
 			for (ResourceLocation id : abilities) {
 				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.TOGGLE) {
 					continue;
 				}
-				drawAbilityRow(graphics, mc, x + PADDING_X, cursorY, PANEL_WIDTH - PADDING_X * 2, id, theme, alpha);
-				cursorY += ROW_HEIGHT;
+				int rowHeight = abilityRowHeight(mc, id, abilityTextWidth);
+				drawAbilityRow(graphics, mc, x + PADDING_X, cursorY, contentWidth, id, theme, alpha);
+				cursorY += rowHeight;
 			}
 		}
+	}
+
+	private static int passiveRowHeight(Minecraft mc, Component name, int maxWidth) {
+		List<FormattedCharSequence> lines = mc.font.split(name, maxWidth);
+		int count = Math.max(1, Math.min(MAX_PASSIVE_LINES, lines.size()));
+		return count * LINE_HEIGHT + PASSIVE_ROW_BOTTOM_PAD;
+	}
+
+	private static int abilityRowHeight(Minecraft mc, ResourceLocation abilityId, int maxTextWidth) {
+		Component desc = Component.translatable(AbilityDescriptions.descKey(abilityId));
+		List<FormattedCharSequence> lines = mc.font.split(desc, maxTextWidth);
+		int descLines = Math.max(1, Math.min(MAX_DESC_LINES, lines.size()));
+		return DESC_Y_OFFSET + descLines * LINE_HEIGHT + ABILITY_ROW_BOTTOM_PAD;
 	}
 
 	private static void drawPanel(GuiGraphics g, int x, int y, int w, int h, HeroTheme theme, int alpha) {
@@ -206,13 +247,18 @@ public final class AbilitiesTooltipHud {
 		g.fill(x, y + 10, x + width, y + 11, line);
 	}
 
-	private static void drawPassiveRow(GuiGraphics g, Minecraft mc, int x, int y, Component name, HeroTheme theme, int alpha) {
+	private static void drawPassiveRow(GuiGraphics g, Minecraft mc, int x, int y, Component name, int maxTextWidth, HeroTheme theme, int alpha) {
 		int nameColor = applyAlpha(ClientHudGlitch.tintColor(0xFFE8E9F2), alpha, 1.0f);
 		int bulletColor = applyAlpha(ClientHudGlitch.tintColor(theme.energyIcon()), alpha, 1.0f);
-		g.drawString(mc.font, Component.literal("▸ ").withStyle(ChatFormatting.BOLD), x, y + 1, bulletColor, true);
-		int maxTextWidth = PANEL_WIDTH - PADDING_X * 2 - 10;
-		Component shown = ClientHudGlitch.maybeObfuscate(ellipsize(mc, name, maxTextWidth));
-		g.drawString(mc.font, shown, x + 10, y + 1, nameColor, true);
+		g.drawString(mc.font, Component.literal("▸ ").withStyle(ChatFormatting.BOLD), x, y + NAME_Y_OFFSET, bulletColor, true);
+
+		List<FormattedCharSequence> lines = mc.font.split(name, maxTextWidth);
+		int count = Math.min(MAX_PASSIVE_LINES, lines.size());
+		for (int i = 0; i < count; i++) {
+			FormattedCharSequence line = lines.get(i);
+			int lineY = y + NAME_Y_OFFSET + i * LINE_HEIGHT;
+			g.drawString(mc.font, line, x + 10, lineY, nameColor, true);
+		}
 	}
 
 	private static void drawAbilityRow(GuiGraphics g, Minecraft mc, int x, int y, int width, ResourceLocation abilityId, HeroTheme theme, int alpha) {
@@ -238,14 +284,20 @@ public final class AbilitiesTooltipHud {
 				? Component.literal("????????").withStyle(ChatFormatting.OBFUSCATED, ChatFormatting.BOLD)
 				: Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD);
 		Component nameShown = glitchSecret ? name : ClientHudGlitch.maybeObfuscate(ellipsize(mc, name, maxTextWidth));
-		g.drawString(mc.font, glitchSecret ? ellipsize(mc, name, maxTextWidth) : nameShown, textX, y + 1, nameColor, true);
+		g.drawString(mc.font, glitchSecret ? ellipsize(mc, name, maxTextWidth) : nameShown, textX, y + NAME_Y_OFFSET, nameColor, true);
 
 		int descColor = applyAlpha(ClientHudGlitch.tintColor(0xFFA2A6B8), alpha, 1.0f);
 		Component desc = glitchSecret
 				? Component.literal("????????????????????").withStyle(ChatFormatting.OBFUSCATED)
 				: Component.translatable(AbilityDescriptions.descKey(abilityId));
-		Component descShown = glitchSecret ? desc : ClientHudGlitch.maybeObfuscate(ellipsize(mc, desc, maxTextWidth));
-		g.drawString(mc.font, glitchSecret ? ellipsize(mc, desc, maxTextWidth) : descShown, textX, y + 11, descColor, true);
+
+		List<FormattedCharSequence> descLines = mc.font.split(desc, maxTextWidth);
+		int lineCount = Math.min(MAX_DESC_LINES, descLines.size());
+		for (int i = 0; i < lineCount; i++) {
+			FormattedCharSequence line = descLines.get(i);
+			int lineY = y + DESC_Y_OFFSET + i * LINE_HEIGHT;
+			g.drawString(mc.font, line, textX, lineY, descColor, true);
+		}
 	}
 
 	private static Component ellipsize(Minecraft mc, Component component, int maxWidth) {

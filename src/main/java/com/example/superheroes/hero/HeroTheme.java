@@ -62,5 +62,68 @@ public record HeroTheme(
 			0x66FF8A38
 	);
 
+	public static final HeroTheme GOKU = new HeroTheme(
+			0xE0331504,
+			0xD0140602,
+			0x88E85D04,
+			0x33FFCC88,
+			0xFFFF9A4A,
+			0xFF7A2900,
+			0xFFE85D04,
+			0x55FFAA66,
+			0xFFFFAA44,
+			0xFF1A0A00,
+			0xFFFF7A28,
+			0x55FF8844,
+			0xFFFF7A28,
+			0x55E85D04,
+			0xFFFFAA44,
+			0xFFFFAA44,
+			0xFFFFE0B0,
+			0x55FFAA66
+	);
+
+	public static final HeroTheme NARUTO = new HeroTheme(
+			0xE0332B00,
+			0xD0141000,
+			0x88FFD60A,
+			0x33FFE99A,
+			0xFFFFE85A,
+			0xFF7A6700,
+			0xFFFFD60A,
+			0x55FFEC8A,
+			0xFFFFE060,
+			0xFF1A1500,
+			0xFFFFCC1A,
+			0x55FFE070,
+			0xFFFFCC1A,
+			0x55FFD60A,
+			0xFFFFE060,
+			0xFFFFE060,
+			0xFFFFF7C0,
+			0x55FFE070
+	);
+
+	public static final HeroTheme CAPTAIN_AMERICA = new HeroTheme(
+			0xE00A1E40,
+			0xD0040A1A,
+			0x881E40AF,
+			0x33EF4444,
+			0xFF60A0FF,
+			0xFF0E2860,
+			0xFF1E40AF,
+			0x556090FF,
+			0xFF60A0FF,
+			0xFF1A0606,
+			0xFFEF4444,
+			0x55FF7878,
+			0xFFEF4444,
+			0x551E40AF,
+			0xFFEF4444,
+			0xFFEF4444,
+			0xFFFFFFFF,
+			0x556090FF
+	);
+
 	public static final HeroTheme DEFAULT = HOMELANDER;
 }

@@ -1,12 +1,18 @@
 package com.example.superheroes.effect;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.hero.CaptainAmericaHero;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 public final class AutoSaturationController {
-	private static final int CAP_FOOD = 17;
+	private static final int DEFAULT_FOOD = 17;
+	private static final float DEFAULT_SATURATION = 0f;
+
+	private static final int CAP_FOOD = 20;
+	private static final float CAP_SATURATION = 20f;
 
 	private AutoSaturationController() {
 	}
@@ -18,13 +24,22 @@ public final class AutoSaturationController {
 				if (player.isSpectator() || player.isCreative()) continue;
 				HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 				if (!data.hasHero()) continue;
-				int food = player.getFoodData().getFoodLevel();
-				if (food < CAP_FOOD) {
-					player.getFoodData().setFoodLevel(Math.min(CAP_FOOD, food + 1));
-				} else if (food > CAP_FOOD) {
-					player.getFoodData().setFoodLevel(CAP_FOOD);
+
+				ResourceLocation heroId = data.heroId();
+				int targetFood = DEFAULT_FOOD;
+				float targetSaturation = DEFAULT_SATURATION;
+				if (heroId != null && CaptainAmericaHero.ID.equals(heroId)) {
+					targetFood = CAP_FOOD;
+					targetSaturation = CAP_SATURATION;
 				}
-				player.getFoodData().setSaturation(0f);
+
+				int food = player.getFoodData().getFoodLevel();
+				if (food < targetFood) {
+					player.getFoodData().setFoodLevel(Math.min(targetFood, food + 1));
+				} else if (food > targetFood) {
+					player.getFoodData().setFoodLevel(targetFood);
+				}
+				player.getFoodData().setSaturation(targetSaturation);
 			}
 		});
 	}

@@ -1346,12 +1346,12 @@
     },
     "thirdperson_lefthand": {
       "rotation": [
-        -180,
         0,
-        -180
+        180,
+        0
       ],
       "translation": [
-        2.75,
+        -2.75,
         0,
         4
       ]
@@ -1376,12 +1376,12 @@
     "firstperson_lefthand": {
       "rotation": [
         90,
-        86,
+        -86,
         90
       ],
       "translation": [
-        0.25,
-        -4.5,
+        -0.5,
+        0.5,
         0
       ],
       "scale": [
@@ -1444,18 +1444,18 @@
     "fixed": {
       "rotation": [
         0,
-        90,
+        0,
         0
       ],
       "translation": [
-        0,
-        4.5,
-        0
+        -8,
+        -6,
+        -8
       ],
       "scale": [
-        2.15,
-        2.15,
-        2.15
+        1.0,
+        1.0,
+        1.0
       ]
     },
     "on_shelf": {
