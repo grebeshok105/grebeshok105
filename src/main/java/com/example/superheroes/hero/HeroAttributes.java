@@ -74,6 +74,16 @@ public final class HeroAttributes {
 	public static final ResourceLocation CAP_HP = ModId.of("modifiers/captain_america/max_health");
 	public static final ResourceLocation CAP_KNOCKBACK = ModId.of("modifiers/captain_america/knockback_resistance");
 
+	public static final ResourceLocation SLENDERMAN_ARMOR = ModId.of("modifiers/slenderman/armor");
+	public static final ResourceLocation SLENDERMAN_TOUGHNESS = ModId.of("modifiers/slenderman/toughness");
+	public static final ResourceLocation SLENDERMAN_DAMAGE = ModId.of("modifiers/slenderman/damage");
+	public static final ResourceLocation SLENDERMAN_SPEED = ModId.of("modifiers/slenderman/speed");
+	public static final ResourceLocation SLENDERMAN_HP = ModId.of("modifiers/slenderman/max_health");
+	public static final ResourceLocation SLENDERMAN_KNOCKBACK = ModId.of("modifiers/slenderman/knockback_resistance");
+	public static final ResourceLocation SLENDERMAN_REACH = ModId.of("modifiers/slenderman/entity_reach");
+	public static final ResourceLocation SLENDERMAN_STEP = ModId.of("modifiers/slenderman/step_height");
+	public static final ResourceLocation SLENDERMAN_SCALE = ModId.of("modifiers/slenderman/scale");
+
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
@@ -155,6 +165,18 @@ public final class HeroAttributes {
 			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MAX_HEALTH, CAP_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet SLENDERMAN = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, SLENDERMAN_ARMOR, 5.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, SLENDERMAN_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, SLENDERMAN_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, SLENDERMAN_SPEED, 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, SLENDERMAN_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, SLENDERMAN_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, SLENDERMAN_REACH, 1.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, SLENDERMAN_STEP, 0.4, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SCALE, SLENDERMAN_SCALE, 0.15, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	private HeroAttributes() {

@@ -317,5 +317,48 @@
 
 	"hero.superheroes.captain_america.passive.1": "Super Soldier: +20 HP, +25 armor, +8 toughness",
 	"hero.superheroes.captain_america.passive.2": "Stalwart: +0.6 knockback resistance, +4 attack damage",
-	"hero.superheroes.captain_america.passive.3": "Trained Landing: immune to fall damage"
+	"hero.superheroes.captain_america.passive.3": "Trained Landing: immune to fall damage",
+
+	"hero.superheroes.slenderman": "Slenderman",
+	"hero.superheroes.slenderman.passive.1": "Tall Frame: +20 HP, +25% speed, +1.5 reach, +0.4 step",
+	"hero.superheroes.slenderman.passive.2": "Static Aura: enemies in line of sight gain Static stacks (Nausea \u2192 Blindness \u2192 tendril strike)",
+	"hero.superheroes.slenderman.passive.3": "Phase Step: nearly always dodges projectiles (95%) and flames (100%); 35% on melee \u2014 chained dodges blocked by 1s cooldown",
+	"hero.superheroes.slenderman.passive.4": "Eye Contact Exposure: holding gaze >4s exposes Slenderman, dodge \u00d70.3 for 4s",
+
+	"item.superheroes.slenderman_suit": "Slender Mask",
+	"item.superheroes.slenderman_suit.lore.line1": "\"Always watching, never blinking.\"",
+	"item.superheroes.slenderman_suit.lore.line2": "Conduit to the Static Aura",
+	"item.superheroes.slenderman_suit.lore.usage": "\u25b6 Right-click \u2014 Become Slenderman",
+	"item.superheroes.slenderman_suit.lore.untransform": "\u25b6 Shift + Right-click \u2014 Return to flesh",
+
+	"ability.superheroes.slender_blink": "Blink",
+	"ability.superheroes.slender_blink.desc": "Teleport up to 8 blocks through walls along your gaze. 4s cooldown.",
+	"ability.superheroes.slender_tendrils": "Tendrils",
+	"ability.superheroes.slender_tendrils.desc": "4 invisible arms strike forward in a R=4 cone, 5 damage each + push, ignore armor. 8s cooldown.",
+	"ability.superheroes.slender_phase_stalk": "Phase Stalk",
+	"ability.superheroes.slender_phase_stalk.desc": "Toggle invisibility while still or moving slowly; smoke trail when sprinting. Drain energy continuously.",
+	"ability.superheroes.slender_static_field": "Static Field",
+	"ability.superheroes.slender_static_field.desc": "Open a 12s static zone (R=18). Enemies inside: Nausea III + Blindness + Slowness II + random tendril strikes. Slenderman inside: invisibility + Regeneration. 180s cooldown.",
+
+	"death.attack.slenderman_static": "%1$s succumbed to %2$s's static aura",
+	"death.attack.slenderman_static.player": "%1$s succumbed to %2$s's static aura",
+	"death.attack.slenderman_tendril": "%1$s was speared by %2$s's tendrils",
+	"death.attack.slenderman_tendril.player": "%1$s was speared by %2$s's tendrils",
+	"death.attack.slenderman_field": "%1$s was lost in %2$s's static field",
+	"death.attack.slenderman_field.player": "%1$s was lost in %2$s's static field",
+
+	"subtitles.superheroes.slenderman.active": "Slenderman whispers",
+	"subtitles.superheroes.slenderman.angry": "Slenderman roars",
+	"subtitles.superheroes.slenderman.attack": "Tendrils strike",
+	"subtitles.superheroes.slenderman.death": "Slenderman dissolves",
+	"subtitles.superheroes.slenderman.hunt": "Slenderman hunts",
+	"subtitles.superheroes.slenderman.hurt": "Slenderman shudders",
+	"subtitles.superheroes.slenderman.jumpscare": "Static surges",
+	"subtitles.superheroes.slenderman.living": "Slenderman breathes",
+	"subtitles.superheroes.slenderman.spawn": "Slenderman appears",
+	"subtitles.superheroes.slenderman.victory": "Slenderman exults",
+	"subtitles.superheroes.slenderman.warning": "Slenderman warns",
+	"subtitles.superheroes.slenderman.static": "TV static crackles",
+	"subtitles.superheroes.slenderman.bush": "Foliage rustles",
+	"subtitles.superheroes.slenderman.page_grab": "Page rustles"
 }

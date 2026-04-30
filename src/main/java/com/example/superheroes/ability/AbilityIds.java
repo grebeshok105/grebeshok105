@@ -46,6 +46,11 @@ public final class AbilityIds {
 	public static final ResourceLocation CAP_SHIELD_THROW = ModId.of("cap_shield_throw");
 	public static final ResourceLocation CAP_SHIELD_SLAM = ModId.of("cap_shield_slam");
 
+	public static final ResourceLocation SLENDER_BLINK = ModId.of("slender_blink");
+	public static final ResourceLocation SLENDER_TENDRILS = ModId.of("slender_tendrils");
+	public static final ResourceLocation SLENDER_PHASE_STALK = ModId.of("slender_phase_stalk");
+	public static final ResourceLocation SLENDER_STATIC_FIELD = ModId.of("slender_static_field");
+
 	private AbilityIds() {
 	}
 }

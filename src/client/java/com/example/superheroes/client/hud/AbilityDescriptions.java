@@ -35,6 +35,7 @@ public final class AbilityDescriptions {
 		HERO_PASSIVE_COUNT.put("goku", 3);
 		HERO_PASSIVE_COUNT.put("naruto", 3);
 		HERO_PASSIVE_COUNT.put("captain_america", 3);
+		HERO_PASSIVE_COUNT.put("slenderman", 4);
 	}
 
 	private AbilityDescriptions() {

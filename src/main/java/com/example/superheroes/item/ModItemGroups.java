@@ -35,6 +35,7 @@ public final class ModItemGroups {
 				output.accept(ModItems.NARUTO_HEADBAND);
 				output.accept(ModItems.CAPTAIN_AMERICA_SUIT);
 				output.accept(ModItems.VIBRANIUM_SHIELD);
+				output.accept(ModItems.SLENDERMAN_SUIT);
 			})
 			.build();
 
