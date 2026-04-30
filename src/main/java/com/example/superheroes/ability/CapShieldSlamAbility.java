@@ -20,6 +20,8 @@ public final class CapShieldSlamAbility implements Ability {
 	private static final int COOLDOWN_TICKS = 200;
 	private static final double RADIUS = 5.0;
 	private static final float DAMAGE = 5.0f;
+	private static final int MAX_AIR_TICKS = 100;
+	private static final int MIN_AIR_TICKS_BEFORE_DETONATE = 4;
 
 	private static final WeakHashMap<UUID, Integer> JUMPING = new WeakHashMap<>();
 
@@ -55,7 +57,7 @@ public final class CapShieldSlamAbility implements Ability {
 		player.setDeltaMovement(motion);
 		player.hurtMarked = true;
 		player.connection.send(new ClientboundSetEntityMotionPacket(player));
-		JUMPING.put(player.getUUID(), 30);
+		JUMPING.put(player.getUUID(), 0);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.2f, 1.4f);
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
@@ -63,14 +65,18 @@ public final class CapShieldSlamAbility implements Ability {
 	}
 
 	public static void serverTick(ServerPlayer player) {
-		Integer ttl = JUMPING.get(player.getUUID());
-		if (ttl == null) return;
-		if (ttl < 28 && (player.onGround() || ttl <= 0)) {
+		Integer airTicks = JUMPING.get(player.getUUID());
+		if (airTicks == null) return;
+		if (airTicks >= MIN_AIR_TICKS_BEFORE_DETONATE && player.onGround()) {
 			detonate(player);
 			JUMPING.remove(player.getUUID());
 			return;
 		}
-		JUMPING.put(player.getUUID(), ttl - 1);
+		if (airTicks >= MAX_AIR_TICKS) {
+			JUMPING.remove(player.getUUID());
+			return;
+		}
+		JUMPING.put(player.getUUID(), airTicks + 1);
 	}
 
 	private static void detonate(ServerPlayer player) {
@@ -102,6 +108,8 @@ public final class CapShieldSlamAbility implements Ability {
 		level.playSound(null, pos.x, pos.y, pos.z,
 				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 0.6f);
 		level.playSound(null, pos.x, pos.y, pos.z,
-				SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 1.0f, 1.0f);
+				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.2f, 0.7f);
+		level.playSound(null, pos.x, pos.y, pos.z,
+				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.8f, 1.4f);
 	}
 }

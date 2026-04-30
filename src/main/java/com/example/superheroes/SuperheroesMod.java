@@ -60,7 +60,6 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.DoomsdayTierController.init();
 		com.example.superheroes.effect.GokuKiStackController.init();
 		com.example.superheroes.effect.KawarimiController.init();
-		com.example.superheroes.effect.CapShieldBlockController.init();
 		SuperheroesCommands.init();
 
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {

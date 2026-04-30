@@ -7,11 +7,14 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -36,18 +39,22 @@ public class ShieldProjectileEntity extends Projectile {
 	private boolean returning = false;
 	private final Set<UUID> alreadyHit = new HashSet<>();
 	private int lifeTicks = 0;
+	private ItemStack savedStack = ItemStack.EMPTY;
+	private InteractionHand savedHand = InteractionHand.OFF_HAND;
 
 	public ShieldProjectileEntity(EntityType<? extends ShieldProjectileEntity> type, Level level) {
 		super(type, level);
 	}
 
-	public static ShieldProjectileEntity throwFrom(LivingEntity owner, Level level) {
+	public static ShieldProjectileEntity throwFrom(LivingEntity owner, Level level, ItemStack savedStack, InteractionHand savedHand) {
 		ShieldProjectileEntity proj = new ShieldProjectileEntity(ModEntities.SHIELD_PROJECTILE, level);
 		proj.setOwner(owner);
 		Vec3 eye = owner.getEyePosition();
 		proj.setPos(eye.x, eye.y - 0.2, eye.z);
 		Vec3 dir = owner.getLookAngle().normalize().scale(SPEED);
 		proj.setDeltaMovement(dir);
+		proj.savedStack = savedStack == null ? ItemStack.EMPTY : savedStack;
+		proj.savedHand = savedHand == null ? InteractionHand.OFF_HAND : savedHand;
 		return proj;
 	}
 
@@ -192,6 +199,7 @@ public class ShieldProjectileEntity extends Projectile {
 		tag.putInt("Bounces", bounces);
 		tag.putBoolean("Returning", returning);
 		tag.putInt("LifeTicks", lifeTicks);
+		tag.putString("SavedHand", savedHand.name());
 	}
 
 	@Override
@@ -200,5 +208,26 @@ public class ShieldProjectileEntity extends Projectile {
 		bounces = tag.getInt("Bounces");
 		returning = tag.getBoolean("Returning");
 		lifeTicks = tag.getInt("LifeTicks");
+		try {
+			savedHand = InteractionHand.valueOf(tag.getString("SavedHand"));
+		} catch (IllegalArgumentException ignored) {
+			savedHand = InteractionHand.OFF_HAND;
+		}
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		if (!this.level().isClientSide && !savedStack.isEmpty()) {
+			ItemStack toReturn = savedStack;
+			savedStack = ItemStack.EMPTY;
+			if (this.getOwner() instanceof ServerPlayer sp) {
+				if (sp.getItemInHand(savedHand).isEmpty()) {
+					sp.setItemInHand(savedHand, toReturn);
+				} else if (!sp.getInventory().add(toReturn)) {
+					sp.drop(toReturn, false);
+				}
+			}
+		}
+		super.remove(reason);
 	}
 }

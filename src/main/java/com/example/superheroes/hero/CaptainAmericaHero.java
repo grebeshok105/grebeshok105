@@ -47,8 +47,7 @@ public final class CaptainAmericaHero implements Hero {
 	public List<ResourceLocation> getAbilities() {
 		return List.of(
 				AbilityIds.CAP_SHIELD_THROW,
-				AbilityIds.CAP_SHIELD_SLAM,
-				AbilityIds.CAP_SHIELD_BLOCK
+				AbilityIds.CAP_SHIELD_SLAM
 		);
 	}
 

@@ -45,7 +45,6 @@ public final class AbilityIds {
 
 	public static final ResourceLocation CAP_SHIELD_THROW = ModId.of("cap_shield_throw");
 	public static final ResourceLocation CAP_SHIELD_SLAM = ModId.of("cap_shield_slam");
-	public static final ResourceLocation CAP_SHIELD_BLOCK = ModId.of("cap_shield_block");
 
 	private AbilityIds() {
 	}

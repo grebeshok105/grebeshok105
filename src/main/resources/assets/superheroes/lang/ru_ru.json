@@ -275,8 +275,6 @@
 	"ability.superheroes.cap_shield_throw.desc": "Бросает вибраниумный щит — отскакивает между 3 целями по 14 урона, затем возвращается.",
 	"ability.superheroes.cap_shield_slam": "Удар щитом о землю",
 	"ability.superheroes.cap_shield_slam.desc": "Прыжок и удар оземь — AoE 5 блоков, отбрасывание, 5 урона.",
-	"ability.superheroes.cap_shield_block": "Блок щитом",
-	"ability.superheroes.cap_shield_block.desc": "Тоггл: отменяет урон спереди, замедление при движении.",
 
 	"death.attack.goku_kamehameha": "%1$s был испепелён Камехамехой %2$s",
 	"death.attack.goku_instant_strike": "%1$s был мгновенно поражён %2$s",
