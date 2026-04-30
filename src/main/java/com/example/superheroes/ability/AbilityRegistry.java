@@ -50,7 +50,6 @@ public final class AbilityRegistry {
 
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
-	public static final CapShieldBlockAbility CAP_SHIELD_BLOCK = new CapShieldBlockAbility();
 
 	private AbilityRegistry() {
 	}
@@ -90,7 +89,6 @@ public final class AbilityRegistry {
 		register(NARUTO_SHADOW_CLONES);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
-		register(CAP_SHIELD_BLOCK);
 	}
 
 	public static void register(Ability ability) {

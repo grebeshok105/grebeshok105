@@ -22,7 +22,6 @@ public final class ModParticles {
 
 	public static final SimpleParticleType CAP_SHIELD_TRAIL = register("cap_shield_trail", FabricParticleTypes.simple());
 	public static final SimpleParticleType CAP_SHIELD_SLAM_BURST = register("cap_shield_slam_burst", FabricParticleTypes.simple());
-	public static final SimpleParticleType CAP_SHIELD_BLOCK_GLOW = register("cap_shield_block_glow", FabricParticleTypes.simple());
 
 	private ModParticles() {
 	}

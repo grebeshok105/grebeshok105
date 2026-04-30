@@ -275,8 +275,6 @@
 	"ability.superheroes.cap_shield_throw.desc": "Throws the vibranium shield — bounces between up to 3 targets, 14 damage each, then returns.",
 	"ability.superheroes.cap_shield_slam": "Shield Slam",
 	"ability.superheroes.cap_shield_slam.desc": "Leap and slam the ground — 5-block AoE, knockback, 5 damage.",
-	"ability.superheroes.cap_shield_block": "Shield Block",
-	"ability.superheroes.cap_shield_block.desc": "Toggle: cancel damage from the front, slowed movement.",
 
 	"death.attack.goku_kamehameha": "%1$s was vaporized by %2$s's Kamehameha",
 	"death.attack.goku_instant_strike": "%1$s was struck instantly by %2$s",
