@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "slenderman:slender_apple"
+    },
+    "title": {
+      "translate": "advancements.slender_calmer.title"
+    },
+    "description": {
+      "translate": "advancements.slender_calmer.descr"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "slender_calmer_0": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 2
+  },
+  "parent": "slenderman:slender_forest"
+}

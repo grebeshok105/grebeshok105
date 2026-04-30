@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="slenderman"
+version="1.1.10"
+displayName="Slenderman: The Revival"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/slenderman-the-revival"
+credits="Hqrvester, MCreator"
+authors="Hqrvester"
+description="A Slenderman Horror Mod!"
+
+# Start of user code block mod configuration
+
+[[dependencies.slenderman]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.slenderman]]
+    modId="geckolib"
+    mandatory=true
+    versionRange="[4.4.2,)"
+    ordering="NONE"
+    side="BOTH"
+
+# End of user code block dependencies configuration

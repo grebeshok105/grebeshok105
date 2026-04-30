@@ -1,0 +1,9 @@
+{
+  "parent": "slenderman:custom/page",
+  "textures": {
+    "all": "slenderman:block/page",
+    "particle": "slenderman:block/page",
+    "0": "slenderman:block/page"
+  },
+  "render_type": "translucent"
+}

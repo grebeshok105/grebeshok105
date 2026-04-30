@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "slenderman:victim_soul"
+    },
+    "title": {
+      "translate": "advancements.slender_escape.title"
+    },
+    "description": {
+      "translate": "advancements.slender_escape.descr"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "slender_escape_0": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 2
+  },
+  "parent": "slenderman:page_collector"
+}

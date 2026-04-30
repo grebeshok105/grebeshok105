@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "slenderman:water_tank",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 21,
+    "separation": 16,
+    "salt": 1811871659
+  }
+}

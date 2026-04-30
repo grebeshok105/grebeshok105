@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "slenderman:victim_soul"
+    },
+    "b": {
+      "item": "minecraft:golden_apple"
+    }
+  },
+  "result": {
+    "item": "slenderman:slender_apple",
+    "count": 1
+  }
+}

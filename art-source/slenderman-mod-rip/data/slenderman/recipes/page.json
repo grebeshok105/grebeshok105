@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "slenderman:victim_soul"
+    },
+    "b": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "slenderman:page",
+    "count": 1
+  }
+}
