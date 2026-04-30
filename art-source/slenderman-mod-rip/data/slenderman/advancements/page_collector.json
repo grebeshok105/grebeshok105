@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "slenderman:page"
+    },
+    "title": {
+      "translate": "advancements.page_collector.title"
+    },
+    "description": {
+      "translate": "advancements.page_collector.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "page_collector_0": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 1
+  },
+  "parent": "slenderman:slender_forest"
+}

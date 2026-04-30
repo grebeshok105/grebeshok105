@@ -1,0 +1,36 @@
+{
+  "display": {
+    "background": "minecraft:textures/block/stone.png",
+    "icon": {
+      "item": "slenderman:slenderman_the_revival"
+    },
+    "title": {
+      "translate": "advancements.slender_forest.title"
+    },
+    "description": {
+      "translate": "advancements.slender_forest.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "slender_forest_0": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "slenderman:slender_forest"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

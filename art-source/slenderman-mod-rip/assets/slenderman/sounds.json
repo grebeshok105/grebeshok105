@@ -1,0 +1,162 @@
+{
+  "entity.slenderman.living": {
+    "subtitle": "subtitles.entity.slenderman.living",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_living",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.hurt": {
+    "subtitle": "subtitles.entity.slenderman.hurt",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_hurt",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.attack": {
+    "subtitle": "subtitles.entity.slenderman.attack",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_attack",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.death": {
+    "subtitle": "subtitles.entity.slenderman.death",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_death",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.jumpscare": {
+    "subtitle": "subtitles.entity.slenderman.jumpscare",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_jumpscare",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.static": {
+    "subtitle": "subtitles.entity.slenderman.static",
+    "sounds": [
+      {
+        "name": "slenderman:slender_static",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.warning": {
+    "subtitle": "subtitles.entity.slenderman.warning",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_warning",
+        "stream": false
+      }
+    ]
+  },
+  "entity.victim_ghost.hurt": {
+    "subtitle": "subtitles.entity.victim_ghost.hurt",
+    "sounds": [
+      {
+        "name": "slenderman:victim_ghost_hurt",
+        "stream": false
+      }
+    ]
+  },
+  "entity.victim_ghost.death": {
+    "subtitle": "subtitles.entity.victim_ghost.death",
+    "sounds": [
+      {
+        "name": "slenderman:victim_ghost_death",
+        "stream": false
+      }
+    ]
+  },
+  "entity.victim_ghost.laugh": {
+    "subtitle": "subtitles.entity.victim_ghost.laugh",
+    "sounds": [
+      {
+        "name": "slenderman:victim_ghost_laugh",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.spawn": {
+    "subtitle": "subtitles.entity.slenderman.spawn",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_spawn",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.angry": {
+    "subtitle": "subtitles.entity.slenderman.angry",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_angry",
+        "stream": false
+      }
+    ]
+  },
+  "player.page.grab": {
+    "subtitle": "subtitles.player.page.grab",
+    "sounds": [
+      {
+        "name": "slenderman:page_grab",
+        "stream": false
+      }
+    ]
+  },
+  "ambient.slender_forest.bush_movement": {
+    "subtitle": "subtitles.ambient.slender_forest.bush_movement",
+    "sounds": [
+      {
+        "name": "slenderman:bush_movement_3",
+        "stream": false
+      },
+      {
+        "name": "slenderman:bush_movement_1",
+        "stream": false
+      },
+      {
+        "name": "slenderman:bush_movement_2",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.active": {
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_active",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.victory": {
+    "subtitle": "subtitles.entity.slenderman.victory",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_victory",
+        "stream": false
+      }
+    ]
+  },
+  "entity.slenderman.hunt": {
+    "subtitle": "subtitles.entity.slenderman.hunt",
+    "sounds": [
+      {
+        "name": "slenderman:slenderman_hunt",
+        "stream": false
+      }
+    ]
+  }
+}

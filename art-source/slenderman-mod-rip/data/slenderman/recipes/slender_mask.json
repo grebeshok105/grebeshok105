@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "bab",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "slenderman:victim_soul"
+    },
+    "b": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "slenderman:slender_mask_helmet",
+    "count": 1
+  }
+}

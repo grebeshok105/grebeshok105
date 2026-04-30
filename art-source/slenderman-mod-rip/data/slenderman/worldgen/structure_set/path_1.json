@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "slenderman:path_1",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 8,
+    "separation": 2,
+    "salt": 111987555
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "slenderman:large_rocks",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 13,
+    "separation": 8,
+    "salt": 86287373
+  }
+}
