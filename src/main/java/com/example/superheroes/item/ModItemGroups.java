@@ -31,6 +31,10 @@ public final class ModItemGroups {
 				output.accept(ModItems.HOMELANDER_BOSS_SPAWN_EGG);
 				output.accept(ModItems.SHADOW_MONARCHS_CLOAK);
 				output.accept(ModItems.DOOMSDAY_GENOME);
+				output.accept(ModItems.GOKU_GI);
+				output.accept(ModItems.NARUTO_HEADBAND);
+				output.accept(ModItems.CAPTAIN_AMERICA_SUIT);
+				output.accept(ModItems.VIBRANIUM_SHIELD);
 			})
 			.build();
 

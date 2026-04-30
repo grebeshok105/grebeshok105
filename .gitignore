@@ -39,3 +39,6 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+
+# art-source extracted (large, redundant with .zip)
+art-source/rezero_fx_extracted/

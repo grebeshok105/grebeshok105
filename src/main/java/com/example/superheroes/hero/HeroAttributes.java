@@ -47,6 +47,21 @@ public final class HeroAttributes {
 	public static final ResourceLocation DOOMSDAY_BERSERK_SPEED = ModId.of("modifiers/doomsday/berserk_speed");
 	public static final ResourceLocation DOOMSDAY_ADAPT_DAMAGE = ModId.of("modifiers/doomsday/adapt_damage");
 
+	public static final ResourceLocation GOKU_DAMAGE = ModId.of("modifiers/goku/damage");
+	public static final ResourceLocation GOKU_SPEED = ModId.of("modifiers/goku/speed");
+	public static final ResourceLocation GOKU_HP = ModId.of("modifiers/goku/max_health");
+	public static final ResourceLocation GOKU_KNOCKBACK = ModId.of("modifiers/goku/knockback_resistance");
+
+	public static final ResourceLocation NARUTO_DAMAGE = ModId.of("modifiers/naruto/damage");
+	public static final ResourceLocation NARUTO_SPEED = ModId.of("modifiers/naruto/speed");
+	public static final ResourceLocation NARUTO_ATTACK_SPEED = ModId.of("modifiers/naruto/attack_speed");
+
+	public static final ResourceLocation CAP_ARMOR = ModId.of("modifiers/captain_america/armor");
+	public static final ResourceLocation CAP_TOUGHNESS = ModId.of("modifiers/captain_america/toughness");
+	public static final ResourceLocation CAP_DAMAGE = ModId.of("modifiers/captain_america/damage");
+	public static final ResourceLocation CAP_HP = ModId.of("modifiers/captain_america/max_health");
+	public static final ResourceLocation CAP_KNOCKBACK = ModId.of("modifiers/captain_america/knockback_resistance");
+
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, HOMELANDER_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
@@ -95,6 +110,27 @@ public final class HeroAttributes {
 			.add(Attributes.BLOCK_INTERACTION_RANGE, DOOMSDAY_BLOCK_REACH, 1.5, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.STEP_HEIGHT, DOOMSDAY_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.JUMP_STRENGTH, DOOMSDAY_JUMP, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet GOKU = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, GOKU_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, GOKU_SPEED, 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, GOKU_HP, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, GOKU_KNOCKBACK, 0.3, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet NARUTO = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, NARUTO_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, NARUTO_SPEED, 0.20, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ATTACK_SPEED, NARUTO_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet CAPTAIN_AMERICA = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, CAP_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, CAP_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	private HeroAttributes() {

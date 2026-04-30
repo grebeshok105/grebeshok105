@@ -27,11 +27,32 @@ public final class ModEntities {
 					.build("shadow_soldier")
 	);
 
+	public static final EntityType<KageBunshinEntity> KAGE_BUNSHIN = Registry.register(
+			BuiltInRegistries.ENTITY_TYPE,
+			ModId.of("kage_bunshin"),
+			EntityType.Builder.of(KageBunshinEntity::new, MobCategory.CREATURE)
+					.sized(0.6f, 1.8f)
+					.clientTrackingRange(10)
+					.fireImmune()
+					.build("kage_bunshin")
+	);
+
+	public static final EntityType<ShieldProjectileEntity> SHIELD_PROJECTILE = Registry.register(
+			BuiltInRegistries.ENTITY_TYPE,
+			ModId.of("shield_projectile"),
+			EntityType.Builder.<ShieldProjectileEntity>of(ShieldProjectileEntity::new, MobCategory.MISC)
+					.sized(0.6f, 0.6f)
+					.clientTrackingRange(10)
+					.updateInterval(2)
+					.build("shield_projectile")
+	);
+
 	private ModEntities() {
 	}
 
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(HOMELANDER_BOSS, HomelanderBossEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(SHADOW_SOLDIER, ShadowSoldierEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(KAGE_BUNSHIN, KageBunshinEntity.createAttributes());
 	}
 }
