@@ -13,10 +13,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -33,7 +36,8 @@ public class ShieldProjectileEntity extends Projectile {
 	private static final double BOUNCE_RANGE = 8.0;
 	private static final float DAMAGE = 14.0f;
 	private static final double SPEED = 1.4;
-	private static final int MAX_LIFETIME_TICKS = 200;
+	private static final int PEAK_TICKS = 40;
+	private static final int MAX_LIFETIME_TICKS = 120;
 
 	private int bounces = 0;
 	private boolean returning = false;
@@ -78,23 +82,37 @@ public class ShieldProjectileEntity extends Projectile {
 
 		if (this.level() instanceof ServerLevel server) {
 			lifeTicks++;
+
+			LivingEntity owner = this.getOwner() instanceof LivingEntity le ? le : null;
+
+			if (lifeTicks >= PEAK_TICKS && !returning) {
+				returning = true;
+			}
+
 			if (lifeTicks > MAX_LIFETIME_TICKS) {
+				if (owner instanceof ServerPlayer sp) {
+					this.setPos(sp.getX(), sp.getY() + sp.getBbHeight() * 0.5, sp.getZ());
+					server.playSound(null, sp.getX(), sp.getY(), sp.getZ(),
+							SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0f, 1.4f);
+				}
 				this.discard();
 				return;
 			}
 
-			LivingEntity owner = this.getOwner() instanceof LivingEntity le ? le : null;
-
-			if (returning && owner != null) {
+			if (returning) {
+				if (owner == null || !owner.isAlive()) {
+					this.discard();
+					return;
+				}
 				Vec3 toOwner = owner.position().add(0, owner.getBbHeight() / 2.0, 0).subtract(pos);
 				double dist = toOwner.length();
-				if (dist < 1.5) {
+				if (dist < 2.0) {
 					server.playSound(null, pos.x, pos.y, pos.z,
 							SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0f, 1.4f);
 					this.discard();
 					return;
 				}
-				motion = toOwner.normalize().scale(SPEED * 1.3);
+				motion = toOwner.normalize().scale(SPEED * 1.6);
 				this.setDeltaMovement(motion);
 			}
 
@@ -111,6 +129,17 @@ public class ShieldProjectileEntity extends Projectile {
 			}
 			if (hit != null) {
 				onHitTarget(server, hit, owner);
+				motion = this.getDeltaMovement();
+			}
+
+			if (!returning) {
+				Vec3 nextPos = pos.add(motion);
+				BlockHitResult blockHit = server.clip(new ClipContext(
+						pos, nextPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+				if (blockHit.getType() == HitResult.Type.BLOCK) {
+					onHitBlock(blockHit);
+					motion = this.getDeltaMovement();
+				}
 			}
 		}
 
@@ -175,13 +204,13 @@ public class ShieldProjectileEntity extends Projectile {
 	}
 
 	@Override
-	protected void onHitBlock(net.minecraft.world.phys.BlockHitResult result) {
+	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		if (!(this.level() instanceof ServerLevel server)) return;
 		server.playSound(null, this.getX(), this.getY(), this.getZ(),
-				SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.7f, 1.5f);
+				SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0f, 0.8f);
 		returning = true;
-		this.setDeltaMovement(this.getDeltaMovement().scale(-0.3));
+		this.setDeltaMovement(this.getDeltaMovement().scale(-0.2));
 	}
 
 	@Override
@@ -220,12 +249,16 @@ public class ShieldProjectileEntity extends Projectile {
 		if (!this.level().isClientSide && !savedStack.isEmpty()) {
 			ItemStack toReturn = savedStack;
 			savedStack = ItemStack.EMPTY;
-			if (this.getOwner() instanceof ServerPlayer sp) {
+			if (this.getOwner() instanceof ServerPlayer sp && sp.isAlive()) {
 				if (sp.getItemInHand(savedHand).isEmpty()) {
 					sp.setItemInHand(savedHand, toReturn);
 				} else if (!sp.getInventory().add(toReturn)) {
 					sp.drop(toReturn, false);
 				}
+			} else {
+				ItemEntity drop = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), toReturn);
+				drop.setDefaultPickUpDelay();
+				this.level().addFreshEntity(drop);
 			}
 		}
 		super.remove(reason);

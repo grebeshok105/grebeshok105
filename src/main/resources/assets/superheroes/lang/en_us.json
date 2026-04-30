@@ -256,6 +256,9 @@
 
 	"item.superheroes.vibranium_shield": "Vibranium Shield",
 	"item.superheroes.vibranium_shield.lore.line1": "Forged of pure vibranium — perfectly balanced.",
+	"item.superheroes.vibranium_shield.lore.line2": "Wielded by Captain America",
+	"item.superheroes.vibranium_shield.lore.usage_block": "▶ Right-click — Block",
+	"item.superheroes.vibranium_shield.lore.usage_throw": "▶ Press Z (as Cap) — Throw",
 
 	"ability.superheroes.goku_kamehameha": "Kamehameha",
 	"ability.superheroes.goku_kamehameha.desc": "Charged ki beam — 30 blocks. Damage scales ×(1 + 0.5 × ki stacks).",

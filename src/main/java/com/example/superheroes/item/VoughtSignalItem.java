@@ -2,7 +2,9 @@ package com.example.superheroes.item;
 
 import com.example.superheroes.entity.HomelanderBossEntity;
 import com.example.superheroes.entity.ModEntities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -10,11 +12,24 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+
+import java.util.List;
 
 public class VoughtSignalItem extends Item {
 	public VoughtSignalItem(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		TooltipFrame.openDivider(tooltip, ChatFormatting.RED);
+		tooltip.add(TooltipFrame.flavor("item.superheroes.vought_signal.lore.line1", ChatFormatting.RED));
+		tooltip.add(Component.empty());
+		tooltip.add(TooltipFrame.bulletWarn("item.superheroes.vought_signal.lore.usage", ChatFormatting.RED));
+		TooltipFrame.closeDivider(tooltip, ChatFormatting.RED);
 	}
 
 	@Override

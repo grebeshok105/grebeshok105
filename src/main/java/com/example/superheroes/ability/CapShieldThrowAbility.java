@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
 public final class CapShieldThrowAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 100;
+	private static final int COOLDOWN_TICKS = 0;
 
 	@Override
 	public ResourceLocation getId() {
