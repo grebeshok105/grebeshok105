@@ -284,15 +284,15 @@
 	"death.attack.cap_shield_throw": "%1$s был сбит вибраниумным щитом %2$s",
 	"death.attack.cap_shield_slam": "%1$s был раздавлен ударом щита %2$s",
 
-	"hero.superheroes.goku.passive.0": "Тело сайяна: +6 урона, +10 HP",
-	"hero.superheroes.goku.passive.1": "Лёгкая походка: +10% скорости",
-	"hero.superheroes.goku.passive.2": "Тело ки: иммунитет к падению",
+	"hero.superheroes.goku.passive.1": "Тело сайяна: +6 урона, +10 HP",
+	"hero.superheroes.goku.passive.2": "Лёгкая походка: +10% скорости",
+	"hero.superheroes.goku.passive.3": "Тело ки: иммунитет к падению",
 
-	"hero.superheroes.naruto.passive.0": "Шиноби: +4 урона, +1.0 скорость атаки",
-	"hero.superheroes.naruto.passive.1": "Бегун ветра: +20% скорости",
-	"hero.superheroes.naruto.passive.2": "Дзюцу замены: обманывает смерть (КД 60с)",
+	"hero.superheroes.naruto.passive.1": "Шиноби: +4 урона, +1.0 скорость атаки",
+	"hero.superheroes.naruto.passive.2": "Бегун ветра: +20% скорости",
+	"hero.superheroes.naruto.passive.3": "Дзюцу замены: обманывает смерть (КД 60с)",
 
-	"hero.superheroes.captain_america.passive.0": "Супер-солдат: +20 HP, +25 брони, +8 толщины",
-	"hero.superheroes.captain_america.passive.1": "Стойкий: +0.6 сопр. отбрасыванию, +4 урона",
-	"hero.superheroes.captain_america.passive.2": "Тренированное падение: иммунитет к падению"
+	"hero.superheroes.captain_america.passive.1": "Супер-солдат: +20 HP, +25 брони, +8 толщины",
+	"hero.superheroes.captain_america.passive.2": "Стойкий: +0.6 сопр. отбрасыванию, +4 урона",
+	"hero.superheroes.captain_america.passive.3": "Тренированное падение: иммунитет к падению"
 }

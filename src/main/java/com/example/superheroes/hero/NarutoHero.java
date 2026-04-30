@@ -72,4 +72,9 @@ public final class NarutoHero implements Hero {
 	public ResourceLocation getSkinTexture() {
 		return SKIN;
 	}
+
+	@Override
+	public HeroTheme getTheme() {
+		return HeroTheme.NARUTO;
+	}
 }

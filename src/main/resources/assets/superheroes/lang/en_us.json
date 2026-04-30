@@ -284,15 +284,15 @@
 	"death.attack.cap_shield_throw": "%1$s was hit by %2$s's vibranium shield",
 	"death.attack.cap_shield_slam": "%1$s was crushed by %2$s's shield slam",
 
-	"hero.superheroes.goku.passive.0": "Saiyan Body: +6 attack damage, +10 HP",
-	"hero.superheroes.goku.passive.1": "Light Frame: +10% movement speed",
-	"hero.superheroes.goku.passive.2": "Ki Body: immune to fall damage",
+	"hero.superheroes.goku.passive.1": "Saiyan Body: +6 attack damage, +10 HP",
+	"hero.superheroes.goku.passive.2": "Light Frame: +10% movement speed",
+	"hero.superheroes.goku.passive.3": "Ki Body: immune to fall damage",
 
-	"hero.superheroes.naruto.passive.0": "Shinobi: +4 attack damage, +1.0 attack speed",
-	"hero.superheroes.naruto.passive.1": "Wind-runner: +20% movement speed",
-	"hero.superheroes.naruto.passive.2": "Substitution Jutsu: cheats death (60s cooldown)",
+	"hero.superheroes.naruto.passive.1": "Shinobi: +4 attack damage, +1.0 attack speed",
+	"hero.superheroes.naruto.passive.2": "Wind-runner: +20% movement speed",
+	"hero.superheroes.naruto.passive.3": "Substitution Jutsu: cheats death (60s cooldown)",
 
-	"hero.superheroes.captain_america.passive.0": "Super Soldier: +20 HP, +25 armor, +8 toughness",
-	"hero.superheroes.captain_america.passive.1": "Stalwart: +0.6 knockback resistance, +4 attack damage",
-	"hero.superheroes.captain_america.passive.2": "Trained Landing: immune to fall damage"
+	"hero.superheroes.captain_america.passive.1": "Super Soldier: +20 HP, +25 armor, +8 toughness",
+	"hero.superheroes.captain_america.passive.2": "Stalwart: +0.6 knockback resistance, +4 attack damage",
+	"hero.superheroes.captain_america.passive.3": "Trained Landing: immune to fall damage"
 }
