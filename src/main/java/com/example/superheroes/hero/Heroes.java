@@ -14,6 +14,9 @@ public final class Heroes {
 	public static final RegulusHero REGULUS = new RegulusHero();
 	public static final SungJinwooHero SUNG_JINWOO = new SungJinwooHero();
 	public static final DoomsdayHero DOOMSDAY = new DoomsdayHero();
+	public static final GokuHero GOKU = new GokuHero();
+	public static final NarutoHero NARUTO = new NarutoHero();
+	public static final CaptainAmericaHero CAPTAIN_AMERICA = new CaptainAmericaHero();
 
 	private Heroes() {
 	}
@@ -24,6 +27,9 @@ public final class Heroes {
 		register(REGULUS);
 		register(SUNG_JINWOO);
 		register(DOOMSDAY);
+		register(GOKU);
+		register(NARUTO);
+		register(CAPTAIN_AMERICA);
 	}
 
 	public static void register(Hero hero) {

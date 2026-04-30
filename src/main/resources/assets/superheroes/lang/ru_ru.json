@@ -230,5 +230,69 @@
 	"hero.superheroes.doomsday.tier.6": "Тир 6 — Истребитель",
 	"hero.superheroes.doomsday.tier.7": "Тир 7 — Апокалипсис",
 	"hero.superheroes.doomsday.death.evolve": "%s умер от %s — эволюция: Тир %s/7",
-	"hero.superheroes.doomsday.death.simple": "%s умер от %s — эволюция уже на максимуме"
+	"hero.superheroes.doomsday.death.simple": "%s умер от %s — эволюция уже на максимуме",
+
+	"hero.superheroes.goku": "Гоку",
+	"hero.superheroes.naruto": "Наруто",
+	"hero.superheroes.captain_america": "Капитан Америка",
+
+	"item.superheroes.goku_gi": "Доги Гоку",
+	"item.superheroes.goku_gi.lore.line1": "\"Камехамеха!\"",
+	"item.superheroes.goku_gi.lore.line2": "Боевая форма сайяна",
+	"item.superheroes.goku_gi.lore.usage": "▶ ПКМ — Трансформация",
+	"item.superheroes.goku_gi.lore.untransform": "▶ Shift + ПКМ — Вернуться",
+
+	"item.superheroes.naruto_headband": "Повязка Конохи",
+	"item.superheroes.naruto_headband.lore.line1": "\"Я никогда не отказываюсь от своих слов!\"",
+	"item.superheroes.naruto_headband.lore.line2": "Налобный знак шиноби Скрытого Листа",
+	"item.superheroes.naruto_headband.lore.usage": "▶ ПКМ — Трансформация",
+	"item.superheroes.naruto_headband.lore.untransform": "▶ Shift + ПКМ — Вернуться",
+
+	"item.superheroes.captain_america_suit": "Костюм Капитана Америки",
+	"item.superheroes.captain_america_suit.lore.line1": "\"Я могу делать это весь день.\"",
+	"item.superheroes.captain_america_suit.lore.line2": "Боевая форма Первого Мстителя",
+	"item.superheroes.captain_america_suit.lore.usage": "▶ ПКМ — Облачиться",
+	"item.superheroes.captain_america_suit.lore.untransform": "▶ Shift + ПКМ — Снять",
+
+	"item.superheroes.vibranium_shield": "Вибраниумный щит",
+	"item.superheroes.vibranium_shield.lore.line1": "Выкован из чистого вибраниума — идеально сбалансирован.",
+
+	"ability.superheroes.goku_kamehameha": "Камехамеха",
+	"ability.superheroes.goku_kamehameha.desc": "Заряженный луч ки на 30 блоков. Урон ×(1 + 0.5 × стаки ки).",
+	"ability.superheroes.goku_instant_transmission": "Мгновенное перемещение",
+	"ability.superheroes.goku_instant_transmission.desc": "Телепорт к ближайшему существу в радиусе 30 блоков; 8 урона при появлении.",
+	"ability.superheroes.goku_ki_charge": "Зарядка ки",
+	"ability.superheroes.goku_ki_charge.desc": "Удерживай для накопления стаков ки (макс 3). Стаки усиливают следующую способность. Сбрасываются при получении урона.",
+
+	"ability.superheroes.naruto_rasengan": "Расенган",
+	"ability.superheroes.naruto_rasengan.desc": "Заряжает вращающийся шар чакры. Следующий удар наносит 35 урона + AoE-откидывание.",
+	"ability.superheroes.naruto_shadow_clones": "Теневые клоны",
+	"ability.superheroes.naruto_shadow_clones.desc": "Призывает 2 клона-приманки на 6с. Враждебные мобы переключаются на них.",
+	"ability.superheroes.naruto_kawarimi": "Дзюцу замены",
+	"ability.superheroes.naruto_kawarimi.desc": "Пассив: при смертельном уроне телепортирует за спину атакера, дебаффит его, восстанавливает 30% HP. КД 60с.",
+
+	"ability.superheroes.cap_shield_throw": "Бросок щита",
+	"ability.superheroes.cap_shield_throw.desc": "Бросает вибраниумный щит — отскакивает между 3 целями по 14 урона, затем возвращается.",
+	"ability.superheroes.cap_shield_slam": "Удар щитом о землю",
+	"ability.superheroes.cap_shield_slam.desc": "Прыжок и удар оземь — AoE 5 блоков, отбрасывание, 5 урона.",
+	"ability.superheroes.cap_shield_block": "Блок щитом",
+	"ability.superheroes.cap_shield_block.desc": "Тоггл: отменяет урон спереди, замедление при движении.",
+
+	"death.attack.goku_kamehameha": "%1$s был испепелён Камехамехой %2$s",
+	"death.attack.goku_instant_strike": "%1$s был мгновенно поражён %2$s",
+	"death.attack.naruto_rasengan": "%1$s был раздавлен Расенганом %2$s",
+	"death.attack.cap_shield_throw": "%1$s был сбит вибраниумным щитом %2$s",
+	"death.attack.cap_shield_slam": "%1$s был раздавлен ударом щита %2$s",
+
+	"hero.superheroes.goku.passive.0": "Тело сайяна: +6 урона, +10 HP",
+	"hero.superheroes.goku.passive.1": "Лёгкая походка: +10% скорости",
+	"hero.superheroes.goku.passive.2": "Тело ки: иммунитет к падению",
+
+	"hero.superheroes.naruto.passive.0": "Шиноби: +4 урона, +1.0 скорость атаки",
+	"hero.superheroes.naruto.passive.1": "Бегун ветра: +20% скорости",
+	"hero.superheroes.naruto.passive.2": "Дзюцу замены: обманывает смерть (КД 60с)",
+
+	"hero.superheroes.captain_america.passive.0": "Супер-солдат: +20 HP, +25 брони, +8 толщины",
+	"hero.superheroes.captain_america.passive.1": "Стойкий: +0.6 сопр. отбрасыванию, +4 урона",
+	"hero.superheroes.captain_america.passive.2": "Тренированное падение: иммунитет к падению"
 }

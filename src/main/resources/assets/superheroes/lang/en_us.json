@@ -230,5 +230,69 @@
 	"hero.superheroes.doomsday.tier.6": "Tier 6 — Annihilator",
 	"hero.superheroes.doomsday.tier.7": "Tier 7 — Apocalypse",
 	"hero.superheroes.doomsday.death.evolve": "%s died from %s — evolution: Tier %s/7",
-	"hero.superheroes.doomsday.death.simple": "%s died from %s — already at max evolution"
+	"hero.superheroes.doomsday.death.simple": "%s died from %s — already at max evolution",
+
+	"hero.superheroes.goku": "Goku",
+	"hero.superheroes.naruto": "Naruto",
+	"hero.superheroes.captain_america": "Captain America",
+
+	"item.superheroes.goku_gi": "Goku's Gi",
+	"item.superheroes.goku_gi.lore.line1": "\"Kamehameha!\"",
+	"item.superheroes.goku_gi.lore.line2": "Saiyan martial arts uniform",
+	"item.superheroes.goku_gi.lore.usage": "▶ Right-click — Transform",
+	"item.superheroes.goku_gi.lore.untransform": "▶ Shift + Right-click — Revert",
+
+	"item.superheroes.naruto_headband": "Konoha Headband",
+	"item.superheroes.naruto_headband.lore.line1": "\"I never go back on my word!\"",
+	"item.superheroes.naruto_headband.lore.line2": "Hidden Leaf shinobi forehead protector",
+	"item.superheroes.naruto_headband.lore.usage": "▶ Right-click — Transform",
+	"item.superheroes.naruto_headband.lore.untransform": "▶ Shift + Right-click — Revert",
+
+	"item.superheroes.captain_america_suit": "Captain America Suit",
+	"item.superheroes.captain_america_suit.lore.line1": "\"I can do this all day.\"",
+	"item.superheroes.captain_america_suit.lore.line2": "First Avenger combat uniform",
+	"item.superheroes.captain_america_suit.lore.usage": "▶ Right-click — Suit up",
+	"item.superheroes.captain_america_suit.lore.untransform": "▶ Shift + Right-click — Stand down",
+
+	"item.superheroes.vibranium_shield": "Vibranium Shield",
+	"item.superheroes.vibranium_shield.lore.line1": "Forged of pure vibranium — perfectly balanced.",
+
+	"ability.superheroes.goku_kamehameha": "Kamehameha",
+	"ability.superheroes.goku_kamehameha.desc": "Charged ki beam — 30 blocks. Damage scales ×(1 + 0.5 × ki stacks).",
+	"ability.superheroes.goku_instant_transmission": "Instant Transmission",
+	"ability.superheroes.goku_instant_transmission.desc": "Blink to nearest living entity within 30 blocks; 8 damage on arrival.",
+	"ability.superheroes.goku_ki_charge": "Ki Charge",
+	"ability.superheroes.goku_ki_charge.desc": "Hold to channel ki stacks (max 3). Stacks empower the next ability. Stacks reset on damage.",
+
+	"ability.superheroes.naruto_rasengan": "Rasengan",
+	"ability.superheroes.naruto_rasengan.desc": "Charge a spinning chakra orb. Next melee strike deals 35 damage with AoE knockback.",
+	"ability.superheroes.naruto_shadow_clones": "Shadow Clones",
+	"ability.superheroes.naruto_shadow_clones.desc": "Summon 2 decoy clones for 6s. Hostile mobs retarget to clones.",
+	"ability.superheroes.naruto_kawarimi": "Substitution Jutsu",
+	"ability.superheroes.naruto_kawarimi.desc": "Passive: on lethal damage, teleport behind attacker, debuff them, restore to 30% HP. 60s cooldown.",
+
+	"ability.superheroes.cap_shield_throw": "Shield Throw",
+	"ability.superheroes.cap_shield_throw.desc": "Throws the vibranium shield — bounces between up to 3 targets, 14 damage each, then returns.",
+	"ability.superheroes.cap_shield_slam": "Shield Slam",
+	"ability.superheroes.cap_shield_slam.desc": "Leap and slam the ground — 5-block AoE, knockback, 5 damage.",
+	"ability.superheroes.cap_shield_block": "Shield Block",
+	"ability.superheroes.cap_shield_block.desc": "Toggle: cancel damage from the front, slowed movement.",
+
+	"death.attack.goku_kamehameha": "%1$s was vaporized by %2$s's Kamehameha",
+	"death.attack.goku_instant_strike": "%1$s was struck instantly by %2$s",
+	"death.attack.naruto_rasengan": "%1$s was crushed by %2$s's Rasengan",
+	"death.attack.cap_shield_throw": "%1$s was hit by %2$s's vibranium shield",
+	"death.attack.cap_shield_slam": "%1$s was crushed by %2$s's shield slam",
+
+	"hero.superheroes.goku.passive.0": "Saiyan Body: +6 attack damage, +10 HP",
+	"hero.superheroes.goku.passive.1": "Light Frame: +10% movement speed",
+	"hero.superheroes.goku.passive.2": "Ki Body: immune to fall damage",
+
+	"hero.superheroes.naruto.passive.0": "Shinobi: +4 attack damage, +1.0 attack speed",
+	"hero.superheroes.naruto.passive.1": "Wind-runner: +20% movement speed",
+	"hero.superheroes.naruto.passive.2": "Substitution Jutsu: cheats death (60s cooldown)",
+
+	"hero.superheroes.captain_america.passive.0": "Super Soldier: +20 HP, +25 armor, +8 toughness",
+	"hero.superheroes.captain_america.passive.1": "Stalwart: +0.6 knockback resistance, +4 attack damage",
+	"hero.superheroes.captain_america.passive.2": "Trained Landing: immune to fall damage"
 }

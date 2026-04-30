@@ -41,6 +41,17 @@ public final class AbilityRegistry {
 	public static final ChargeTackleAbility DOOMSDAY_CHARGE_TACKLE = new ChargeTackleAbility();
 	public static final DoomGripAbility DOOMSDAY_DOOM_GRIP = new DoomGripAbility();
 
+	public static final GokuKamehamehaAbility GOKU_KAMEHAMEHA = new GokuKamehamehaAbility();
+	public static final GokuInstantTransmissionAbility GOKU_INSTANT_TRANSMISSION = new GokuInstantTransmissionAbility();
+	public static final GokuKiChargeAbility GOKU_KI_CHARGE = new GokuKiChargeAbility();
+
+	public static final NarutoRasenganAbility NARUTO_RASENGAN = new NarutoRasenganAbility();
+	public static final NarutoShadowClonesAbility NARUTO_SHADOW_CLONES = new NarutoShadowClonesAbility();
+
+	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
+	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
+	public static final CapShieldBlockAbility CAP_SHIELD_BLOCK = new CapShieldBlockAbility();
+
 	private AbilityRegistry() {
 	}
 
@@ -72,6 +83,14 @@ public final class AbilityRegistry {
 		register(DOOMSDAY_BONE_SPIKE);
 		register(DOOMSDAY_CHARGE_TACKLE);
 		register(DOOMSDAY_DOOM_GRIP);
+		register(GOKU_KAMEHAMEHA);
+		register(GOKU_INSTANT_TRANSMISSION);
+		register(GOKU_KI_CHARGE);
+		register(NARUTO_RASENGAN);
+		register(NARUTO_SHADOW_CLONES);
+		register(CAP_SHIELD_THROW);
+		register(CAP_SHIELD_SLAM);
+		register(CAP_SHIELD_BLOCK);
 	}
 
 	public static void register(Ability ability) {

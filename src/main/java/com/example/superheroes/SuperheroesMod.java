@@ -58,12 +58,18 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.DoomsdayAdaptationController.init();
 		com.example.superheroes.effect.DoomsdayFootstepsController.init();
 		com.example.superheroes.effect.DoomsdayTierController.init();
+		com.example.superheroes.effect.GokuKiStackController.init();
+		com.example.superheroes.effect.KawarimiController.init();
+		com.example.superheroes.effect.CapShieldBlockController.init();
 		SuperheroesCommands.init();
 
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
 			com.example.superheroes.effect.DoomGripController.serverTick();
 			for (ServerPlayer p : server.getPlayerList().getPlayers()) {
 				com.example.superheroes.ability.ChargeTackleAbility.serverTick(p);
+				com.example.superheroes.ability.GokuKamehamehaAbility.serverTick(p);
+				com.example.superheroes.ability.NarutoRasenganAbility.serverTick(p);
+				com.example.superheroes.ability.CapShieldSlamAbility.serverTick(p);
 			}
 		});
 

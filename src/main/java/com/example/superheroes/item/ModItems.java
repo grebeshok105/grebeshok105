@@ -75,6 +75,26 @@ public final class ModItems {
 			new DoomsdaySuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
 	);
 
+	public static final GokuGiItem GOKU_GI = register(
+			"goku_gi",
+			new GokuGiItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final NarutoHeadbandItem NARUTO_HEADBAND = register(
+			"naruto_headband",
+			new NarutoHeadbandItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final CaptainAmericaSuitItem CAPTAIN_AMERICA_SUIT = register(
+			"captain_america_suit",
+			new CaptainAmericaSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final VibraniumShieldItem VIBRANIUM_SHIELD = register(
+			"vibranium_shield",
+			new VibraniumShieldItem(new Item.Properties().stacksTo(1).durability(2000).rarity(Rarity.EPIC))
+	);
+
 	private ModItems() {
 	}
 

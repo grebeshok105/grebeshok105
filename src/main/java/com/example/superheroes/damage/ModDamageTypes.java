@@ -24,6 +24,11 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> DOOMSDAY_CHARGE_TACKLE = key("doomsday_charge_tackle");
 	public static final ResourceKey<DamageType> DOOMSDAY_DOOM_GRIP = key("doomsday_doom_grip");
 	public static final ResourceKey<DamageType> SHADOW_ATTACK = key("shadow_attack");
+	public static final ResourceKey<DamageType> GOKU_KAMEHAMEHA = key("goku_kamehameha");
+	public static final ResourceKey<DamageType> GOKU_INSTANT_STRIKE = key("goku_instant_strike");
+	public static final ResourceKey<DamageType> NARUTO_RASENGAN = key("naruto_rasengan");
+	public static final ResourceKey<DamageType> CAP_SHIELD_THROW = key("cap_shield_throw");
+	public static final ResourceKey<DamageType> CAP_SHIELD_SLAM = key("cap_shield_slam");
 
 	private ModDamageTypes() {
 	}
@@ -44,6 +49,11 @@ public final class ModDamageTypes {
 		context.register(DOOMSDAY_CHARGE_TACKLE, new DamageType("doomsday_charge_tackle", DamageScaling.NEVER, 0.0F));
 		context.register(DOOMSDAY_DOOM_GRIP, new DamageType("doomsday_doom_grip", DamageScaling.NEVER, 0.0F));
 		context.register(SHADOW_ATTACK, new DamageType("shadow_attack", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.0F));
+		context.register(GOKU_KAMEHAMEHA, new DamageType("goku_kamehameha", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(GOKU_INSTANT_STRIKE, new DamageType("goku_instant_strike", DamageScaling.NEVER, 0.0F));
+		context.register(NARUTO_RASENGAN, new DamageType("naruto_rasengan", DamageScaling.NEVER, 0.0F));
+		context.register(CAP_SHIELD_THROW, new DamageType("cap_shield_throw", DamageScaling.NEVER, 0.0F));
+		context.register(CAP_SHIELD_SLAM, new DamageType("cap_shield_slam", DamageScaling.NEVER, 0.0F));
 	}
 
 	public static DamageSource eyeLaser(ServerLevel level, Entity attacker) {
@@ -88,6 +98,26 @@ public final class ModDamageTypes {
 
 	public static DamageSource shadowAttack(ServerLevel level, Entity attacker) {
 		return source(level, SHADOW_ATTACK, attacker);
+	}
+
+	public static DamageSource gokuKamehameha(ServerLevel level, Entity attacker) {
+		return source(level, GOKU_KAMEHAMEHA, attacker);
+	}
+
+	public static DamageSource gokuInstantStrike(ServerLevel level, Entity attacker) {
+		return source(level, GOKU_INSTANT_STRIKE, attacker);
+	}
+
+	public static DamageSource narutoRasengan(ServerLevel level, Entity attacker) {
+		return source(level, NARUTO_RASENGAN, attacker);
+	}
+
+	public static DamageSource capShieldThrow(ServerLevel level, Entity attacker) {
+		return source(level, CAP_SHIELD_THROW, attacker);
+	}
+
+	public static DamageSource capShieldSlam(ServerLevel level, Entity attacker) {
+		return source(level, CAP_SHIELD_SLAM, attacker);
 	}
 
 	private static DamageSource source(ServerLevel level, ResourceKey<DamageType> key, Entity attacker) {
