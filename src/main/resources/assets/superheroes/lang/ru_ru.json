@@ -256,6 +256,9 @@
 
 	"item.superheroes.vibranium_shield": "Вибраниумный щит",
 	"item.superheroes.vibranium_shield.lore.line1": "Выкован из чистого вибраниума — идеально сбалансирован.",
+	"item.superheroes.vibranium_shield.lore.line2": "Оружие Капитана Америка",
+	"item.superheroes.vibranium_shield.lore.usage_block": "▶ ПКМ — блок",
+	"item.superheroes.vibranium_shield.lore.usage_throw": "▶ Z (за Кэпа) — бросок",
 
 	"ability.superheroes.goku_kamehameha": "Камехамеха",
 	"ability.superheroes.goku_kamehameha.desc": "Заряженный луч ки на 30 блоков. Урон ×(1 + 0.5 × стаки ки).",

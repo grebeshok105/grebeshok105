@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 
 public final class CapShieldSlamAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 200;
+	private static final int COOLDOWN_TICKS = 0;
 	private static final double RADIUS = 5.0;
 	private static final float DAMAGE = 5.0f;
 	private static final int MAX_AIR_TICKS = 100;
@@ -47,7 +47,7 @@ public final class CapShieldSlamAbility implements Ability {
 
 	@Override
 	public boolean canActivate(ServerPlayer player) {
-		return !AbilityCooldowns.isOnCooldown(player, getId()) && !JUMPING.containsKey(player.getUUID());
+		return !JUMPING.containsKey(player.getUUID());
 	}
 
 	@Override
@@ -60,7 +60,6 @@ public final class CapShieldSlamAbility implements Ability {
 		JUMPING.put(player.getUUID(), 0);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.2f, 1.4f);
-		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;
 	}
 
@@ -106,7 +105,7 @@ public final class CapShieldSlamAbility implements Ability {
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK,
 				pos.x, pos.y + 0.4, pos.z, 6, RADIUS * 0.4, 0.1, RADIUS * 0.4, 0.0);
 		level.playSound(null, pos.x, pos.y, pos.z,
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 0.6f);
+				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.4f, 0.6f);
 		level.playSound(null, pos.x, pos.y, pos.z,
 				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.2f, 0.7f);
 		level.playSound(null, pos.x, pos.y, pos.z,
