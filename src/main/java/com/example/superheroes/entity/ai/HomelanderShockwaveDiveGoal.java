@@ -93,7 +93,8 @@ public class HomelanderShockwaveDiveGoal extends Goal {
 				if (boss.getY() <= diveTarget.y + 1.0 || (boss.onGround() && horiz2 < 4.0)) {
 					ServerLevel sl = (ServerLevel) boss.level();
 					ShockwaveUtil.detonateMob(boss, sl,
-							boss.position(), IMPACT_RADIUS, IMPACT_DAMAGE, false);
+							boss.position(), IMPACT_RADIUS, IMPACT_DAMAGE, false,
+							com.example.superheroes.damage.ModDamageTypes.homelanderShockwaveDive(sl, boss));
 					sl.playSound(null, boss.getX(), boss.getY(), boss.getZ(),
 							ModSounds.HOMELANDER_IRON_FISTS_IMPACT, SoundSource.HOSTILE, 1.6f, 0.85f);
 					phase = 2;

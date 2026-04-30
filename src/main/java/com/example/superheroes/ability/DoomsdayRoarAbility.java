@@ -71,11 +71,10 @@ public final class DoomsdayRoarAbility implements Ability {
 		}
 
 		level.playSound(null, origin.x, origin.y, origin.z,
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 2.0f, 0.55f);
+				com.example.superheroes.sound.ModSounds.DOOMSDAY_ROAR, SoundSource.PLAYERS, 2.0f, 0.9f);
 		level.playSound(null, origin.x, origin.y, origin.z,
-				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.2f, 0.85f);
+				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0f, 0.6f);
 
-		level.sendParticles(ParticleTypes.SONIC_BOOM, origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
 		level.sendParticles(ParticleTypes.CLOUD, origin.x, origin.y, origin.z,
 				100, RADIUS * 0.45, 0.5, RADIUS * 0.45, 0.2);
 

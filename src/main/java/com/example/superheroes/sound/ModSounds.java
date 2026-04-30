@@ -17,6 +17,7 @@ public final class ModSounds {
 	public static final SoundEvent HOMELANDER_HAND_CLAP = register("homelander.hand_clap");
 	public static final SoundEvent HOMELANDER_IRON_FISTS_IMPACT = register("homelander.iron_fists.impact");
 	public static final SoundEvent HOMELANDER_IRON_FISTS_CHARGE = register("homelander.iron_fists.charge");
+	public static final SoundEvent DOOMSDAY_ROAR = register("doomsday.roar");
 
 	private ModSounds() {
 	}

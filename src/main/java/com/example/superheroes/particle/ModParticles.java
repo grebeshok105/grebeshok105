@@ -23,6 +23,14 @@ public final class ModParticles {
 	public static final SimpleParticleType CAP_SHIELD_TRAIL = register("cap_shield_trail", FabricParticleTypes.simple());
 	public static final SimpleParticleType CAP_SHIELD_SLAM_BURST = register("cap_shield_slam_burst", FabricParticleTypes.simple());
 
+	public static final SimpleParticleType WHITE_BOOM = register("white_boom", FabricParticleTypes.simple());
+	public static final SimpleParticleType SPARKS = register("sparks", FabricParticleTypes.simple());
+	public static final SimpleParticleType DARK_STAR = register("dark_star", FabricParticleTypes.simple());
+	public static final SimpleParticleType PURPLE_FLAME = register("purple_flame", FabricParticleTypes.simple());
+	public static final SimpleParticleType BLACK_FLAME = register("black_flame", FabricParticleTypes.simple());
+	public static final SimpleParticleType DAZZLING = register("dazzling", FabricParticleTypes.simple());
+	public static final SimpleParticleType SUN_PARTICLE = register("sun_particle", FabricParticleTypes.simple());
+
 	private ModParticles() {
 	}
 

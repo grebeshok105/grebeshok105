@@ -76,7 +76,7 @@ public class HomelanderLightningCallGoal extends Goal {
 				bolt.setCause(null);
 				sl.addFreshEntity(bolt);
 			}
-			DamageSource ds = boss.damageSources().mobAttack(boss);
+			DamageSource ds = com.example.superheroes.damage.ModDamageTypes.homelanderLightningCall((net.minecraft.server.level.ServerLevel) boss.level(), boss);
 			lockedTarget.hurt(ds, BONUS_DAMAGE);
 		}
 	}

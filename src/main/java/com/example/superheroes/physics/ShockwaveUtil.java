@@ -23,12 +23,16 @@ public final class ShockwaveUtil {
 	}
 
 	public static void detonateMob(LivingEntity source, ServerLevel world, Vec3 center, double radius, float damage, boolean breakBlocks) {
+		detonateMob(source, world, center, radius, damage, breakBlocks, source.damageSources().mobAttack(source));
+	}
+
+	public static void detonateMob(LivingEntity source, ServerLevel world, Vec3 center, double radius, float damage, boolean breakBlocks, DamageSource damageSource) {
 		AABB box = new AABB(
 				center.x - radius, center.y - 1.0, center.z - radius,
 				center.x + radius, center.y + 2.0, center.z + radius);
 		List<Entity> hits = world.getEntities(source, box);
 		double r2 = radius * radius;
-		DamageSource ds = source.damageSources().mobAttack(source);
+		DamageSource ds = damageSource;
 		for (Entity e : hits) {
 			Vec3 to = e.position().subtract(center);
 			double d2 = to.lengthSqr();

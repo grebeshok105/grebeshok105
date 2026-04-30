@@ -84,5 +84,20 @@
 				"name": "superheroes:homelander/iron_fists_charge"
 			}
 		]
+	},
+	"doomsday.roar": {
+		"subtitle": "subtitles.superheroes.doomsday.roar",
+		"sounds": [
+			{
+				"name": "superheroes:doomsday/roar_a",
+				"stream": true,
+				"weight": 1
+			},
+			{
+				"name": "superheroes:doomsday/roar_b",
+				"stream": true,
+				"weight": 1
+			}
+		]
 	}
 }

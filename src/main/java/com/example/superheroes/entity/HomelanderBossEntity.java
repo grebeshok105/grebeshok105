@@ -139,6 +139,26 @@ public class HomelanderBossEntity extends Monster {
 	}
 
 	@Override
+	public boolean doHurtTarget(net.minecraft.world.entity.Entity target) {
+		if (!(this.level() instanceof ServerLevel sl)) {
+			return super.doHurtTarget(target);
+		}
+		float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		DamageSource ds = com.example.superheroes.damage.ModDamageTypes.homelanderMelee(sl, this);
+		boolean hurt = target.hurt(ds, damage);
+		if (hurt) {
+			if (target instanceof LivingEntity le) {
+				le.knockback(0.5F,
+						Math.sin(this.getYRot() * (float) Math.PI / 180F),
+						-Math.cos(this.getYRot() * (float) Math.PI / 180F));
+				this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0, 0.6));
+			}
+			this.setLastHurtMob(target);
+		}
+		return hurt;
+	}
+
+	@Override
 	protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean wasRecentlyHit) {
 		super.dropCustomDeathLoot(level, damageSource, wasRecentlyHit);
 		this.spawnAtLocation(new ItemStack(ModItems.HOMELANDER_SUIT));

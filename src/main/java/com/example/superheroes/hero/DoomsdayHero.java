@@ -93,11 +93,22 @@ public final class DoomsdayHero implements Hero {
                 int tier = getTier(player);
                 HeroAttributes.DOOMSDAY.remove(player);
                 HeroAttributes.buildDoomsdayTierSet(tier).apply(player);
-                player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
-                if (tier >= 5) {
-                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
+                if (tier >= 7) {
+                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 1, true, false, true));
+                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 1, true, false, true));
+                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 1, true, false, true));
+                        player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 1, true, false, true));
+                        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 0, true, false, true));
                 } else {
-                        player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                        player.removeEffect(MobEffects.DAMAGE_BOOST);
+                        player.removeEffect(MobEffects.JUMP);
+                        player.removeEffect(MobEffects.FIRE_RESISTANCE);
+                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, -1, 0, true, false, true));
+                        if (tier >= 5) {
+                                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 0, true, false, true));
+                        } else {
+                                player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                        }
                 }
                 if (player instanceof ServerPlayer sp) {
                         com.example.superheroes.effect.DoomsdayTierController.sync(sp);
@@ -126,8 +137,12 @@ public final class DoomsdayHero implements Hero {
                 HeroAttributes.DOOMSDAY.remove(player);
                 player.removeEffect(MobEffects.REGENERATION);
                 player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                player.removeEffect(MobEffects.DAMAGE_BOOST);
+                player.removeEffect(MobEffects.JUMP);
+                player.removeEffect(MobEffects.FIRE_RESISTANCE);
                 if (player instanceof ServerPlayer sp) {
                         com.example.superheroes.effect.DoomsdayAdaptationController.clear(sp);
+                        com.example.superheroes.effect.DoomsdayEffectAdaptationController.clear(sp);
                         com.example.superheroes.ability.DoomsdayBerserkAbility.clearBuff(sp);
                         com.example.superheroes.effect.DoomsdayTierController.resetProgress(sp);
                         com.example.superheroes.ability.ChargeTackleAbility.clear(sp);
@@ -170,14 +185,13 @@ public final class DoomsdayHero implements Hero {
                         }
                         case NORMAL -> {
                                 level.playSound(null, cx, cy, cz, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.4f, 0.55f);
-                                level.playSound(null, cx, cy, cz, SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.0f, 0.6f);
+                                level.playSound(null, cx, cy, cz, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 0.9f, 0.55f);
                                 level.sendParticles(ParticleTypes.LARGE_SMOKE, cx, cy + 0.1, cz, 36, radius * 0.4, 0.2, radius * 0.4, 0.08);
                                 level.sendParticles(ParticleTypes.POOF, cx, cy + 0.1, cz, 32, radius * 0.4, 0.15, radius * 0.4, 0.06);
                         }
                         case EPIC -> {
                                 level.playSound(null, cx, cy, cz, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 2.0f, 0.4f);
-                                level.playSound(null, cx, cy, cz, SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.6f, 0.5f);
-                                level.playSound(null, cx, cy, cz, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.2f, 0.7f);
+                                level.playSound(null, cx, cy, cz, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.4f, 0.5f);
                                 level.sendParticles(ParticleTypes.LARGE_SMOKE, cx, cy + 0.1, cz, 80, radius * 0.5, 0.3, radius * 0.5, 0.10);
                                 level.sendParticles(ParticleTypes.POOF, cx, cy + 0.1, cz, 60, radius * 0.5, 0.2, radius * 0.5, 0.08);
                                 level.sendParticles(ParticleTypes.EXPLOSION, cx, cy + 0.6, cz, 4, 0.6, 0.3, 0.6, 0.0);

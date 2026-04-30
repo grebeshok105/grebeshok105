@@ -107,7 +107,7 @@ public class HomelanderHeatVisionSweepGoal extends Goal {
 
 			AABB box = boss.getBoundingBox().inflate(RANGE);
 			List<Entity> nearby = world.getEntities(boss, box);
-			DamageSource ds = boss.damageSources().mobAttack(boss);
+			DamageSource ds = com.example.superheroes.damage.ModDamageTypes.homelanderHeatVision((net.minecraft.server.level.ServerLevel) boss.level(), boss);
 			for (Entity e : nearby) {
 				if (!(e instanceof LivingEntity le) || !le.isAlive()) continue;
 				if (hitOnce.contains(e.getUUID())) continue;

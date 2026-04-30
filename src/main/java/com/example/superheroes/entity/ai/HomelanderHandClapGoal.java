@@ -1,5 +1,6 @@
 package com.example.superheroes.entity.ai;
 
+import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.entity.HomelanderBossEntity;
 import com.example.superheroes.network.ScreenShakeS2CPayload;
 import com.example.superheroes.sound.ModSounds;
@@ -87,7 +88,7 @@ public class HomelanderHandClapGoal extends Goal {
 			Vec3 forward = boss.getViewVector(1f).normalize();
 			AABB area = new AABB(origin, origin).inflate(RANGE);
 			List<Entity> hits = sl.getEntities(boss, area);
-			DamageSource ds = boss.damageSources().mobAttack(boss);
+			DamageSource ds = ModDamageTypes.homelanderHandClap(sl, boss);
 			for (Entity e : hits) {
 				if (!(e instanceof LivingEntity le) || !le.isAlive() || e == boss) continue;
 				Vec3 to = e.position().add(0, e.getBbHeight() * 0.5, 0).subtract(origin);

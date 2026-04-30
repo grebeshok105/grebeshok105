@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public final class DoomGripAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 1800; // 90s
+	private static final int COOLDOWN_TICKS = 900; // 45s
 	private static final double SEARCH_RADIUS = 8.0;
 
 	@Override

@@ -51,7 +51,7 @@ public final class DoomsdaySmashAbility implements Ability {
 		level.playSound(null, origin.x, origin.y, origin.z,
 				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.6f, 0.5f);
 		level.playSound(null, origin.x, origin.y, origin.z,
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.4f, 0.6f);
+				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.2f, 0.7f);
 
 		level.sendParticles(ParticleTypes.EXPLOSION, origin.x, origin.y + 0.4, origin.z,
 				4, 0.8, 0.2, 0.8, 0.0);
