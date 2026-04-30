@@ -317,5 +317,48 @@
 
 	"hero.superheroes.captain_america.passive.1": "Супер-солдат: +20 HP, +25 брони, +8 толщины",
 	"hero.superheroes.captain_america.passive.2": "Стойкий: +0.6 сопр. отбрасыванию, +4 урона",
-	"hero.superheroes.captain_america.passive.3": "Тренированное падение: иммунитет к падению"
+	"hero.superheroes.captain_america.passive.3": "Тренированное падение: иммунитет к падению",
+
+	"hero.superheroes.slenderman": "Слендермен",
+	"hero.superheroes.slenderman.passive.1": "Тонкое тело: +20 HP, +25% скорости, +1.5 дальность, +0.4 шаг",
+	"hero.superheroes.slenderman.passive.2": "Статическая аура: враги в поле зрения копят стаки Static (тошнота → слепота → удар щупалец)",
+	"hero.superheroes.slenderman.passive.3": "Фазовый шаг: уклонение почти от всех снарядов (95%) и огня (100%); 35% от ближнего боя — кулдаун между уклонениями 1с",
+	"hero.superheroes.slenderman.passive.4": "Зрительный контакт: если цель смотрит >4с, ты «Раскрыт» — уклонение ×0.3 на 4с",
+
+	"item.superheroes.slenderman_suit": "Маска Слендермена",
+	"item.superheroes.slenderman_suit.lore.line1": "\"Всегда наблюдает, никогда не моргает.\"",
+	"item.superheroes.slenderman_suit.lore.line2": "Проводник Статической ауры",
+	"item.superheroes.slenderman_suit.lore.usage": "▶ ПКМ — стать Слендерменом",
+	"item.superheroes.slenderman_suit.lore.untransform": "▶ Shift + ПКМ — вернуться в плоть",
+
+	"ability.superheroes.slender_blink": "Скачок",
+	"ability.superheroes.slender_blink.desc": "Телепорт до 8 блоков сквозь стены по взгляду. КД 4с.",
+	"ability.superheroes.slender_tendrils": "Щупальца",
+	"ability.superheroes.slender_tendrils.desc": "4 невидимых руки бьют в конусе R=4, 5 урона + толчок, игнорируют броню. КД 8с.",
+	"ability.superheroes.slender_phase_stalk": "Фазовое преследование",
+	"ability.superheroes.slender_phase_stalk.desc": "Переключатель невидимости в покое и медленной ходьбе; дымный след при беге. Постоянный расход энергии.",
+	"ability.superheroes.slender_static_field": "Статическое поле",
+	"ability.superheroes.slender_static_field.desc": "Открыть 12с зону статики (R=18). Внутри враги: тошнота III + слепота + замедление II + случайные удары щупалец. Слендермен внутри: невидимость + регенерация. КД 180с.",
+
+	"death.attack.slenderman_static": "%1$s сгинул в статической ауре %2$s",
+	"death.attack.slenderman_static.player": "%1$s сгинул в статической ауре %2$s",
+	"death.attack.slenderman_tendril": "%1$s пронзён щупальцами %2$s",
+	"death.attack.slenderman_tendril.player": "%1$s пронзён щупальцами %2$s",
+	"death.attack.slenderman_field": "%1$s растворился в поле статики %2$s",
+	"death.attack.slenderman_field.player": "%1$s растворился в поле статики %2$s",
+
+	"subtitles.superheroes.slenderman.active": "Слендермен шепчет",
+	"subtitles.superheroes.slenderman.angry": "Слендермен ревёт",
+	"subtitles.superheroes.slenderman.attack": "Удар щупалец",
+	"subtitles.superheroes.slenderman.death": "Слендермен растворяется",
+	"subtitles.superheroes.slenderman.hunt": "Слендермен охотится",
+	"subtitles.superheroes.slenderman.hurt": "Слендермен содрогается",
+	"subtitles.superheroes.slenderman.jumpscare": "Всплеск статики",
+	"subtitles.superheroes.slenderman.living": "Слендермен дышит",
+	"subtitles.superheroes.slenderman.spawn": "Слендермен появляется",
+	"subtitles.superheroes.slenderman.victory": "Слендермен ликует",
+	"subtitles.superheroes.slenderman.warning": "Слендермен предупреждает",
+	"subtitles.superheroes.slenderman.static": "Треск статики",
+	"subtitles.superheroes.slenderman.bush": "Шорох листвы",
+	"subtitles.superheroes.slenderman.page_grab": "Шорох страницы"
 }

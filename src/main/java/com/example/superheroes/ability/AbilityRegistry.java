@@ -51,6 +51,11 @@ public final class AbilityRegistry {
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
 
+	public static final SlenderBlinkAbility SLENDER_BLINK = new SlenderBlinkAbility();
+	public static final SlenderTendrilsAbility SLENDER_TENDRILS = new SlenderTendrilsAbility();
+	public static final SlenderPhaseStalkAbility SLENDER_PHASE_STALK = new SlenderPhaseStalkAbility();
+	public static final SlenderStaticFieldAbility SLENDER_STATIC_FIELD = new SlenderStaticFieldAbility();
+
 	private AbilityRegistry() {
 	}
 
@@ -89,6 +94,10 @@ public final class AbilityRegistry {
 		register(NARUTO_SHADOW_CLONES);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
+		register(SLENDER_BLINK);
+		register(SLENDER_TENDRILS);
+		register(SLENDER_PHASE_STALK);
+		register(SLENDER_STATIC_FIELD);
 	}
 
 	public static void register(Ability ability) {

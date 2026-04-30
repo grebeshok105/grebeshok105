@@ -37,6 +37,9 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> HOMELANDER_LIGHTNING_CALL = key("homelander_lightning_call");
 	public static final ResourceKey<DamageType> HOMELANDER_ROAR_BOSS = key("homelander_roar_boss");
 	public static final ResourceKey<DamageType> HOMELANDER_MELEE = key("homelander_melee");
+	public static final ResourceKey<DamageType> SLENDERMAN_STATIC = key("slenderman_static");
+	public static final ResourceKey<DamageType> SLENDERMAN_TENDRIL = key("slenderman_tendril");
+	public static final ResourceKey<DamageType> SLENDERMAN_FIELD = key("slenderman_field");
 
 	private ModDamageTypes() {
 	}
@@ -69,6 +72,9 @@ public final class ModDamageTypes {
 		context.register(HOMELANDER_SHOCKWAVE_DIVE, new DamageType("homelander_shockwave_dive", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_LIGHTNING_CALL, new DamageType("homelander_lightning_call", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_ROAR_BOSS, new DamageType("homelander_roar_boss", DamageScaling.NEVER, 0.0F));
+		context.register(SLENDERMAN_STATIC, new DamageType("slenderman_static", DamageScaling.NEVER, 0.0F));
+		context.register(SLENDERMAN_TENDRIL, new DamageType("slenderman_tendril", DamageScaling.NEVER, 0.0F));
+		context.register(SLENDERMAN_FIELD, new DamageType("slenderman_field", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_MELEE, new DamageType("homelander_melee", DamageScaling.NEVER, 0.0F));
 	}
 
@@ -166,6 +172,18 @@ public final class ModDamageTypes {
 
 	public static DamageSource homelanderMelee(ServerLevel level, Entity attacker) {
 		return source(level, HOMELANDER_MELEE, attacker);
+	}
+
+	public static DamageSource slendermanStatic(ServerLevel level, Entity attacker) {
+		return source(level, SLENDERMAN_STATIC, attacker);
+	}
+
+	public static DamageSource slendermanTendril(ServerLevel level, Entity attacker) {
+		return source(level, SLENDERMAN_TENDRIL, attacker);
+	}
+
+	public static DamageSource slendermanField(ServerLevel level, Entity attacker) {
+		return source(level, SLENDERMAN_FIELD, attacker);
 	}
 
 	private static DamageSource source(ServerLevel level, ResourceKey<DamageType> key, Entity attacker) {
