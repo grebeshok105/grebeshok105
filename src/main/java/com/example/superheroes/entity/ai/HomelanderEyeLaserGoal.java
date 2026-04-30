@@ -127,7 +127,7 @@ public class HomelanderEyeLaserGoal extends Goal {
 		}
 		if (hit != null) {
 			LivingEntity hitTarget = (LivingEntity) hit.getEntity();
-			DamageSource ds = boss.damageSources().mobAttack(boss);
+			DamageSource ds = com.example.superheroes.damage.ModDamageTypes.homelanderEyeLaser((net.minecraft.server.level.ServerLevel) boss.level(), boss);
 			hitTarget.hurt(ds, damage);
 			actualEnd = new Vec3(hitTarget.getX(),
 					hitTarget.getY() + hitTarget.getBbHeight() * CHEST_FRACTION,

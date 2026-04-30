@@ -64,6 +64,21 @@ public class SuperheroesClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticles.NARUTO_KAWARIMI_SMOKE, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.CAP_SHIELD_TRAIL, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.CAP_SHIELD_SLAM_BURST, EndRodParticle.Provider::new);
+		ParticleFactoryRegistry.getInstance().register(ModParticles.WHITE_BOOM,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SPARKS,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.DARK_STAR,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.PURPLE_FLAME,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.BLACK_FLAME,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.DAZZLING,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SUN_PARTICLE,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		com.example.superheroes.client.config.SuperheroesClientConfig.load();
 
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> switch (tintIndex) {
 			case 1 -> 0xFFC1272D;
@@ -101,6 +116,11 @@ public class SuperheroesClient implements ClientModInitializer {
 			while (ModKeys.BINDINGS.consumeClick()) {
 				if (client.player != null && ClientHeroState.data().hasHero()) {
 					client.setScreen(new BindingsScreen());
+				}
+			}
+			while (ModKeys.VFX_SETTINGS.consumeClick()) {
+				if (client.player != null) {
+					client.setScreen(new com.example.superheroes.client.screen.VfxSettingsScreen());
 				}
 			}
 			while (ModKeys.TOGGLE_TOOLTIPS.consumeClick()) {

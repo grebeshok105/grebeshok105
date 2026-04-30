@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,7 +33,12 @@ public final class DoomGripController {
 	}
 
 	public static void start(ServerPlayer doomsday, LivingEntity target) {
-		ACTIVE.put(doomsday.getUUID(), new GripState(target, 0));
+		boolean wasNoAi = false;
+		if (target instanceof Mob mob) {
+			wasNoAi = mob.isNoAi();
+			mob.setNoAi(true);
+		}
+		ACTIVE.put(doomsday.getUUID(), new GripState(target, 0, wasNoAi));
 		ServerLevel level = doomsday.serverLevel();
 
 		Vec3 look = doomsday.getLookAngle().normalize();
@@ -56,6 +62,7 @@ public final class DoomGripController {
 			ServerPlayer doomsday = state.findDoomsday(entry.getKey());
 			if (doomsday == null || state.target == null || !state.target.isAlive() || state.target.isRemoved()) {
 				if (doomsday != null) doomsday.setInvulnerable(false);
+				if (state.target instanceof Mob mob) mob.setNoAi(state.wasNoAi);
 				it.remove();
 				continue;
 			}
@@ -68,17 +75,20 @@ public final class DoomGripController {
 				Vec3 look = doomsday.getLookAngle().normalize();
 				Vec3 holdPos = doomsday.position()
 						.add(look.x * 1.6, 1.0, look.z * 1.6);
-				target.setPos(holdPos.x, holdPos.y, holdPos.z);
+				if (target instanceof ServerPlayer sp) {
+					sp.connection.teleport(holdPos.x, holdPos.y, holdPos.z, sp.getYRot(), sp.getXRot());
+					sp.stopFallFlying();
+					sp.setNoActionTime(0);
+					sp.connection.send(new ClientboundSetEntityMotionPacket(sp.getId(), Vec3.ZERO));
+				} else if (target instanceof Mob mob) {
+					mob.moveTo(holdPos.x, holdPos.y, holdPos.z, mob.getYRot(), mob.getXRot());
+				} else {
+					target.setPos(holdPos.x, holdPos.y, holdPos.z);
+				}
 				target.setDeltaMovement(Vec3.ZERO);
 				target.fallDistance = 0;
 				target.hurtMarked = true;
 				target.stopUsingItem();
-				if (target instanceof ServerPlayer sp) {
-					sp.connection.resetPosition();
-					sp.stopFallFlying();
-					sp.setNoActionTime(0);
-					sp.connection.send(new ClientboundSetEntityMotionPacket(sp.getId(), Vec3.ZERO));
-				}
 				target.removeEffect(MobEffects.LEVITATION);
 
 				if ((state.tick - LUNGE_END) % HIT_INTERVAL == 0) {
@@ -92,6 +102,7 @@ public final class DoomGripController {
 			} else {
 				Vec3 look = doomsday.getLookAngle().normalize();
 				Vec3 throwVec = new Vec3(look.x * 2.5, 0.7, look.z * 2.5);
+				if (target instanceof Mob mob) mob.setNoAi(state.wasNoAi);
 				target.setDeltaMovement(throwVec);
 				target.hurtMarked = true;
 				if (target instanceof ServerPlayer sp) {
@@ -119,16 +130,21 @@ public final class DoomGripController {
 
 	public static void clear(ServerPlayer doomsday) {
 		GripState s = ACTIVE.remove(doomsday.getUUID());
-		if (s != null) doomsday.setInvulnerable(false);
+		if (s != null) {
+			doomsday.setInvulnerable(false);
+			if (s.target instanceof Mob mob) mob.setNoAi(s.wasNoAi);
+		}
 	}
 
 	private static final class GripState {
 		final LivingEntity target;
+		final boolean wasNoAi;
 		int tick;
 
-		GripState(LivingEntity target, int tick) {
+		GripState(LivingEntity target, int tick, boolean wasNoAi) {
 			this.target = target;
 			this.tick = tick;
+			this.wasNoAi = wasNoAi;
 		}
 
 		ServerPlayer findDoomsday(UUID id) {

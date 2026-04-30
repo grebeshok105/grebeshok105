@@ -39,7 +39,7 @@ public final class DoomsdayBerserkAbility implements Ability {
 		applyBuff(player);
 		ServerLevel level = player.serverLevel();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.2f, 0.45f);
+				com.example.superheroes.sound.ModSounds.DOOMSDAY_ROAR, SoundSource.PLAYERS, 1.2f, 0.85f);
 		return true;
 	}
 

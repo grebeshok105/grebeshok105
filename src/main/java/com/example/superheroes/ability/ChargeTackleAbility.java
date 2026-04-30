@@ -68,7 +68,7 @@ public final class ChargeTackleAbility implements Ability {
 
 		ServerLevel level = player.serverLevel();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 2.0f, 0.5f);
+				com.example.superheroes.sound.ModSounds.DOOMSDAY_ROAR, SoundSource.PLAYERS, 1.6f, 0.95f);
 
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;

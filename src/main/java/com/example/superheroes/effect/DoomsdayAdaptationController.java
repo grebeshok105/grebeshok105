@@ -29,7 +29,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class DoomsdayAdaptationController {
-	private static final float CUMULATIVE_THRESHOLD = 30f;
+	private static final float CUMULATIVE_THRESHOLD = 15f;
+	private static final long REALTIME_THRESHOLD_MS = 5_000L;
+	private static final long IDLE_RESET_MS = 10_000L;
 	private static final float ADAPT_DAMAGE_BONUS = 1.0f;
 
 	/**
@@ -65,11 +67,23 @@ public final class DoomsdayAdaptationController {
 			Set.of(DamageTypes.FALL, DamageTypes.FLY_INTO_WALL, DamageTypes.STALAGMITE, DamageTypes.FALLING_BLOCK, DamageTypes.FALLING_ANVIL, DamageTypes.FALLING_STALACTITE),
 			Set.of(DamageTypes.CACTUS, DamageTypes.SWEET_BERRY_BUSH),
 			Set.of(DamageTypes.WITHER, DamageTypes.WITHER_SKULL),
-			Set.of(DamageTypes.LIGHTNING_BOLT)
+			Set.of(DamageTypes.LIGHTNING_BOLT),
+			Set.of(
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_EYE_LASER,
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_HEAT_VISION,
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_LIGHTNING_CALL
+			),
+			Set.of(
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_HAND_CLAP,
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_SONIC_SLAM,
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_SHOCKWAVE_DIVE,
+					com.example.superheroes.damage.ModDamageTypes.HOMELANDER_ROAR_BOSS
+			)
 	);
 
 	private static final Map<UUID, Set<ResourceKey<DamageType>>> ADAPTED = new ConcurrentHashMap<>();
 	private static final Map<UUID, Map<ResourceKey<DamageType>, Float>> CUMULATIVE = new ConcurrentHashMap<>();
+	private static final Map<UUID, Map<ResourceKey<DamageType>, Long>> FIRST_HIT_MS = new ConcurrentHashMap<>();
 	private static final Map<UUID, Integer> ADAPT_COUNT = new ConcurrentHashMap<>();
 
 	private DoomsdayAdaptationController() {
@@ -93,14 +107,26 @@ public final class DoomsdayAdaptationController {
 				return false;
 			}
 
-			// Auto-adapt: накапливаем урон по типу; при достижении порога — иммун.
+			// Auto-adapt: накапливаем урон по типу; при достижении порога ИЛИ через REALTIME_THRESHOLD_MS — иммун.
 			if (!GENERIC_TYPES.contains(typeKey)) {
+				long now = System.currentTimeMillis();
 				Map<ResourceKey<DamageType>, Float> perType = CUMULATIVE.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
-				float total = perType.getOrDefault(typeKey, 0f) + amount;
-				perType.put(typeKey, total);
-				if (total >= CUMULATIVE_THRESHOLD) {
+				Map<ResourceKey<DamageType>, Long> firstHit = FIRST_HIT_MS.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
+				Long firstTs = firstHit.get(typeKey);
+				if (firstTs == null || now - firstTs > IDLE_RESET_MS) {
+					firstHit.put(typeKey, now);
+					perType.put(typeKey, amount);
+					firstTs = now;
+				} else {
+					perType.merge(typeKey, amount, Float::sum);
+				}
+				float total = perType.getOrDefault(typeKey, 0f);
+				boolean reachedDamage = total >= CUMULATIVE_THRESHOLD;
+				boolean reachedTime = (now - firstTs) >= REALTIME_THRESHOLD_MS;
+				if (reachedDamage || reachedTime) {
 					registerAdaptation(player, typeKey, false);
 					perType.remove(typeKey);
+					firstHit.remove(typeKey);
 				}
 			}
 
@@ -134,7 +160,7 @@ public final class DoomsdayAdaptationController {
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.4f, 0.5f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 0.7f, 0.6f);
+				com.example.superheroes.sound.ModSounds.DOOMSDAY_ROAR, SoundSource.PLAYERS, 0.5f, 0.95f);
 
 		String typePath = typeKey.location().getPath();
 		Component title = Component.translatable("hero.superheroes.doomsday.adapted",
@@ -178,6 +204,7 @@ public final class DoomsdayAdaptationController {
 		UUID id = player.getUUID();
 		ADAPTED.remove(id);
 		CUMULATIVE.remove(id);
+		FIRST_HIT_MS.remove(id);
 		ADAPT_COUNT.remove(id);
 		AttributeInstance inst = player.getAttribute(Attributes.ATTACK_DAMAGE);
 		if (inst != null) {

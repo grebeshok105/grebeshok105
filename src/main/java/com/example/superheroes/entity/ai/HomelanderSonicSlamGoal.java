@@ -103,7 +103,7 @@ public class HomelanderSonicSlamGoal extends Goal {
 					6, 0.4, 0.3, 0.4, 0.05);
 
 			if (boss.distanceToSqr(t) < 6.0) {
-				DamageSource ds = boss.damageSources().mobAttack(boss);
+				DamageSource ds = com.example.superheroes.damage.ModDamageTypes.homelanderSonicSlam((net.minecraft.server.level.ServerLevel) boss.level(), boss);
 				t.hurt(ds, IMPACT_DAMAGE);
 				if (chargeDir != null) {
 					Vec3 push = chargeDir.scale(KNOCKBACK).add(0.0, 0.6, 0.0);
