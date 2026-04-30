@@ -51,8 +51,8 @@ public final class ModEntities {
 			BuiltInRegistries.ENTITY_TYPE,
 			ModId.of("slenderman_cloak"),
 			EntityType.Builder.<SlendermanCloakEntity>of(SlendermanCloakEntity::new, MobCategory.MISC)
-					.sized(0.001f, 0.001f)
-					.clientTrackingRange(32)
+					.sized(0.6f, 2.4f)
+					.clientTrackingRange(64)
 					.updateInterval(2)
 					.fireImmune()
 					.noSummon()

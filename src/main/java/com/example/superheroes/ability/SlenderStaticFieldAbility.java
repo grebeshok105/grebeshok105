@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 
 public final class SlenderStaticFieldAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 3600;
+	private static final int COOLDOWN_TICKS = 300;
 	public static final int FIELD_TICKS = 240;
 	public static final double FIELD_RADIUS = 18.0;
 

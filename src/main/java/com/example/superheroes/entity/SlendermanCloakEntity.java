@@ -47,6 +47,7 @@ public class SlendermanCloakEntity extends Entity implements GeoEntity {
 	public SlendermanCloakEntity(EntityType<? extends SlendermanCloakEntity> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;
+		this.noCulling = true;
 	}
 
 	@Override

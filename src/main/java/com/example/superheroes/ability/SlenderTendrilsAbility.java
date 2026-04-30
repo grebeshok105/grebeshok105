@@ -15,7 +15,7 @@ import java.util.List;
 
 public final class SlenderTendrilsAbility implements Ability {
 	private static final double RANGE = 4.5;
-	private static final float DAMAGE = 5.0f;
+	private static final float DAMAGE = 25.0f;
 	private static final int COOLDOWN_TICKS = 160;
 
 	@Override

@@ -17,11 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Spawns one {@link SlendermanCloakEntity} per Slenderman player. The cloak
- * follows the player and renders the GeckoLib model. When the player exits
- * the hero (untransform / dies / disconnects), the cloak is removed.
+ * follows the player, mirrors yaw / sprint / walk state, and renders the
+ * GeckoLib model.
  */
 public final class SlendermanCloakController {
 	private static final Map<UUID, UUID> PLAYER_TO_CLOAK = new ConcurrentHashMap<>();
+	private static final Map<UUID, Vec3> LAST_POS = new ConcurrentHashMap<>();
 
 	private SlendermanCloakController() {
 	}
@@ -33,12 +34,10 @@ public final class SlendermanCloakController {
 				if (isSlenderman(p)) slendermen.put(p.getUUID(), p);
 			}
 
-			// Spawn or update existing cloaks.
 			for (ServerPlayer slender : slendermen.values()) {
 				ensureCloak(slender);
 			}
 
-			// Despawn cloaks for players who are no longer slendermen.
 			java.util.Iterator<Map.Entry<UUID, UUID>> it = PLAYER_TO_CLOAK.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<UUID, UUID> entry = it.next();
@@ -46,6 +45,7 @@ public final class SlendermanCloakController {
 				UUID cloakId = entry.getValue();
 				if (!slendermen.containsKey(playerId)) {
 					removeCloakById(server, cloakId);
+					LAST_POS.remove(playerId);
 					it.remove();
 				}
 			}
@@ -73,21 +73,33 @@ public final class SlendermanCloakController {
 			cloak = ModEntities.SLENDERMAN_CLOAK.create(level);
 			if (cloak == null) return;
 			cloak.setOwner(slender);
-			cloak.setPos(slender.getX(), slender.getY(), slender.getZ());
-			cloak.setYRot(slender.getYRot());
-			cloak.yRotO = slender.getYRot();
+			cloak.moveTo(slender.getX(), slender.getY(), slender.getZ(), slender.yBodyRot, 0f);
+			cloak.setYRot(slender.yBodyRot);
+			cloak.yRotO = slender.yBodyRot;
 			level.addFreshEntity(cloak);
 			PLAYER_TO_CLOAK.put(slender.getUUID(), cloak.getUUID());
 		}
 
-		// Follow the player.
-		Vec3 target = new Vec3(slender.getX(), slender.getY(), slender.getZ());
-		cloak.moveTo(target.x, target.y, target.z, slender.yBodyRot, 0f);
-		cloak.setYRot(slender.yBodyRot);
-		cloak.setBodyYaw(slender.yBodyRot);
-		cloak.setSprinting(slender.isSprinting());
-		double speedSq = slender.getDeltaMovement().horizontalDistanceSqr();
-		cloak.setWalking(speedSq > 0.0008);
+		// Detect actual horizontal movement by diffing position with previous tick.
+		Vec3 nowPos = new Vec3(slender.getX(), slender.getY(), slender.getZ());
+		Vec3 lastPos = LAST_POS.get(slender.getUUID());
+		double horizDeltaSq = 0;
+		if (lastPos != null) {
+			double dx = nowPos.x - lastPos.x;
+			double dz = nowPos.z - lastPos.z;
+			horizDeltaSq = dx * dx + dz * dz;
+		}
+		LAST_POS.put(slender.getUUID(), nowPos);
+
+		boolean sprinting = slender.isSprinting() && horizDeltaSq > 0.005;
+		boolean walking = horizDeltaSq > 0.0008;
+
+		float yaw = slender.yBodyRot;
+		cloak.moveTo(nowPos.x, nowPos.y, nowPos.z, yaw, 0f);
+		cloak.setYRot(yaw);
+		cloak.setBodyYaw(yaw);
+		cloak.setSprinting(sprinting);
+		cloak.setWalking(walking);
 		cloak.setInvisible(slender.isInvisible());
 	}
 
@@ -114,5 +126,6 @@ public final class SlendermanCloakController {
 
 	public static void clear(UUID playerId) {
 		PLAYER_TO_CLOAK.remove(playerId);
+		LAST_POS.remove(playerId);
 	}
 }
