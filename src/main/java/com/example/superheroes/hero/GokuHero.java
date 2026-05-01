@@ -48,7 +48,10 @@ public final class GokuHero implements Hero {
 		return List.of(
 				AbilityIds.GOKU_KAMEHAMEHA,
 				AbilityIds.GOKU_INSTANT_TRANSMISSION,
-				AbilityIds.GOKU_KI_CHARGE
+				AbilityIds.GOKU_KI_CHARGE,
+				AbilityIds.GOKU_SOLAR_FLARE,
+				AbilityIds.GOKU_SPIRIT_BOMB,
+				AbilityIds.GOKU_SUPER_SAIYAN_AURA
 		);
 	}
 

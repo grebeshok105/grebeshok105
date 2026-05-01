@@ -1,6 +1,7 @@
 package com.example.superheroes.client.mixin;
 
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientFlightSpeedState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.effect.ModEffects;
 import com.example.superheroes.transform.HeroData;
@@ -52,6 +53,7 @@ public abstract class LocalPlayerFlightMixin {
 			speedMul *= MADNESS_SPEED_MUL;
 		} else if (homelanderFlight && !ironFlight && !supersonic) {
 			speedMul *= MADNESS_SPEED_MUL;
+			speedMul *= ClientFlightSpeedState.percent() / 100.0;
 		}
 		if (ironFlight || supersonic) {
 			speedMul *= IRON_MAN_BASE_MUL;

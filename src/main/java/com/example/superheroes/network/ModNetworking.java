@@ -24,6 +24,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(DeactivateAbilityC2SPayload.TYPE, DeactivateAbilityC2SPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(BindAbilityResourceC2SPayload.TYPE, BindAbilityResourceC2SPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(SuperJumpC2SPayload.TYPE, SuperJumpC2SPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playC2S().register(FlightSpeedC2SPayload.TYPE, FlightSpeedC2SPayload.STREAM_CODEC);
 
 		PayloadTypeRegistry.playS2C().register(ResourceUpdateS2CPayload.TYPE, ResourceUpdateS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(HeroDataSyncS2CPayload.TYPE, HeroDataSyncS2CPayload.STREAM_CODEC);
@@ -40,6 +41,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(DoomsdayProgressS2CPayload.TYPE, DoomsdayProgressS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(SlenderStaticS2CPayload.TYPE, SlenderStaticS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(SlenderFieldS2CPayload.TYPE, SlenderFieldS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(FlightSpeedSyncS2CPayload.TYPE, FlightSpeedSyncS2CPayload.STREAM_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(ActivateAbilityC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();
@@ -57,6 +59,10 @@ public final class ModNetworking {
 			ServerPlayer player = context.player();
 			context.server().execute(() -> SuperJumpController.activate(player));
 		});
+		ServerPlayNetworking.registerGlobalReceiver(FlightSpeedC2SPayload.TYPE, (payload, context) -> {
+			ServerPlayer player = context.player();
+			context.server().execute(() -> com.example.superheroes.effect.HomelanderFlightSpeedController.adjust(player, payload.delta()));
+		});
 	}
 
 	public static void syncResources(ServerPlayer player, HeroData data) {
@@ -65,6 +71,10 @@ public final class ModNetworking {
 
 	public static void syncHeroData(ServerPlayer player, HeroData data) {
 		ServerPlayNetworking.send(player, new HeroDataSyncS2CPayload(data));
+	}
+
+	public static void syncFlightSpeed(ServerPlayer player) {
+		ServerPlayNetworking.send(player, new FlightSpeedSyncS2CPayload(player.getAttachedOrCreate(ModAttachments.FLIGHT_SPEED_PERCENT)));
 	}
 
 	public static void syncHeroDataFromAttachment(ServerPlayer player) {

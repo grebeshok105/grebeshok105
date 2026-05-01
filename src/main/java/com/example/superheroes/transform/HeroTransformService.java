@@ -64,6 +64,7 @@ public final class HeroTransformService {
 		hero.applyPassives(player);
 		player.refreshDimensions();
 		ModNetworking.syncHeroData(player, updated);
+		ModNetworking.syncFlightSpeed(player);
 		ModNetworking.broadcastRemoteHeroSkin(player);
 		playTransformFx(player, true);
 		markTransformed(player);
@@ -98,6 +99,7 @@ public final class HeroTransformService {
 		player.setAttached(ModAttachments.HERO_DATA, updated);
 		player.refreshDimensions();
 		ModNetworking.syncHeroData(player, updated);
+		ModNetworking.syncFlightSpeed(player);
 		ModNetworking.broadcastRemoteHeroSkin(player);
 		if (playFx) {
 			playTransformFx(player, false);
@@ -144,6 +146,7 @@ public final class HeroTransformService {
 			}
 		}
 		ModNetworking.syncHeroData(player, data);
+		ModNetworking.syncFlightSpeed(player);
 	}
 
 	public static void onPlayerRespawn(ServerPlayer newPlayer) {
@@ -155,6 +158,7 @@ public final class HeroTransformService {
 			}
 		}
 		ModNetworking.syncHeroData(newPlayer, data);
+		ModNetworking.syncFlightSpeed(newPlayer);
 	}
 
 	private static void deactivateAll(ServerPlayer player, HeroData data) {

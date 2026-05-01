@@ -97,6 +97,7 @@ public final class SlendermanCloakController {
 		float yaw = slender.yBodyRot;
 		cloak.moveTo(nowPos.x, nowPos.y, nowPos.z, yaw, 0f);
 		cloak.setYRot(yaw);
+		cloak.setYHeadRot(yaw);
 		cloak.setBodyYaw(yaw);
 		cloak.setSprinting(sprinting);
 		cloak.setWalking(walking);

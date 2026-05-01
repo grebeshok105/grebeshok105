@@ -26,7 +26,9 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> SHADOW_ATTACK = key("shadow_attack");
 	public static final ResourceKey<DamageType> GOKU_KAMEHAMEHA = key("goku_kamehameha");
 	public static final ResourceKey<DamageType> GOKU_INSTANT_STRIKE = key("goku_instant_strike");
+	public static final ResourceKey<DamageType> GOKU_SPIRIT_BOMB = key("goku_spirit_bomb");
 	public static final ResourceKey<DamageType> NARUTO_RASENGAN = key("naruto_rasengan");
+	public static final ResourceKey<DamageType> NARUTO_RASENSHURIKEN = key("naruto_rasenshuriken");
 	public static final ResourceKey<DamageType> CAP_SHIELD_THROW = key("cap_shield_throw");
 	public static final ResourceKey<DamageType> CAP_SHIELD_SLAM = key("cap_shield_slam");
 	public static final ResourceKey<DamageType> HOMELANDER_EYE_LASER = key("homelander_eye_laser");
@@ -62,7 +64,9 @@ public final class ModDamageTypes {
 		context.register(SHADOW_ATTACK, new DamageType("shadow_attack", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.0F));
 		context.register(GOKU_KAMEHAMEHA, new DamageType("goku_kamehameha", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
 		context.register(GOKU_INSTANT_STRIKE, new DamageType("goku_instant_strike", DamageScaling.NEVER, 0.0F));
+		context.register(GOKU_SPIRIT_BOMB, new DamageType("goku_spirit_bomb", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
 		context.register(NARUTO_RASENGAN, new DamageType("naruto_rasengan", DamageScaling.NEVER, 0.0F));
+		context.register(NARUTO_RASENSHURIKEN, new DamageType("naruto_rasenshuriken", DamageScaling.NEVER, 0.0F));
 		context.register(CAP_SHIELD_THROW, new DamageType("cap_shield_throw", DamageScaling.NEVER, 0.0F));
 		context.register(CAP_SHIELD_SLAM, new DamageType("cap_shield_slam", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_EYE_LASER, new DamageType("homelander_eye_laser", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
@@ -130,8 +134,16 @@ public final class ModDamageTypes {
 		return source(level, GOKU_INSTANT_STRIKE, attacker);
 	}
 
+	public static DamageSource gokuSpiritBomb(ServerLevel level, Entity attacker) {
+		return source(level, GOKU_SPIRIT_BOMB, attacker);
+	}
+
 	public static DamageSource narutoRasengan(ServerLevel level, Entity attacker) {
 		return source(level, NARUTO_RASENGAN, attacker);
+	}
+
+	public static DamageSource narutoRasenshuriken(ServerLevel level, Entity attacker) {
+		return source(level, NARUTO_RASENSHURIKEN, attacker);
 	}
 
 	public static DamageSource capShieldThrow(ServerLevel level, Entity attacker) {

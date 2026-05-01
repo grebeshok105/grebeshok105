@@ -32,12 +32,11 @@ public class ShieldProjectileRenderer extends EntityRenderer<ShieldProjectileEnt
 		pose.pushPose();
 		float rot = entity.getRotation() + partialTick * 30f;
 		pose.mulPose(Axis.YP.rotationDegrees(rot));
-		pose.mulPose(Axis.XP.rotationDegrees(rot * 0.7f));
 		pose.scale(1.4f, 1.4f, 1.4f);
 
 		Minecraft mc = Minecraft.getInstance();
 		ItemRenderer itemRenderer = mc.getItemRenderer();
-		ItemStack stack = new ItemStack(ModItems.VIBRANIUM_SHIELD);
+		ItemStack stack = entity.getShieldStack().isEmpty() ? new ItemStack(ModItems.VIBRANIUM_SHIELD) : entity.getShieldStack();
 		itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight,
 				OverlayTexture.NO_OVERLAY, pose, buffers, entity.level(), entity.getId());
 
