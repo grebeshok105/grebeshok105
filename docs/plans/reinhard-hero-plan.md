@@ -2,15 +2,13 @@
 
 План для добавления героя **Reinhard van Astrea** из Re:Zero вместе с его мечом. Цель — сначала зафиксировать дизайн и список файлов, потом реализовывать отдельным PR без смешивания с v3.0 user-fixes.
 
-## 0. Уточнения к пользователю
+## 0. Подтверждённые решения пользователя
 
-Нужно подтвердить перед реализацией:
+Пользователь подтвердил:
 
-1. **Предмет трансформации**: `Reinhard Insignia / Pendant` или трансформация прямо через меч?
-2. **Меч**: отдельный item в инвентаре или авто-выдача/визуальный меч только пока игрок в форме Reinhard?
-3. **Баланс**: лорно-OP Reinhard или баланс под текущих v3.0 героев?
-
-Дефолтные допущения плана, если пользователь не уточнит: трансформация через `reinhard_pendant`, меч отдельным item `dragon_sword_reid`, баланс — высокий S-tier, но без бессмертия и без ваншотов по боссам.
+1. **Трансформация через меч**: отдельного pendant/insignia не нужно.
+2. **Меч — отдельный item**: вне формы Reinhard он годится только для превращения в героя; пользоваться им как оружием/ability-key можно только в форме Reinhard.
+3. **Баланс — лорно OP**: Reinhard должен быть намеренно сильнее текущих героев, с ощущением Sword Saint / Divine Protections.
 
 ## 1. Концепт героя
 
@@ -24,7 +22,7 @@
 
 ### Фантазия геймплея
 
-Reinhard — быстрый swordmaster с высоким burst-уроном, защитными Divine Protection proc-ами и ультимативным ударом мечом Reid. Он не летает, но двигается быстрее обычного игрока, игнорирует падение и хорошо переживает burst-атаки.
+Reinhard — лорно-OP swordmaster с высоким burst-уроном, защитными Divine Protection proc-ами и ультимативным ударом мечом Reid. Он не летает, но очень быстро двигается, игнорирует падение и должен ощущаться как почти непобедимый дуэлянт.
 
 ## 2. Ассеты из `art-source/rezero-fx-textures.zip`
 
@@ -37,8 +35,6 @@ Reinhard — быстрый swordmaster с высоким burst-уроном, з
   - `FX + TEXTURES REZERO/rezeromc/textures/item/dragonsword.png`
   - `FX + TEXTURES REZERO/rezeromc/textures/item/dragonswordreidnew1.png`
   - `FX + TEXTURES REZERO/rezeromc/textures/item/reidstick.png`
-- Transformation item:
-  - `FX + TEXTURES REZERO/rezeromc/textures/item/reinhardpendant.png`
 - VFX particles:
   - `FX + TEXTURES REZERO/rezeromc/textures/particle/swordexplosion.png`
   - `FX + TEXTURES REZERO/rezeromc/textures/particle/sword_explosion_1.png` … `sword_explosion_6.png`
@@ -49,7 +45,6 @@ Reinhard — быстрый swordmaster с высоким burst-уроном, з
 Runtime copy targets:
 
 - `src/main/resources/assets/superheroes/textures/entity/hero/reinhard.png`
-- `src/main/resources/assets/superheroes/textures/item/reinhard_pendant.png`
 - `src/main/resources/assets/superheroes/textures/item/dragon_sword_reid.png`
 - `src/main/resources/assets/superheroes/textures/particle/reinhard_sword_explosion*.png`
 
@@ -67,26 +62,27 @@ Runtime copy targets:
 
 Базовые значения:
 
-- Energy max: `300`
-- Energy regen: `1.6/tick`
+- Energy max: `500`
+- Energy regen: `3.0/tick`
 - Mana max: `0`
 - Dimensions: vanilla player `0.6 x 1.8`
 
 Атрибуты в `HeroAttributes`:
 
-- Armor: `18`
-- Armor toughness: `8`
-- Attack damage: `8`
-- Attack speed: `1.4`
-- Movement speed: `+35% base`
-- Max health: `+20`
-- Knockback resistance: `0.6`
-- Step height: `+0.5`
+- Armor: `28`
+- Armor toughness: `14`
+- Attack damage: `14`
+- Attack speed: `2.0`
+- Movement speed: `+60% base`
+- Max health: `+40`
+- Knockback resistance: `0.9`
+- Step height: `+1.0`
 
 Пассивные эффекты при трансформации:
 
-- `DAMAGE_RESISTANCE I`
-- `MOVEMENT_SPEED I` только если атрибутов не хватает визуально; иначе не дублировать.
+- `DAMAGE_RESISTANCE II`
+- `MOVEMENT_SPEED II` только если атрибутов не хватает визуально; иначе не дублировать.
+- `REGENERATION I`
 - Fall damage cancelled.
 
 ## 4. Меч Reid / Dragon Sword
@@ -107,22 +103,23 @@ Runtime copy targets:
 Поведение:
 
 - `stacksTo(1)`, `fireResistant()`, `rarity(EPIC)`, durability `2500`.
-- Если держит Reinhard: повышенный melee damage / встроенный sweep через ability-контроллер.
-- Если держит не-Reinhard: обычный сильный меч без hero abilities или с сильно урезанным уроном.
+- `use()` вне формы Reinhard трансформирует игрока в `superheroes:reinhard`.
+- Вне формы Reinhard меч **не должен работать как оружие**: melee damage минимальный/нулевой, durability не тратится, abilities не активируются.
+- В форме Reinhard меч раскрывается как OP-оружие: высокий melee damage, sweep/crit VFX и доступ к sword abilities.
+- Shift-use в форме Reinhard может делать untransform по паттерну `TransformationItem`, если пользователь не попросит отдельное управление.
 
 Важно: не ломать `HeroEquipmentLock`; если текущий lock запрещает предметы не-броню, проверить, что меч можно держать в форме героя.
 
-## 5. Transformation item
+## 5. Трансформация через меч
 
-Файл: `src/main/java/com/example/superheroes/item/ReinhardPendantItem.java`
+Отдельный transformation item не нужен. `DragonSwordReidItem` должен совмещать:
 
-- Extends `TransformationItem`.
-- `super(ReinhardHero.ID, properties)`.
-- Tooltip в стиле текущих hero items.
-- Texture: `reinhard_pendant.png`.
-- Добавить в `ModItemGroups`.
+- transformation behavior при `use()` вне формы Reinhard;
+- untransform behavior при shift-use в форме Reinhard;
+- locked combat behavior: не-Reinhard не может пользоваться мечом как оружием;
+- full combat behavior: Reinhard получает весь урон/ability synergy меча.
 
-Опционально после подтверждения пользователя: при трансформации автоматически выдавать `DRAGON_SWORD_REID`, если у игрока его нет. Это лучше делать отдельным контроллером или в `HeroTransformService` только если пользователь подтвердит, потому что `HeroTransformService` — центральный файл.
+Реализационно лучше не наследоваться напрямую от `TransformationItem`, если нужен кастомный combat lock. Сделать `DragonSwordReidItem extends Item` и внутри `use()` вызвать `HeroTransformService.transform/untransform`.
 
 ## 6. Abilities
 
@@ -136,11 +133,12 @@ ID: `reinhard_sword_saint_dash`
 
 Поведение:
 
-- Cost: `55 energy`.
-- Cooldown: `6s`.
-- Игрок рывком движется вперёд на 8–10 блоков.
-- Все LivingEntity в капсуле/линии получают `14–18` damage.
-- Небольшой knockback по направлению рывка.
+- Cost: `45 energy`.
+- Cooldown: `4s`.
+- Требует `DRAGON_SWORD_REID` в main/offhand и форму Reinhard.
+- Игрок рывком движется вперёд на 12–16 блоков.
+- Все LivingEntity в капсуле/линии получают `28–36` damage.
+- Сильный knockback по направлению рывка.
 - Частицы `SWEEP_ATTACK`, `CRIT`, custom `reinhard_sword_explosion_*` если подключим particle provider.
 
 ### 6.2 Divine Protection
@@ -155,11 +153,12 @@ ID: `reinhard_divine_protection`
 
 Поведение:
 
-- Когда Reinhard получает урон, раз в `20s` может сработать защита:
-  - уменьшить incoming damage на 50–70% через Fabric damage event/mixin/controller pattern;
+- Когда Reinhard получает урон, раз в `8–12s` может сработать защита:
+  - уменьшить incoming damage на 80–95% через Fabric damage event/mixin/controller pattern;
   - оттолкнуть атакующего;
-  - дать короткий `ABSORPTION`/`REGENERATION`.
-- Если проще без нового damage hook: tick-controller держит `DAMAGE_RESISTANCE`, а active ability даёт `ABSORPTION` на 8s.
+  - дать короткий `ABSORPTION`/`REGENERATION`;
+  - погасить огонь/негативные vanilla effects, кроме явно исключённых эффектов вроде void/kill.
+- Если проще без нового damage hook: tick-controller держит `DAMAGE_RESISTANCE II`, а active ability даёт `ABSORPTION` на 10s.
 
 ### 6.3 Reid Draw / Dragon Sword Release
 
@@ -172,11 +171,11 @@ ID: `reinhard_reid_draw`
 Поведение:
 
 - Требует `DRAGON_SWORD_REID` в main/offhand.
-- Cost: `160 energy`.
-- Cooldown: `45s`.
+- Cost: `180 energy`.
+- Cooldown: `30s`.
 - Перед ударом charge `20–30 ticks` с частицами вокруг меча.
-- Конус перед игроком: range `12`, angle `60°`.
-- Damage: `35–45`, cap по боссам/игрокам если нужно.
+- Конус перед игроком: range `18`, angle `70°`.
+- Damage: `70–100`, отдельный cap только против major bosses если потребуется.
 - Сильный knockback + flash/sound.
 - Не разрушает блоки.
 
@@ -190,9 +189,9 @@ ID: `reinhard_astrea_counter`
 
 Поведение:
 
-- Toggle/charge на `1.5s`.
-- Если игрок получает melee damage в окне parry, damage cancel/reduce и ответный slash по атакующему.
-- Cooldown: `12s`.
+- Toggle/charge на `2s`.
+- Если игрок получает melee/projectile damage в окне parry, damage cancel/reduce и ответный slash по атакующему.
+- Cooldown: `8s`.
 
 ## 7. Damage types / datagen
 
@@ -219,7 +218,6 @@ ID: `reinhard_astrea_counter`
 - `ability/AbilityIds.java` — добавить IDs.
 - `ability/AbilityRegistry.java` — instantiate/register abilities.
 - `effect/ReinhardDivineProtectionController.java` — init in `SuperheroesMod`.
-- `item/ReinhardPendantItem.java`.
 - `item/DragonSwordReidItem.java`.
 - `item/ModItems.java`.
 - `item/ModItemGroups.java`.
@@ -227,33 +225,31 @@ ID: `reinhard_astrea_counter`
 Assets/resources:
 
 - `assets/superheroes/textures/entity/hero/reinhard.png`
-- `assets/superheroes/textures/item/reinhard_pendant.png`
 - `assets/superheroes/textures/item/dragon_sword_reid.png`
-- `assets/superheroes/models/item/reinhard_pendant.json`
 - `assets/superheroes/models/item/dragon_sword_reid.json`
 - `assets/superheroes/lang/en_us.json`
 - `assets/superheroes/lang/ru_ru.json`
 
 Datagen:
 
-- если item models генерируются через `ModItemModelProvider`, добавить туда pendant/sword вместо ручного JSON.
+- если item models генерируются через `ModItemModelProvider`, добавить туда `dragon_sword_reid` вместо ручного JSON.
 - выполнить `./gradlew runDatagen --no-daemon`.
 
 ## 9. Баланс v1
 
-Рекомендуемый старт без OP-перекоса:
+Рекомендуемый старт как лорно-OP герой:
 
-- Reinhard без меча: очень сильный melee герой, но ниже Doomsday по raw durability.
-- Reinhard с Reid: высокий burst, cooldown-heavy.
+- Reinhard без активных abilities уже сильнее большинства героев по melee/defense.
+- Reinhard с Reid: OP burst, короткие cooldowns, высокий урон.
 - Нет постоянного creative-flight.
-- Нет полного бессмертия.
-- Divine Protection имеет cooldown и не спасает от void/kill commands.
-- Ultimate не ломает блоки и не ваншотит боссов.
+- Практически неубиваем в обычном бою, но без полного бессмертия против void/kill commands.
+- Divine Protection имеет короткий cooldown и сильно режет обычный урон.
+- Ultimate не ломает блоки; по обычным мобам может ваншотить, по major bosses — damage cap по необходимости.
 
 ## 10. Риски
 
 - Damage reduction/counter требует аккуратного hook-а в damage pipeline. Если нет готового Fabric event для нужной точки, лучше начинать с explicit active parry state и минимального mixin-а.
-- Автовыдача меча при трансформации может конфликтовать с inventory/full inventory и death/drop правилами.
+- Так как меч сам является предметом трансформации, нужно аккуратно не дублировать его при transform/untransform и не терять item при смерти.
 - Сторонние Re:Zero assets из `art-source` нужно сохранить с понятным source note, если ещё нет лицензии/описания.
 - Если нужен 3D-меч GeckoLib/Blockbench, это отдельный scope; v1 можно делать vanilla item texture/model.
 
@@ -262,8 +258,8 @@ Datagen:
 Чтобы быстро получить playable героя:
 
 1. Reinhard hero + attributes + skin.
-2. Pendant transformation item.
-3. Dragon Sword Reid item + texture.
+2. Dragon Sword Reid item as transformation item + locked weapon behavior.
+3. Sword texture/model from Re:Zero assets.
 4. 2 abilities: `Sword Saint Dash`, `Reid Draw`.
 5. Lang EN/RU, models, item group.
 6. Datagen + build.
@@ -282,7 +278,8 @@ export JAVA_HOME=/home/ubuntu/jdk-21.0.2 && export PATH=$JAVA_HOME/bin:$PATH
 
 Manual smoke-test:
 
-- Pendant transforms/untransforms Reinhard.
+- Sword transforms/untransforms Reinhard.
+- Sword cannot be used as a real weapon outside Reinhard form.
 - Skin отображается.
 - Sword appears in creative tab and has texture/model.
 - Dash damages enemies in line and spends energy/cooldown.
