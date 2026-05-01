@@ -33,8 +33,8 @@ import net.minecraft.world.phys.Vec3;
 
 public final class EyeLasersAbility implements Ability {
 	private static final double RANGE = 64.0;
-	private static final float MIN_DPS = 140.0f;
-	private static final float MAX_DPS = 300.0f;
+	private static final float MIN_DPS = 56.0f;
+	private static final float MAX_DPS = 120.0f;
 	private static final float MADNESS_DAMAGE_MUL = 3.0f;
 	private static final double CHEST_FRACTION = 0.7;
 

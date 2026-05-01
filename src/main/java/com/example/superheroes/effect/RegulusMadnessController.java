@@ -264,7 +264,6 @@ public final class RegulusMadnessController {
 		player.removeEffect(MobEffects.MOVEMENT_SPEED);
 		player.removeEffect(MobEffects.DAMAGE_BOOST);
 		player.removeEffect(MobEffects.JUMP);
-		player.removeEffect(MobEffects.REGENERATION);
 		player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 		LAST_DAMAGER.remove(player.getUUID());
 		LAST_DAMAGER_TICK.remove(player.getUUID());
