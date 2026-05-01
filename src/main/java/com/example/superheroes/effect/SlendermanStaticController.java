@@ -124,19 +124,19 @@ public final class SlendermanStaticController {
 			if (looker.tickCount >= next) {
 				ServerLevel level = looker.serverLevel();
 				if (max >= 15) {
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 1.4f, 1.0f);
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_HUNT, SoundSource.HOSTILE, 1.0f, 1.0f);
 					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 50);
 				} else if (max >= 10) {
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 1.0f, 1.0f);
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_WARNING, SoundSource.HOSTILE, 0.9f, 1.0f);
 					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 80);
 				} else {
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 0.7f, 1.0f);
 					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 120);
 				}

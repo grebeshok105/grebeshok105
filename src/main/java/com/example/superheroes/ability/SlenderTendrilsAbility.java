@@ -86,7 +86,7 @@ public final class SlenderTendrilsAbility implements Ability {
 			}
 		}
 
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+		ModSounds.playSlender(level, player.getX(), player.getY(), player.getZ(),
 				ModSounds.SLENDERMAN_ATTACK, SoundSource.PLAYERS, 0.9f, 1.0f);
 
 		com.example.superheroes.effect.SlendermanCloakController.triggerTendrilAnimation(player);
