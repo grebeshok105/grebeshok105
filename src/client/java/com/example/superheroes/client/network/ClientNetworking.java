@@ -108,11 +108,5 @@ public final class ClientNetworking {
 					com.example.superheroes.client.ClientSlenderState.updateField(payload.inside(), payload.remainingTicks(), tick);
 				}));
 
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderJumpscareS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> {
-					LocalPlayer self = Minecraft.getInstance().player;
-					int tick = self != null ? self.tickCount : 0;
-					com.example.superheroes.client.ClientSlenderState.triggerJumpscare(payload.durationTicks(), tick);
-				}));
 	}
 }
