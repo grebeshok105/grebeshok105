@@ -30,4 +30,11 @@ public final class ClientSlenderState {
 	public static boolean fieldActive(int currentTick) {
 		return fieldInside && currentTick < fieldExpiryTick;
 	}
+
+	public static void reset() {
+		staticStacks = 0;
+		staticFade = 0f;
+		fieldInside = false;
+		fieldExpiryTick = 0;
+	}
 }
