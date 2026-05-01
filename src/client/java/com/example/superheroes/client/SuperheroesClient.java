@@ -57,11 +57,15 @@ public class SuperheroesClient implements ClientModInitializer {
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
 				HulkbusterCloakClientTracker.add(cloak.getOwnerUuid());
+			} else if (entity instanceof com.example.superheroes.entity.SlendermanCloakEntity cloak) {
+				SlendermanCloakClientTracker.put(cloak.getOwnerUuid(), cloak);
 			}
 		});
 		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
 			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
 				HulkbusterCloakClientTracker.remove(cloak.getOwnerUuid());
+			} else if (entity instanceof com.example.superheroes.entity.SlendermanCloakEntity cloak) {
+				SlendermanCloakClientTracker.remove(cloak.getOwnerUuid());
 			}
 		});
 		ParticleFactoryRegistry.getInstance().register(ModParticles.TRANSFORM_SPARK, EndRodParticle.Provider::new);

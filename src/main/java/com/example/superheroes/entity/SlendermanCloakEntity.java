@@ -104,11 +104,6 @@ public class SlendermanCloakEntity extends Entity implements GeoEntity {
 	}
 
 	@Override
-	public float getViewYRot(float partialTicks) {
-		return Mth.rotLerp(partialTicks, prevBodyYaw, getBodyYaw());
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
 		if (!level().isClientSide && attackTicks > 0) {
