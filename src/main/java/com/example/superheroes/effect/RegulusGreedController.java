@@ -20,8 +20,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -216,9 +218,15 @@ public final class RegulusGreedController {
 			if (v instanceof Mob mob) {
 				mob.setNoAi(restoreNoAi);
 			}
+			LinkedHashMap<SourceKey, AggregatedDamage> aggregated = new LinkedHashMap<>();
 			for (QueuedDamage q : queuedDamage) {
-				v.hurt(q.source, q.amount);
+				SourceKey key = SourceKey.of(q.source);
+				aggregated.merge(key, new AggregatedDamage(q.source, q.amount), AggregatedDamage::merge);
+			}
+			for (AggregatedDamage agg : aggregated.values()) {
 				if (!v.isAlive()) break;
+				v.invulnerableTime = 0;
+				v.hurt(agg.representative, agg.total);
 			}
 			ServerLevel sl = (ServerLevel) v.level();
 			sl.playSound(null, v.getX(), v.getY(), v.getZ(),
@@ -228,5 +236,47 @@ public final class RegulusGreedController {
 	}
 
 	private record QueuedDamage(DamageSource source, float amount) {
+	}
+
+	private record SourceKey(UUID directEntityId, UUID causingEntityId, ResourceLocation typeId) {
+		static SourceKey of(DamageSource source) {
+			Entity direct = source.getDirectEntity();
+			Entity causing = source.getEntity();
+			ResourceLocation typeId = source.typeHolder().unwrapKey()
+					.map(k -> k.location()).orElse(null);
+			return new SourceKey(
+					direct != null ? direct.getUUID() : null,
+					causing != null ? causing.getUUID() : null,
+					typeId);
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof SourceKey k)) return false;
+			return Objects.equals(directEntityId, k.directEntityId)
+					&& Objects.equals(causingEntityId, k.causingEntityId)
+					&& Objects.equals(typeId, k.typeId);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(directEntityId, causingEntityId, typeId);
+		}
+	}
+
+	private static final class AggregatedDamage {
+		final DamageSource representative;
+		float total;
+
+		AggregatedDamage(DamageSource representative, float total) {
+			this.representative = representative;
+			this.total = total;
+		}
+
+		AggregatedDamage merge(AggregatedDamage other) {
+			this.total += other.total;
+			return this;
+		}
 	}
 }
