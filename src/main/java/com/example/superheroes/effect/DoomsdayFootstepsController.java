@@ -16,7 +16,7 @@ import java.util.UUID;
 public final class DoomsdayFootstepsController {
 	private static final int LOOP_INTERVAL_TICKS = 100;
 
-	private static final Map<UUID, Integer> NEXT_PLAY = new HashMap<>();
+	private static final Map<UUID, Long> NEXT_PLAY = new HashMap<>();
 
 	private DoomsdayFootstepsController() {
 	}
@@ -36,13 +36,14 @@ public final class DoomsdayFootstepsController {
 			NEXT_PLAY.remove(id);
 			return;
 		}
-		Integer next = NEXT_PLAY.get(id);
-		if (next != null && player.tickCount < next) {
+		long now = player.level().getGameTime();
+		Long next = NEXT_PLAY.get(id);
+		if (next != null && now < next) {
 			return;
 		}
 		ServerLevel level = player.serverLevel();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				ModSounds.HOMELANDER_IRON_FISTS_CHARGE, SoundSource.PLAYERS, 0.85f, 0.7f);
-		NEXT_PLAY.put(id, player.tickCount + LOOP_INTERVAL_TICKS);
+		NEXT_PLAY.put(id, now + LOOP_INTERVAL_TICKS);
 	}
 }

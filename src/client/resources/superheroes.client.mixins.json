@@ -5,7 +5,6 @@
 	"client": [
 		"PlayerRendererMixin",
 		"PlayerRendererSlendermanHideMixin",
-		"MouseHandlerFlightSpeedMixin",
 		"LocalPlayerFlightMixin",
 		"CameraMixin",
 		"AbstractClientPlayerSkinMixin",

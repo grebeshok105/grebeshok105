@@ -3,7 +3,6 @@ package com.example.superheroes.client;
 import com.example.superheroes.client.hud.AbilitiesTooltipHud;
 import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.hud.EvangelionZoomHud;
-import com.example.superheroes.client.hud.FlightSpeedHud;
 import com.example.superheroes.client.hud.JarvisOverlayHud;
 import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
@@ -102,7 +101,6 @@ public class SuperheroesClient implements ClientModInitializer {
 			MadnessHudOverlay.render(graphics, tracker);
 			BloodRainHud.render(graphics, tracker);
 			EvangelionZoomHud.render(graphics, tracker);
-			FlightSpeedHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.UraniumThreatHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);

@@ -3,7 +3,6 @@ package com.example.superheroes.client.network;
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientAbilityCooldowns;
-import com.example.superheroes.client.ClientFlightSpeedState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ClientReactorState;
@@ -12,7 +11,6 @@ import com.example.superheroes.client.fx.ScreenShakeManager;
 import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
-import com.example.superheroes.network.FlightSpeedSyncS2CPayload;
 import com.example.superheroes.network.HeroDataSyncS2CPayload;
 import com.example.superheroes.network.LaserFiredS2CPayload;
 import com.example.superheroes.network.MadnessSyncS2CPayload;
@@ -113,9 +111,6 @@ public final class ClientNetworking {
 					int tick = self != null ? self.tickCount : 0;
 					com.example.superheroes.client.ClientSlenderState.updateField(payload.inside(), payload.remainingTicks(), tick);
 				}));
-
-		ClientPlayNetworking.registerGlobalReceiver(FlightSpeedSyncS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> ClientFlightSpeedState.update(payload.percent())));
 
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.AbilityCooldownS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> ClientAbilityCooldowns.update(payload.abilityId(), payload.remainingTicks())));

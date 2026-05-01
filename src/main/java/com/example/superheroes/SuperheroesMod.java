@@ -53,7 +53,6 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.UraniumDefenseController.init();
 		com.example.superheroes.effect.UraniumOffhandController.init();
 		com.example.superheroes.effect.FlightController.init();
-		com.example.superheroes.effect.HomelanderFlightSpeedController.init();
 		com.example.superheroes.effect.SungJinwooController.init();
 		com.example.superheroes.effect.MonarchsDomainController.init();
 		com.example.superheroes.effect.DoomsdayAdaptationController.init();
@@ -90,6 +89,10 @@ public class SuperheroesMod implements ModInitializer {
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			HeroTransformService.onPlayerJoin(handler.getPlayer());
+		});
+
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			HeroTransformService.onPlayerDisconnect(handler.getPlayer());
 		});
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {

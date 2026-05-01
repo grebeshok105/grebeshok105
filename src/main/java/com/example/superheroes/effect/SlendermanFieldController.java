@@ -47,7 +47,7 @@ public final class SlendermanFieldController {
 			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 				FieldState state = ACTIVE.get(player.getUUID());
 				if (state == null) continue;
-				if (player.tickCount >= state.endTick) {
+				if (player.level().getGameTime() >= state.endTick) {
 					expire(player);
 					continue;
 				}
@@ -75,14 +75,15 @@ public final class SlendermanFieldController {
 	}
 
 	public static void startField(ServerPlayer player, int durationTicks, double radius) {
-		ACTIVE.put(player.getUUID(), new FieldState(player.tickCount + durationTicks, radius, player.tickCount));
+		long now = player.level().getGameTime();
+		ACTIVE.put(player.getUUID(), new FieldState(now + durationTicks, radius, now));
 		INSIDE_LAST.put(player.getUUID(), new HashSet<>());
 		ServerPlayNetworking.send(player, new SlenderFieldS2CPayload(true, durationTicks));
 	}
 
 	public static boolean isFieldActive(ServerPlayer player) {
 		FieldState state = ACTIVE.get(player.getUUID());
-		return state != null && player.tickCount < state.endTick;
+		return state != null && player.level().getGameTime() < state.endTick;
 	}
 
 	private static void tick(ServerPlayer caster, FieldState state) {
@@ -100,7 +101,8 @@ public final class SlendermanFieldController {
 				e -> e.isAlive() && !e.isSpectator());
 
 		Set<UUID> insideNow = new HashSet<>();
-		int remaining = state.endTick - caster.tickCount;
+		long now = caster.level().getGameTime();
+		int remaining = (int) (state.endTick - now);
 		List<LivingEntity> enemies = new java.util.ArrayList<>();
 		for (LivingEntity e : entitiesInBox) {
 			if (e.distanceToSqr(center) > rSq) continue;
@@ -109,7 +111,7 @@ public final class SlendermanFieldController {
 			if (e instanceof ServerPlayer sp) {
 				insideNow.add(sp.getUUID());
 				ServerPlayNetworking.send(sp, new SlenderFieldS2CPayload(true, remaining));
-				if (caster.tickCount % 8 == 0) {
+				if (now % 8 == 0) {
 					ServerPlayNetworking.send(sp, new ScreenShakeS2CPayload(0.6f, 10));
 				}
 				sp.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 2, true, false, false));
@@ -136,15 +138,15 @@ public final class SlendermanFieldController {
 		// Caster keeps overlay too.
 		ServerPlayNetworking.send(caster, new SlenderFieldS2CPayload(true, remaining));
 
-		if (caster.tickCount % STRIKE_INTERVAL == 0 && !enemies.isEmpty()) {
+		if (now % STRIKE_INTERVAL == 0 && !enemies.isEmpty()) {
 			LivingEntity victim = enemies.get(caster.getRandom().nextInt(enemies.size()));
 			victim.hurt(ModDamageTypes.slendermanField(level, caster), STRIKE_DAMAGE);
 			Vec3 v = victim.position().add(0, victim.getBbHeight() * 0.5, 0);
 			level.sendParticles(ParticleTypes.SQUID_INK, v.x, v.y, v.z, 24, 0.5, 0.5, 0.5, 0.05);
 		}
 
-		if (caster.tickCount % 4 == 0) {
-			double angle = (caster.tickCount * 0.15) % (Math.PI * 2);
+		if (now % 4 == 0) {
+			double angle = (now * 0.15) % (Math.PI * 2);
 			for (int i = 0; i < 3; i++) {
 				double a = angle + i * (Math.PI * 2 / 3);
 				double x = center.x + Math.cos(a) * r;
@@ -175,6 +177,6 @@ public final class SlendermanFieldController {
 		INSIDE_LAST.remove(id);
 	}
 
-	private record FieldState(int endTick, double radius, int startTick) {
+	private record FieldState(long endTick, double radius, long startTick) {
 	}
 }

@@ -40,7 +40,7 @@ public final class SlendermanStaticController {
 	// looker-uuid -> slender-uuid -> stacks
 	private static final Map<UUID, Map<UUID, Integer>> LOOKER_STACKS = new ConcurrentHashMap<>();
 	// looker-uuid -> next allowed audio tick (per looker, throttle)
-	private static final Map<UUID, Integer> NEXT_AUDIO_TICK = new ConcurrentHashMap<>();
+	private static final Map<UUID, Long> NEXT_AUDIO_TICK = new ConcurrentHashMap<>();
 
 	private SlendermanStaticController() {
 	}
@@ -145,25 +145,26 @@ public final class SlendermanStaticController {
 		// Audio cues at the looker's location: heard by the looker AND nearby
 		// players (so a 3rd-party witness also hears the dread). Throttled.
 		if (max >= 5 && scanning) {
-			int next = NEXT_AUDIO_TICK.getOrDefault(looker.getUUID(), 0);
-			if (looker.tickCount >= next) {
+			long now = looker.level().getGameTime();
+			long next = NEXT_AUDIO_TICK.getOrDefault(looker.getUUID(), 0L);
+			if (now >= next) {
 				ServerLevel level = looker.serverLevel();
 				if (max >= 15) {
 					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 1.4f, 1.0f);
 					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_HUNT, SoundSource.HOSTILE, 1.0f, 1.0f);
-					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 50);
+					NEXT_AUDIO_TICK.put(looker.getUUID(), now + 50);
 				} else if (max >= 10) {
 					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 1.0f, 1.0f);
 					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_WARNING, SoundSource.HOSTILE, 0.9f, 1.0f);
-					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 80);
+					NEXT_AUDIO_TICK.put(looker.getUUID(), now + 80);
 				} else {
 					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 0.7f, 1.0f);
-					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 120);
+					NEXT_AUDIO_TICK.put(looker.getUUID(), now + 120);
 				}
 			}
 		}
