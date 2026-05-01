@@ -43,8 +43,11 @@ public abstract class PlayerRendererSlendermanHideMixin {
 			return;
 		}
 
-		SlendermanMorphRenderer.tryRender(player, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-		ci.cancel();
+		if (SlendermanMorphRenderer.tryRender(player, entityYaw, partialTick, poseStack, bufferSource, packedLight)) {
+			ci.cancel();
+		}
+		// если морф-рендер не получился (cloak ещё не доехал до клиента) —
+		// даём ванильному отработать, чтобы игрок не пропадал.
 	}
 
 	@Unique

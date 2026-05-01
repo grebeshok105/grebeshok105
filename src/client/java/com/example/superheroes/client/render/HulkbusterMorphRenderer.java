@@ -23,14 +23,28 @@ public final class HulkbusterMorphRenderer {
 	private HulkbusterMorphRenderer() {
 	}
 
-	public static void render(AbstractClientPlayer player, float entityYaw, float partialTick,
+	/** Возвращает {@code true} если рендер выполнен (надо отменить vanilla). */
+	public static boolean tryRender(AbstractClientPlayer player, float entityYaw, float partialTick,
 			PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-		HulkbusterCloakRenderer renderer = HulkbusterCloakRenderer.INSTANCE;
-		if (renderer == null) return;
-
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
-		if (level == null) return;
+		if (level == null) return false;
+
+		HulkbusterCloakRenderer renderer = HulkbusterCloakRenderer.INSTANCE;
+		if (renderer == null) {
+			// Лениво форсируем создание рендерера через dispatcher: сам по себе
+			// cloak-entity невидим, поэтому ванильный путь ленивой инициализации
+			// не срабатывает — нужно поднять явно.
+			com.example.superheroes.entity.HulkbusterCloakEntity probe =
+					new com.example.superheroes.entity.HulkbusterCloakEntity(
+							com.example.superheroes.entity.ModEntities.HULKBUSTER_CLOAK, level);
+			try {
+				mc.getEntityRenderDispatcher().getRenderer(probe);
+			} catch (Throwable ignored) {
+			}
+			renderer = HulkbusterCloakRenderer.INSTANCE;
+			if (renderer == null) return false;
+		}
 
 		IronGolem proxy = PROXY;
 		if (proxy == null || proxy.level() != level) {
@@ -40,6 +54,7 @@ public final class HulkbusterMorphRenderer {
 
 		copyTransform(player, proxy);
 		renderer.renderProxy(proxy, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+		return true;
 	}
 
 	private static void copyTransform(AbstractClientPlayer p, IronGolem g) {

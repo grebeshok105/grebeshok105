@@ -57,8 +57,18 @@ public class SuperheroesClient implements ClientModInitializer {
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
 				HulkbusterCloakClientTracker.add(cloak.getOwnerUuid());
+				// Форсим создание рендерера сразу, чтобы INSTANCE-ссылка была
+				// готова к моменту первого player-render-кадра.
+				try {
+					net.minecraft.client.Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(cloak);
+				} catch (Throwable ignored) {
+				}
 			} else if (entity instanceof com.example.superheroes.entity.SlendermanCloakEntity cloak) {
 				SlendermanCloakClientTracker.put(cloak.getOwnerUuid(), cloak);
+				try {
+					net.minecraft.client.Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(cloak);
+				} catch (Throwable ignored) {
+				}
 			}
 		});
 		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {

@@ -19,10 +19,22 @@ public final class SlendermanMorphRenderer {
 	/** Возвращает {@code true} если рендер выполнен (надо отменить vanilla). */
 	public static boolean tryRender(AbstractClientPlayer player, float entityYaw, float partialTick,
 			PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-		SlendermanCloakRenderer renderer = SlendermanCloakRenderer.INSTANCE;
-		if (renderer == null) return false;
 		SlendermanCloakEntity cloak = SlendermanCloakClientTracker.get(player.getUUID());
 		if (cloak == null) return false;
+
+		SlendermanCloakRenderer renderer = SlendermanCloakRenderer.INSTANCE;
+		if (renderer == null) {
+			// Лениво форсируем создание GeoEntityRenderer через dispatcher
+			// (cloak-entity невидим, ленивый путь не срабатывает сам).
+			try {
+				net.minecraft.client.Minecraft.getInstance()
+						.getEntityRenderDispatcher()
+						.getRenderer(cloak);
+			} catch (Throwable ignored) {
+			}
+			renderer = SlendermanCloakRenderer.INSTANCE;
+			if (renderer == null) return false;
+		}
 
 		// Копируем transform с игрока в cloak: убирает сетевой лаг и кривое вращение.
 		cloak.setPos(player.getX(), player.getY(), player.getZ());

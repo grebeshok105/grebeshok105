@@ -41,7 +41,10 @@ public abstract class PlayerRendererHulkbusterHideMixin {
 			return;
 		}
 
-		HulkbusterMorphRenderer.render(player, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-		ci.cancel();
+		if (HulkbusterMorphRenderer.tryRender(player, entityYaw, partialTick, poseStack, bufferSource, packedLight)) {
+			ci.cancel();
+		}
+		// если морф-рендер не получился — даём ванильному отработать,
+		// чтобы игрок не пропадал в пустоту.
 	}
 }
