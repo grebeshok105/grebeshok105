@@ -14,13 +14,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -43,9 +45,12 @@ public final class SungJinwooController {
 	public static final int MAX_SHADOWS = 10;
 
 	private static final Map<UUID, List<UUID>> ARMY = new ConcurrentHashMap<>();
+	private static final Map<ServerLevel, List<DeathEcho>> DEATH_ECHOES = new ConcurrentHashMap<>();
+	private static final Set<UUID> SUPPRESSED_DEATH_ECHOES = ConcurrentHashMap.newKeySet();
 	private static final Set<UUID> SUMMONED = ConcurrentHashMap.newKeySet();
 	private static final Set<UUID> PHASE2 = ConcurrentHashMap.newKeySet();
 	private static final Random RNG = new Random();
+	private static final long DEATH_ECHO_TICKS = 20 * 20;
 
 	private SungJinwooController() {
 	}
@@ -75,6 +80,16 @@ public final class SungJinwooController {
 			level.playSound(null, player.getX(), player.getY(), player.getZ(),
 					SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.6f, 0.8f);
 			return false;
+		});
+
+		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+			if (!(entity.level() instanceof ServerLevel level)) return;
+			if (entity instanceof Player || entity instanceof ShadowSoldierEntity) return;
+			if (SUPPRESSED_DEATH_ECHOES.remove(entity.getUUID())) return;
+			List<DeathEcho> list = DEATH_ECHOES.computeIfAbsent(level, l -> new ArrayList<>());
+			long now = level.getGameTime();
+			list.removeIf(e -> e.expiresAt() <= now);
+			list.add(new DeathEcho(entity.position(), now + DEATH_ECHO_TICKS));
 		});
 	}
 
@@ -211,6 +226,29 @@ public final class SungJinwooController {
 		return list.get(RNG.nextInt(list.size()));
 	}
 
+	public static Vec3 nearestDeathEcho(ServerPlayer player, double range) {
+		List<DeathEcho> list = DEATH_ECHOES.get(player.serverLevel());
+		if (list == null) return null;
+		long now = player.serverLevel().getGameTime();
+		list.removeIf(e -> e.expiresAt() <= now);
+		double maxDistance = range * range;
+		return list.stream()
+				.filter(e -> e.pos().distanceToSqr(player.position()) <= maxDistance)
+				.min(Comparator.comparingDouble(e -> e.pos().distanceToSqr(player.position())))
+				.map(DeathEcho::pos)
+				.orElse(null);
+	}
+
+	public static void consumeDeathEcho(ServerPlayer player, Vec3 pos) {
+		List<DeathEcho> list = DEATH_ECHOES.get(player.serverLevel());
+		if (list == null) return;
+		list.removeIf(e -> e.pos().distanceToSqr(pos) < 0.01);
+	}
+
+	public static void suppressDeathEcho(LivingEntity entity) {
+		SUPPRESSED_DEATH_ECHOES.add(entity.getUUID());
+	}
+
 	public static void registerExtraShadow(ServerPlayer owner, ShadowSoldierEntity shadow) {
 		List<UUID> ids = ARMY.computeIfAbsent(owner.getUUID(), u -> new ArrayList<>());
 		if (ids.size() >= MAX_SHADOWS) {
@@ -254,5 +292,8 @@ public final class SungJinwooController {
 		for (ServerPlayer p : player.serverLevel().players()) {
 			ServerPlayNetworking.send(p, payload);
 		}
+	}
+
+	private record DeathEcho(Vec3 pos, long expiresAt) {
 	}
 }

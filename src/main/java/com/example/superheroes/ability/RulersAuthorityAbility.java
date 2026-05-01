@@ -1,6 +1,7 @@
 package com.example.superheroes.ability;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +10,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -56,8 +56,7 @@ public final class RulersAuthorityAbility implements Ability {
 
 		AABB box = new AABB(eye, eye).inflate(RANGE);
 		List<LivingEntity> candidates = level.getEntitiesOfClass(LivingEntity.class, box,
-				e -> e != player && e.isAlive() && !(e instanceof Player) && eye.distanceToSqr(e.position()) <= RANGE * RANGE);
-		// Берём ту, на которую смотрим лучше всего (cos)
+				e -> e != player && e.isAlive() && !e.isSpectator() && eye.distanceToSqr(e.position()) <= RANGE * RANGE);
 		LivingEntity target = candidates.stream()
 				.max(Comparator.comparingDouble(e -> {
 					Vec3 toE = e.position().add(0, e.getBbHeight() * 0.5, 0).subtract(eye).normalize();
@@ -66,12 +65,15 @@ public final class RulersAuthorityAbility implements Ability {
 				.orElse(null);
 		if (target == null) return false;
 
-		// Подброс вверх
-		target.setDeltaMovement(target.getDeltaMovement().x, 2.0, target.getDeltaMovement().z);
-		target.hurtMarked = true;
 		target.hurt(level.damageSources().playerAttack(player), DAMAGE);
 		target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 6, true, false, true));
 		target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 30, 4, true, false, true));
+		target.setDeltaMovement(target.getDeltaMovement().x, 2.0, target.getDeltaMovement().z);
+		target.hurtMarked = true;
+		target.hasImpulse = true;
+		if (target instanceof ServerPlayer targetPlayer) {
+			targetPlayer.connection.send(new ClientboundSetEntityMotionPacket(targetPlayer));
+		}
 
 		Vec3 p = target.position();
 		level.sendParticles(ParticleTypes.DRAGON_BREATH, p.x, p.y + 1, p.z, 80, 0.6, 0.6, 0.6, 0.05);

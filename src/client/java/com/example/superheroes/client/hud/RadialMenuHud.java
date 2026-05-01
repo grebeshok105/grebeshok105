@@ -2,6 +2,7 @@ package com.example.superheroes.client.hud;
 
 import com.example.superheroes.ModId;
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientAbilityCooldowns;
 import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
@@ -28,6 +29,7 @@ public final class RadialMenuHud {
 
 	private static final int COLOR_TEXT_IDLE = 0xFFE3E5F0;
 	private static final int COLOR_KEY_IDLE = 0xFF7C8499;
+	private static final int COLOR_COOLDOWN = 0xFFFFB45C;
 	private static final int COLOR_SHADOW = 0x77000000;
 
 	private static boolean open;
@@ -147,13 +149,16 @@ public final class RadialMenuHud {
 			Component name = Component.translatable("ability." + aid.getNamespace() + "." + aid.getPath());
 			Component key = keyForSlot(i);
 			boolean active = i == selected;
+			int cooldownTicks = ClientAbilityCooldowns.remainingTicks(aid);
 			int textWidth = mc.font.width(name);
 			int slotWidth = Math.max(SLOT_MIN_WIDTH, textWidth + SLOT_PADDING_X * 2);
 			int slotX = x - slotWidth / 2;
 			int slotY = y - SLOT_HEIGHT / 2;
-			drawSlot(graphics, slotX, slotY, slotWidth, SLOT_HEIGHT, active, theme);
-			graphics.drawCenteredString(mc.font, name, x, y - 9, active ? theme.radialTextActive() : COLOR_TEXT_IDLE);
-			graphics.drawCenteredString(mc.font, key, x, y + 3, active ? theme.radialKeyActive() : COLOR_KEY_IDLE);
+			drawSlot(graphics, slotX, slotY, slotWidth, SLOT_HEIGHT, active, cooldownTicks > 0, theme);
+			graphics.drawCenteredString(mc.font, name, x, y - 9,
+					cooldownTicks > 0 ? 0xFFA7AAB8 : (active ? theme.radialTextActive() : COLOR_TEXT_IDLE));
+			graphics.drawCenteredString(mc.font, cooldownTicks > 0 ? cooldownText(cooldownTicks) : key, x, y + 3,
+					cooldownTicks > 0 ? COLOR_COOLDOWN : (active ? theme.radialKeyActive() : COLOR_KEY_IDLE));
 		}
 	}
 
@@ -207,17 +212,26 @@ public final class RadialMenuHud {
 		}
 	}
 
-	private static void drawSlot(GuiGraphics graphics, int x, int y, int width, int height, boolean selectedSlot, HeroTheme theme) {
+	private static void drawSlot(GuiGraphics graphics, int x, int y, int width, int height,
+			boolean selectedSlot, boolean onCooldown, HeroTheme theme) {
 		HudUtil.dropShadow(graphics, x, y, width, height, 2, COLOR_SHADOW);
 		if (selectedSlot) {
 			HudUtil.roundedRectFill(graphics, x - 3, y - 3, width + 6, height + 6, theme.radialGlow());
 		}
-		int top = selectedSlot ? 0xF02A1A14 : theme.panelTop();
-		int bottom = selectedSlot ? 0xE01A0F0A : theme.panelBottom();
+		int top = onCooldown ? 0xF0121218 : (selectedSlot ? 0xF02A1A14 : theme.panelTop());
+		int bottom = onCooldown ? 0xE008080D : (selectedSlot ? 0xE01A0F0A : theme.panelBottom());
 		int border = selectedSlot ? theme.radialBorderActive() : theme.radialBorderIdle();
 		HudUtil.roundedRectGradient(graphics, x, y, width, height, top, bottom);
 		HudUtil.roundedRectBorder(graphics, x, y, width, height, border);
 		graphics.fill(x + 3, y + 1, x + width - 3, y + 2, 0x33FFFFFF);
+	}
+
+	private static Component cooldownText(int ticks) {
+		int tenths = Math.max(1, (int) Math.ceil(ticks / 2.0));
+		if (tenths < 100) {
+			return Component.literal("CD " + (tenths / 10) + "." + (tenths % 10) + "s");
+		}
+		return Component.literal("CD " + (int) Math.ceil(ticks / 20.0) + "s");
 	}
 
 	private static Component keyForSlot(int index) {
