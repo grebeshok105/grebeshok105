@@ -3,8 +3,8 @@ package com.example.superheroes.effect;
 import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.network.ScreenShakeS2CPayload;
 import com.example.superheroes.network.SlenderFieldS2CPayload;
-import com.example.superheroes.network.SlenderJumpscareS2CPayload;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -52,6 +52,24 @@ public final class SlendermanFieldController {
 					continue;
 				}
 				tick(player, state);
+			}
+		});
+
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			ServerPlayer leaving = handler.getPlayer();
+			UUID leavingId = leaving.getUUID();
+			Set<UUID> last = INSIDE_LAST.remove(leavingId);
+			ACTIVE.remove(leavingId);
+			if (last != null) {
+				for (UUID id : last) {
+					ServerPlayer left = server.getPlayerList().getPlayer(id);
+					if (left != null) {
+						ServerPlayNetworking.send(left, new SlenderFieldS2CPayload(false, 0));
+					}
+				}
+			}
+			for (Map.Entry<UUID, Set<UUID>> e : INSIDE_LAST.entrySet()) {
+				e.getValue().remove(leavingId);
 			}
 		});
 	}
@@ -123,9 +141,6 @@ public final class SlendermanFieldController {
 			victim.hurt(ModDamageTypes.slendermanField(level, caster), STRIKE_DAMAGE);
 			Vec3 v = victim.position().add(0, victim.getBbHeight() * 0.5, 0);
 			level.sendParticles(ParticleTypes.SQUID_INK, v.x, v.y, v.z, 24, 0.5, 0.5, 0.5, 0.05);
-			if (victim instanceof ServerPlayer victimPlayer) {
-				ServerPlayNetworking.send(victimPlayer, new SlenderJumpscareS2CPayload(20));
-			}
 		}
 
 		if (caster.tickCount % 4 == 0) {

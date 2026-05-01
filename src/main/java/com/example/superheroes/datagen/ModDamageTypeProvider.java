@@ -29,7 +29,9 @@ public final class ModDamageTypeProvider extends FabricDynamicRegistryProvider {
 		entries.add(lookup, ModDamageTypes.SHADOW_ATTACK);
 		entries.add(lookup, ModDamageTypes.GOKU_KAMEHAMEHA);
 		entries.add(lookup, ModDamageTypes.GOKU_INSTANT_STRIKE);
+		entries.add(lookup, ModDamageTypes.GOKU_SPIRIT_BOMB);
 		entries.add(lookup, ModDamageTypes.NARUTO_RASENGAN);
+		entries.add(lookup, ModDamageTypes.NARUTO_RASENSHURIKEN);
 		entries.add(lookup, ModDamageTypes.CAP_SHIELD_THROW);
 		entries.add(lookup, ModDamageTypes.CAP_SHIELD_SLAM);
 		entries.add(lookup, ModDamageTypes.HOMELANDER_EYE_LASER);

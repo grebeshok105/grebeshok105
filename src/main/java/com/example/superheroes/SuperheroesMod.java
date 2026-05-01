@@ -53,12 +53,15 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.UraniumDefenseController.init();
 		com.example.superheroes.effect.UraniumOffhandController.init();
 		com.example.superheroes.effect.FlightController.init();
+		com.example.superheroes.effect.HomelanderFlightSpeedController.init();
 		com.example.superheroes.effect.SungJinwooController.init();
 		com.example.superheroes.effect.MonarchsDomainController.init();
 		com.example.superheroes.effect.DoomsdayAdaptationController.init();
 		com.example.superheroes.effect.DoomsdayFootstepsController.init();
 		com.example.superheroes.effect.DoomsdayTierController.init();
 		com.example.superheroes.effect.GokuKiStackController.init();
+		com.example.superheroes.effect.GokuKiResilienceController.init();
+		com.example.superheroes.effect.NarutoWallRunController.init();
 		com.example.superheroes.effect.KawarimiController.init();
 		com.example.superheroes.effect.SlendermanStaticController.init();
 		com.example.superheroes.effect.SlendermanFieldController.init();
@@ -70,8 +73,18 @@ public class SuperheroesMod implements ModInitializer {
 			for (ServerPlayer p : server.getPlayerList().getPlayers()) {
 				com.example.superheroes.ability.ChargeTackleAbility.serverTick(p);
 				com.example.superheroes.ability.GokuKamehamehaAbility.serverTick(p);
+				com.example.superheroes.ability.GokuSpiritBombAbility.serverTick(p);
 				com.example.superheroes.ability.NarutoRasenganAbility.serverTick(p);
+				com.example.superheroes.ability.NarutoRasenshurikenAbility.serverTick(p);
 				com.example.superheroes.ability.CapShieldSlamAbility.serverTick(p);
+				com.example.superheroes.transform.HeroData data = p
+						.getAttachedOrCreate(com.example.superheroes.attachment.ModAttachments.HERO_DATA);
+				if (data.isActive(com.example.superheroes.ability.AbilityIds.NARUTO_SAGE_MODE)) {
+					com.example.superheroes.ability.NarutoSageModeAbility.serverTick(p);
+				}
+				if (data.isActive(com.example.superheroes.ability.AbilityIds.GOKU_SUPER_SAIYAN_AURA)) {
+					com.example.superheroes.ability.GokuSuperSaiyanAuraAbility.serverTick(p);
+				}
 			}
 		});
 

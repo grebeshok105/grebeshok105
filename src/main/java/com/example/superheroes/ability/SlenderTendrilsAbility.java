@@ -69,10 +69,6 @@ public final class SlenderTendrilsAbility implements Ability {
 			Vec3 hitAt = target.position().add(0, target.getBbHeight() * 0.5, 0);
 			level.sendParticles(ParticleTypes.SQUID_INK, hitAt.x, hitAt.y, hitAt.z, 18, 0.4, 0.4, 0.4, 0.05);
 			level.sendParticles(ParticleTypes.SMOKE, hitAt.x, hitAt.y, hitAt.z, 8, 0.3, 0.3, 0.3, 0.02);
-			if (target instanceof net.minecraft.server.level.ServerPlayer hitPlayer) {
-				net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(hitPlayer,
-						new com.example.superheroes.network.SlenderJumpscareS2CPayload(12));
-			}
 			hits++;
 			if (hits >= 4) break;
 		}
@@ -86,7 +82,7 @@ public final class SlenderTendrilsAbility implements Ability {
 			}
 		}
 
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+		ModSounds.playSlender(level, player.getX(), player.getY(), player.getZ(),
 				ModSounds.SLENDERMAN_ATTACK, SoundSource.PLAYERS, 0.9f, 1.0f);
 
 		com.example.superheroes.effect.SlendermanCloakController.triggerTendrilAnimation(player);

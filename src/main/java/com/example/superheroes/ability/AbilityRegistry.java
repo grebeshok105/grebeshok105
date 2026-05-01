@@ -44,9 +44,14 @@ public final class AbilityRegistry {
 	public static final GokuKamehamehaAbility GOKU_KAMEHAMEHA = new GokuKamehamehaAbility();
 	public static final GokuInstantTransmissionAbility GOKU_INSTANT_TRANSMISSION = new GokuInstantTransmissionAbility();
 	public static final GokuKiChargeAbility GOKU_KI_CHARGE = new GokuKiChargeAbility();
+	public static final GokuSolarFlareAbility GOKU_SOLAR_FLARE = new GokuSolarFlareAbility();
+	public static final GokuSpiritBombAbility GOKU_SPIRIT_BOMB = new GokuSpiritBombAbility();
+	public static final GokuSuperSaiyanAuraAbility GOKU_SUPER_SAIYAN_AURA = new GokuSuperSaiyanAuraAbility();
 
 	public static final NarutoRasenganAbility NARUTO_RASENGAN = new NarutoRasenganAbility();
 	public static final NarutoShadowClonesAbility NARUTO_SHADOW_CLONES = new NarutoShadowClonesAbility();
+	public static final NarutoRasenshurikenAbility NARUTO_RASENSHURIKEN = new NarutoRasenshurikenAbility();
+	public static final NarutoSageModeAbility NARUTO_SAGE_MODE = new NarutoSageModeAbility();
 
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
@@ -90,8 +95,13 @@ public final class AbilityRegistry {
 		register(GOKU_KAMEHAMEHA);
 		register(GOKU_INSTANT_TRANSMISSION);
 		register(GOKU_KI_CHARGE);
+		register(GOKU_SOLAR_FLARE);
+		register(GOKU_SPIRIT_BOMB);
+		register(GOKU_SUPER_SAIYAN_AURA);
 		register(NARUTO_RASENGAN);
 		register(NARUTO_SHADOW_CLONES);
+		register(NARUTO_RASENSHURIKEN);
+		register(NARUTO_SAGE_MODE);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
 		register(SLENDER_BLINK);

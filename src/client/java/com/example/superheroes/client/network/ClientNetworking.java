@@ -1,22 +1,24 @@
 package com.example.superheroes.client.network;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientFlightSpeedState;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ClientReactorState;
 import com.example.superheroes.client.RemoteHeroSkins;
+import com.example.superheroes.client.fx.ScreenShakeManager;
+import com.example.superheroes.client.hud.BloodRainHud;
+import com.example.superheroes.client.render.LaserBeamRenderer;
+import com.example.superheroes.client.render.RepulsorBeamRenderer;
+import com.example.superheroes.network.FlightSpeedSyncS2CPayload;
+import com.example.superheroes.network.HeroDataSyncS2CPayload;
+import com.example.superheroes.network.LaserFiredS2CPayload;
 import com.example.superheroes.network.MadnessSyncS2CPayload;
 import com.example.superheroes.network.MadnessVisualS2CPayload;
 import com.example.superheroes.network.ReactorStateS2CPayload;
-import com.example.superheroes.client.ClientMadnessState;
-import com.example.superheroes.client.hud.BloodRainHud;
-import com.example.superheroes.client.fx.ScreenShakeManager;
-import com.example.superheroes.client.render.LaserBeamRenderer;
-import com.example.superheroes.client.render.RepulsorBeamRenderer;
-import com.example.superheroes.network.HeroDataSyncS2CPayload;
-import com.example.superheroes.network.LaserFiredS2CPayload;
 import com.example.superheroes.network.RepulsorBlastS2CPayload;
 import com.example.superheroes.network.RemoteHeroSkinS2CPayload;
-import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.network.ResourceUpdateS2CPayload;
 import com.example.superheroes.network.ScreenShakeS2CPayload;
 import com.example.superheroes.transform.HeroData;
@@ -108,11 +110,8 @@ public final class ClientNetworking {
 					com.example.superheroes.client.ClientSlenderState.updateField(payload.inside(), payload.remainingTicks(), tick);
 				}));
 
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderJumpscareS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> {
-					LocalPlayer self = Minecraft.getInstance().player;
-					int tick = self != null ? self.tickCount : 0;
-					com.example.superheroes.client.ClientSlenderState.triggerJumpscare(payload.durationTicks(), tick);
-				}));
+		ClientPlayNetworking.registerGlobalReceiver(FlightSpeedSyncS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> ClientFlightSpeedState.update(payload.percent())));
+
 	}
 }

@@ -41,9 +41,7 @@ public final class SlenderStaticFieldAbility implements Ability {
 	public boolean tryActivate(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
 		SlendermanFieldController.startField(player, FIELD_TICKS, FIELD_RADIUS);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				ModSounds.SLENDERMAN_JUMPSCARE, SoundSource.PLAYERS, 1.4f, 0.85f);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+		ModSounds.playSlender(level, player.getX(), player.getY(), player.getZ(),
 				ModSounds.SLENDERMAN_ANGRY, SoundSource.PLAYERS, 1.0f, 1.0f);
 		AbilityCooldowns.setCooldownTicks(player, AbilityIds.SLENDER_STATIC_FIELD, COOLDOWN_TICKS);
 		return true;

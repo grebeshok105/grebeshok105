@@ -7,6 +7,7 @@ import com.example.superheroes.transform.HeroData;
 import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.util.ExtraCodecs;
 
 public final class ModAttachments {
 	public static final AttachmentType<HeroData> HERO_DATA = AttachmentRegistry.<HeroData>builder()
@@ -30,6 +31,12 @@ public final class ModAttachments {
 			.persistent(DoomsdayProgress.CODEC)
 			.copyOnDeath()
 			.buildAndRegister(ModId.of("doomsday_progress"));
+
+	public static final AttachmentType<Integer> FLIGHT_SPEED_PERCENT = AttachmentRegistry.<Integer>builder()
+			.initializer(() -> 100)
+			.persistent(ExtraCodecs.intRange(50, 150))
+			.copyOnDeath()
+			.buildAndRegister(ModId.of("flight_speed_percent"));
 
 	private ModAttachments() {
 	}

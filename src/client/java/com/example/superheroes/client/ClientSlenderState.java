@@ -5,7 +5,6 @@ public final class ClientSlenderState {
 	private static float staticFade = 0f;
 	private static boolean fieldInside = false;
 	private static int fieldExpiryTick = 0;
-	private static int jumpscareExpiryTick = 0;
 
 	private ClientSlenderState() {
 	}
@@ -20,10 +19,6 @@ public final class ClientSlenderState {
 		fieldExpiryTick = currentTick + remainingTicks;
 	}
 
-	public static void triggerJumpscare(int duration, int currentTick) {
-		jumpscareExpiryTick = currentTick + duration;
-	}
-
 	public static int staticStacks() {
 		return staticStacks;
 	}
@@ -36,11 +31,10 @@ public final class ClientSlenderState {
 		return fieldInside && currentTick < fieldExpiryTick;
 	}
 
-	public static boolean jumpscareActive(int currentTick) {
-		return currentTick < jumpscareExpiryTick;
-	}
-
-	public static int jumpscareRemainingTicks(int currentTick) {
-		return Math.max(0, jumpscareExpiryTick - currentTick);
+	public static void reset() {
+		staticStacks = 0;
+		staticFade = 0f;
+		fieldInside = false;
+		fieldExpiryTick = 0;
 	}
 }

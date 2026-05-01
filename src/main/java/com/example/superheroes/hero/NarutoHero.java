@@ -26,7 +26,7 @@ public final class NarutoHero implements Hero {
 
 	@Override
 	public float getEnergyRegenPerTick() {
-		return 1.2f;
+		return 1.8f;
 	}
 
 	@Override
@@ -45,7 +45,12 @@ public final class NarutoHero implements Hero {
 
 	@Override
 	public List<ResourceLocation> getAbilities() {
-		return List.of(AbilityIds.NARUTO_RASENGAN, AbilityIds.NARUTO_SHADOW_CLONES);
+		return List.of(
+				AbilityIds.NARUTO_RASENGAN,
+				AbilityIds.NARUTO_SHADOW_CLONES,
+				AbilityIds.NARUTO_RASENSHURIKEN,
+				AbilityIds.NARUTO_SAGE_MODE
+		);
 	}
 
 	@Override

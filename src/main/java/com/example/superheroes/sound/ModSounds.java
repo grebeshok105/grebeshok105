@@ -4,9 +4,14 @@ import com.example.superheroes.ModId;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
 public final class ModSounds {
+	public static final float SLENDERMAN_VOLUME_SCALE = 0.5f;
+
+
 	public static final SoundEvent LIGHTNING_THUNDER_ANIME = register("lightning.thunder.anime");
 	public static final SoundEvent LIGHTNING_THUNDER_LOUD = register("lightning.thunder.loud");
 	public static final SoundEvent UNIBEAM_CHARGE = register("unibeam.charge");
@@ -25,7 +30,6 @@ public final class ModSounds {
 	public static final SoundEvent SLENDERMAN_DEATH = register("slenderman.death");
 	public static final SoundEvent SLENDERMAN_HUNT = register("slenderman.hunt");
 	public static final SoundEvent SLENDERMAN_HURT = register("slenderman.hurt");
-	public static final SoundEvent SLENDERMAN_JUMPSCARE = register("slenderman.jumpscare");
 	public static final SoundEvent SLENDERMAN_LIVING = register("slenderman.living");
 	public static final SoundEvent SLENDERMAN_SPAWN = register("slenderman.spawn");
 	public static final SoundEvent SLENDERMAN_VICTORY = register("slenderman.victory");
@@ -43,5 +47,10 @@ public final class ModSounds {
 	}
 
 	public static void init() {
+	}
+
+	public static void playSlender(ServerLevel level, double x, double y, double z,
+			SoundEvent event, SoundSource source, float volume, float pitch) {
+		level.playSound(null, x, y, z, event, source, volume * SLENDERMAN_VOLUME_SCALE, pitch);
 	}
 }

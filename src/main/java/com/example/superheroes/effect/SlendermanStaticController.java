@@ -7,6 +7,7 @@ import com.example.superheroes.network.SlenderStaticS2CPayload;
 import com.example.superheroes.sound.ModSounds;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -58,9 +59,33 @@ public final class SlendermanStaticController {
 				}
 				processLooker(looker, slendermen);
 			}
-			if (slendermen.isEmpty()) {
+			if (slendermen.isEmpty() && !LOOKER_STACKS.isEmpty()) {
+				for (UUID lookerId : LOOKER_STACKS.keySet()) {
+					ServerPlayer looker = server.getPlayerList().getPlayer(lookerId);
+					if (looker != null) {
+						ServerPlayNetworking.send(looker, new SlenderStaticS2CPayload(0, 0f));
+					}
+				}
 				LOOKER_STACKS.clear();
 				NEXT_AUDIO_TICK.clear();
+			}
+		});
+
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			ServerPlayer leaving = handler.getPlayer();
+			UUID leavingId = leaving.getUUID();
+			clear(leavingId);
+			for (UUID lookerId : LOOKER_STACKS.keySet()) {
+				ServerPlayer looker = server.getPlayerList().getPlayer(lookerId);
+				if (looker != null) {
+					Map<UUID, Integer> stacks = LOOKER_STACKS.get(lookerId);
+					int max = 0;
+					if (stacks != null) {
+						for (int v : stacks.values()) if (v > max) max = v;
+					}
+					float fade = Math.min(1f, max / (float) MAX_STACKS);
+					ServerPlayNetworking.send(looker, new SlenderStaticS2CPayload(max, fade));
+				}
 			}
 		});
 	}
@@ -124,19 +149,19 @@ public final class SlendermanStaticController {
 			if (looker.tickCount >= next) {
 				ServerLevel level = looker.serverLevel();
 				if (max >= 15) {
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 1.4f, 1.0f);
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_HUNT, SoundSource.HOSTILE, 1.0f, 1.0f);
 					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 50);
 				} else if (max >= 10) {
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 1.0f, 1.0f);
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_WARNING, SoundSource.HOSTILE, 0.9f, 1.0f);
 					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 80);
 				} else {
-					level.playSound(null, looker.getX(), looker.getY(), looker.getZ(),
+					ModSounds.playSlender(level, looker.getX(), looker.getY(), looker.getZ(),
 							ModSounds.SLENDERMAN_STATIC, SoundSource.HOSTILE, 0.7f, 1.0f);
 					NEXT_AUDIO_TICK.put(looker.getUUID(), looker.tickCount + 120);
 				}

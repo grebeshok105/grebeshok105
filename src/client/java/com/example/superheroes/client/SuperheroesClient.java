@@ -3,6 +3,7 @@ package com.example.superheroes.client;
 import com.example.superheroes.client.hud.AbilitiesTooltipHud;
 import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.hud.EvangelionZoomHud;
+import com.example.superheroes.client.hud.FlightSpeedHud;
 import com.example.superheroes.client.hud.JarvisOverlayHud;
 import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
@@ -28,6 +29,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -100,12 +102,12 @@ public class SuperheroesClient implements ClientModInitializer {
 			MadnessHudOverlay.render(graphics, tracker);
 			BloodRainHud.render(graphics, tracker);
 			EvangelionZoomHud.render(graphics, tracker);
+			FlightSpeedHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.UraniumThreatHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.SlenderStaticHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.SlenderFieldHud.render(graphics, tracker);
-			com.example.superheroes.client.hud.SlenderJumpscareHud.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -144,6 +146,10 @@ public class SuperheroesClient implements ClientModInitializer {
 					}
 				}
 			}
+		});
+
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+			ClientSlenderState.reset();
 		});
 	}
 }
