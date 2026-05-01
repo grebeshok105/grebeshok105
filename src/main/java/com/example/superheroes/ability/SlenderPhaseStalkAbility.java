@@ -34,7 +34,7 @@ public final class SlenderPhaseStalkAbility implements Ability {
 	public boolean tryActivate(ServerPlayer player) {
 		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, true, false, false));
 		ServerLevel level = player.serverLevel();
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+		ModSounds.playSlender(level, player.getX(), player.getY(), player.getZ(),
 				ModSounds.SLENDERMAN_LIVING, SoundSource.PLAYERS, 0.4f, 1.0f);
 		return true;
 	}
@@ -58,7 +58,7 @@ public final class SlenderPhaseStalkAbility implements Ability {
 		}
 		double speedSq = player.getDeltaMovement().horizontalDistanceSqr();
 		if (speedSq > 0.005 && player.tickCount % 80 == 0) {
-			level.playSound(null, player.getX(), player.getY(), player.getZ(),
+			ModSounds.playSlender(level, player.getX(), player.getY(), player.getZ(),
 					ModSounds.SLENDERMAN_BUSH, SoundSource.PLAYERS, 0.4f, 1.0f);
 		}
 	}
