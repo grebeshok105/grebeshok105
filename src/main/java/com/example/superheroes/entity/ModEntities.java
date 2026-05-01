@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.IronGolem;
 
 public final class ModEntities {
 	public static final EntityType<HomelanderBossEntity> HOMELANDER_BOSS = Registry.register(
@@ -47,6 +48,19 @@ public final class ModEntities {
 					.build("shield_projectile")
 	);
 
+	public static final EntityType<HulkbusterCloakEntity> HULKBUSTER_CLOAK = Registry.register(
+			BuiltInRegistries.ENTITY_TYPE,
+			ModId.of("hulkbuster_cloak"),
+			EntityType.Builder.<HulkbusterCloakEntity>of(HulkbusterCloakEntity::new, MobCategory.MISC)
+					.sized(1.4f, 2.7f)
+					.clientTrackingRange(64)
+					.updateInterval(1)
+					.fireImmune()
+					.noSummon()
+					.noSave()
+					.build("hulkbuster_cloak")
+	);
+
 	public static final EntityType<SlendermanCloakEntity> SLENDERMAN_CLOAK = Registry.register(
 			BuiltInRegistries.ENTITY_TYPE,
 			ModId.of("slenderman_cloak"),
@@ -67,5 +81,6 @@ public final class ModEntities {
 		FabricDefaultAttributeRegistry.register(HOMELANDER_BOSS, HomelanderBossEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(SHADOW_SOLDIER, ShadowSoldierEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(KAGE_BUNSHIN, KageBunshinEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(HULKBUSTER_CLOAK, IronGolem.createAttributes());
 	}
 }

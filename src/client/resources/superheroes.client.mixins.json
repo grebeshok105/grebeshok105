@@ -5,6 +5,7 @@
 	"client": [
 		"PlayerRendererMixin",
 		"PlayerRendererSlendermanHideMixin",
+		"PlayerRendererHulkbusterHideMixin",
 		"LocalPlayerFlightMixin",
 		"CameraMixin",
 		"AbstractClientPlayerSkinMixin",

@@ -26,6 +26,7 @@ import com.example.superheroes.network.SuperJumpC2SPayload;
 import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -52,6 +53,17 @@ public class SuperheroesClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntities.KAGE_BUNSHIN, com.example.superheroes.client.render.KageBunshinRenderer::new);
 		EntityRendererRegistry.register(ModEntities.SHIELD_PROJECTILE, com.example.superheroes.client.render.ShieldProjectileRenderer::new);
 		EntityRendererRegistry.register(ModEntities.SLENDERMAN_CLOAK, com.example.superheroes.client.render.SlendermanCloakRenderer::new);
+		EntityRendererRegistry.register(ModEntities.HULKBUSTER_CLOAK, com.example.superheroes.client.render.HulkbusterCloakRenderer::new);
+		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
+				HulkbusterCloakClientTracker.add(cloak.getOwnerUuid());
+			}
+		});
+		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
+				HulkbusterCloakClientTracker.remove(cloak.getOwnerUuid());
+			}
+		});
 		ParticleFactoryRegistry.getInstance().register(ModParticles.TRANSFORM_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.LASER_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.REPULSOR_SPARK, EndRodParticle.Provider::new);
