@@ -97,7 +97,6 @@ public class SlendermanCloakEntity extends Entity implements GeoEntity {
 	public void setBodyYaw(float yaw) {
 		this.prevBodyYaw = getBodyYaw();
 		this.entityData.set(BODY_YAW, yaw);
-		setYRot(yaw);
 	}
 
 	public float getBodyYaw() {

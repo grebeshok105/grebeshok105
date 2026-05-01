@@ -26,7 +26,6 @@ import com.example.superheroes.network.SuperJumpC2SPayload;
 import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -80,15 +79,6 @@ public class SuperheroesClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticles.SUN_PARTICLE,
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		com.example.superheroes.client.config.SuperheroesClientConfig.load();
-
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> switch (tintIndex) {
-			case 1 -> 0xFFC1272D;
-			case 2 -> 0xFFFFFFFF;
-			case 3 -> 0xFFC1272D;
-			case 4 -> 0xFF1A4F8B;
-			case 5 -> 0xFFFFFFFF;
-			default -> 0xFFFFFFFF;
-		}, ModItems.VIBRANIUM_SHIELD);
 
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
 			JarvisOverlayHud.render(graphics, tracker);
