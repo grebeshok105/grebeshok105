@@ -136,12 +136,6 @@
 			{ "name": "superheroes:slenderman/slenderman_hurt", "stream": true }
 		]
 	},
-	"slenderman.jumpscare": {
-		"subtitle": "subtitles.superheroes.slenderman.jumpscare",
-		"sounds": [
-			{ "name": "superheroes:slenderman/slenderman_jumpscare", "stream": true }
-		]
-	},
 	"slenderman.living": {
 		"subtitle": "subtitles.superheroes.slenderman.living",
 		"sounds": [

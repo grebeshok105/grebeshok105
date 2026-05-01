@@ -25,7 +25,6 @@ public final class ModSounds {
 	public static final SoundEvent SLENDERMAN_DEATH = register("slenderman.death");
 	public static final SoundEvent SLENDERMAN_HUNT = register("slenderman.hunt");
 	public static final SoundEvent SLENDERMAN_HURT = register("slenderman.hurt");
-	public static final SoundEvent SLENDERMAN_JUMPSCARE = register("slenderman.jumpscare");
 	public static final SoundEvent SLENDERMAN_LIVING = register("slenderman.living");
 	public static final SoundEvent SLENDERMAN_SPAWN = register("slenderman.spawn");
 	public static final SoundEvent SLENDERMAN_VICTORY = register("slenderman.victory");
