@@ -21,6 +21,7 @@ public final class AbilityRegistry {
 	public static final RepulsorAbility REPULSOR = new RepulsorAbility();
 	public static final BoxEspAbility BOX_ESP = new BoxEspAbility();
 	public static final UnibeamAbility UNIBEAM = new UnibeamAbility();
+	public static final IronManHulkbusterAbility IRON_MAN_HULKBUSTER = new IronManHulkbusterAbility();
 
 	public static final LionHeartAbility LION_HEART = new LionHeartAbility();
 	public static final ManiaOfGreedAbility MANIA_OF_GREED = new ManiaOfGreedAbility();
@@ -52,9 +53,12 @@ public final class AbilityRegistry {
 	public static final NarutoShadowClonesAbility NARUTO_SHADOW_CLONES = new NarutoShadowClonesAbility();
 	public static final NarutoRasenshurikenAbility NARUTO_RASENSHURIKEN = new NarutoRasenshurikenAbility();
 	public static final NarutoSageModeAbility NARUTO_SAGE_MODE = new NarutoSageModeAbility();
+	public static final NarutoOodamaRasenganAbility NARUTO_OODAMA_RASENGAN = new NarutoOodamaRasenganAbility();
 
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
+	public static final CapShieldDashAbility CAP_SHIELD_DASH = new CapShieldDashAbility();
+	public static final CapCounterStanceAbility CAP_COUNTER_STANCE = new CapCounterStanceAbility();
 
 	public static final SlenderBlinkAbility SLENDER_BLINK = new SlenderBlinkAbility();
 	public static final SlenderTendrilsAbility SLENDER_TENDRILS = new SlenderTendrilsAbility();
@@ -76,6 +80,7 @@ public final class AbilityRegistry {
 		register(REPULSOR);
 		register(BOX_ESP);
 		register(UNIBEAM);
+		register(IRON_MAN_HULKBUSTER);
 		register(LION_HEART);
 		register(MANIA_OF_GREED);
 		register(LION_ROAR);
@@ -102,8 +107,11 @@ public final class AbilityRegistry {
 		register(NARUTO_SHADOW_CLONES);
 		register(NARUTO_RASENSHURIKEN);
 		register(NARUTO_SAGE_MODE);
+		register(NARUTO_OODAMA_RASENGAN);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
+		register(CAP_SHIELD_DASH);
+		register(CAP_COUNTER_STANCE);
 		register(SLENDER_BLINK);
 		register(SLENDER_TENDRILS);
 		register(SLENDER_PHASE_STALK);

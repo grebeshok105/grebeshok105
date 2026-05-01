@@ -287,6 +287,8 @@
 	"ability.superheroes.naruto_rasenshuriken.desc": "Charge and throw a wind chakra disk that slices enemies in AoE and applies bleed.",
 	"ability.superheroes.naruto_sage_mode": "Sage Mode",
 	"ability.superheroes.naruto_sage_mode.desc": "Toggle mode: higher damage, speed, max health and regeneration; drains energy over time.",
+	"ability.superheroes.naruto_oodama_rasengan": "Cho Oodama Rasengan",
+	"ability.superheroes.naruto_oodama_rasengan.desc": "Sage Art: Super Big Ball Rasengan. Charge 2.5s, then deliver a massive 50-damage strike with 6-block AoE and heavy knockback.",
 	"ability.superheroes.naruto_kawarimi": "Substitution Jutsu",
 	"ability.superheroes.naruto_kawarimi.desc": "Passive: on lethal damage, teleport behind attacker, debuff them, restore to 30% HP. 60s cooldown.",
 
@@ -294,6 +296,12 @@
 	"ability.superheroes.cap_shield_throw.desc": "Throws the vibranium shield — bounces between up to 3 targets, 14 damage each, then returns.",
 	"ability.superheroes.cap_shield_slam": "Shield Slam",
 	"ability.superheroes.cap_shield_slam.desc": "Leap and slam the ground — 5-block AoE, knockback, 5 damage.",
+	"ability.superheroes.cap_shield_dash": "Shield Dash",
+	"ability.superheroes.cap_shield_dash.desc": "Charge forward 8 blocks, slam the first enemy on path: 12 damage, knockback, Slowness II for 3s. 10s cooldown.",
+	"ability.superheroes.cap_counter_stance": "Counter Stance",
+	"ability.superheroes.cap_counter_stance.desc": "Toggle defensive stance: Resistance II, Strength I, Speed I. Drains energy continuously.",
+	"ability.superheroes.iron_man_hulkbuster": "Hulkbuster Mode",
+	"ability.superheroes.iron_man_hulkbuster.desc": "Toggle Hulkbuster armor: +25 armor, +10 toughness, +6 attack, +20 max HP, +20% size, Resistance II — but slightly slower. High energy drain.",
 
 	"death.attack.goku_kamehameha": "%1$s was vaporized by %2$s's Kamehameha",
 	"death.attack.goku_instant_strike": "%1$s was struck instantly by %2$s",

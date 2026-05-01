@@ -16,6 +16,9 @@ public final class AbilityIds {
 	public static final ResourceLocation REPULSOR = ModId.of("repulsor");
 	public static final ResourceLocation BOX_ESP = ModId.of("box_esp");
 	public static final ResourceLocation UNIBEAM = ModId.of("unibeam");
+	public static final ResourceLocation IRON_MAN_HULKBUSTER = ModId.of("iron_man_hulkbuster");
+	public static final ResourceLocation IRON_MAN_NANO_REPAIR = ModId.of("iron_man_nano_repair");
+	public static final ResourceLocation IRON_MAN_SMART_MISSILE = ModId.of("iron_man_smart_missile");
 
 	public static final ResourceLocation LION_HEART = ModId.of("lion_heart");
 	public static final ResourceLocation MANIA_OF_GREED = ModId.of("mania_of_greed");
@@ -47,9 +50,15 @@ public final class AbilityIds {
 	public static final ResourceLocation NARUTO_SHADOW_CLONES = ModId.of("naruto_shadow_clones");
 	public static final ResourceLocation NARUTO_RASENSHURIKEN = ModId.of("naruto_rasenshuriken");
 	public static final ResourceLocation NARUTO_SAGE_MODE = ModId.of("naruto_sage_mode");
+	public static final ResourceLocation NARUTO_OODAMA_RASENGAN = ModId.of("naruto_oodama_rasengan");
+	public static final ResourceLocation NARUTO_KURAMA_CLOAK = ModId.of("naruto_kurama_cloak");
+	public static final ResourceLocation NARUTO_TAILED_BEAST_BOMB = ModId.of("naruto_tailed_beast_bomb");
+	public static final ResourceLocation NARUTO_FLYING_RAIJIN = ModId.of("naruto_flying_raijin");
 
 	public static final ResourceLocation CAP_SHIELD_THROW = ModId.of("cap_shield_throw");
 	public static final ResourceLocation CAP_SHIELD_SLAM = ModId.of("cap_shield_slam");
+	public static final ResourceLocation CAP_SHIELD_DASH = ModId.of("cap_shield_dash");
+	public static final ResourceLocation CAP_COUNTER_STANCE = ModId.of("cap_counter_stance");
 
 	public static final ResourceLocation SLENDER_BLINK = ModId.of("slender_blink");
 	public static final ResourceLocation SLENDER_TENDRILS = ModId.of("slender_tendrils");

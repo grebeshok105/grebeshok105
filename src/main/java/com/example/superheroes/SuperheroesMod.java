@@ -75,6 +75,7 @@ public class SuperheroesMod implements ModInitializer {
 				com.example.superheroes.ability.GokuKamehamehaAbility.serverTick(p);
 				com.example.superheroes.ability.GokuSpiritBombAbility.serverTick(p);
 				com.example.superheroes.ability.NarutoRasenganAbility.serverTick(p);
+				com.example.superheroes.ability.NarutoOodamaRasenganAbility.serverTick(p);
 				com.example.superheroes.ability.NarutoRasenshurikenAbility.serverTick(p);
 				com.example.superheroes.ability.CapShieldSlamAbility.serverTick(p);
 				com.example.superheroes.transform.HeroData data = p
