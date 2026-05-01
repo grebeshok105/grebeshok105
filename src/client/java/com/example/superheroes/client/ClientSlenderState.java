@@ -43,4 +43,12 @@ public final class ClientSlenderState {
 	public static int jumpscareRemainingTicks(int currentTick) {
 		return Math.max(0, jumpscareExpiryTick - currentTick);
 	}
+
+	public static void reset() {
+		staticStacks = 0;
+		staticFade = 0f;
+		fieldInside = false;
+		fieldExpiryTick = 0;
+		jumpscareExpiryTick = 0;
+	}
 }
