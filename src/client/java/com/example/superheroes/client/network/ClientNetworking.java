@@ -2,6 +2,7 @@ package com.example.superheroes.client.network;
 
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientAbilityCooldowns;
 import com.example.superheroes.client.ClientFlightSpeedState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
@@ -34,6 +35,9 @@ public final class ClientNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(HeroDataSyncS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> {
 					HeroData data = payload.data();
+					if (!data.hasHero() || !data.heroId().equals(ClientHeroState.heroId())) {
+						ClientAbilityCooldowns.clear();
+					}
 					ClientHeroState.update(data);
 					LocalPlayer self = Minecraft.getInstance().player;
 					if (self != null) {
@@ -112,6 +116,9 @@ public final class ClientNetworking {
 
 		ClientPlayNetworking.registerGlobalReceiver(FlightSpeedSyncS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> ClientFlightSpeedState.update(payload.percent())));
+
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.AbilityCooldownS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> ClientAbilityCooldowns.update(payload.abilityId(), payload.remainingTicks())));
 
 	}
 }

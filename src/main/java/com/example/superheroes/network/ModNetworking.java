@@ -42,6 +42,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(SlenderStaticS2CPayload.TYPE, SlenderStaticS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(SlenderFieldS2CPayload.TYPE, SlenderFieldS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(FlightSpeedSyncS2CPayload.TYPE, FlightSpeedSyncS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(AbilityCooldownS2CPayload.TYPE, AbilityCooldownS2CPayload.STREAM_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(ActivateAbilityC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();

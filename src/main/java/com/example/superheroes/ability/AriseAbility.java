@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
@@ -56,14 +57,19 @@ public final class AriseAbility implements Ability {
 
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
-		LivingEntity target = findCandidate(player);
-		if (target == null) return false;
+		Candidate candidate = findCandidate(player);
+		if (candidate == null) return false;
 
 		ServerLevel level = player.serverLevel();
-		Vec3 pos = target.position();
+		Vec3 pos = candidate.pos();
 
-		// Исполняем цель и спавним тень на её месте.
-		target.kill();
+		LivingEntity target = candidate.target();
+		if (target != null) {
+			SungJinwooController.suppressDeathEcho(target);
+			target.kill();
+		} else {
+			SungJinwooController.consumeDeathEcho(player, pos);
+		}
 		ShadowSoldierEntity shadow = SungJinwooController.spawnOneShadowAt(level, player, pos.add(0, 0.5, 0));
 		if (shadow != null) {
 			SungJinwooController.registerExtraShadow(player, shadow);
@@ -78,14 +84,22 @@ public final class AriseAbility implements Ability {
 		return true;
 	}
 
-	private static LivingEntity findCandidate(ServerPlayer player) {
+	@Nullable
+	private static Candidate findCandidate(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
+		Vec3 deadPos = SungJinwooController.nearestDeathEcho(player, RANGE);
+		if (deadPos != null) {
+			return new Candidate(null, deadPos);
+		}
 		AABB box = player.getBoundingBox().inflate(RANGE);
 		List<LivingEntity> candidates = level.getEntitiesOfClass(LivingEntity.class, box,
 				e -> e != player && e.isAlive() && !(e instanceof Player) && !(e instanceof ShadowSoldierEntity));
-		// Самый «ослабленный» (самая малая доля HP) — раньше всех «умрёт» от приговора.
 		return candidates.stream()
 				.min(Comparator.comparingDouble(e -> e.getHealth() / e.getMaxHealth()))
+				.map(e -> new Candidate(e, e.position()))
 				.orElse(null);
+	}
+
+	private record Candidate(@Nullable LivingEntity target, Vec3 pos) {
 	}
 }
