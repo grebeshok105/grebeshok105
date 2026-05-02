@@ -3,7 +3,6 @@ package com.example.superheroes.client;
 import com.example.superheroes.client.hud.AbilitiesTooltipHud;
 import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.hud.EvangelionZoomHud;
-import com.example.superheroes.client.hud.FlightSpeedHud;
 import com.example.superheroes.client.hud.JarvisOverlayHud;
 import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
@@ -27,7 +26,7 @@ import com.example.superheroes.network.SuperJumpC2SPayload;
 import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -54,6 +53,31 @@ public class SuperheroesClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntities.KAGE_BUNSHIN, com.example.superheroes.client.render.KageBunshinRenderer::new);
 		EntityRendererRegistry.register(ModEntities.SHIELD_PROJECTILE, com.example.superheroes.client.render.ShieldProjectileRenderer::new);
 		EntityRendererRegistry.register(ModEntities.SLENDERMAN_CLOAK, com.example.superheroes.client.render.SlendermanCloakRenderer::new);
+		EntityRendererRegistry.register(ModEntities.HULKBUSTER_CLOAK, com.example.superheroes.client.render.HulkbusterCloakRenderer::new);
+		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
+				HulkbusterCloakClientTracker.add(cloak.getOwnerUuid());
+				// Форсим создание рендерера сразу, чтобы INSTANCE-ссылка была
+				// готова к моменту первого player-render-кадра.
+				try {
+					net.minecraft.client.Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(cloak);
+				} catch (Throwable ignored) {
+				}
+			} else if (entity instanceof com.example.superheroes.entity.SlendermanCloakEntity cloak) {
+				SlendermanCloakClientTracker.put(cloak.getOwnerUuid(), cloak);
+				try {
+					net.minecraft.client.Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(cloak);
+				} catch (Throwable ignored) {
+				}
+			}
+		});
+		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+			if (entity instanceof com.example.superheroes.entity.HulkbusterCloakEntity cloak) {
+				HulkbusterCloakClientTracker.remove(cloak.getOwnerUuid());
+			} else if (entity instanceof com.example.superheroes.entity.SlendermanCloakEntity cloak) {
+				SlendermanCloakClientTracker.remove(cloak.getOwnerUuid());
+			}
+		});
 		ParticleFactoryRegistry.getInstance().register(ModParticles.TRANSFORM_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.LASER_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.REPULSOR_SPARK, EndRodParticle.Provider::new);
@@ -82,15 +106,6 @@ public class SuperheroesClient implements ClientModInitializer {
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		com.example.superheroes.client.config.SuperheroesClientConfig.load();
 
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> switch (tintIndex) {
-			case 1 -> 0xFFC1272D;
-			case 2 -> 0xFFFFFFFF;
-			case 3 -> 0xFFC1272D;
-			case 4 -> 0xFF1A4F8B;
-			case 5 -> 0xFFFFFFFF;
-			default -> 0xFFFFFFFF;
-		}, ModItems.VIBRANIUM_SHIELD);
-
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
 			JarvisOverlayHud.render(graphics, tracker);
 			ResourceBarHud.render(graphics, tracker);
@@ -102,7 +117,6 @@ public class SuperheroesClient implements ClientModInitializer {
 			MadnessHudOverlay.render(graphics, tracker);
 			BloodRainHud.render(graphics, tracker);
 			EvangelionZoomHud.render(graphics, tracker);
-			FlightSpeedHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.UraniumThreatHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);

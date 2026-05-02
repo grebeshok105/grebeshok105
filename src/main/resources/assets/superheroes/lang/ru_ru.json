@@ -287,6 +287,8 @@
 	"ability.superheroes.naruto_rasenshuriken.desc": "Заряжает и бросает диск ветровой чакры: AoE-разрез + bleed-эффект.",
 	"ability.superheroes.naruto_sage_mode": "Режим мудреца",
 	"ability.superheroes.naruto_sage_mode.desc": "Toggle-режим: выше урон, скорость, максимум HP и регенерация; постепенно тратит энергию.",
+	"ability.superheroes.naruto_oodama_rasengan": "Чо Оодама Расенган",
+	"ability.superheroes.naruto_oodama_rasengan.desc": "Senpou: Cho Oodama Rasengan. Зарядка 2.5с, затем мощный удар: 50 урона, AoE 6 блоков, тяжёлый нокбек.",
 	"ability.superheroes.naruto_kawarimi": "Дзюцу замены",
 	"ability.superheroes.naruto_kawarimi.desc": "Пассив: при смертельном уроне телепортирует за спину атакера, дебаффит его, восстанавливает 30% HP. КД 60с.",
 
@@ -294,6 +296,12 @@
 	"ability.superheroes.cap_shield_throw.desc": "Бросает вибраниумный щит — отскакивает между 3 целями по 14 урона, затем возвращается.",
 	"ability.superheroes.cap_shield_slam": "Удар щитом о землю",
 	"ability.superheroes.cap_shield_slam.desc": "Прыжок и удар оземь — AoE 5 блоков, отбрасывание, 5 урона.",
+	"ability.superheroes.cap_shield_dash": "Рывок щитом",
+	"ability.superheroes.cap_shield_dash.desc": "Рывок 8 блоков вперёд, сбивает первого встречного: 12 урона, нокбек, Slowness II на 3с. КД 10с.",
+	"ability.superheroes.cap_counter_stance": "Защитная стойка",
+	"ability.superheroes.cap_counter_stance.desc": "Toggle-стойка: Resistance II, Strength I, Speed I. Постоянно тратит энергию.",
+	"ability.superheroes.iron_man_hulkbuster": "Hulkbuster",
+	"ability.superheroes.iron_man_hulkbuster.desc": "Toggle тяжёлой брони: +25 брони, +10 toughness, +6 урона, +20 макс. HP, +20% размер, Resistance II — но чуть медленнее. Высокий расход энергии.",
 
 	"death.attack.goku_kamehameha": "%1$s был испепелён Камехамехой %2$s",
 	"death.attack.goku_instant_strike": "%1$s был мгновенно поражён %2$s",

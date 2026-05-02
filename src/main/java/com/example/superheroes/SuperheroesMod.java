@@ -49,11 +49,11 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.SuperJumpController.init();
 		com.example.superheroes.effect.AutoSaturationController.init();
 		com.example.superheroes.effect.HomelanderRegenController.init();
+		com.example.superheroes.effect.HeroPassiveRegenController.init();
 		com.example.superheroes.effect.IronFistsController.init();
 		com.example.superheroes.effect.UraniumDefenseController.init();
 		com.example.superheroes.effect.UraniumOffhandController.init();
 		com.example.superheroes.effect.FlightController.init();
-		com.example.superheroes.effect.HomelanderFlightSpeedController.init();
 		com.example.superheroes.effect.SungJinwooController.init();
 		com.example.superheroes.effect.MonarchsDomainController.init();
 		com.example.superheroes.effect.DoomsdayAdaptationController.init();
@@ -66,6 +66,7 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.SlendermanStaticController.init();
 		com.example.superheroes.effect.SlendermanFieldController.init();
 		com.example.superheroes.effect.SlendermanCloakController.init();
+		com.example.superheroes.effect.HulkbusterCloakController.init();
 		SuperheroesCommands.init();
 
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -75,6 +76,7 @@ public class SuperheroesMod implements ModInitializer {
 				com.example.superheroes.ability.GokuKamehamehaAbility.serverTick(p);
 				com.example.superheroes.ability.GokuSpiritBombAbility.serverTick(p);
 				com.example.superheroes.ability.NarutoRasenganAbility.serverTick(p);
+				com.example.superheroes.ability.NarutoOodamaRasenganAbility.serverTick(p);
 				com.example.superheroes.ability.NarutoRasenshurikenAbility.serverTick(p);
 				com.example.superheroes.ability.CapShieldSlamAbility.serverTick(p);
 				com.example.superheroes.transform.HeroData data = p
@@ -90,6 +92,10 @@ public class SuperheroesMod implements ModInitializer {
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			HeroTransformService.onPlayerJoin(handler.getPlayer());
+		});
+
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			HeroTransformService.onPlayerDisconnect(handler.getPlayer());
 		});
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {

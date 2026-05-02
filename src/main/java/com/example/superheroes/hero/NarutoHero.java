@@ -47,7 +47,7 @@ public final class NarutoHero implements Hero {
 	public List<ResourceLocation> getAbilities() {
 		return List.of(
 				AbilityIds.NARUTO_RASENGAN,
-				AbilityIds.NARUTO_SHADOW_CLONES,
+				AbilityIds.NARUTO_OODAMA_RASENGAN,
 				AbilityIds.NARUTO_RASENSHURIKEN,
 				AbilityIds.NARUTO_SAGE_MODE
 		);

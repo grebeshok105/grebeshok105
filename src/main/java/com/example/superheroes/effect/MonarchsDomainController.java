@@ -29,7 +29,7 @@ public final class MonarchsDomainController {
 	private static final int TICK_INTERVAL = 10;
 	private static final float TICK_DAMAGE = 4.0f;
 
-	private static final Map<UUID, Integer> ACTIVE_UNTIL = new ConcurrentHashMap<>();
+	private static final Map<UUID, Long> ACTIVE_UNTIL = new ConcurrentHashMap<>();
 
 	private MonarchsDomainController() {
 	}
@@ -37,13 +37,13 @@ public final class MonarchsDomainController {
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-				Integer end = ACTIVE_UNTIL.get(player.getUUID());
+				Long end = ACTIVE_UNTIL.get(player.getUUID());
 				if (end == null) continue;
-				if (player.tickCount >= end) {
+				if (player.level().getGameTime() >= end) {
 					expire(player);
 					continue;
 				}
-				if (player.tickCount % TICK_INTERVAL == 0) {
+				if (player.level().getGameTime() % TICK_INTERVAL == 0) {
 					tick(player);
 				}
 			}
@@ -51,7 +51,11 @@ public final class MonarchsDomainController {
 	}
 
 	public static void activate(ServerPlayer player, int durationTicks) {
-		ACTIVE_UNTIL.put(player.getUUID(), player.tickCount + durationTicks);
+		ACTIVE_UNTIL.put(player.getUUID(), player.level().getGameTime() + durationTicks);
+	}
+
+	public static void clear(UUID id) {
+		ACTIVE_UNTIL.remove(id);
 	}
 
 	private static void tick(ServerPlayer player) {
@@ -80,7 +84,7 @@ public final class MonarchsDomainController {
 	}
 
 	public static boolean isActive(ServerPlayer player) {
-		Integer end = ACTIVE_UNTIL.get(player.getUUID());
-		return end != null && player.tickCount < end;
+		Long end = ACTIVE_UNTIL.get(player.getUUID());
+		return end != null && player.level().getGameTime() < end;
 	}
 }

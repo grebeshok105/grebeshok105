@@ -95,7 +95,10 @@ public final class SlendermanCloakController {
 		boolean walking = horizDeltaSq > 0.0008;
 
 		float yaw = slender.yBodyRot;
-		cloak.moveTo(nowPos.x, nowPos.y, nowPos.z, yaw, 0f);
+		// НЕ используем moveTo: он зовёт setOldPosAndRot и схлопывает yRotO=yRot,
+		// что обнуляет client-side интерполяцию (вращение «в одну сторону»).
+		cloak.yRotO = cloak.getYRot();
+		cloak.setPos(nowPos.x, nowPos.y, nowPos.z);
 		cloak.setYRot(yaw);
 		cloak.setYHeadRot(yaw);
 		cloak.setBodyYaw(yaw);

@@ -38,7 +38,7 @@ public final class RegulusGreedController {
 
 	private static final Map<UUID, MagnetState> MAGNETS = new ConcurrentHashMap<>();
 	private static final Map<UUID, FreezeState> FREEZES = new ConcurrentHashMap<>();
-	private static final Map<UUID, Integer> CASTER_FREEZE_UNTIL = new ConcurrentHashMap<>();
+	private static final Map<UUID, Long> CASTER_FREEZE_UNTIL = new ConcurrentHashMap<>();
 
 	private RegulusGreedController() {
 	}
@@ -48,8 +48,8 @@ public final class RegulusGreedController {
 			for (ServerPlayer caster : server.getPlayerList().getPlayers()) {
 				UUID uid = caster.getUUID();
 				boolean hasMagnet = MAGNETS.containsKey(uid);
-				Integer freezeUntil = CASTER_FREEZE_UNTIL.get(uid);
-				boolean hasFreeze = freezeUntil != null && caster.tickCount < freezeUntil;
+				Long freezeUntil = CASTER_FREEZE_UNTIL.get(uid);
+				boolean hasFreeze = freezeUntil != null && caster.level().getGameTime() < freezeUntil;
 				if (hasMagnet || hasFreeze) {
 					Vec3 dm = caster.getDeltaMovement();
 					caster.setDeltaMovement(0, Math.min(0, dm.y), 0);
@@ -154,7 +154,7 @@ public final class RegulusGreedController {
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, FREEZE_TICKS, 2, true, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, FREEZE_TICKS, 1, true, false, true));
 		applyKnockback(player);
-		CASTER_FREEZE_UNTIL.put(player.getUUID(), player.tickCount + FREEZE_TICKS);
+		CASTER_FREEZE_UNTIL.put(player.getUUID(), player.level().getGameTime() + FREEZE_TICKS);
 
 		FreezeState st = new FreezeState(victim.getUUID(), victim.getX(), victim.getY(), victim.getZ(), FREEZE_TICKS);
 		boolean wasNoAi = false;

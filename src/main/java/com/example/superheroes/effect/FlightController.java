@@ -24,8 +24,8 @@ public final class FlightController {
 	private static final int AUTO_OFF_TICKS = 100; // 5 c
 	private static final int COOLDOWN_TICKS = 20;  // 1 c
 
-	private static final Map<UUID, Integer> ACTIVE_SINCE = new HashMap<>();
-	private static final Map<UUID, Integer> COOLDOWN_UNTIL = new HashMap<>();
+	private static final Map<UUID, Long> ACTIVE_SINCE = new HashMap<>();
+	private static final Map<UUID, Long> COOLDOWN_UNTIL = new HashMap<>();
 
 	private FlightController() {
 	}
@@ -68,12 +68,13 @@ public final class FlightController {
 			return;
 		}
 
-		Integer since = ACTIVE_SINCE.get(id);
+		long now = player.level().getGameTime();
+		Long since = ACTIVE_SINCE.get(id);
 		if (since == null) {
-			ACTIVE_SINCE.put(id, player.tickCount);
+			ACTIVE_SINCE.put(id, now);
 			return;
 		}
-		int elapsed = player.tickCount - since;
+		long elapsed = now - since;
 		if (elapsed >= AUTO_OFF_TICKS) {
 			forceOff(player);
 		}
@@ -82,14 +83,14 @@ public final class FlightController {
 	private static void forceOff(ServerPlayer player) {
 		UUID id = player.getUUID();
 		ACTIVE_SINCE.remove(id);
-		COOLDOWN_UNTIL.put(id, player.tickCount + COOLDOWN_TICKS);
+		COOLDOWN_UNTIL.put(id, player.level().getGameTime() + COOLDOWN_TICKS);
 		AbilityRouter.deactivate(player, AbilityIds.FLIGHT);
 	}
 
 	public static boolean isOnCooldown(ServerPlayer player) {
-		Integer until = COOLDOWN_UNTIL.get(player.getUUID());
+		Long until = COOLDOWN_UNTIL.get(player.getUUID());
 		if (until == null) return false;
-		if (player.tickCount >= until) {
+		if (player.level().getGameTime() >= until) {
 			COOLDOWN_UNTIL.remove(player.getUUID());
 			return false;
 		}
@@ -97,11 +98,11 @@ public final class FlightController {
 	}
 
 	private static void cleanup(net.minecraft.server.MinecraftServer server) {
-		Iterator<Map.Entry<UUID, Integer>> it = COOLDOWN_UNTIL.entrySet().iterator();
+		Iterator<Map.Entry<UUID, Long>> it = COOLDOWN_UNTIL.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<UUID, Integer> e = it.next();
+			Map.Entry<UUID, Long> e = it.next();
 			ServerPlayer p = server.getPlayerList().getPlayer(e.getKey());
-			if (p == null || p.tickCount >= e.getValue()) {
+			if (p == null || p.level().getGameTime() >= e.getValue()) {
 				it.remove();
 			}
 		}

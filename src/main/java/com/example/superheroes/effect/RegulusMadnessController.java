@@ -49,7 +49,7 @@ public final class RegulusMadnessController {
 	private static final Map<UUID, CounterState> COUNTERS = new ConcurrentHashMap<>();
 
 	private static final Map<UUID, UUID> LAST_DAMAGER = new ConcurrentHashMap<>();
-	private static final Map<UUID, Integer> LAST_DAMAGER_TICK = new ConcurrentHashMap<>();
+	private static final Map<UUID, Long> LAST_DAMAGER_TICK = new ConcurrentHashMap<>();
 	private static final int LAST_DAMAGER_TIMEOUT_TICKS = 200;
 
 	private RegulusMadnessController() {
@@ -105,7 +105,7 @@ public final class RegulusMadnessController {
 				}
 				if (damager != null) {
 					LAST_DAMAGER.put(player.getUUID(), damager.getUUID());
-					LAST_DAMAGER_TICK.put(player.getUUID(), player.tickCount);
+					LAST_DAMAGER_TICK.put(player.getUUID(), player.level().getGameTime());
 				}
 			}
 			return true;
@@ -115,8 +115,8 @@ public final class RegulusMadnessController {
 	public static LivingEntity getLastDamager(ServerPlayer player) {
 		UUID damagerId = LAST_DAMAGER.get(player.getUUID());
 		if (damagerId == null) return null;
-		Integer tick = LAST_DAMAGER_TICK.get(player.getUUID());
-		if (tick == null || player.tickCount - tick > LAST_DAMAGER_TIMEOUT_TICKS) {
+		Long tick = LAST_DAMAGER_TICK.get(player.getUUID());
+		if (tick == null || player.level().getGameTime() - tick > LAST_DAMAGER_TIMEOUT_TICKS) {
 			LAST_DAMAGER.remove(player.getUUID());
 			LAST_DAMAGER_TICK.remove(player.getUUID());
 			return null;
@@ -264,7 +264,6 @@ public final class RegulusMadnessController {
 		player.removeEffect(MobEffects.MOVEMENT_SPEED);
 		player.removeEffect(MobEffects.DAMAGE_BOOST);
 		player.removeEffect(MobEffects.JUMP);
-		player.removeEffect(MobEffects.REGENERATION);
 		player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 		LAST_DAMAGER.remove(player.getUUID());
 		LAST_DAMAGER_TICK.remove(player.getUUID());
@@ -311,7 +310,7 @@ public final class RegulusMadnessController {
 	}
 
 	public static void triggerCounter(ServerPlayer player, LivingEntity attacker) {
-		DODGE_COOLDOWN.put(player.getUUID(), (long) (player.tickCount + DODGE_COOLDOWN_TICKS));
+		DODGE_COOLDOWN.put(player.getUUID(), player.level().getGameTime() + DODGE_COOLDOWN_TICKS);
 		stripFlight(attacker);
 
 		ServerLevel level = (ServerLevel) player.level();

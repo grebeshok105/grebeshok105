@@ -13,8 +13,9 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Хоумлендер: регенерация I включается, когда HP < {@link #LOW_HP_THRESHOLD},
- * и держится до полного восстановления. После full HP — снимается до следующего падения ниже порога.
+ * Хоумлендер: усиленная регенерация (II) включается, когда HP < {@link #LOW_HP_THRESHOLD},
+ * и держится до полного восстановления. После full HP — снимается до уровня базовой пассивной
+ * регенерации (которая поддерживается {@link HeroPassiveRegenController}).
  */
 public final class HomelanderRegenController {
 	private static final float LOW_HP_THRESHOLD = 20.0f;
@@ -45,9 +46,7 @@ public final class HomelanderRegenController {
 	private static void tickPlayer(ServerPlayer player, boolean isHomelander) {
 		UUID id = player.getUUID();
 		if (!isHomelander) {
-			if (ACTIVE.remove(id)) {
-				player.removeEffect(MobEffects.REGENERATION);
-			}
+			ACTIVE.remove(id);
 			return;
 		}
 		float hp = player.getHealth();
@@ -56,13 +55,12 @@ public final class HomelanderRegenController {
 		if (active) {
 			if (hp >= maxHp - 0.001f) {
 				ACTIVE.remove(id);
-				player.removeEffect(MobEffects.REGENERATION);
 			} else {
-				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, EFFECT_DURATION, 0, true, false, true));
+				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, EFFECT_DURATION, 1, true, false, true));
 			}
 		} else if (hp < LOW_HP_THRESHOLD) {
 			ACTIVE.add(id);
-			player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, EFFECT_DURATION, 0, true, false, true));
+			player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, EFFECT_DURATION, 1, true, false, true));
 		}
 	}
 }

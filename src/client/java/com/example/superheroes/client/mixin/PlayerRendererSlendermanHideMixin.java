@@ -2,6 +2,7 @@ package com.example.superheroes.client.mixin;
 
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.RemoteHeroSkins;
+import com.example.superheroes.client.render.SlendermanMorphRenderer;
 import com.example.superheroes.hero.SlendermanHero;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -16,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Cancels the vanilla third-person player render when the player is
- * transformed into Slenderman. The {@code SlendermanCloakEntity} provides
- * the GeckoLib visuals instead. First-person hand rendering is unaffected
- * (it uses {@code renderHand} which is not cancelled here).
+ * Заменяет ванильный third-person рендер игрока, если он трансформирован в
+ * Slenderman: рисует cloak-модель прямо на координатах/yaw игрока через
+ * {@link SlendermanMorphRenderer}, ванильный рендер отменяется. First-person
+ * руки не задеваются (renderHand идёт мимо).
  */
 @Mixin(PlayerRenderer.class)
 public abstract class PlayerRendererSlendermanHideMixin {
@@ -28,11 +29,25 @@ public abstract class PlayerRendererSlendermanHideMixin {
 			at = @At("HEAD"),
 			cancellable = true
 	)
-	private void superheroes$cancelSlendermanRender(AbstractClientPlayer player, float entityYaw, float partialTick,
+	private void superheroes$slendermanMorphRender(AbstractClientPlayer player, float entityYaw, float partialTick,
 			PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo ci) {
-		if (superheroes$isSlenderman(player)) {
+		if (!superheroes$isSlenderman(player)) return;
+
+		Minecraft mc = Minecraft.getInstance();
+		// Local-player в первом лице: ванильный третьеличный рендер обычно
+		// не вызывается; но если вдруг — пропускаем, чтобы модель не торчала.
+		if (mc.options.getCameraType().isFirstPerson()
+				&& mc.player != null
+				&& mc.player.getUUID().equals(player.getUUID())) {
+			ci.cancel();
+			return;
+		}
+
+		if (SlendermanMorphRenderer.tryRender(player, entityYaw, partialTick, poseStack, bufferSource, packedLight)) {
 			ci.cancel();
 		}
+		// если морф-рендер не получился (cloak ещё не доехал до клиента) —
+		// даём ванильному отработать, чтобы игрок не пропадал.
 	}
 
 	@Unique

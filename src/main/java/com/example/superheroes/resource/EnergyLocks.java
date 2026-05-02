@@ -13,13 +13,13 @@ public final class EnergyLocks {
 	}
 
 	public static void lockTicks(ServerPlayer player, int ticks) {
-		LOCKS.put(player.getUUID(), (long) player.tickCount + ticks);
+		LOCKS.put(player.getUUID(), player.level().getGameTime() + ticks);
 	}
 
 	public static boolean isLocked(ServerPlayer player) {
 		Long deadline = LOCKS.get(player.getUUID());
 		if (deadline == null) return false;
-		if (player.tickCount >= deadline) {
+		if (player.level().getGameTime() >= deadline) {
 			LOCKS.remove(player.getUUID());
 			return false;
 		}
@@ -29,7 +29,11 @@ public final class EnergyLocks {
 	public static int remainingTicks(ServerPlayer player) {
 		Long deadline = LOCKS.get(player.getUUID());
 		if (deadline == null) return 0;
-		long left = deadline - player.tickCount;
+		long left = deadline - player.level().getGameTime();
 		return left > 0 ? (int) left : 0;
+	}
+
+	public static void clear(UUID id) {
+		LOCKS.remove(id);
 	}
 }

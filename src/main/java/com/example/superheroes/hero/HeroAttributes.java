@@ -93,12 +93,36 @@ public final class HeroAttributes {
 			.add(Attributes.KNOCKBACK_RESISTANCE, HOMELANDER_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
+	public static final ResourceLocation IRON_MAN_HP = ModId.of("modifiers/iron_man/max_health");
+
 	public static final AttributeModifierSet IRON_MAN = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, IRON_MAN_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, IRON_MAN_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, 7.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, IRON_MAN_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	/** Hulkbuster mode: больший масштаб, грубая прочность, экстра-урон, движение чуть медленнее. */
+	public static final ResourceLocation HULKBUSTER_ARMOR = ModId.of("modifiers/iron_man/hulkbuster_armor");
+	public static final ResourceLocation HULKBUSTER_TOUGHNESS = ModId.of("modifiers/iron_man/hulkbuster_toughness");
+	public static final ResourceLocation HULKBUSTER_DAMAGE = ModId.of("modifiers/iron_man/hulkbuster_damage");
+	public static final ResourceLocation HULKBUSTER_SPEED = ModId.of("modifiers/iron_man/hulkbuster_speed");
+	public static final ResourceLocation HULKBUSTER_HP = ModId.of("modifiers/iron_man/hulkbuster_max_health");
+	public static final ResourceLocation HULKBUSTER_SCALE = ModId.of("modifiers/iron_man/hulkbuster_scale");
+	public static final ResourceLocation HULKBUSTER_REACH = ModId.of("modifiers/iron_man/hulkbuster_reach");
+	public static final ResourceLocation HULKBUSTER_STEP = ModId.of("modifiers/iron_man/hulkbuster_step");
+
+	public static final AttributeModifierSet HULKBUSTER = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, HULKBUSTER_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, HULKBUSTER_TOUGHNESS, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, HULKBUSTER_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, HULKBUSTER_SPEED, -0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, HULKBUSTER_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SCALE, HULKBUSTER_SCALE, 0.20, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, HULKBUSTER_REACH, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, HULKBUSTER_STEP, 0.5, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet REGULUS = AttributeModifierSet.builder()
@@ -148,23 +172,28 @@ public final class HeroAttributes {
 			.build();
 
 	public static final AttributeModifierSet NARUTO = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, NARUTO_ARMOR, 12.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, NARUTO_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, NARUTO_DAMAGE, 7.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, NARUTO_SPEED, 0.35, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.ATTACK_SPEED, NARUTO_ATTACK_SPEED, 2.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MAX_HEALTH, NARUTO_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, NARUTO_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.JUMP_STRENGTH, NARUTO_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.STEP_HEIGHT, NARUTO_STEP, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, NARUTO_ARMOR, 22.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, NARUTO_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, NARUTO_DAMAGE, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, NARUTO_SPEED, 0.55, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ATTACK_SPEED, NARUTO_ATTACK_SPEED, 3.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, NARUTO_HP, 40.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, NARUTO_KNOCKBACK, 0.7, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, NARUTO_JUMP, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, NARUTO_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
+	public static final ResourceLocation CAP_SPEED = ModId.of("modifiers/captain_america/speed");
+	public static final ResourceLocation CAP_ATTACK_SPEED = ModId.of("modifiers/captain_america/attack_speed");
+
 	public static final AttributeModifierSet CAPTAIN_AMERICA = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, CAP_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MAX_HEALTH, CAP_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, CAP_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, CAP_ATTACK_SPEED, 2.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, CAP_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, CAP_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet SLENDERMAN = AttributeModifierSet.builder()

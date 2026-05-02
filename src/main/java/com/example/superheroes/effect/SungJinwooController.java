@@ -50,7 +50,10 @@ public final class SungJinwooController {
 	private static final Set<UUID> SUMMONED = ConcurrentHashMap.newKeySet();
 	private static final Set<UUID> PHASE2 = ConcurrentHashMap.newKeySet();
 	private static final Random RNG = new Random();
-	private static final long DEATH_ECHO_TICKS = 20 * 20;
+	/** TTL для буфера смертей: 30 минут (фактически не теряем эхо до Arise). */
+	private static final long DEATH_ECHO_TICKS = 20L * 60L * 30L;
+	/** Радиус сбора эхо при Arise (см. §1). */
+	public static final double ARISE_RANGE = 50.0;
 
 	private SungJinwooController() {
 	}
@@ -239,6 +242,42 @@ public final class SungJinwooController {
 				.orElse(null);
 	}
 
+	/**
+	 * §1: вытащить и удалить ВСЕ эхо смертей в радиусе {@code range} от Сона.
+	 * Используется Arise для одномоментного подъёма всех мертвых в зоне.
+	 */
+	public static List<Vec3> drainDeathEchoesInRange(ServerPlayer player, double range) {
+		List<DeathEcho> list = DEATH_ECHOES.get(player.serverLevel());
+		List<Vec3> drained = new ArrayList<>();
+		if (list == null || list.isEmpty()) return drained;
+		long now = player.serverLevel().getGameTime();
+		list.removeIf(e -> e.expiresAt() <= now);
+		double rSq = range * range;
+		Vec3 origin = player.position();
+		list.removeIf(e -> {
+			if (e.pos().distanceToSqr(origin) <= rSq) {
+				drained.add(e.pos());
+				return true;
+			}
+			return false;
+		});
+		return drained;
+	}
+
+	public static int countDeathEchoesInRange(ServerPlayer player, double range) {
+		List<DeathEcho> list = DEATH_ECHOES.get(player.serverLevel());
+		if (list == null || list.isEmpty()) return 0;
+		long now = player.serverLevel().getGameTime();
+		list.removeIf(e -> e.expiresAt() <= now);
+		double rSq = range * range;
+		Vec3 origin = player.position();
+		int c = 0;
+		for (DeathEcho e : list) {
+			if (e.pos().distanceToSqr(origin) <= rSq) c++;
+		}
+		return c;
+	}
+
 	public static void consumeDeathEcho(ServerPlayer player, Vec3 pos) {
 		List<DeathEcho> list = DEATH_ECHOES.get(player.serverLevel());
 		if (list == null) return;
@@ -251,15 +290,6 @@ public final class SungJinwooController {
 
 	public static void registerExtraShadow(ServerPlayer owner, ShadowSoldierEntity shadow) {
 		List<UUID> ids = ARMY.computeIfAbsent(owner.getUUID(), u -> new ArrayList<>());
-		if (ids.size() >= MAX_SHADOWS) {
-			UUID oldest = ids.remove(0);
-			Entity e = owner.serverLevel().getEntity(oldest);
-			if (e instanceof ShadowSoldierEntity old && old.isAlive()) {
-				old.discard();
-				owner.serverLevel().sendParticles(ParticleTypes.PORTAL, old.getX(), old.getY() + 1, old.getZ(),
-						20, 0.3, 0.6, 0.3, 0.1);
-			}
-		}
 		ids.add(shadow.getUUID());
 	}
 
