@@ -32,6 +32,11 @@ public final class AbilityRouter {
 				&& !dh.isAbilityUnlocked(player, abilityId)) {
 			return;
 		}
+		if (hero instanceof com.example.superheroes.hero.ThanosHero th
+				&& !th.isAbilityUnlocked(player, abilityId)) {
+			com.example.superheroes.hero.ThanosHero.notifyMissingStone(player, abilityId);
+			return;
+		}
 		Ability ability = AbilityRegistry.get(abilityId);
 		if (ability == null) {
 			return;

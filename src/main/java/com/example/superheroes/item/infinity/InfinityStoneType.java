@@ -67,6 +67,10 @@ public enum InfinityStoneType {
 		return modifierId;
 	}
 
+	public String getStoneNameKey() {
+		return "item.superheroes." + id + "_stone";
+	}
+
 	@Nullable
 	public static InfinityStoneType byId(String id) {
 		if (id == null) return null;

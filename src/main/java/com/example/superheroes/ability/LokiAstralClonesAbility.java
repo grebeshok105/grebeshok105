@@ -14,8 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
 public final class LokiAstralClonesAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 400;
-	private static final int CONFUSE_DURATION = 160;
+	private static final int COOLDOWN_TICKS = 200;
+	private static final int CONFUSE_DURATION = 240;
 
 	@Override
 	public ResourceLocation getId() {
@@ -29,7 +29,7 @@ public final class LokiAstralClonesAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 80f;
+		return 50f;
 	}
 
 	@Override
@@ -46,13 +46,14 @@ public final class LokiAstralClonesAbility implements Ability {
 	public boolean tryActivate(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
 
-		AABB scan = player.getBoundingBox().inflate(20.0);
+		AABB scan = player.getBoundingBox().inflate(28.0);
 		int affected = 0;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, scan,
-				e -> e.isAlive() && e.getTarget() == player)) {
+				e -> e.isAlive())) {
 			mob.setTarget(null);
 			mob.addEffect(new MobEffectInstance(MobEffects.CONFUSION, CONFUSE_DURATION, 0, true, true, true));
-			mob.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, CONFUSE_DURATION, 0, true, true, true));
+			mob.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, CONFUSE_DURATION, 1, true, true, true));
+			mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, CONFUSE_DURATION, 1, true, true, true));
 			affected++;
 		}
 
@@ -65,7 +66,9 @@ public final class LokiAstralClonesAbility implements Ability {
 					30, 0.4, 0.8, 0.4, 0.05);
 		}
 
-		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 200, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, true, false, true));
 
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.ILLUSIONER_MIRROR_MOVE, SoundSource.PLAYERS, 1.4f, 1.0f);

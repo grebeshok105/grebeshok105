@@ -19,8 +19,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class LokiChaosBoltAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 160;
-	private static final double RANGE = 24.0;
+	private static final int COOLDOWN_TICKS = 80;
+	private static final double RANGE = 32.0;
 
 	@SuppressWarnings("unchecked")
 	private static final Holder<MobEffect>[] EFFECT_POOL = new Holder[]{
@@ -42,7 +42,7 @@ public final class LokiChaosBoltAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 100f;
+		return 60f;
 	}
 
 	@Override
@@ -64,16 +64,17 @@ public final class LokiChaosBoltAbility implements Ability {
 
 		LivingEntity target = null;
 		double closest = Double.MAX_VALUE;
-		AABB scan = new AABB(eye, end).inflate(1.0);
+		AABB scan = new AABB(eye, end).inflate(2.0);
 		for (LivingEntity le : level.getEntitiesOfClass(LivingEntity.class, scan,
 				e -> e != player && e.isAlive() && !(e instanceof Player p && p.getUUID().equals(player.getUUID())))) {
 			Vec3 toEntity = le.position().add(0, le.getBbHeight() / 2, 0).subtract(eye);
-			double dot = toEntity.normalize().dot(dir);
-			if (dot < 0.85) continue;
-			double dist = toEntity.length();
-			if (dist > RANGE) continue;
-			if (dist < closest) {
-				closest = dist;
+			double len = toEntity.length();
+			if (len < 0.001) continue;
+			double dot = toEntity.scale(1.0 / len).dot(dir);
+			if (dot < 0.55) continue;
+			if (len > RANGE) continue;
+			if (len < closest) {
+				closest = len;
 				target = le;
 			}
 		}
@@ -88,11 +89,22 @@ public final class LokiChaosBoltAbility implements Ability {
 		}
 
 		if (target != null) {
-			target.hurt(ModDamageTypes.lokiChaos(level, player), 12.0f);
+			final LivingEntity primary = target;
+			primary.hurt(ModDamageTypes.lokiChaos(level, player), 22.0f);
 			Holder<MobEffect> picked = EFFECT_POOL[ThreadLocalRandom.current().nextInt(EFFECT_POOL.length)];
-			int amp = picked == MobEffects.WITHER ? 1 : (picked == MobEffects.LEVITATION ? 2 : 0);
-			target.addEffect(new MobEffectInstance(picked, 100, amp, true, true, true));
+			int amp = picked == MobEffects.WITHER ? 2 : (picked == MobEffects.LEVITATION ? 3 : 1);
+			primary.addEffect(new MobEffectInstance(picked, 160, amp, true, true, true));
+			AABB splash = primary.getBoundingBox().inflate(4.0);
+			for (LivingEntity neighbor : level.getEntitiesOfClass(LivingEntity.class, splash,
+					e -> e != player && e != primary && e.isAlive()
+							&& !(e instanceof Player p2 && p2.getUUID().equals(player.getUUID())))) {
+				neighbor.hurt(ModDamageTypes.lokiChaos(level, player), 10.0f);
+				Holder<MobEffect> picked2 = EFFECT_POOL[ThreadLocalRandom.current().nextInt(EFFECT_POOL.length)];
+				neighbor.addEffect(new MobEffectInstance(picked2, 100, 0, true, true, true));
+			}
 			level.sendParticles(ParticleTypes.WITCH,
+					target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 80, 1.0, 1.0, 1.0, 0.1);
+			level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
 					target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 40, 0.5, 0.5, 0.5, 0.05);
 		}
 

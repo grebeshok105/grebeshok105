@@ -15,8 +15,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public final class LokiMindCharmAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 600;
-	private static final double RANGE = 16.0;
+	private static final int COOLDOWN_TICKS = 200;
+	private static final double RANGE = 24.0;
 
 	@Override
 	public ResourceLocation getId() {
@@ -30,7 +30,7 @@ public final class LokiMindCharmAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 120f;
+		return 80f;
 	}
 
 	@Override
@@ -52,16 +52,17 @@ public final class LokiMindCharmAbility implements Ability {
 
 		LivingEntity target = null;
 		double closest = Double.MAX_VALUE;
-		AABB scan = new AABB(eye, end).inflate(1.0);
+		AABB scan = new AABB(eye, end).inflate(2.0);
 		for (LivingEntity le : level.getEntitiesOfClass(LivingEntity.class, scan,
 				e -> e != player && e.isAlive() && !(e instanceof Player p && p.getUUID().equals(player.getUUID())))) {
 			Vec3 toEntity = le.position().add(0, le.getBbHeight() / 2, 0).subtract(eye);
-			double dot = toEntity.normalize().dot(dir);
-			if (dot < 0.85) continue;
-			double dist = toEntity.length();
-			if (dist > RANGE) continue;
-			if (dist < closest) {
-				closest = dist;
+			double len = toEntity.length();
+			if (len < 0.001) continue;
+			double dot = toEntity.scale(1.0 / len).dot(dir);
+			if (dot < 0.55) continue;
+			if (len > RANGE) continue;
+			if (len < closest) {
+				closest = len;
 				target = le;
 			}
 		}
@@ -75,12 +76,15 @@ public final class LokiMindCharmAbility implements Ability {
 
 		if (target instanceof Mob mob) {
 			mob.setTarget(null);
-			mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 240, 1, true, true, true));
-			mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 240, 1, true, true, true));
+			mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400, 2, true, true, true));
+			mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 2, true, true, true));
+			mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 400, 0, true, true, true));
+			mob.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 60, 1, true, true, true));
 		} else if (target instanceof Player p) {
-			p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 120, 3, true, true, true));
-			p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 120, 1, true, true, true));
-			p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 0, true, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 3, true, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 2, true, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, true, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 2, true, true, true));
 		}
 
 		if (target != null) {

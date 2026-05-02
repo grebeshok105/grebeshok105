@@ -14,8 +14,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public final class LokiTesseractBlinkAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 80;
-	private static final double RANGE = 40.0;
+	private static final int COOLDOWN_TICKS = 30;
+	private static final double RANGE = 60.0;
 
 	@Override
 	public ResourceLocation getId() {
@@ -29,7 +29,7 @@ public final class LokiTesseractBlinkAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 60f;
+		return 30f;
 	}
 
 	@Override
@@ -70,8 +70,9 @@ public final class LokiTesseractBlinkAbility implements Ability {
 		level.sendParticles(ParticleTypes.PORTAL,
 				dest.x, dest.y, dest.z, 60, 0.5, 1.0, 0.5, 0.6);
 
-		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 100, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 1, true, false, true));
 
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;

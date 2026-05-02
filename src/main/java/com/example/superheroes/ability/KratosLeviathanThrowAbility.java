@@ -50,55 +50,76 @@ public final class KratosLeviathanThrowAbility implements Ability {
 	public boolean tryActivate(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
 		Vec3 eye = player.getEyePosition();
-		Vec3 dir = player.getViewVector(1f);
-		Vec3 end = eye.add(dir.scale(RANGE));
+		Vec3 viewDir = player.getViewVector(1f);
 
-		LivingEntity target = null;
-		double closest = Double.MAX_VALUE;
-		AABB scan = new AABB(eye, end).inflate(1.0);
-		for (LivingEntity le : level.getEntitiesOfClass(LivingEntity.class, scan,
-				e -> e != player && e.isAlive() && !(e instanceof Player p && p.getUUID().equals(player.getUUID())))) {
-			Vec3 toEntity = le.position().add(0, le.getBbHeight() / 2, 0).subtract(eye);
-			double dot = toEntity.normalize().dot(dir);
-			if (dot < 0.85) continue;
-			double dist = toEntity.length();
-			if (dist > RANGE) continue;
-			if (dist < closest) {
-				closest = dist;
-				target = le;
-			}
-		}
+		LivingEntity target = pickTarget(player, level, eye, viewDir);
 
+		Vec3 dir;
 		Vec3 impact;
 		if (target != null) {
 			impact = target.position().add(0, target.getBbHeight() / 2, 0);
+			dir = impact.subtract(eye).normalize();
 		} else {
+			dir = viewDir;
+			Vec3 end = eye.add(dir.scale(RANGE));
 			BlockHitResult bh = level.clip(new ClipContext(eye, end,
 					ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
 			impact = bh.getType() == HitResult.Type.BLOCK ? bh.getLocation() : end;
 		}
 
 		double traveled = eye.distanceTo(impact);
-		int steps = (int) Math.max(8, traveled * 2);
+		int steps = (int) Math.max(12, traveled * 3);
 		for (int i = 0; i < steps; i++) {
 			double t = (double) i / steps;
 			Vec3 p = eye.add(dir.scale(t * traveled));
-			level.sendParticles(ParticleTypes.SNOWFLAKE,
-					p.x, p.y, p.z, 2, 0.15, 0.15, 0.15, 0.02);
+			level.sendParticles(ParticleTypes.SNOWFLAKE, p.x, p.y, p.z, 3, 0.2, 0.2, 0.2, 0.05);
+			if (i % 4 == 0) {
+				level.sendParticles(ParticleTypes.END_ROD, p.x, p.y, p.z, 1, 0.0, 0.0, 0.0, 0.0);
+			}
 		}
 
 		if (target != null) {
-			target.hurt(ModDamageTypes.kratosLeviathan(level, player), 30.0f);
-			target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 3, true, true, true));
-			level.sendParticles(ParticleTypes.SNOWFLAKE, impact.x, impact.y, impact.z, 80, 1.0, 1.0, 1.0, 0.1);
+			final LivingEntity primary = target;
+			primary.hurt(ModDamageTypes.kratosLeviathan(level, player), 36.0f);
+			primary.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 120, 4, true, true, true));
+			primary.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 120, 1, true, true, true));
+			AABB splash = primary.getBoundingBox().inflate(3.5);
+			for (LivingEntity neighbor : level.getEntitiesOfClass(LivingEntity.class, splash,
+					e -> e != player && e != primary && e.isAlive()
+							&& !(e instanceof Player p2 && p2.getUUID().equals(player.getUUID())))) {
+				neighbor.hurt(ModDamageTypes.kratosLeviathan(level, player), 16.0f);
+				neighbor.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 2, true, true, true));
+			}
+			level.sendParticles(ParticleTypes.SNOWFLAKE, impact.x, impact.y, impact.z, 160, 1.4, 1.0, 1.4, 0.2);
+			level.sendParticles(ParticleTypes.EXPLOSION, impact.x, impact.y, impact.z, 4, 0.8, 0.5, 0.8, 0.0);
 		}
 
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.2f, 0.6f);
+				SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.4f, 0.6f);
 		level.playSound(null, impact.x, impact.y, impact.z,
-				SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0f, 0.5f);
+				SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.2f, 0.5f);
 
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;
+	}
+
+	private static LivingEntity pickTarget(ServerPlayer player, ServerLevel level, Vec3 eye, Vec3 viewDir) {
+		AABB scan = player.getBoundingBox().inflate(RANGE);
+		LivingEntity best = null;
+		double bestScore = -Double.MAX_VALUE;
+		for (LivingEntity le : level.getEntitiesOfClass(LivingEntity.class, scan,
+				e -> e != player && e.isAlive() && !(e instanceof Player p && p.getUUID().equals(player.getUUID())))) {
+			Vec3 toEntity = le.position().add(0, le.getBbHeight() / 2, 0).subtract(eye);
+			double dist = toEntity.length();
+			if (dist < 0.001 || dist > RANGE) continue;
+			double dot = toEntity.scale(1.0 / dist).dot(viewDir);
+			if (dot < 0.0) continue;
+			double score = dot * 1.5 - dist / RANGE;
+			if (score > bestScore) {
+				bestScore = score;
+				best = le;
+			}
+		}
+		return best;
 	}
 }
