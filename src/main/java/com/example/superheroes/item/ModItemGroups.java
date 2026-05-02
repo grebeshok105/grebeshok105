@@ -37,6 +37,13 @@ public final class ModItemGroups {
 				output.accept(ModItems.VIBRANIUM_SHIELD);
 				output.accept(ModItems.BLADE_OF_CHAOS);
 				output.accept(ModItems.LOKI_SCEPTER);
+				output.accept(ModItems.INFINITY_GAUNTLET);
+				output.accept(ModItems.POWER_STONE);
+				output.accept(ModItems.SPACE_STONE);
+				output.accept(ModItems.REALITY_STONE);
+				output.accept(ModItems.SOUL_STONE);
+				output.accept(ModItems.TIME_STONE);
+				output.accept(ModItems.MIND_STONE);
 			})
 			.build();
 

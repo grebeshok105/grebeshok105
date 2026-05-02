@@ -92,6 +92,15 @@ public final class HeroAttributes {
 	public static final ResourceLocation LOKI_JUMP = ModId.of("modifiers/loki/jump_strength");
 	public static final ResourceLocation LOKI_KNOCKBACK = ModId.of("modifiers/loki/knockback_resistance");
 
+	public static final ResourceLocation THANOS_ARMOR = ModId.of("modifiers/thanos/armor");
+	public static final ResourceLocation THANOS_TOUGHNESS = ModId.of("modifiers/thanos/toughness");
+	public static final ResourceLocation THANOS_DAMAGE = ModId.of("modifiers/thanos/damage");
+	public static final ResourceLocation THANOS_HP = ModId.of("modifiers/thanos/max_health");
+	public static final ResourceLocation THANOS_KNOCKBACK = ModId.of("modifiers/thanos/knockback_resistance");
+	public static final ResourceLocation THANOS_REACH = ModId.of("modifiers/thanos/entity_reach");
+	public static final ResourceLocation THANOS_STEP = ModId.of("modifiers/thanos/step_height");
+	public static final ResourceLocation THANOS_SCALE = ModId.of("modifiers/thanos/scale");
+
 
 
 
@@ -231,6 +240,26 @@ public final class HeroAttributes {
 			.add(Attributes.JUMP_STRENGTH, LOKI_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, LOKI_KNOCKBACK, 0.3, AttributeModifier.Operation.ADD_VALUE)
 			.build();
+
+	public static final AttributeModifierSet THANOS = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, THANOS_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, THANOS_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, THANOS_DAMAGE, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, THANOS_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, THANOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, THANOS_REACH, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, THANOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SCALE, THANOS_SCALE, 0.25, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static void thanosClearStoneModifiers(net.minecraft.world.entity.LivingEntity entity) {
+		for (com.example.superheroes.item.infinity.InfinityStoneType t : com.example.superheroes.item.infinity.InfinityStoneType.values()) {
+			net.minecraft.world.entity.ai.attributes.AttributeInstance instance = entity.getAttribute(t.getAttribute());
+			if (instance != null) {
+				instance.removeModifier(t.getModifierId());
+			}
+		}
+	}
 
 
 	private HeroAttributes() {

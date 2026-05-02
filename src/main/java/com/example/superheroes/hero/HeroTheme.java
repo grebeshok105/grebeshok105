@@ -167,5 +167,26 @@ public record HeroTheme(
 			0x5560E060
 	);
 
+	public static final HeroTheme THANOS = new HeroTheme(
+			0xE0140828,
+			0xD0050210,
+			0x88B44CFF,
+			0x33FFD040,
+			0xFFFFD040,
+			0xFF3A1668,
+			0xFFB44CFF,
+			0x55D58CFF,
+			0xFFB44CFF,
+			0xFF1A0608,
+			0xFFFFAA40,
+			0x55FFCC80,
+			0xFFFFAA40,
+			0x55B44CFF,
+			0xFFFFD040,
+			0xFFFFD040,
+			0xFFFFFFFF,
+			0x55D58CFF
+	);
+
 	public static final HeroTheme DEFAULT = HOMELANDER;
 }
