@@ -35,6 +35,7 @@
 | Локализация | `src/main/resources/assets/superheroes/lang/{en_us,ru_ru}.json` (всегда обе) |
 | Дизайн / план фичи | `docs/design/<topic>.md` |
 | Сырой ассет от автора | `art-source/` (см. skill `art-source`) |
+| Публичный API для аддонов | `com.example.superheroes.api.*` (см. `docs/api.md`) |
 
 ---
 
