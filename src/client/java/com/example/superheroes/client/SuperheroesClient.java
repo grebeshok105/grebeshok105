@@ -51,7 +51,6 @@ public class SuperheroesClient implements ClientModInitializer {
 		EntityRendererRegistry.register(ModEntities.SHADOW_SOLDIER, com.example.superheroes.client.render.ShadowSoldierRenderer::new);
 		EntityRendererRegistry.register(ModEntities.KAGE_BUNSHIN, com.example.superheroes.client.render.KageBunshinRenderer::new);
 		EntityRendererRegistry.register(ModEntities.SHIELD_PROJECTILE, com.example.superheroes.client.render.ShieldProjectileRenderer::new);
-		EntityRendererRegistry.register(ModEntities.SLENDERMAN_CLOAK, com.example.superheroes.client.render.SlendermanCloakRenderer::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.TRANSFORM_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.LASER_SPARK, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.REPULSOR_SPARK, EndRodParticle.Provider::new);
@@ -94,8 +93,6 @@ public class SuperheroesClient implements ClientModInitializer {
 			com.example.superheroes.client.hud.UraniumThreatHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);
-			com.example.superheroes.client.hud.SlenderStaticHud.render(graphics, tracker);
-			com.example.superheroes.client.hud.SlenderFieldHud.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -136,8 +133,6 @@ public class SuperheroesClient implements ClientModInitializer {
 			}
 		});
 
-		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-			ClientSlenderState.reset();
-		});
+
 	}
 }

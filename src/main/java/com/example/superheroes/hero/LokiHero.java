@@ -10,9 +10,9 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-public final class NarutoHero implements Hero {
-	public static final ResourceLocation ID = ModId.of("naruto");
-	public static final ResourceLocation SKIN = ModId.of("textures/entity/hero/naruto.png");
+public final class LokiHero implements Hero {
+	public static final ResourceLocation ID = ModId.of("loki");
+	public static final ResourceLocation SKIN = ModId.of("textures/entity/hero/loki.png");
 
 	@Override
 	public ResourceLocation getId() {
@@ -26,7 +26,7 @@ public final class NarutoHero implements Hero {
 
 	@Override
 	public float getEnergyRegenPerTick() {
-		return 1.8f;
+		return 2.0f;
 	}
 
 	@Override
@@ -39,18 +39,18 @@ public final class NarutoHero implements Hero {
 		return switch (pose) {
 			case CROUCHING -> EntityDimensions.scalable(0.6f, 1.5f).withEyeHeight(1.27f);
 			case SWIMMING, FALL_FLYING, SPIN_ATTACK -> EntityDimensions.scalable(0.6f, 0.6f).withEyeHeight(0.4f);
-			default -> EntityDimensions.scalable(0.6f, 1.8f).withEyeHeight(1.62f);
+			default -> EntityDimensions.scalable(0.6f, 1.85f).withEyeHeight(1.65f);
 		};
 	}
 
 	@Override
 	public List<ResourceLocation> getAbilities() {
 		return List.of(
-				AbilityIds.NARUTO_RASENGAN,
-				AbilityIds.NARUTO_OODAMA_RASENGAN,
-				AbilityIds.NARUTO_RASENSHURIKEN,
-				AbilityIds.NARUTO_SAGE_MODE,
-				AbilityIds.NARUTO_BIJUUDAMA
+				AbilityIds.LOKI_ASTRAL_CLONES,
+				AbilityIds.LOKI_TESSERACT_BLINK,
+				AbilityIds.LOKI_MIND_CHARM,
+				AbilityIds.LOKI_GLAMOUR,
+				AbilityIds.LOKI_CHAOS_BOLT
 		);
 	}
 
@@ -61,12 +61,12 @@ public final class NarutoHero implements Hero {
 
 	@Override
 	public void applyPassives(Player player) {
-		HeroAttributes.NARUTO.apply(player);
+		HeroAttributes.LOKI.apply(player);
 	}
 
 	@Override
 	public void removePassives(Player player) {
-		HeroAttributes.NARUTO.remove(player);
+		HeroAttributes.LOKI.remove(player);
 	}
 
 	@Override
@@ -81,6 +81,6 @@ public final class NarutoHero implements Hero {
 
 	@Override
 	public HeroTheme getTheme() {
-		return HeroTheme.NARUTO;
+		return HeroTheme.LOKI;
 	}
 }

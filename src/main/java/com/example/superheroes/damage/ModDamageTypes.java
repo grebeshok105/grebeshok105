@@ -29,6 +29,10 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> GOKU_SPIRIT_BOMB = key("goku_spirit_bomb");
 	public static final ResourceKey<DamageType> NARUTO_RASENGAN = key("naruto_rasengan");
 	public static final ResourceKey<DamageType> NARUTO_RASENSHURIKEN = key("naruto_rasenshuriken");
+	public static final ResourceKey<DamageType> NARUTO_BIJUUDAMA = key("naruto_bijuudama");
+	public static final ResourceKey<DamageType> KRATOS_BLADE = key("kratos_blade");
+	public static final ResourceKey<DamageType> KRATOS_LEVIATHAN = key("kratos_leviathan");
+	public static final ResourceKey<DamageType> LOKI_CHAOS = key("loki_chaos");
 	public static final ResourceKey<DamageType> CAP_SHIELD_THROW = key("cap_shield_throw");
 	public static final ResourceKey<DamageType> CAP_SHIELD_SLAM = key("cap_shield_slam");
 	public static final ResourceKey<DamageType> HOMELANDER_EYE_LASER = key("homelander_eye_laser");
@@ -39,9 +43,6 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> HOMELANDER_LIGHTNING_CALL = key("homelander_lightning_call");
 	public static final ResourceKey<DamageType> HOMELANDER_ROAR_BOSS = key("homelander_roar_boss");
 	public static final ResourceKey<DamageType> HOMELANDER_MELEE = key("homelander_melee");
-	public static final ResourceKey<DamageType> SLENDERMAN_STATIC = key("slenderman_static");
-	public static final ResourceKey<DamageType> SLENDERMAN_TENDRIL = key("slenderman_tendril");
-	public static final ResourceKey<DamageType> SLENDERMAN_FIELD = key("slenderman_field");
 
 	private ModDamageTypes() {
 	}
@@ -67,6 +68,10 @@ public final class ModDamageTypes {
 		context.register(GOKU_SPIRIT_BOMB, new DamageType("goku_spirit_bomb", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
 		context.register(NARUTO_RASENGAN, new DamageType("naruto_rasengan", DamageScaling.NEVER, 0.0F));
 		context.register(NARUTO_RASENSHURIKEN, new DamageType("naruto_rasenshuriken", DamageScaling.NEVER, 0.0F));
+		context.register(NARUTO_BIJUUDAMA, new DamageType("naruto_bijuudama", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(KRATOS_BLADE, new DamageType("kratos_blade", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(KRATOS_LEVIATHAN, new DamageType("kratos_leviathan", DamageScaling.NEVER, 0.0F));
+		context.register(LOKI_CHAOS, new DamageType("loki_chaos", DamageScaling.NEVER, 0.0F));
 		context.register(CAP_SHIELD_THROW, new DamageType("cap_shield_throw", DamageScaling.NEVER, 0.0F));
 		context.register(CAP_SHIELD_SLAM, new DamageType("cap_shield_slam", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_EYE_LASER, new DamageType("homelander_eye_laser", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
@@ -76,9 +81,6 @@ public final class ModDamageTypes {
 		context.register(HOMELANDER_SHOCKWAVE_DIVE, new DamageType("homelander_shockwave_dive", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_LIGHTNING_CALL, new DamageType("homelander_lightning_call", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_ROAR_BOSS, new DamageType("homelander_roar_boss", DamageScaling.NEVER, 0.0F));
-		context.register(SLENDERMAN_STATIC, new DamageType("slenderman_static", DamageScaling.NEVER, 0.0F));
-		context.register(SLENDERMAN_TENDRIL, new DamageType("slenderman_tendril", DamageScaling.NEVER, 0.0F));
-		context.register(SLENDERMAN_FIELD, new DamageType("slenderman_field", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_MELEE, new DamageType("homelander_melee", DamageScaling.NEVER, 0.0F));
 	}
 
@@ -146,6 +148,22 @@ public final class ModDamageTypes {
 		return source(level, NARUTO_RASENSHURIKEN, attacker);
 	}
 
+	public static DamageSource narutoBijuudama(ServerLevel level, Entity attacker) {
+		return source(level, NARUTO_BIJUUDAMA, attacker);
+	}
+
+	public static DamageSource kratosBlade(ServerLevel level, Entity attacker) {
+		return source(level, KRATOS_BLADE, attacker);
+	}
+
+	public static DamageSource kratosLeviathan(ServerLevel level, Entity attacker) {
+		return source(level, KRATOS_LEVIATHAN, attacker);
+	}
+
+	public static DamageSource lokiChaos(ServerLevel level, Entity attacker) {
+		return source(level, LOKI_CHAOS, attacker);
+	}
+
 	public static DamageSource capShieldThrow(ServerLevel level, Entity attacker) {
 		return source(level, CAP_SHIELD_THROW, attacker);
 	}
@@ -184,18 +202,6 @@ public final class ModDamageTypes {
 
 	public static DamageSource homelanderMelee(ServerLevel level, Entity attacker) {
 		return source(level, HOMELANDER_MELEE, attacker);
-	}
-
-	public static DamageSource slendermanStatic(ServerLevel level, Entity attacker) {
-		return source(level, SLENDERMAN_STATIC, attacker);
-	}
-
-	public static DamageSource slendermanTendril(ServerLevel level, Entity attacker) {
-		return source(level, SLENDERMAN_TENDRIL, attacker);
-	}
-
-	public static DamageSource slendermanField(ServerLevel level, Entity attacker) {
-		return source(level, SLENDERMAN_FIELD, attacker);
 	}
 
 	private static DamageSource source(ServerLevel level, ResourceKey<DamageType> key, Entity attacker) {

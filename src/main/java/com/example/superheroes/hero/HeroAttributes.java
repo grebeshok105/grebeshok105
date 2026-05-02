@@ -74,15 +74,26 @@ public final class HeroAttributes {
 	public static final ResourceLocation CAP_HP = ModId.of("modifiers/captain_america/max_health");
 	public static final ResourceLocation CAP_KNOCKBACK = ModId.of("modifiers/captain_america/knockback_resistance");
 
-	public static final ResourceLocation SLENDERMAN_ARMOR = ModId.of("modifiers/slenderman/armor");
-	public static final ResourceLocation SLENDERMAN_TOUGHNESS = ModId.of("modifiers/slenderman/toughness");
-	public static final ResourceLocation SLENDERMAN_DAMAGE = ModId.of("modifiers/slenderman/damage");
-	public static final ResourceLocation SLENDERMAN_SPEED = ModId.of("modifiers/slenderman/speed");
-	public static final ResourceLocation SLENDERMAN_HP = ModId.of("modifiers/slenderman/max_health");
-	public static final ResourceLocation SLENDERMAN_KNOCKBACK = ModId.of("modifiers/slenderman/knockback_resistance");
-	public static final ResourceLocation SLENDERMAN_REACH = ModId.of("modifiers/slenderman/entity_reach");
-	public static final ResourceLocation SLENDERMAN_STEP = ModId.of("modifiers/slenderman/step_height");
-	public static final ResourceLocation SLENDERMAN_SCALE = ModId.of("modifiers/slenderman/scale");
+	public static final ResourceLocation KRATOS_ARMOR = ModId.of("modifiers/kratos/armor");
+	public static final ResourceLocation KRATOS_TOUGHNESS = ModId.of("modifiers/kratos/toughness");
+	public static final ResourceLocation KRATOS_DAMAGE = ModId.of("modifiers/kratos/damage");
+	public static final ResourceLocation KRATOS_ATTACK_SPEED = ModId.of("modifiers/kratos/attack_speed");
+	public static final ResourceLocation KRATOS_HP = ModId.of("modifiers/kratos/max_health");
+	public static final ResourceLocation KRATOS_KNOCKBACK = ModId.of("modifiers/kratos/knockback_resistance");
+	public static final ResourceLocation KRATOS_REACH = ModId.of("modifiers/kratos/entity_reach");
+	public static final ResourceLocation KRATOS_STEP = ModId.of("modifiers/kratos/step_height");
+	public static final ResourceLocation KRATOS_RAGE_DAMAGE = ModId.of("modifiers/kratos/rage_damage");
+	public static final ResourceLocation KRATOS_RAGE_SPEED = ModId.of("modifiers/kratos/rage_speed");
+
+	public static final ResourceLocation LOKI_ARMOR = ModId.of("modifiers/loki/armor");
+	public static final ResourceLocation LOKI_DAMAGE = ModId.of("modifiers/loki/damage");
+	public static final ResourceLocation LOKI_SPEED = ModId.of("modifiers/loki/speed");
+	public static final ResourceLocation LOKI_HP = ModId.of("modifiers/loki/max_health");
+	public static final ResourceLocation LOKI_JUMP = ModId.of("modifiers/loki/jump_strength");
+	public static final ResourceLocation LOKI_KNOCKBACK = ModId.of("modifiers/loki/knockback_resistance");
+
+
+
 
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
@@ -196,17 +207,31 @@ public final class HeroAttributes {
 			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
-	public static final AttributeModifierSet SLENDERMAN = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, SLENDERMAN_ARMOR, 5.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, SLENDERMAN_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, SLENDERMAN_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, SLENDERMAN_SPEED, 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.MAX_HEALTH, SLENDERMAN_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, SLENDERMAN_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ENTITY_INTERACTION_RANGE, SLENDERMAN_REACH, 1.5, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.STEP_HEIGHT, SLENDERMAN_STEP, 0.4, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.SCALE, SLENDERMAN_SCALE, 0.15, AttributeModifier.Operation.ADD_VALUE)
+	public static final AttributeModifierSet KRATOS = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, KRATOS_ARMOR, 18.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, KRATOS_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_DAMAGE, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, KRATOS_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, KRATOS_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, KRATOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, KRATOS_REACH, 1.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, KRATOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
+
+	public static final AttributeModifierSet KRATOS_RAGE = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_RAGE_DAMAGE, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+			.add(Attributes.MOVEMENT_SPEED, KRATOS_RAGE_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.build();
+
+	public static final AttributeModifierSet LOKI = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, LOKI_ARMOR, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, LOKI_DAMAGE, 3.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, LOKI_SPEED, 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, LOKI_HP, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, LOKI_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, LOKI_KNOCKBACK, 0.3, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
 
 	private HeroAttributes() {
 	}

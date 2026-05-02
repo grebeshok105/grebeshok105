@@ -95,9 +95,14 @@ public final class ModItems {
 			new VibraniumShieldItem(new Item.Properties().stacksTo(1).durability(2000).rarity(Rarity.EPIC))
 	);
 
-	public static final SlendermanSuitItem SLENDERMAN_SUIT = register(
-			"slenderman_suit",
-			new SlendermanSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	public static final BladeOfChaosItem BLADE_OF_CHAOS = register(
+			"blade_of_chaos",
+			new BladeOfChaosItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final LokiScepterItem LOKI_SCEPTER = register(
+			"loki_scepter",
+			new LokiScepterItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
 	);
 
 	private ModItems() {

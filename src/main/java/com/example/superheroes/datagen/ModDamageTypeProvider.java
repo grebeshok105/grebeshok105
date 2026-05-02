@@ -32,6 +32,10 @@ public final class ModDamageTypeProvider extends FabricDynamicRegistryProvider {
 		entries.add(lookup, ModDamageTypes.GOKU_SPIRIT_BOMB);
 		entries.add(lookup, ModDamageTypes.NARUTO_RASENGAN);
 		entries.add(lookup, ModDamageTypes.NARUTO_RASENSHURIKEN);
+		entries.add(lookup, ModDamageTypes.NARUTO_BIJUUDAMA);
+		entries.add(lookup, ModDamageTypes.KRATOS_BLADE);
+		entries.add(lookup, ModDamageTypes.KRATOS_LEVIATHAN);
+		entries.add(lookup, ModDamageTypes.LOKI_CHAOS);
 		entries.add(lookup, ModDamageTypes.CAP_SHIELD_THROW);
 		entries.add(lookup, ModDamageTypes.CAP_SHIELD_SLAM);
 		entries.add(lookup, ModDamageTypes.HOMELANDER_EYE_LASER);
@@ -42,9 +46,6 @@ public final class ModDamageTypeProvider extends FabricDynamicRegistryProvider {
 		entries.add(lookup, ModDamageTypes.HOMELANDER_LIGHTNING_CALL);
 		entries.add(lookup, ModDamageTypes.HOMELANDER_ROAR_BOSS);
 		entries.add(lookup, ModDamageTypes.HOMELANDER_MELEE);
-		entries.add(lookup, ModDamageTypes.SLENDERMAN_STATIC);
-		entries.add(lookup, ModDamageTypes.SLENDERMAN_TENDRIL);
-		entries.add(lookup, ModDamageTypes.SLENDERMAN_FIELD);
 	}
 
 	@Override

@@ -51,6 +51,7 @@ public final class AbilityIds {
 	public static final ResourceLocation NARUTO_RASENSHURIKEN = ModId.of("naruto_rasenshuriken");
 	public static final ResourceLocation NARUTO_SAGE_MODE = ModId.of("naruto_sage_mode");
 	public static final ResourceLocation NARUTO_OODAMA_RASENGAN = ModId.of("naruto_oodama_rasengan");
+	public static final ResourceLocation NARUTO_BIJUUDAMA = ModId.of("naruto_bijuudama");
 	public static final ResourceLocation NARUTO_KURAMA_CLOAK = ModId.of("naruto_kurama_cloak");
 	public static final ResourceLocation NARUTO_TAILED_BEAST_BOMB = ModId.of("naruto_tailed_beast_bomb");
 	public static final ResourceLocation NARUTO_FLYING_RAIJIN = ModId.of("naruto_flying_raijin");
@@ -60,10 +61,18 @@ public final class AbilityIds {
 	public static final ResourceLocation CAP_SHIELD_DASH = ModId.of("cap_shield_dash");
 	public static final ResourceLocation CAP_COUNTER_STANCE = ModId.of("cap_counter_stance");
 
-	public static final ResourceLocation SLENDER_BLINK = ModId.of("slender_blink");
-	public static final ResourceLocation SLENDER_TENDRILS = ModId.of("slender_tendrils");
-	public static final ResourceLocation SLENDER_PHASE_STALK = ModId.of("slender_phase_stalk");
-	public static final ResourceLocation SLENDER_STATIC_FIELD = ModId.of("slender_static_field");
+	public static final ResourceLocation KRATOS_SPARTAN_RAGE = ModId.of("kratos_spartan_rage");
+	public static final ResourceLocation KRATOS_BLADE_STORM = ModId.of("kratos_blade_storm");
+	public static final ResourceLocation KRATOS_CHAIN_WHIRL = ModId.of("kratos_chain_whirl");
+	public static final ResourceLocation KRATOS_LEVIATHAN_THROW = ModId.of("kratos_leviathan_throw");
+	public static final ResourceLocation KRATOS_GOD_SLAYER = ModId.of("kratos_god_slayer");
+
+	public static final ResourceLocation LOKI_ASTRAL_CLONES = ModId.of("loki_astral_clones");
+	public static final ResourceLocation LOKI_TESSERACT_BLINK = ModId.of("loki_tesseract_blink");
+	public static final ResourceLocation LOKI_MIND_CHARM = ModId.of("loki_mind_charm");
+	public static final ResourceLocation LOKI_GLAMOUR = ModId.of("loki_glamour");
+	public static final ResourceLocation LOKI_CHAOS_BOLT = ModId.of("loki_chaos_bolt");
+
 
 	private AbilityIds() {
 	}

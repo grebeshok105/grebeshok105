@@ -125,25 +125,46 @@ public record HeroTheme(
 			0x556090FF
 	);
 
-	public static final HeroTheme SLENDERMAN = new HeroTheme(
-			0xE00A0A0F,
-			0xD0020203,
-			0x88B0B0C0,
-			0x33D8D8E8,
-			0xFFE6E6E6,
-			0xFF1A1A22,
-			0xFF707080,
-			0x559A9AB0,
-			0xFF9A9AB0,
-			0xFF120A1A,
-			0xFFC4B0FF,
-			0x55E0CCFF,
-			0xFFC4B0FF,
-			0x55B0B0C0,
-			0xFFE6E6E6,
-			0xFFE6E6E6,
+	public static final HeroTheme KRATOS = new HeroTheme(
+			0xE0200808,
+			0xD00C0202,
+			0x88AA1010,
+			0x33FFB060,
+			0xFFE03030,
+			0xFF601010,
+			0xFFE03030,
+			0x55FF7060,
+			0xFFE03030,
+			0xFF1A0202,
+			0xFFFFB060,
+			0x55FFCC80,
+			0xFFFFB060,
+			0x55AA1010,
+			0xFFFFB060,
+			0xFFFFB060,
 			0xFFFFFFFF,
-			0x55B0B0C0
+			0x55FF7060
+	);
+
+	public static final HeroTheme LOKI = new HeroTheme(
+			0xE0102008,
+			0xD0040A02,
+			0x881E8030,
+			0x3360E060,
+			0xFFFFD030,
+			0xFF1E5020,
+			0xFF40C040,
+			0x5560E060,
+			0xFF60E060,
+			0xFF200818,
+			0xFFFFD030,
+			0x55FFE070,
+			0xFFFFD030,
+			0x551E8030,
+			0xFFFFD030,
+			0xFFFFD030,
+			0xFFFFFFFF,
+			0x5560E060
 	);
 
 	public static final HeroTheme DEFAULT = HOMELANDER;

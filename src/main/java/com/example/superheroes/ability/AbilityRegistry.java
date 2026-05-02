@@ -54,16 +54,25 @@ public final class AbilityRegistry {
 	public static final NarutoRasenshurikenAbility NARUTO_RASENSHURIKEN = new NarutoRasenshurikenAbility();
 	public static final NarutoSageModeAbility NARUTO_SAGE_MODE = new NarutoSageModeAbility();
 	public static final NarutoOodamaRasenganAbility NARUTO_OODAMA_RASENGAN = new NarutoOodamaRasenganAbility();
+	public static final NarutoBijuudamaAbility NARUTO_BIJUUDAMA = new NarutoBijuudamaAbility();
 
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
 	public static final CapShieldDashAbility CAP_SHIELD_DASH = new CapShieldDashAbility();
 	public static final CapCounterStanceAbility CAP_COUNTER_STANCE = new CapCounterStanceAbility();
 
-	public static final SlenderBlinkAbility SLENDER_BLINK = new SlenderBlinkAbility();
-	public static final SlenderTendrilsAbility SLENDER_TENDRILS = new SlenderTendrilsAbility();
-	public static final SlenderPhaseStalkAbility SLENDER_PHASE_STALK = new SlenderPhaseStalkAbility();
-	public static final SlenderStaticFieldAbility SLENDER_STATIC_FIELD = new SlenderStaticFieldAbility();
+	public static final KratosSpartanRageAbility KRATOS_SPARTAN_RAGE = new KratosSpartanRageAbility();
+	public static final KratosBladeStormAbility KRATOS_BLADE_STORM = new KratosBladeStormAbility();
+	public static final KratosChainWhirlAbility KRATOS_CHAIN_WHIRL = new KratosChainWhirlAbility();
+	public static final KratosLeviathanThrowAbility KRATOS_LEVIATHAN_THROW = new KratosLeviathanThrowAbility();
+	public static final KratosGodSlayerAbility KRATOS_GOD_SLAYER = new KratosGodSlayerAbility();
+
+	public static final LokiAstralClonesAbility LOKI_ASTRAL_CLONES = new LokiAstralClonesAbility();
+	public static final LokiTesseractBlinkAbility LOKI_TESSERACT_BLINK = new LokiTesseractBlinkAbility();
+	public static final LokiMindCharmAbility LOKI_MIND_CHARM = new LokiMindCharmAbility();
+	public static final LokiGlamourAbility LOKI_GLAMOUR = new LokiGlamourAbility();
+	public static final LokiChaosBoltAbility LOKI_CHAOS_BOLT = new LokiChaosBoltAbility();
+
 
 	private AbilityRegistry() {
 	}
@@ -108,14 +117,21 @@ public final class AbilityRegistry {
 		register(NARUTO_RASENSHURIKEN);
 		register(NARUTO_SAGE_MODE);
 		register(NARUTO_OODAMA_RASENGAN);
+		register(NARUTO_BIJUUDAMA);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
 		register(CAP_SHIELD_DASH);
 		register(CAP_COUNTER_STANCE);
-		register(SLENDER_BLINK);
-		register(SLENDER_TENDRILS);
-		register(SLENDER_PHASE_STALK);
-		register(SLENDER_STATIC_FIELD);
+		register(KRATOS_SPARTAN_RAGE);
+		register(KRATOS_BLADE_STORM);
+		register(KRATOS_CHAIN_WHIRL);
+		register(KRATOS_LEVIATHAN_THROW);
+		register(KRATOS_GOD_SLAYER);
+		register(LOKI_ASTRAL_CLONES);
+		register(LOKI_TESSERACT_BLINK);
+		register(LOKI_MIND_CHARM);
+		register(LOKI_GLAMOUR);
+		register(LOKI_CHAOS_BOLT);
 	}
 
 	public static void register(Ability ability) {

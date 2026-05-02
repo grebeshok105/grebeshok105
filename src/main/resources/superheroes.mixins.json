@@ -8,8 +8,7 @@
 		"PlayerFlightPoseMixin",
 		"LivingEntityFallDamageMixin",
 		"LivingEntityFallFlyingMixin",
-		"LivingEntityEffectMixin",
-		"SlenderDodgeMixin"
+		"LivingEntityEffectMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
