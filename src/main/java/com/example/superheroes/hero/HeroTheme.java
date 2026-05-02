@@ -125,26 +125,5 @@ public record HeroTheme(
 			0x556090FF
 	);
 
-	public static final HeroTheme SLENDERMAN = new HeroTheme(
-			0xE00A0A0F,
-			0xD0020203,
-			0x88B0B0C0,
-			0x33D8D8E8,
-			0xFFE6E6E6,
-			0xFF1A1A22,
-			0xFF707080,
-			0x559A9AB0,
-			0xFF9A9AB0,
-			0xFF120A1A,
-			0xFFC4B0FF,
-			0x55E0CCFF,
-			0xFFC4B0FF,
-			0x55B0B0C0,
-			0xFFE6E6E6,
-			0xFFE6E6E6,
-			0xFFFFFFFF,
-			0x55B0B0C0
-	);
-
 	public static final HeroTheme DEFAULT = HOMELANDER;
 }

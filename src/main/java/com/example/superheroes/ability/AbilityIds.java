@@ -42,14 +42,12 @@ public final class AbilityIds {
 
 	public static final ResourceLocation NARUTO_RASENGAN = ModId.of("naruto_rasengan");
 	public static final ResourceLocation NARUTO_SHADOW_CLONES = ModId.of("naruto_shadow_clones");
+	public static final ResourceLocation NARUTO_SAGE_MODE = ModId.of("naruto_sage_mode");
+	public static final ResourceLocation NARUTO_RASENSHURIKEN = ModId.of("naruto_rasenshuriken");
+	public static final ResourceLocation NARUTO_BIJUUDAMA = ModId.of("naruto_bijuudama");
 
 	public static final ResourceLocation CAP_SHIELD_THROW = ModId.of("cap_shield_throw");
 	public static final ResourceLocation CAP_SHIELD_SLAM = ModId.of("cap_shield_slam");
-
-	public static final ResourceLocation SLENDER_BLINK = ModId.of("slender_blink");
-	public static final ResourceLocation SLENDER_TENDRILS = ModId.of("slender_tendrils");
-	public static final ResourceLocation SLENDER_PHASE_STALK = ModId.of("slender_phase_stalk");
-	public static final ResourceLocation SLENDER_STATIC_FIELD = ModId.of("slender_static_field");
 
 	private AbilityIds() {
 	}

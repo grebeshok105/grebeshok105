@@ -47,14 +47,12 @@ public final class AbilityRegistry {
 
 	public static final NarutoRasenganAbility NARUTO_RASENGAN = new NarutoRasenganAbility();
 	public static final NarutoShadowClonesAbility NARUTO_SHADOW_CLONES = new NarutoShadowClonesAbility();
+	public static final NarutoSageModeAbility NARUTO_SAGE_MODE = new NarutoSageModeAbility();
+	public static final NarutoRasenShurikenAbility NARUTO_RASENSHURIKEN = new NarutoRasenShurikenAbility();
+	public static final NarutoBijuudamaAbility NARUTO_BIJUUDAMA = new NarutoBijuudamaAbility();
 
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
-
-	public static final SlenderBlinkAbility SLENDER_BLINK = new SlenderBlinkAbility();
-	public static final SlenderTendrilsAbility SLENDER_TENDRILS = new SlenderTendrilsAbility();
-	public static final SlenderPhaseStalkAbility SLENDER_PHASE_STALK = new SlenderPhaseStalkAbility();
-	public static final SlenderStaticFieldAbility SLENDER_STATIC_FIELD = new SlenderStaticFieldAbility();
 
 	private AbilityRegistry() {
 	}
@@ -92,12 +90,11 @@ public final class AbilityRegistry {
 		register(GOKU_KI_CHARGE);
 		register(NARUTO_RASENGAN);
 		register(NARUTO_SHADOW_CLONES);
+		register(NARUTO_SAGE_MODE);
+		register(NARUTO_RASENSHURIKEN);
+		register(NARUTO_BIJUUDAMA);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
-		register(SLENDER_BLINK);
-		register(SLENDER_TENDRILS);
-		register(SLENDER_PHASE_STALK);
-		register(SLENDER_STATIC_FIELD);
 	}
 
 	public static void register(Ability ability) {

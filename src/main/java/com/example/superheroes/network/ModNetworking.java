@@ -38,9 +38,6 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(UraniumThreatS2CPayload.TYPE, UraniumThreatS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(SungShadowArmyS2CPayload.TYPE, SungShadowArmyS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(DoomsdayProgressS2CPayload.TYPE, DoomsdayProgressS2CPayload.STREAM_CODEC);
-		PayloadTypeRegistry.playS2C().register(SlenderStaticS2CPayload.TYPE, SlenderStaticS2CPayload.STREAM_CODEC);
-		PayloadTypeRegistry.playS2C().register(SlenderFieldS2CPayload.TYPE, SlenderFieldS2CPayload.STREAM_CODEC);
-		PayloadTypeRegistry.playS2C().register(SlenderJumpscareS2CPayload.TYPE, SlenderJumpscareS2CPayload.STREAM_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(ActivateAbilityC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();

@@ -95,11 +95,6 @@ public final class ModItems {
 			new VibraniumShieldItem(new Item.Properties().stacksTo(1).durability(2000).rarity(Rarity.EPIC))
 	);
 
-	public static final SlendermanSuitItem SLENDERMAN_SUIT = register(
-			"slenderman_suit",
-			new SlendermanSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
-	);
-
 	private ModItems() {
 	}
 

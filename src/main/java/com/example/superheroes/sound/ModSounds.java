@@ -19,21 +19,6 @@ public final class ModSounds {
 	public static final SoundEvent HOMELANDER_IRON_FISTS_CHARGE = register("homelander.iron_fists.charge");
 	public static final SoundEvent DOOMSDAY_ROAR = register("doomsday.roar");
 
-	public static final SoundEvent SLENDERMAN_ACTIVE = register("slenderman.active");
-	public static final SoundEvent SLENDERMAN_ANGRY = register("slenderman.angry");
-	public static final SoundEvent SLENDERMAN_ATTACK = register("slenderman.attack");
-	public static final SoundEvent SLENDERMAN_DEATH = register("slenderman.death");
-	public static final SoundEvent SLENDERMAN_HUNT = register("slenderman.hunt");
-	public static final SoundEvent SLENDERMAN_HURT = register("slenderman.hurt");
-	public static final SoundEvent SLENDERMAN_JUMPSCARE = register("slenderman.jumpscare");
-	public static final SoundEvent SLENDERMAN_LIVING = register("slenderman.living");
-	public static final SoundEvent SLENDERMAN_SPAWN = register("slenderman.spawn");
-	public static final SoundEvent SLENDERMAN_VICTORY = register("slenderman.victory");
-	public static final SoundEvent SLENDERMAN_WARNING = register("slenderman.warning");
-	public static final SoundEvent SLENDERMAN_STATIC = register("slenderman.static");
-	public static final SoundEvent SLENDERMAN_BUSH = register("slenderman.bush");
-	public static final SoundEvent SLENDERMAN_PAGE_GRAB = register("slenderman.page_grab");
-
 	private ModSounds() {
 	}
 

@@ -60,9 +60,6 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-
-	// GeckoLib — 3D animated models (used by Slenderman hero)
-	modImplementation "software.bernie.geckolib:geckolib-fabric-1.21:4.5.8"
 }
 
 processResources {

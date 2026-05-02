@@ -98,21 +98,5 @@ public final class ClientNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.DoomsdayProgressS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> com.example.superheroes.client.ClientDoomsdayState.update(payload.tier(), payload.adaptations())));
 
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderStaticS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> com.example.superheroes.client.ClientSlenderState.updateStatic(payload.stacks(), payload.fadeAlpha())));
-
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderFieldS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> {
-					LocalPlayer self = Minecraft.getInstance().player;
-					int tick = self != null ? self.tickCount : 0;
-					com.example.superheroes.client.ClientSlenderState.updateField(payload.inside(), payload.remainingTicks(), tick);
-				}));
-
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderJumpscareS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> {
-					LocalPlayer self = Minecraft.getInstance().player;
-					int tick = self != null ? self.tickCount : 0;
-					com.example.superheroes.client.ClientSlenderState.triggerJumpscare(payload.durationTicks(), tick);
-				}));
 	}
 }
