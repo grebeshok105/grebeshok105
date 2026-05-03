@@ -2,8 +2,14 @@ package com.example.superheroes.effect;
 
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.hero.DoomsdayHero;
+import com.example.superheroes.hero.KratosHero;
+import com.example.superheroes.hero.NarutoHero;
 import com.example.superheroes.hero.RegulusHero;
+import com.example.superheroes.hero.ThanosHero;
 import com.example.superheroes.transform.HeroData;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.Set;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +27,14 @@ public final class SuperJumpController {
 	private static final double JUMP_VELOCITY = 2.7;
 	private static final int COOLDOWN_TICKS = 40;
 	private static final int IMMUNITY_LIFE_TICKS = 400;
+
+	private static final Set<ResourceLocation> ALLOWED_HEROES = Set.of(
+			RegulusHero.ID,
+			DoomsdayHero.ID,
+			KratosHero.ID,
+			ThanosHero.ID,
+			NarutoHero.ID
+	);
 
 	private static final Map<UUID, Long> COOLDOWN = new ConcurrentHashMap<>();
 	private static final Map<UUID, Long> FALL_IMMUNITY_UNTIL = new ConcurrentHashMap<>();
@@ -50,7 +64,7 @@ public final class SuperJumpController {
 		if (!data.hasHero()) {
 			return;
 		}
-		if (!RegulusHero.ID.equals(data.heroId()) && !DoomsdayHero.ID.equals(data.heroId())) {
+		if (!ALLOWED_HEROES.contains(data.heroId())) {
 			return;
 		}
 		UUID id = player.getUUID();

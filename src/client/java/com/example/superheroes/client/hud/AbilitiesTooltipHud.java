@@ -270,7 +270,7 @@ public final class AbilitiesTooltipHud {
 		boolean glitchSecret = AbilityIds.COUNTER_STRIKE.equals(abilityId) && !ClientMadnessState.isMadness();
 		int iconBg = applyAlpha(0xFF0A0B14, alpha, 1.0f);
 		int iconBorder = applyAlpha(
-				ClientHudGlitch.tintColor(kind == AbilityDescriptions.Kind.TOGGLE ? theme.manaIcon() : theme.energyIcon()),
+				ClientHudGlitch.tintColor(kind == AbilityDescriptions.Kind.TOGGLE ? theme.heroNameColor() : theme.energyIcon()),
 				alpha, 1.0f);
 		int badgeX = x + ClientHudGlitch.badgeJitterX();
 		int badgeY = y + ClientHudGlitch.badgeJitterY();

@@ -55,7 +55,6 @@ public final class KratosHandStrikeFxController {
 		double y = target.getY() + target.getBbHeight() * 0.55;
 		double z = target.getZ();
 		level.sendParticles(type, x, y, z, 24, 0.45, 0.45, 0.45, 0.08);
-		level.sendParticles(ModParticles.SPARKS, x, y, z, 14, 0.4, 0.4, 0.4, 0.06);
 		level.sendParticles(ModParticles.PURPLE_FLAME, x, y, z, 10, 0.35, 0.35, 0.35, 0.04);
 		level.playSound(null, x, y, z, SoundEvents.NETHERITE_BLOCK_HIT, SoundSource.PLAYERS, 0.9f, 1.4f);
 		level.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.4f, 1.7f);
