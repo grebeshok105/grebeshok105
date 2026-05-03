@@ -77,6 +77,8 @@ public final class AbilityIds {
 	public static final ResourceLocation THANOS_REALITY_TEAR = ModId.of("thanos_reality_tear");
 	public static final ResourceLocation THANOS_MIND_PULSE = ModId.of("thanos_mind_pulse");
 	public static final ResourceLocation THANOS_TIME_REWIND = ModId.of("thanos_time_rewind");
+	public static final ResourceLocation THANOS_SPACE_PORTAL = ModId.of("thanos_space_portal");
+	public static final ResourceLocation THANOS_SOUL_PULSE = ModId.of("thanos_soul_pulse");
 	public static final ResourceLocation THANOS_SNAP = ModId.of("thanos_snap");
 
 

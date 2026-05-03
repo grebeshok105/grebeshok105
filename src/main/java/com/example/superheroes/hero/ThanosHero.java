@@ -55,7 +55,9 @@ public final class ThanosHero implements Hero {
 			AbilityIds.THANOS_COSMIC_SLAM, InfinityStoneType.POWER,
 			AbilityIds.THANOS_REALITY_TEAR, InfinityStoneType.REALITY,
 			AbilityIds.THANOS_MIND_PULSE, InfinityStoneType.MIND,
-			AbilityIds.THANOS_TIME_REWIND, InfinityStoneType.TIME
+			AbilityIds.THANOS_TIME_REWIND, InfinityStoneType.TIME,
+			AbilityIds.THANOS_SPACE_PORTAL, InfinityStoneType.SPACE,
+			AbilityIds.THANOS_SOUL_PULSE, InfinityStoneType.SOUL
 	);
 
 	public static InfinityStoneType getRequiredStoneFor(ResourceLocation abilityId) {
@@ -73,6 +75,8 @@ public final class ThanosHero implements Hero {
 				AbilityIds.THANOS_REALITY_TEAR,
 				AbilityIds.THANOS_MIND_PULSE,
 				AbilityIds.THANOS_TIME_REWIND,
+				AbilityIds.THANOS_SPACE_PORTAL,
+				AbilityIds.THANOS_SOUL_PULSE,
 				AbilityIds.THANOS_SNAP
 		);
 	}

@@ -77,6 +77,8 @@ public final class AbilityRegistry {
 	public static final ThanosRealityTearAbility THANOS_REALITY_TEAR = new ThanosRealityTearAbility();
 	public static final ThanosMindPulseAbility THANOS_MIND_PULSE = new ThanosMindPulseAbility();
 	public static final ThanosTimeRewindAbility THANOS_TIME_REWIND = new ThanosTimeRewindAbility();
+	public static final ThanosSpacePortalAbility THANOS_SPACE_PORTAL = new ThanosSpacePortalAbility();
+	public static final ThanosSoulPulseAbility THANOS_SOUL_PULSE = new ThanosSoulPulseAbility();
 	public static final ThanosSnapAbility THANOS_SNAP = new ThanosSnapAbility();
 
 
@@ -142,6 +144,8 @@ public final class AbilityRegistry {
 		register(THANOS_REALITY_TEAR);
 		register(THANOS_MIND_PULSE);
 		register(THANOS_TIME_REWIND);
+		register(THANOS_SPACE_PORTAL);
+		register(THANOS_SOUL_PULSE);
 		register(THANOS_SNAP);
 	}
 
