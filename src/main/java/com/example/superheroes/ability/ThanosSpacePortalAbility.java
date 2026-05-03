@@ -18,7 +18,7 @@ import java.util.Set;
 public final class ThanosSpacePortalAbility implements Ability {
 	private static final int COOLDOWN_TICKS = 240;
 	private static final double RANGE = 30.0;
-	private static final double CONE_RADIUS_SQR = 4.0;
+	private static final double CONE_RADIUS_SQR = 16.0;
 	private static final double LANDING_DISTANCE = 2.5;
 
 	@Override
@@ -95,7 +95,7 @@ public final class ThanosSpacePortalAbility implements Ability {
 
 	private static LivingEntity pickTarget(ServerPlayer self, ServerLevel level, Vec3 eye, Vec3 dir) {
 		Vec3 end = eye.add(dir.scale(RANGE));
-		AABB scan = new AABB(eye, end).inflate(2.0);
+		AABB scan = new AABB(eye, end).inflate(4.0);
 		LivingEntity closest = null;
 		double closestAlong = RANGE + 1.0;
 		for (LivingEntity le : level.getEntitiesOfClass(LivingEntity.class, scan,

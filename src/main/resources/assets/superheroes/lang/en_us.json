@@ -427,7 +427,7 @@
   "ability.superheroes.thanos_time_rewind": "Time Rewind",
   "ability.superheroes.thanos_time_rewind.desc": "Rewind your timeline — full heal, cleanse all effects, then Regen III + Absorption III + Resistance III.",
   "ability.superheroes.thanos_space_portal": "Space Portal",
-  "ability.superheroes.thanos_space_portal.desc": "Opens a portal beneath your target within 30 blocks — yanks them right in front of you and blinds them for 1.5s. Catches fliers and kiters.",
+  "ability.superheroes.thanos_space_portal.desc": "Opens a portal beneath your target within 30 blocks (4-block grab radius around the crosshair) — yanks them right in front of you and blinds them for 1.5s. Catches fliers and kiters.",
   "ability.superheroes.thanos_soul_pulse": "Soul Pulse",
   "ability.superheroes.thanos_soul_pulse.desc": "Electric wave around you, 10-block radius: 8 damage, knocks enemies away, locks their abilities for 4s. Breaks tanks and regens.",
   "ability.superheroes.thanos_snap": "Snap",

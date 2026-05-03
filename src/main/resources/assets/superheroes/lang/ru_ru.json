@@ -427,7 +427,7 @@
   "ability.superheroes.thanos_time_rewind": "Откат Времени",
   "ability.superheroes.thanos_time_rewind.desc": "Перематывает твою линию времени — полное восстановление HP, очистка эффектов, затем Регенерация III + Поглощение III + Сопротивление III.",
   "ability.superheroes.thanos_space_portal": "Космический Портал",
-  "ability.superheroes.thanos_space_portal.desc": "Открывает портал под целью в радиусе 30 блоков — выкидывает её прямо перед тобой и ослепляет на 1.5 сек. Ловит летунов и кайт-героев.",
+  "ability.superheroes.thanos_space_portal.desc": "Открывает портал под целью в зоне 30 блоков (захват в радиусе 4 блоков от прицела) — выкидывает её прямо перед тобой и ослепляет на 1.5 сек. Ловит летунов и кайт-героев.",
   "ability.superheroes.thanos_soul_pulse": "Импульс Душ",
   "ability.superheroes.thanos_soul_pulse.desc": "Электрическая волна вокруг тебя на 10 блоков: 8 урона, отбрасывает врагов, на 4 сек блокирует их способности. Сбивает контроль с танков и регенов.",
   "ability.superheroes.thanos_snap": "Щелчок",
