@@ -10,7 +10,8 @@
 		"LivingEntityFallFlyingMixin",
 		"LivingEntityEffectMixin",
 		"LivingEntityHealBlockMixin",
-		"ThanosBlockBreakingMixin"
+		"ThanosBlockBreakingMixin",
+		"KryptoniteShardPickupMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

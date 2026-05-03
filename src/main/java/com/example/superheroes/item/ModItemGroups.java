@@ -44,6 +44,7 @@ public final class ModItemGroups {
 				output.accept(ModItems.SOUL_STONE);
 				output.accept(ModItems.TIME_STONE);
 				output.accept(ModItems.MIND_STONE);
+				output.accept(ModItems.KRYPTONITE_SHARD);
 			})
 			.build();
 

@@ -82,6 +82,7 @@ public final class DoomsdayAdaptationController {
 	);
 
 	private static final Map<UUID, Set<ResourceKey<DamageType>>> ADAPTED = new ConcurrentHashMap<>();
+	private static final Map<UUID, Set<ResourceKey<DamageType>>> BANNED = new ConcurrentHashMap<>();
 	private static final Map<UUID, Map<ResourceKey<DamageType>, Float>> CUMULATIVE = new ConcurrentHashMap<>();
 	private static final Map<UUID, Map<ResourceKey<DamageType>, Long>> FIRST_HIT_MS = new ConcurrentHashMap<>();
 	private static final Map<UUID, Integer> ADAPT_COUNT = new ConcurrentHashMap<>();
@@ -103,12 +104,13 @@ public final class DoomsdayAdaptationController {
 			}
 
 			Set<ResourceKey<DamageType>> adapted = ADAPTED.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
+			Set<ResourceKey<DamageType>> banned = BANNED.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
 			if (adapted.contains(typeKey) || isAdaptedRelated(adapted, typeKey)) {
 				return false;
 			}
 
 			// Auto-adapt: накапливаем урон по типу; при достижении порога ИЛИ через REALTIME_THRESHOLD_MS — иммун.
-			if (!GENERIC_TYPES.contains(typeKey)) {
+			if (!GENERIC_TYPES.contains(typeKey) && !banned.contains(typeKey) && !isInBannedGroup(banned, typeKey)) {
 				long now = System.currentTimeMillis();
 				Map<ResourceKey<DamageType>, Float> perType = CUMULATIVE.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
 				Map<ResourceKey<DamageType>, Long> firstHit = FIRST_HIT_MS.computeIfAbsent(player.getUUID(), k -> new HashMap<>());
@@ -143,6 +145,48 @@ public final class DoomsdayAdaptationController {
 			}
 		}
 		return false;
+	}
+
+	private static boolean isInBannedGroup(Set<ResourceKey<DamageType>> banned, ResourceKey<DamageType> typeKey) {
+		for (Set<ResourceKey<DamageType>> group : RELATED_GROUPS) {
+			if (group.contains(typeKey)) {
+				for (ResourceKey<DamageType> related : group) {
+					if (banned.contains(related)) return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean wouldBlock(ServerPlayer player, DamageSource source) {
+		ResourceKey<DamageType> typeKey = source.typeHolder().unwrapKey().orElse(null);
+		if (typeKey == null) return false;
+		Set<ResourceKey<DamageType>> adapted = ADAPTED.get(player.getUUID());
+		if (adapted == null) return false;
+		if (adapted.contains(typeKey)) return true;
+		return isAdaptedRelated(adapted, typeKey);
+	}
+
+	public static ResourceKey<DamageType> stripOneAdaptation(ServerPlayer doomsday) {
+		Set<ResourceKey<DamageType>> adapted = ADAPTED.get(doomsday.getUUID());
+		if (adapted == null || adapted.isEmpty()) return null;
+		ResourceKey<DamageType> picked = adapted.iterator().next();
+		adapted.remove(picked);
+		Set<ResourceKey<DamageType>> banned = BANNED.computeIfAbsent(doomsday.getUUID(), k -> new HashSet<>());
+		banned.add(picked);
+		Integer count = ADAPT_COUNT.get(doomsday.getUUID());
+		if (count != null && count > 0) {
+			int next = count - 1;
+			if (next <= 0) {
+				ADAPT_COUNT.remove(doomsday.getUUID());
+				AttributeInstance inst = doomsday.getAttribute(Attributes.ATTACK_DAMAGE);
+				if (inst != null) inst.removeModifier(HeroAttributes.DOOMSDAY_ADAPT_DAMAGE);
+			} else {
+				ADAPT_COUNT.put(doomsday.getUUID(), next);
+				applyDamageBonus(doomsday, next);
+			}
+		}
+		return picked;
 	}
 
 	public static void registerAdaptation(ServerPlayer player, ResourceKey<DamageType> typeKey, boolean lethal) {
@@ -203,6 +247,7 @@ public final class DoomsdayAdaptationController {
 	public static void clear(ServerPlayer player) {
 		UUID id = player.getUUID();
 		ADAPTED.remove(id);
+		BANNED.remove(id);
 		CUMULATIVE.remove(id);
 		FIRST_HIT_MS.remove(id);
 		ADAPT_COUNT.remove(id);

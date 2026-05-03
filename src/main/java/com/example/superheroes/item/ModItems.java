@@ -142,6 +142,11 @@ public final class ModItems {
 			new InfinityStoneItem(InfinityStoneType.MIND, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
 	);
 
+	public static final KryptoniteShardItem KRYPTONITE_SHARD = register(
+			"kryptonite_shard",
+			new KryptoniteShardItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE))
+	);
+
 	private ModItems() {
 	}
 
