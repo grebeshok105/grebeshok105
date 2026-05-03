@@ -19,24 +19,35 @@ public final class ModItemGroups {
 			.title(Component.translatable("itemGroup.superheroes"))
 			.displayItems((params, output) -> {
 				output.accept(ModItems.HOMELANDER_SUIT);
-				output.accept(ModItems.IRON_MAN_SUIT);
 				output.accept(ModItems.COMPOUND_V);
 				output.accept(ModItems.MILK_BOTTLE);
+				output.accept(ModItems.VOUGHT_SIGNAL);
+				output.accept(ModItems.HOMELANDER_BOSS_SPAWN_EGG);
+
+				output.accept(ModItems.IRON_MAN_SUIT);
 				output.accept(ModItems.IRON_MAN_REACTOR);
 				output.accept(ModItems.URANIUM_ISOTOPE);
 				output.accept(ModItems.URANIUM_DAGGER);
+
 				output.accept(ModItems.REGULUS_SUIT);
 				output.accept(ModItems.EVANGELION);
-				output.accept(ModItems.VOUGHT_SIGNAL);
-				output.accept(ModItems.HOMELANDER_BOSS_SPAWN_EGG);
+
 				output.accept(ModItems.SHADOW_MONARCHS_CLOAK);
+
 				output.accept(ModItems.DOOMSDAY_GENOME);
+				output.accept(ModItems.KRYPTONITE_SHARD);
+
 				output.accept(ModItems.GOKU_GI);
+
 				output.accept(ModItems.NARUTO_HEADBAND);
+
 				output.accept(ModItems.CAPTAIN_AMERICA_SUIT);
 				output.accept(ModItems.VIBRANIUM_SHIELD);
+
 				output.accept(ModItems.BLADE_OF_CHAOS);
+
 				output.accept(ModItems.LOKI_SCEPTER);
+
 				output.accept(ModItems.INFINITY_GAUNTLET);
 				output.accept(ModItems.POWER_STONE);
 				output.accept(ModItems.SPACE_STONE);
@@ -44,7 +55,6 @@ public final class ModItemGroups {
 				output.accept(ModItems.SOUL_STONE);
 				output.accept(ModItems.TIME_STONE);
 				output.accept(ModItems.MIND_STONE);
-				output.accept(ModItems.KRYPTONITE_SHARD);
 			})
 			.build();
 
