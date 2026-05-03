@@ -90,15 +90,18 @@ public final class LokiChaosBoltAbility implements Ability {
 
 		if (target != null) {
 			final LivingEntity primary = target;
-			primary.hurt(ModDamageTypes.lokiChaos(level, player), 22.0f);
+			primary.hurt(ModDamageTypes.lokiChaos(level, player), 28.0f);
 			Holder<MobEffect> picked = EFFECT_POOL[ThreadLocalRandom.current().nextInt(EFFECT_POOL.length)];
 			int amp = picked == MobEffects.WITHER ? 2 : (picked == MobEffects.LEVITATION ? 3 : 1);
 			primary.addEffect(new MobEffectInstance(picked, 160, amp, true, true, true));
-			AABB splash = primary.getBoundingBox().inflate(4.0);
+			primary.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 160, 1, false, true, true));
+			AABB splash = primary.getBoundingBox().inflate(5.0);
 			for (LivingEntity neighbor : level.getEntitiesOfClass(LivingEntity.class, splash,
 					e -> e != player && e != primary && e.isAlive()
 							&& !(e instanceof Player p2 && p2.getUUID().equals(player.getUUID())))) {
-				neighbor.hurt(ModDamageTypes.lokiChaos(level, player), 10.0f);
+				neighbor.hurt(ModDamageTypes.lokiChaos(level, player), 18.0f);
+				neighbor.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 80, 0, false, true, true));
+				neighbor.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 0, false, true, true));
 				Holder<MobEffect> picked2 = EFFECT_POOL[ThreadLocalRandom.current().nextInt(EFFECT_POOL.length)];
 				neighbor.addEffect(new MobEffectInstance(picked2, 100, 0, true, true, true));
 			}

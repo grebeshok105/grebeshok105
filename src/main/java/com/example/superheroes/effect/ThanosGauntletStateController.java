@@ -6,8 +6,10 @@ import com.example.superheroes.hero.ThanosHero;
 import com.example.superheroes.item.InfinityGauntletItem;
 import com.example.superheroes.item.infinity.InfinityGauntletData;
 import com.example.superheroes.item.infinity.InfinityStoneType;
+import com.example.superheroes.network.ThanosStonesS2CPayload;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -33,6 +35,7 @@ public final class ThanosGauntletStateController {
 				if (!ThanosHero.ID.equals(data.heroId())) {
 					if (APPLIED.remove(player.getUUID()) != null) {
 						HeroAttributes.thanosClearStoneModifiers(player);
+						sendStones(player, EnumSet.noneOf(InfinityStoneType.class));
 					}
 					continue;
 				}
@@ -42,6 +45,7 @@ public final class ThanosGauntletStateController {
 					applyDelta(player, applied, wanted);
 					applied.clear();
 					applied.addAll(wanted);
+					sendStones(player, wanted);
 				}
 			}
 		});
@@ -49,6 +53,14 @@ public final class ThanosGauntletStateController {
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
 			APPLIED.keySet().removeIf(uuid -> server.getPlayerList().getPlayer(uuid) == null);
 		});
+	}
+
+	public static void sendStones(ServerPlayer player, Set<InfinityStoneType> stones) {
+		int mask = 0;
+		for (InfinityStoneType t : stones) {
+			mask |= (1 << t.ordinal());
+		}
+		ServerPlayNetworking.send(player, new ThanosStonesS2CPayload(mask));
 	}
 
 	public static EnumSet<InfinityStoneType> getCurrentStones(ServerPlayer player) {

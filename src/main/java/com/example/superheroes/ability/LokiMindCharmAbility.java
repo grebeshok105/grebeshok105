@@ -81,10 +81,12 @@ public final class LokiMindCharmAbility implements Ability {
 			mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 400, 0, true, true, true));
 			mob.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 60, 1, true, true, true));
 		} else if (target instanceof Player p) {
-			p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 3, true, true, true));
-			p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 2, true, true, true));
-			p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, true, true, true));
-			p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 2, true, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 160, 0, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 160, 2, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 160, 0, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 160, 1, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 160, 2, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.GLOWING, 160, 0, false, true, true));
 		}
 
 		if (target != null) {

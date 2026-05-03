@@ -5,7 +5,10 @@ import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
+import com.example.superheroes.client.ClientThanosState;
 import com.example.superheroes.hero.HeroTheme;
+import com.example.superheroes.hero.ThanosHero;
+import com.example.superheroes.item.infinity.InfinityStoneType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -323,15 +326,29 @@ public final class AbilitiesTooltipHud {
 	}
 
 	private static List<ResourceLocation> filterByTier(List<ResourceLocation> base, ResourceLocation heroId) {
-		if (!ModId.of("doomsday").equals(heroId)) {
-			return base;
+		if (ModId.of("doomsday").equals(heroId)) {
+			int tier = ClientDoomsdayState.tier();
+			java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
+			for (ResourceLocation id : base) {
+				if (isDoomsdayUnlocked(id, tier)) out.add(id);
+			}
+			return out;
 		}
-		int tier = ClientDoomsdayState.tier();
-		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
-		for (ResourceLocation id : base) {
-			if (isDoomsdayUnlocked(id, tier)) out.add(id);
+		if (ThanosHero.ID.equals(heroId)) {
+			java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
+			for (ResourceLocation id : base) {
+				if (isThanosUnlocked(id)) out.add(id);
+			}
+			return out;
 		}
-		return out;
+		return base;
+	}
+
+	private static boolean isThanosUnlocked(ResourceLocation id) {
+		if (ThanosHero.isSnapAbility(id)) return ClientThanosState.hasAllStones();
+		InfinityStoneType req = ThanosHero.getRequiredStoneFor(id);
+		if (req == null) return true;
+		return ClientThanosState.hasStone(req);
 	}
 
 	private static boolean isDoomsdayUnlocked(ResourceLocation id, int tier) {

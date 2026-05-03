@@ -6,7 +6,10 @@ import com.example.superheroes.client.ClientAbilityCooldowns;
 import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
+import com.example.superheroes.client.ClientThanosState;
 import com.example.superheroes.client.ModKeys;
+import com.example.superheroes.hero.ThanosHero;
+import com.example.superheroes.item.infinity.InfinityStoneType;
 import com.example.superheroes.hero.HeroTheme;
 import com.example.superheroes.network.ActivateAbilityC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -105,14 +108,23 @@ public final class RadialMenuHud {
 	private static List<ResourceLocation> visibleAbilities() {
 		List<ResourceLocation> base = ClientHeroState.abilities();
 		boolean isDoomsday = ModId.of("doomsday").equals(ClientHeroState.heroId());
+		boolean isThanos = ThanosHero.ID.equals(ClientHeroState.heroId());
 		int doomsdayTier = isDoomsday ? ClientDoomsdayState.tier() : 0;
 		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
 		for (ResourceLocation id : base) {
 			if (!ClientMadnessState.isMadness() && AbilityIds.COUNTER_STRIKE.equals(id)) continue;
 			if (isDoomsday && !isDoomsdayUnlocked(id, doomsdayTier)) continue;
+			if (isThanos && !isThanosUnlocked(id)) continue;
 			out.add(id);
 		}
 		return out;
+	}
+
+	private static boolean isThanosUnlocked(ResourceLocation id) {
+		if (ThanosHero.isSnapAbility(id)) return ClientThanosState.hasAllStones();
+		InfinityStoneType req = ThanosHero.getRequiredStoneFor(id);
+		if (req == null) return true;
+		return ClientThanosState.hasStone(req);
 	}
 
 	private static boolean isDoomsdayUnlocked(ResourceLocation id, int tier) {

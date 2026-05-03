@@ -88,6 +88,16 @@ public final class ThanosMindPulseAbility implements Ability {
 		}
 
 		level.sendParticles(ParticleTypes.FLASH, eye.x + dir.x, eye.y + dir.y, eye.z + dir.z, 2, 0.2, 0.2, 0.2, 0.0);
+		for (int i = 0; i < steps; i += 2) {
+			double t = (double) i / steps;
+			Vec3 p = eye.add(dir.scale(t * RANGE));
+			level.sendParticles(com.example.superheroes.particle.ModParticles.PURPLE_FLAME,
+					p.x, p.y, p.z, 1, 0.05, 0.05, 0.05, 0.0);
+			if (i % 4 == 0) {
+				level.sendParticles(com.example.superheroes.particle.ModParticles.DARK_STAR,
+						p.x, p.y, p.z, 1, 0.05, 0.05, 0.05, 0.0);
+			}
+		}
 
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.6f, 1.5f);

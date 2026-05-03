@@ -75,6 +75,12 @@ public final class ThanosRealityTearAbility implements Ability {
 				anchor.x, anchor.y + 0.5, anchor.z, 80, RADIUS * 0.4, 0.5, RADIUS * 0.4, 0.0);
 		level.sendParticles(ParticleTypes.DRAGON_BREATH,
 				anchor.x, anchor.y + 0.5, anchor.z, 60, RADIUS * 0.4, 0.5, RADIUS * 0.4, 0.05);
+		level.sendParticles(com.example.superheroes.particle.ModParticles.PURPLE_FLAME,
+				anchor.x, anchor.y + 1.0, anchor.z, 220, RADIUS * 0.4, 1.2, RADIUS * 0.4, 0.2);
+		level.sendParticles(com.example.superheroes.particle.ModParticles.DARK_STAR,
+				anchor.x, anchor.y + 1.0, anchor.z, 160, RADIUS * 0.4, 1.5, RADIUS * 0.4, 0.15);
+		level.sendParticles(com.example.superheroes.particle.ModParticles.BLACK_FLAME,
+				anchor.x, anchor.y + 1.0, anchor.z, 120, RADIUS * 0.3, 1.0, RADIUS * 0.3, 0.1);
 
 		level.playSound(null, anchor.x, anchor.y, anchor.z,
 				SoundEvents.PORTAL_TRIGGER, SoundSource.PLAYERS, 1.6f, 0.5f);

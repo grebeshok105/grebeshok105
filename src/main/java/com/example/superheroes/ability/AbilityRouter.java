@@ -20,6 +20,11 @@ public final class AbilityRouter {
 		if (ModEffects.isAftermath(player)) {
 			return;
 		}
+		if (player.hasEffect(ModEffects.DISABLED_ABILITIES)) {
+			player.displayClientMessage(net.minecraft.network.chat.Component.translatable(
+					"ability.superheroes.disabled_by_snap").withStyle(net.minecraft.ChatFormatting.DARK_PURPLE), true);
+			return;
+		}
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		if (!data.hasHero()) {
 			return;

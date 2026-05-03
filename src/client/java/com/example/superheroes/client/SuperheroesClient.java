@@ -82,6 +82,7 @@ public class SuperheroesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
 			JarvisOverlayHud.render(graphics, tracker);
 			ResourceBarHud.render(graphics, tracker);
+			com.example.superheroes.client.hud.SpartanRageHud.render(graphics, tracker);
 			AbilitiesTooltipHud.render(graphics, tracker);
 			RadialMenuHud.render(graphics, tracker);
 			ScreenFlashHud.render(graphics, tracker);
@@ -125,7 +126,7 @@ public class SuperheroesClient implements ClientModInitializer {
 					if (client.player == null || !ClientHeroState.data().hasHero()) {
 						continue;
 					}
-					List<ResourceLocation> abilities = ClientHeroState.abilities();
+					List<ResourceLocation> abilities = ClientAbilityFilter.visible();
 					if (i < abilities.size()) {
 						ClientPlayNetworking.send(new ActivateAbilityC2SPayload(abilities.get(i)));
 					}

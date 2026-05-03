@@ -227,22 +227,33 @@ public final class HeroAttributes {
 			.add(Attributes.STEP_HEIGHT, KRATOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
+	public static final ResourceLocation KRATOS_RAGE_ARMOR = ModId.of("modifiers/kratos/rage_armor");
+	public static final ResourceLocation KRATOS_RAGE_TOUGHNESS = ModId.of("modifiers/kratos/rage_toughness");
+	public static final ResourceLocation KRATOS_RAGE_HP = ModId.of("modifiers/kratos/rage_hp");
+	public static final ResourceLocation KRATOS_RAGE_KB = ModId.of("modifiers/kratos/rage_kb");
+	public static final ResourceLocation KRATOS_RAGE_FLAT = ModId.of("modifiers/kratos/rage_flat");
+
 	public static final AttributeModifierSet KRATOS_RAGE = AttributeModifierSet.builder()
-			.add(Attributes.ATTACK_DAMAGE, KRATOS_RAGE_DAMAGE, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-			.add(Attributes.MOVEMENT_SPEED, KRATOS_RAGE_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_RAGE_FLAT, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_RAGE_DAMAGE, 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+			.add(Attributes.MOVEMENT_SPEED, KRATOS_RAGE_SPEED, 0.30, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ARMOR, KRATOS_RAGE_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, KRATOS_RAGE_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, KRATOS_RAGE_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, KRATOS_RAGE_KB, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet LOKI = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, LOKI_ARMOR, 14.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, ModId.of("modifiers/loki/toughness"), 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, LOKI_DAMAGE, 8.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_SPEED, ModId.of("modifiers/loki/attack_speed"), 1.6, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, LOKI_SPEED, 0.45, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.MAX_HEALTH, LOKI_HP, 18.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.JUMP_STRENGTH, LOKI_JUMP, 0.6, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, LOKI_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.SAFE_FALL_DISTANCE, ModId.of("modifiers/loki/safe_fall"), 12.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ENTITY_INTERACTION_RANGE, ModId.of("modifiers/loki/reach"), 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, LOKI_ARMOR, 18.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, ModId.of("modifiers/loki/toughness"), 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, LOKI_DAMAGE, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, ModId.of("modifiers/loki/attack_speed"), 2.2, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, LOKI_SPEED, 0.60, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, LOKI_HP, 24.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, LOKI_JUMP, 0.7, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, LOKI_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SAFE_FALL_DISTANCE, ModId.of("modifiers/loki/safe_fall"), 16.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, ModId.of("modifiers/loki/reach"), 0.8, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet THANOS = AttributeModifierSet.builder()

@@ -1,8 +1,9 @@
 package com.example.superheroes.ability;
 
-import com.example.superheroes.damage.ModDamageTypes;
+import com.example.superheroes.effect.ModEffects;
 import com.example.superheroes.effect.ThanosGauntletStateController;
 import com.example.superheroes.item.infinity.InfinityStoneType;
+import com.example.superheroes.particle.ModParticles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -11,17 +12,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public final class ThanosSnapAbility implements Ability {
-	private static final int COOLDOWN_TICKS = 1200;
-	private static final double RADIUS = 64.0;
+	private static final int COOLDOWN_TICKS = 1800;
+	private static final double RADIUS = 128.0;
+	private static final int DURATION_TICKS = 600;
 
 	@Override
 	public ResourceLocation getId() {
@@ -63,46 +65,71 @@ public final class ThanosSnapAbility implements Ability {
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
+		double cx = player.getX();
+		double cy = player.getY();
+		double cz = player.getZ();
 
 		AABB aoe = player.getBoundingBox().inflate(RADIUS, RADIUS, RADIUS);
-		int killed = 0;
-		for (LivingEntity le : level.getEntitiesOfClass(LivingEntity.class, aoe,
-				e -> e != player && e.isAlive() && (e instanceof Enemy) && !(e instanceof Player))) {
-			le.hurt(ModDamageTypes.thanosSnap(level, player), Float.MAX_VALUE);
-			level.sendParticles(ParticleTypes.ASH,
-					le.getX(), le.getY() + le.getBbHeight() / 2, le.getZ(),
-					40, 0.5, 0.7, 0.5, 0.05);
-			level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
-					le.getX(), le.getY() + le.getBbHeight() / 2, le.getZ(),
-					20, 0.4, 0.6, 0.4, 0.02);
-			killed++;
-		}
+		List<Player> victims = level.getEntitiesOfClass(Player.class, aoe,
+				p -> p.isAlive() && !p.getUUID().equals(player.getUUID())
+						&& !p.isCreative() && !p.isSpectator());
 
-		for (Mob mob : level.getEntitiesOfClass(Mob.class, aoe,
-				e -> e.isAlive() && !(e instanceof Enemy))) {
-			if (level.random.nextBoolean()) {
-				mob.hurt(ModDamageTypes.thanosSnap(level, player), Float.MAX_VALUE);
-				level.sendParticles(ParticleTypes.ASH,
-						mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(),
-						30, 0.5, 0.7, 0.5, 0.05);
-				killed++;
-			}
+		int snapped = 0;
+		for (Player victim : victims) {
+			victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, DURATION_TICKS, 2, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.CONFUSION, DURATION_TICKS, 0, false, true, true));
+			victim.addEffect(new MobEffectInstance(ModEffects.SNAPPED, DURATION_TICKS, 0, false, true, true));
+			victim.addEffect(new MobEffectInstance(ModEffects.DISABLED_ABILITIES, DURATION_TICKS, 0, false, true, true));
+			victim.addEffect(new MobEffectInstance(ModEffects.HEAL_BLOCK, DURATION_TICKS, 0, false, true, true));
+			level.sendParticles(ModParticles.PURPLE_FLAME,
+					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
+					60, 0.5, 1.0, 0.5, 0.06);
+			level.sendParticles(ModParticles.DARK_STAR,
+					victim.getX(), victim.getY() + victim.getBbHeight() * 0.6, victim.getZ(),
+					40, 0.5, 0.8, 0.5, 0.04);
+			level.sendParticles(ParticleTypes.LARGE_SMOKE,
+					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
+					25, 0.5, 0.6, 0.5, 0.02);
+			snapped++;
 		}
 
 		level.sendParticles(ParticleTypes.FLASH,
-				player.getX(), player.getY() + 2.0, player.getZ(), 20, 4.0, 4.0, 4.0, 0.0);
-		level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
-				player.getX(), player.getY() + 1.5, player.getZ(), 200, 5.0, 3.0, 5.0, 0.4);
-		level.sendParticles(ParticleTypes.PORTAL,
-				player.getX(), player.getY() + 1.5, player.getZ(), 400, 8.0, 4.0, 8.0, 0.6);
+				cx, cy + 2.0, cz, 30, 6.0, 5.0, 6.0, 0.0);
+		level.sendParticles(ModParticles.PURPLE_FLAME,
+				cx, cy + 1.5, cz, 600, 12.0, 6.0, 12.0, 0.4);
+		level.sendParticles(ModParticles.DARK_STAR,
+				cx, cy + 1.5, cz, 400, 12.0, 6.0, 12.0, 0.3);
+		level.sendParticles(ModParticles.BLACK_FLAME,
+				cx, cy + 1.5, cz, 300, 10.0, 5.0, 10.0, 0.25);
+		level.sendParticles(ModParticles.WHITE_BOOM,
+				cx, cy + 2.0, cz, 80, 6.0, 4.0, 6.0, 0.0);
 
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 2.0f, 0.4f);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 2.0f, 0.3f);
+		for (int ring = 0; ring < 12; ring++) {
+			double r = ring * 1.5 + 1.0;
+			int count = (int) Math.min(64, r * 4);
+			for (int i = 0; i < count; i++) {
+				double a = (i / (double) count) * Math.PI * 2.0;
+				double rx = Math.cos(a) * r;
+				double rz = Math.sin(a) * r;
+				level.sendParticles(ModParticles.PURPLE_FLAME,
+						cx + rx, cy + 0.4, cz + rz,
+						1, 0.0, 0.0, 0.0, 0.0);
+			}
+		}
+
+		level.playSound(null, cx, cy, cz,
+				SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 4.0f, 0.4f);
+		level.playSound(null, cx, cy, cz,
+				SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 4.0f, 0.25f);
+		level.playSound(null, cx, cy, cz,
+				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 3.0f, 0.5f);
+		level.playSound(null, cx, cy, cz,
+				SoundEvents.PORTAL_TRIGGER, SoundSource.PLAYERS, 2.0f, 0.4f);
+		level.playSound(null, cx, cy, cz,
+				SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 1.5f, 1.6f);
 
 		player.displayClientMessage(
-				Component.translatable("ability.superheroes.thanos_snap.snapped", killed)
+				Component.translatable("ability.superheroes.thanos_snap.snapped", snapped)
 						.withStyle(ChatFormatting.LIGHT_PURPLE),
 				false);
 

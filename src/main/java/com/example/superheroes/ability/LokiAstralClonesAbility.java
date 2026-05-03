@@ -1,5 +1,7 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.damage.ModDamageTypes;
+import com.example.superheroes.particle.ModParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -47,14 +49,25 @@ public final class LokiAstralClonesAbility implements Ability {
 		ServerLevel level = player.serverLevel();
 
 		AABB scan = player.getBoundingBox().inflate(28.0);
-		int affected = 0;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, scan,
 				e -> e.isAlive())) {
 			mob.setTarget(null);
 			mob.addEffect(new MobEffectInstance(MobEffects.CONFUSION, CONFUSE_DURATION, 0, true, true, true));
 			mob.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, CONFUSE_DURATION, 1, true, true, true));
 			mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, CONFUSE_DURATION, 1, true, true, true));
-			affected++;
+		}
+
+		AABB pscan = player.getBoundingBox().inflate(20.0);
+		for (Player p : level.getEntitiesOfClass(Player.class, pscan,
+				e -> e.isAlive() && !e.getUUID().equals(player.getUUID()))) {
+			p.hurt(ModDamageTypes.lokiChaos(level, player), 12.0f);
+			p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 1, false, true, true));
+			p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 1, false, true, true));
+			level.sendParticles(ModParticles.PURPLE_FLAME,
+					p.getX(), p.getY() + p.getBbHeight() * 0.5, p.getZ(),
+					25, 0.4, 0.6, 0.4, 0.04);
 		}
 
 		for (int i = 0; i < 3; i++) {
@@ -64,16 +77,20 @@ public final class LokiAstralClonesAbility implements Ability {
 			level.sendParticles(ParticleTypes.SOUL,
 					player.getX() + rx, player.getY() + 1, player.getZ() + rz,
 					30, 0.4, 0.8, 0.4, 0.05);
+			level.sendParticles(ModParticles.DARK_STAR,
+					player.getX() + rx, player.getY() + 1, player.getZ() + rz,
+					15, 0.3, 0.6, 0.3, 0.04);
 		}
 
-		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 200, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 500, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 500, 2, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 500, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 500, 1, true, false, true));
 
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.ILLUSIONER_MIRROR_MOVE, SoundSource.PLAYERS, 1.4f, 1.0f);
 
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
-		return affected >= 0;
+		return true;
 	}
 }

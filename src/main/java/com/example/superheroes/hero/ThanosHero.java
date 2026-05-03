@@ -58,6 +58,14 @@ public final class ThanosHero implements Hero {
 			AbilityIds.THANOS_TIME_REWIND, InfinityStoneType.TIME
 	);
 
+	public static InfinityStoneType getRequiredStoneFor(ResourceLocation abilityId) {
+		return ABILITY_STONE.get(abilityId);
+	}
+
+	public static boolean isSnapAbility(ResourceLocation abilityId) {
+		return AbilityIds.THANOS_SNAP.equals(abilityId);
+	}
+
 	@Override
 	public List<ResourceLocation> getAbilities() {
 		return List.of(
