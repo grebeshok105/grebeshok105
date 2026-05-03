@@ -90,6 +90,15 @@ public final class ThanosSnapAbility implements Ability {
 			level.sendParticles(ParticleTypes.LARGE_SMOKE,
 					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
 					25, 0.5, 0.6, 0.5, 0.02);
+			level.sendParticles(ModParticles.SOUL_SPARK,
+					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
+					80, 0.6, 1.0, 0.6, 0.10);
+			level.sendParticles(ModParticles.NIGHTFALL,
+					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
+					40, 0.5, 0.8, 0.5, 0.04);
+			level.sendParticles(ModParticles.CHAOS_ORB,
+					victim.getX(), victim.getY() + victim.getBbHeight() * 0.7, victim.getZ(),
+					12, 0.4, 0.5, 0.4, 0.02);
 			snapped++;
 		}
 
@@ -103,6 +112,14 @@ public final class ThanosSnapAbility implements Ability {
 				cx, cy + 1.5, cz, 300, 10.0, 5.0, 10.0, 0.25);
 		level.sendParticles(ModParticles.WHITE_BOOM,
 				cx, cy + 2.0, cz, 80, 6.0, 4.0, 6.0, 0.0);
+		level.sendParticles(ModParticles.SOUL_SPARK,
+				cx, cy + 2.0, cz, 300, 12.0, 5.0, 12.0, 0.25);
+		level.sendParticles(ModParticles.NIGHTFALL,
+				cx, cy + 1.6, cz, 250, 11.0, 5.0, 11.0, 0.2);
+		level.sendParticles(ModParticles.CHAOS_ORB,
+				cx, cy + 2.5, cz, 120, 9.0, 4.0, 9.0, 0.15);
+		level.sendParticles(ModParticles.SUN_PARTICLE,
+				cx, cy + 2.0, cz, 80, 6.0, 3.0, 6.0, 0.1);
 
 		for (int ring = 0; ring < 12; ring++) {
 			double r = ring * 1.5 + 1.0;

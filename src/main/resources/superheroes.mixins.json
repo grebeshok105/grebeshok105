@@ -9,7 +9,8 @@
 		"LivingEntityFallDamageMixin",
 		"LivingEntityFallFlyingMixin",
 		"LivingEntityEffectMixin",
-		"LivingEntityHealBlockMixin"
+		"LivingEntityHealBlockMixin",
+		"ThanosBlockBreakingMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

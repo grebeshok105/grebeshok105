@@ -77,6 +77,18 @@ public class SuperheroesClient implements ClientModInitializer {
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		ParticleFactoryRegistry.getInstance().register(ModParticles.SUN_PARTICLE,
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SOUL_SPARK,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.NIGHTFALL,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_1,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_2,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_3,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		com.example.superheroes.client.config.SuperheroesClientConfig.load();
 
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {

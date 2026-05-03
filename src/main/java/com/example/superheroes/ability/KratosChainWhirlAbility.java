@@ -35,7 +35,7 @@ public final class KratosChainWhirlAbility implements Ability {
 
 	@Override
 	public float costPerTick() {
-		return 2.0f;
+		return 3.7f;
 	}
 
 	@Override

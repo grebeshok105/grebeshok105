@@ -92,6 +92,12 @@ public final class ThanosCosmicSlamAbility implements Ability {
 				center.x, center.y + 1.5, center.z, 160, RADIUS * 0.5, 2.0, RADIUS * 0.5, 0.15);
 		level.sendParticles(com.example.superheroes.particle.ModParticles.WHITE_BOOM,
 				center.x, center.y + 1.0, center.z, 60, 3.0, 1.0, 3.0, 0.0);
+		level.sendParticles(com.example.superheroes.particle.ModParticles.CHAOS_ORB,
+				center.x, center.y + 1.5, center.z, 90, RADIUS * 0.5, 1.8, RADIUS * 0.5, 0.18);
+		level.sendParticles(com.example.superheroes.particle.ModParticles.SUN_PARTICLE,
+				center.x, center.y + 1.0, center.z, 80, RADIUS * 0.4, 1.5, RADIUS * 0.4, 0.15);
+		level.sendParticles(com.example.superheroes.particle.ModParticles.SOUL_SPARK,
+				center.x, center.y + 0.8, center.z, 120, RADIUS * 0.5, 1.5, RADIUS * 0.5, 0.12);
 
 		level.playSound(null, center.x, center.y, center.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 2.5f, 0.4f);
 		level.playSound(null, center.x, center.y, center.z, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 2.0f, 0.7f);

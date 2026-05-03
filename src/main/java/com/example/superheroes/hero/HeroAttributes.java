@@ -99,6 +99,7 @@ public final class HeroAttributes {
 	public static final ResourceLocation THANOS_KNOCKBACK = ModId.of("modifiers/thanos/knockback_resistance");
 	public static final ResourceLocation THANOS_REACH = ModId.of("modifiers/thanos/entity_reach");
 	public static final ResourceLocation THANOS_STEP = ModId.of("modifiers/thanos/step_height");
+	public static final ResourceLocation THANOS_JUMP = ModId.of("modifiers/thanos/jump_strength");
 	public static final ResourceLocation THANOS_SCALE = ModId.of("modifiers/thanos/scale");
 
 
@@ -219,7 +220,7 @@ public final class HeroAttributes {
 	public static final AttributeModifierSet KRATOS = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, KRATOS_ARMOR, 18.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, KRATOS_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, KRATOS_DAMAGE, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_DAMAGE, 2.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_SPEED, KRATOS_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MAX_HEALTH, KRATOS_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, KRATOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
@@ -264,6 +265,7 @@ public final class HeroAttributes {
 			.add(Attributes.KNOCKBACK_RESISTANCE, THANOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ENTITY_INTERACTION_RANGE, THANOS_REACH, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.STEP_HEIGHT, THANOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, THANOS_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.SCALE, THANOS_SCALE, 0.25, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
