@@ -31,6 +31,12 @@ public final class ModAttachments {
 			.copyOnDeath()
 			.buildAndRegister(ModId.of("doomsday_progress"));
 
+	public static final AttachmentType<Integer> IRON_MAN_MARK = AttachmentRegistry.<Integer>builder()
+			.initializer(() -> 1)
+			.persistent(Codec.INT)
+			.copyOnDeath()
+			.buildAndRegister(ModId.of("iron_man_mark"));
+
 	private ModAttachments() {
 	}
 

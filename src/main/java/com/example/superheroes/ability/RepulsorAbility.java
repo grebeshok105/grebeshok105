@@ -20,7 +20,17 @@ import net.minecraft.world.phys.Vec3;
 
 public final class RepulsorAbility implements Ability {
 	private static final double RANGE = 40.0;
-	private static final float DAMAGE = 8.0f;
+	private static final float DAMAGE_MARK_I = 6.0f;
+	private static final float DAMAGE_MARK_VII = 12.0f;
+	private static final float DAMAGE_MARK_L = 20.0f;
+
+	private static float damageForMark(int mark) {
+		return switch (mark) {
+			case 3 -> DAMAGE_MARK_L;
+			case 2 -> DAMAGE_MARK_VII;
+			default -> DAMAGE_MARK_I;
+		};
+	}
 
 	@Override
 	public ResourceLocation getId() {
@@ -56,7 +66,8 @@ public final class RepulsorAbility implements Ability {
 				e -> e instanceof LivingEntity && e.isAlive() && e != player && !e.isSpectator());
 		if (hit != null) {
 			LivingEntity target = (LivingEntity) hit.getEntity();
-			target.hurt(ModDamageTypes.repulsor(level, player), DAMAGE);
+			float dmg = damageForMark(com.example.superheroes.hero.IronManHero.getMark(player));
+			target.hurt(ModDamageTypes.repulsor(level, player), dmg);
 			actualEnd = hit.getLocation();
 			Vec3 push = dir.scale(0.6);
 			target.push(push.x, 0.2, push.z);

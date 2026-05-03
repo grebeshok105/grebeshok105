@@ -2,6 +2,7 @@ package com.example.superheroes.hero;
 
 import com.example.superheroes.ModId;
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.physics.ShockwaveUtil;
 import com.example.superheroes.resource.ResourceKind;
 import net.minecraft.core.particles.ParticleTypes;
@@ -54,6 +55,41 @@ public final class IronManHero implements Hero {
 		return List.of(AbilityIds.IRON_MAN_FLIGHT, AbilityIds.SUPERSONIC, AbilityIds.REPULSOR, AbilityIds.BOX_ESP, AbilityIds.UNIBEAM, AbilityIds.IRON_MAN_HULKBUSTER);
 	}
 
+	public static int getMark(Player player) {
+		return Math.max(1, Math.min(3, player.getAttachedOrCreate(ModAttachments.IRON_MAN_MARK)));
+	}
+
+	/**
+	 * Mark I (1) → only Repulsor.
+	 * Mark VII (2) → + Iron Man Flight + Box ESP.
+	 * Mark L (3) → + Supersonic + Unibeam + Hulkbuster.
+	 */
+	public boolean isAbilityUnlocked(Player player, ResourceLocation abilityId) {
+		int mark = getMark(player);
+		if (AbilityIds.REPULSOR.equals(abilityId)) return true;
+		if (AbilityIds.IRON_MAN_FLIGHT.equals(abilityId)) return mark >= 2;
+		if (AbilityIds.BOX_ESP.equals(abilityId)) return mark >= 2;
+		if (AbilityIds.SUPERSONIC.equals(abilityId)) return mark >= 3;
+		if (AbilityIds.UNIBEAM.equals(abilityId)) return mark >= 3;
+		if (AbilityIds.IRON_MAN_HULKBUSTER.equals(abilityId)) return mark >= 3;
+		return false;
+	}
+
+	public static void notifyMarkLocked(ServerPlayer player, ResourceLocation abilityId) {
+		int required;
+		if (AbilityIds.IRON_MAN_FLIGHT.equals(abilityId) || AbilityIds.BOX_ESP.equals(abilityId)) {
+			required = 7;
+		} else if (AbilityIds.SUPERSONIC.equals(abilityId) || AbilityIds.UNIBEAM.equals(abilityId)
+				|| AbilityIds.IRON_MAN_HULKBUSTER.equals(abilityId)) {
+			required = 50;
+		} else {
+			return;
+		}
+		player.displayClientMessage(net.minecraft.network.chat.Component.translatable(
+				"ability.superheroes.iron_man.mark_locked", required)
+				.withStyle(net.minecraft.ChatFormatting.GOLD), true);
+	}
+
 	@Override
 	public ResourceKind getDefaultBinding(ResourceLocation abilityId) {
 		return ResourceKind.ENERGY;
@@ -61,12 +97,16 @@ public final class IronManHero implements Hero {
 
 	@Override
 	public void applyPassives(Player player) {
-		HeroAttributes.IRON_MAN.apply(player);
+		int mark = getMark(player);
+		HeroAttributes.buildIronManTierSet(mark).apply(player);
 	}
 
 	@Override
 	public void removePassives(Player player) {
 		HeroAttributes.IRON_MAN.remove(player);
+		HeroAttributes.buildIronManTierSet(1).remove(player);
+		HeroAttributes.buildIronManTierSet(2).remove(player);
+		HeroAttributes.buildIronManTierSet(3).remove(player);
 	}
 
 	@Override

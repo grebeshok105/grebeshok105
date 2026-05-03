@@ -282,6 +282,23 @@ public final class HeroAttributes {
 	private HeroAttributes() {
 	}
 
+	/**
+	 * Iron Man Mark progression — Mark I (tier 1) → Mark VII (tier 2) → Mark L (tier 3).
+	 * Stats scale ~50% / 75% / 100% of full IRON_MAN baseline.
+	 */
+	public static AttributeModifierSet buildIronManTierSet(int tier) {
+		int t = Math.max(1, Math.min(3, tier));
+		double f = (t - 1) / 2.0;
+		return AttributeModifierSet.builder()
+				.add(Attributes.ARMOR, IRON_MAN_ARMOR, lerp(15.0, 35.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, lerp(4.0, 10.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, lerp(3.0, 7.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, lerp(0.05, 0.15, f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+				.add(Attributes.MAX_HEALTH, IRON_MAN_HP, lerp(8.0, 20.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, lerp(0.4, 0.85, f), AttributeModifier.Operation.ADD_VALUE)
+				.build();
+	}
+
 	public static AttributeModifierSet buildDoomsdayTierSet(int tier) {
 		int t = Math.max(1, Math.min(7, tier));
 		double f = (t - 1) / 6.0;

@@ -36,6 +36,16 @@ public final class ModItems {
 			new IronManReactorItem(new Item.Properties().stacksTo(4).rarity(Rarity.RARE))
 	);
 
+	public static final StarkModuleItem STARK_MODULE = register(
+			"stark_module",
+			new StarkModuleItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE))
+	);
+
+	public static final QuantumCoreItem QUANTUM_CORE = register(
+			"quantum_core",
+			new QuantumCoreItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
 	public static final UraniumIsotopeItem URANIUM_ISOTOPE = register(
 			"uranium_isotope",
 			new UraniumIsotopeItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE))

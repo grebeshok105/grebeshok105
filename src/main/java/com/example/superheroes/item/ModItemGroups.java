@@ -26,6 +26,8 @@ public final class ModItemGroups {
 
 				output.accept(ModItems.IRON_MAN_SUIT);
 				output.accept(ModItems.IRON_MAN_REACTOR);
+				output.accept(ModItems.STARK_MODULE);
+				output.accept(ModItems.QUANTUM_CORE);
 				output.accept(ModItems.URANIUM_ISOTOPE);
 				output.accept(ModItems.URANIUM_DAGGER);
 

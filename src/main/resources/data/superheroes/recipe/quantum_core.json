@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "EPE",
+    "SMS",
+    "EPE"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:echo_shard"
+    },
+    "P": {
+      "item": "minecraft:ender_pearl"
+    },
+    "S": {
+      "item": "minecraft:nether_star"
+    },
+    "M": {
+      "item": "superheroes:stark_module"
+    }
+  },
+  "result": {
+    "id": "superheroes:quantum_core",
+    "count": 1
+  }
+}
