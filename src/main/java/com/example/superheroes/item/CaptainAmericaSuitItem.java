@@ -23,6 +23,7 @@ public class CaptainAmericaSuitItem extends TransformationItem {
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.captain_america_suit.lore.usage", ChatFormatting.AQUA));
 		tooltip.add(TooltipFrame.bullet("item.superheroes.captain_america_suit.lore.untransform", ChatFormatting.RED));
+		TooltipFrame.containsStone(tooltip, com.example.superheroes.item.infinity.InfinityStoneType.SOUL);
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.BLUE);
 	}
 }

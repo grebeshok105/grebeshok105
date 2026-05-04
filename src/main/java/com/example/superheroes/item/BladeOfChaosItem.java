@@ -23,6 +23,7 @@ public class BladeOfChaosItem extends TransformationItem {
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.blade_of_chaos.lore.usage", ChatFormatting.GOLD));
 		tooltip.add(TooltipFrame.bullet("item.superheroes.blade_of_chaos.lore.untransform", ChatFormatting.RED));
+		TooltipFrame.containsStone(tooltip, com.example.superheroes.item.infinity.InfinityStoneType.POWER);
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.RED);
 	}
 }

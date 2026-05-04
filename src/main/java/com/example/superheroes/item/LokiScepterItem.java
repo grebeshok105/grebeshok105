@@ -23,6 +23,7 @@ public class LokiScepterItem extends TransformationItem {
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.loki_scepter.lore.usage", ChatFormatting.GOLD));
 		tooltip.add(TooltipFrame.bullet("item.superheroes.loki_scepter.lore.untransform", ChatFormatting.RED));
+		TooltipFrame.containsStone(tooltip, com.example.superheroes.item.infinity.InfinityStoneType.MIND);
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.GREEN);
 	}
 }
