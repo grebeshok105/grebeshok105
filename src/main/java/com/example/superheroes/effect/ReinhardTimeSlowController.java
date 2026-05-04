@@ -3,7 +3,6 @@ package com.example.superheroes.effect;
 import com.example.superheroes.sound.ModSounds;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,7 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class ReinhardTimeSlowController {
 	private static final float NORMAL_TICK_RATE = 20.0f;
-	private static final float SLOW_TICK_RATE = 4.0f;
+	// 0.6 tps == 3% of normal — effectively a global freeze (no one can attack/move during it).
+	private static final float SLOW_TICK_RATE = 0.6f;
 	private static final long SLOW_DURATION_MS = 8500L;
 
 	private static final Set<UUID> ARMED = ConcurrentHashMap.newKeySet();
@@ -40,6 +40,8 @@ public final class ReinhardTimeSlowController {
 			if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return true;
 			if (!(attacker.getMainHandItem().getItem() instanceof com.example.superheroes.item.RoyalIcicleItem)) return true;
 			if (!source.is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)) return true;
+			ReinhardState rstate = attacker.getAttachedOrCreate(com.example.superheroes.attachment.ModAttachments.REINHARD_STATE);
+			if (!rstate.swordDrawn()) return true;
 			if (!ARMED.remove(attacker.getUUID())) return true;
 			triggerSlow(attacker);
 			return true;
@@ -63,10 +65,6 @@ public final class ReinhardTimeSlowController {
 				ModSounds.REINHARD_SWORD_STRIKE_VOICE, SoundSource.PLAYERS, 2.0f, 1.0f);
 
 		applyServerTickRate(player.getServer(), SLOW_TICK_RATE);
-
-		player.displayClientMessage(
-				Component.translatable("ability.superheroes.reinhard.time_slow.start"),
-				true);
 	}
 
 	private static void tick(MinecraftServer server) {
@@ -87,6 +85,7 @@ public final class ReinhardTimeSlowController {
 		}
 		if (anyEnded && ACTIVE.isEmpty()) {
 			applyServerTickRate(server, NORMAL_TICK_RATE);
+			ReinhardSwordDeathMarkController.flushDeaths(server);
 		}
 	}
 

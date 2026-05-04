@@ -497,7 +497,9 @@
   "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent",
   "ability.superheroes.reinhard_sword_draw.gate_locked": "Sword locked — endure %s damage from a single foe",
   "ability.superheroes.reinhard_sword_draw.ready": "Worthy! The sword is ready to be drawn",
-  "ability.superheroes.reinhard.time_slow.start": "\"Fire and death\" — time slowed down",
+  "ability.superheroes.reinhard.time_slow.start": "",
+  "hud.superheroes.reinhard.death_mark.title": "CUT DOWN BY REINHARD'S SWORD",
+  "hud.superheroes.reinhard.death_mark.subtitle": "Time stops — the strike has already landed",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Reid awakens...",
   "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy"
 }
