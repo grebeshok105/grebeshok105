@@ -117,5 +117,14 @@
 				"stream": true
 			}
 		]
+	},
+	"reinhard.sword_draw.ceremony": {
+		"subtitle": "subtitles.superheroes.reinhard.sword_draw_ceremony",
+		"sounds": [
+			{
+				"name": "superheroes:reinhard/sword_draw_ceremony",
+				"stream": true
+			}
+		]
 	}
 }

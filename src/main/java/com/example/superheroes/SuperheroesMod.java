@@ -45,6 +45,7 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.IronManAutoEjectController.init();
 		com.example.superheroes.effect.RegulusTotemController.init();
 		com.example.superheroes.effect.RegulusGreedController.init();
+		com.example.superheroes.effect.GreedCageController.init();
 		com.example.superheroes.effect.RegulusMadnessController.init();
 		com.example.superheroes.effect.SuperJumpController.init();
 		com.example.superheroes.effect.AutoSaturationController.init();

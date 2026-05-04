@@ -9,15 +9,18 @@ import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ClientThanosState;
 import com.example.superheroes.client.ModKeys;
 import com.example.superheroes.hero.ThanosHero;
+import com.example.superheroes.item.ModItems;
 import com.example.superheroes.item.infinity.InfinityStoneType;
 import com.example.superheroes.hero.HeroTheme;
 import com.example.superheroes.network.ActivateAbilityC2SPayload;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -110,13 +113,11 @@ public final class RadialMenuHud {
 		boolean isDoomsday = ModId.of("doomsday").equals(ClientHeroState.heroId());
 		boolean isThanos = ThanosHero.ID.equals(ClientHeroState.heroId());
 		int doomsdayTier = isDoomsday ? ClientDoomsdayState.tier() : 0;
-		boolean swordDrawn = ClientHeroState.data().isActive(AbilityIds.REINHARD_SWORD_DRAW);
 		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
 		for (ResourceLocation id : base) {
 			if (!ClientMadnessState.isMadness() && AbilityIds.COUNTER_STRIKE.equals(id)) continue;
 			if (isDoomsday && !isDoomsdayUnlocked(id, doomsdayTier)) continue;
 			if (isThanos && !isThanosUnlocked(id)) continue;
-			if (!swordDrawn && AbilityIds.isReinhardSwordOnly(id)) continue;
 			out.add(id);
 		}
 		return out;
@@ -152,6 +153,7 @@ public final class RadialMenuHud {
 		int cy = mc.getWindow().getGuiScaledHeight() / 2;
 		int n = abilities.size();
 		HeroTheme theme = ClientHeroState.theme();
+		boolean isThanos = ThanosHero.ID.equals(ClientHeroState.heroId());
 		drawBackplate(graphics, cx, cy);
 		drawCursor(graphics, mc, cx, cy, theme);
 		drawHub(graphics, cx, cy, theme);
@@ -179,7 +181,64 @@ public final class RadialMenuHud {
 					cooldownTicks > 0 ? 0xFFA7AAB8 : (active ? theme.radialTextActive() : COLOR_TEXT_IDLE));
 			graphics.drawCenteredString(mc.font, cooldownTicks > 0 ? cooldownText(cooldownTicks) : key, x, y + 3,
 					cooldownTicks > 0 ? COLOR_COOLDOWN : (active ? theme.radialKeyActive() : COLOR_KEY_IDLE));
+			if (isThanos) {
+				drawThanosStoneBadge(graphics, mc, aid, x, slotY);
+			}
 		}
+	}
+
+	private static void drawThanosStoneBadge(GuiGraphics graphics, Minecraft mc, ResourceLocation aid,
+			int slotCenterX, int slotY) {
+		ItemStack stack;
+		int color;
+		boolean owned;
+		if (ThanosHero.isSnapAbility(aid)) {
+			stack = new ItemStack(ModItems.INFINITY_GAUNTLET);
+			color = 0xFFFFD24A;
+			owned = ClientThanosState.hasAllStones();
+		} else {
+			InfinityStoneType type = ThanosHero.getRequiredStoneFor(aid);
+			if (type == null) {
+				return;
+			}
+			stack = stoneStackFor(type);
+			color = type.getColor();
+			owned = ClientThanosState.hasStone(type);
+		}
+		if (stack == null || stack.isEmpty()) {
+			return;
+		}
+		int badgeSize = 20;
+		int iconX = slotCenterX - 8;
+		int iconY = slotY - badgeSize - 2;
+		int bx = slotCenterX - badgeSize / 2;
+		int by = iconY - 2;
+		HudUtil.roundedRectFill(graphics, bx, by, badgeSize, badgeSize, 0xCC080A14);
+		HudUtil.roundedRectBorder(graphics, bx, by, badgeSize, badgeSize, color);
+		long now = System.currentTimeMillis();
+		float pulse = 0.55f + 0.45f * (float) Math.sin(now / 280.0);
+		int glowAlpha = (int) (160 * pulse);
+		int glow = ((Math.max(40, glowAlpha) & 0xFF) << 24) | (color & 0x00FFFFFF);
+		HudUtil.roundedRectBorder(graphics, bx - 1, by - 1, badgeSize + 2, badgeSize + 2, glow);
+		RenderSystem.enableBlend();
+		graphics.renderItem(stack, iconX, iconY);
+		RenderSystem.disableBlend();
+		if (!owned) {
+			graphics.fill(bx + 1, by + 1, bx + badgeSize - 1, by + badgeSize - 1, 0xB0000814);
+			graphics.drawCenteredString(mc.font, Component.literal("\u2715"),
+					slotCenterX, by + 6, 0xFFE03030);
+		}
+	}
+
+	private static ItemStack stoneStackFor(InfinityStoneType type) {
+		return switch (type) {
+			case POWER -> new ItemStack(ModItems.POWER_STONE);
+			case SPACE -> new ItemStack(ModItems.SPACE_STONE);
+			case REALITY -> new ItemStack(ModItems.REALITY_STONE);
+			case SOUL -> new ItemStack(ModItems.SOUL_STONE);
+			case TIME -> new ItemStack(ModItems.TIME_STONE);
+			case MIND -> new ItemStack(ModItems.MIND_STONE);
+		};
 	}
 
 	private static void drawHub(GuiGraphics graphics, int cx, int cy, HeroTheme theme) {

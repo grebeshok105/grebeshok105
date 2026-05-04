@@ -1,14 +1,17 @@
 package com.example.superheroes.effect;
 
+import com.example.superheroes.network.ReinhardTimeSlowS2CPayload;
 import com.example.superheroes.sound.ModSounds;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -64,7 +67,24 @@ public final class ReinhardTimeSlowController {
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				ModSounds.REINHARD_SWORD_STRIKE_VOICE, SoundSource.PLAYERS, 2.0f, 1.0f);
 
+		broadcastTimeSlow(player, true);
 		applyServerTickRate(player.getServer(), SLOW_TICK_RATE);
+	}
+
+	private static void broadcastTimeSlow(ServerPlayer reinhard, boolean active) {
+		ServerLevel level = reinhard.serverLevel();
+		AABB box = new AABB(reinhard.position(), reinhard.position()).inflate(80.0);
+		ReinhardTimeSlowS2CPayload payload = new ReinhardTimeSlowS2CPayload(active);
+		for (ServerPlayer target : level.getEntitiesOfClass(ServerPlayer.class, box, p -> true)) {
+			ServerPlayNetworking.send(target, payload);
+		}
+	}
+
+	private static void broadcastTimeSlowOff(MinecraftServer server) {
+		ReinhardTimeSlowS2CPayload payload = new ReinhardTimeSlowS2CPayload(false);
+		for (ServerPlayer p : server.getPlayerList().getPlayers()) {
+			ServerPlayNetworking.send(p, payload);
+		}
 	}
 
 	private static void tick(MinecraftServer server) {
@@ -85,6 +105,7 @@ public final class ReinhardTimeSlowController {
 		}
 		if (anyEnded && ACTIVE.isEmpty()) {
 			applyServerTickRate(server, NORMAL_TICK_RATE);
+			broadcastTimeSlowOff(server);
 			ReinhardSwordDeathMarkController.flushDeaths(server);
 		}
 	}

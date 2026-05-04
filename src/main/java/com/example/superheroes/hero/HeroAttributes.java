@@ -20,6 +20,7 @@ public final class HeroAttributes {
 	public static final ResourceLocation IRON_MAN_KNOCKBACK = ModId.of("modifiers/iron_man/knockback_resistance");
 
 	public static final ResourceLocation REGULUS_ARMOR = ModId.of("modifiers/regulus/armor");
+	public static final ResourceLocation REGULUS_KNOCKBACK = ModId.of("modifiers/regulus/knockback_resistance");
 	public static final ResourceLocation REGULUS_MADNESS_ARMOR = ModId.of("modifiers/regulus/madness_armor");
 	public static final ResourceLocation REGULUS_MADNESS_HP = ModId.of("modifiers/regulus/madness_max_health");
 	public static final ResourceLocation REGULUS_MADNESS_DAMAGE = ModId.of("modifiers/regulus/madness_damage");
@@ -97,6 +98,7 @@ public final class HeroAttributes {
 	public static final ResourceLocation THANOS_DAMAGE = ModId.of("modifiers/thanos/damage");
 	public static final ResourceLocation THANOS_HP = ModId.of("modifiers/thanos/max_health");
 	public static final ResourceLocation THANOS_KNOCKBACK = ModId.of("modifiers/thanos/knockback_resistance");
+	public static final ResourceLocation THANOS_SPEED = ModId.of("modifiers/thanos/speed");
 	public static final ResourceLocation THANOS_REACH = ModId.of("modifiers/thanos/entity_reach");
 	public static final ResourceLocation THANOS_STEP = ModId.of("modifiers/thanos/step_height");
 	public static final ResourceLocation THANOS_JUMP = ModId.of("modifiers/thanos/jump_strength");
@@ -169,7 +171,8 @@ public final class HeroAttributes {
 			.build();
 
 	public static final AttributeModifierSet REGULUS = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, REGULUS_ARMOR, 15.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, REGULUS_ARMOR, 70.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, REGULUS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet REGULUS_MADNESS = AttributeModifierSet.builder()
@@ -285,6 +288,7 @@ public final class HeroAttributes {
 			.add(Attributes.ATTACK_DAMAGE, THANOS_DAMAGE, 10.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MAX_HEALTH, THANOS_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, THANOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, THANOS_SPEED, 0.40, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.ENTITY_INTERACTION_RANGE, THANOS_REACH, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.STEP_HEIGHT, THANOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.JUMP_STRENGTH, THANOS_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)

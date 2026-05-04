@@ -16,6 +16,7 @@ import com.example.superheroes.client.render.HomelanderBossRenderer;
 import com.example.superheroes.client.render.IronManEspRenderer;
 import com.example.superheroes.entity.ModEntities;
 import com.example.superheroes.item.ModItems;
+import com.example.superheroes.client.render.CosmicBeamRenderer;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.LocalLaserOverlay;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
@@ -44,6 +45,7 @@ public class SuperheroesClient implements ClientModInitializer {
 		ClientNetworking.init();
 		LaserBeamRenderer.register();
 		RepulsorBeamRenderer.register();
+		CosmicBeamRenderer.register();
 		LocalLaserOverlay.register();
 		IronManEspRenderer.register();
 		EntityRendererRegistry.register(EntityType.LIGHTNING_BOLT, SuperheroLightningRenderer::new);
