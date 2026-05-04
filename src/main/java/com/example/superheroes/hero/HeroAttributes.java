@@ -102,6 +102,27 @@ public final class HeroAttributes {
 	public static final ResourceLocation THANOS_JUMP = ModId.of("modifiers/thanos/jump_strength");
 	public static final ResourceLocation THANOS_SCALE = ModId.of("modifiers/thanos/scale");
 
+	public static final ResourceLocation REINHARD_ARMOR = ModId.of("modifiers/reinhard/armor");
+	public static final ResourceLocation REINHARD_TOUGHNESS = ModId.of("modifiers/reinhard/toughness");
+	public static final ResourceLocation REINHARD_DAMAGE = ModId.of("modifiers/reinhard/damage");
+	public static final ResourceLocation REINHARD_SPEED = ModId.of("modifiers/reinhard/speed");
+	public static final ResourceLocation REINHARD_HP = ModId.of("modifiers/reinhard/max_health");
+	public static final ResourceLocation REINHARD_KNOCKBACK = ModId.of("modifiers/reinhard/knockback_resistance");
+	public static final ResourceLocation REINHARD_ATTACK_SPEED = ModId.of("modifiers/reinhard/attack_speed");
+	public static final ResourceLocation REINHARD_JUMP = ModId.of("modifiers/reinhard/jump_strength");
+	public static final ResourceLocation REINHARD_STEP = ModId.of("modifiers/reinhard/step_height");
+	public static final ResourceLocation REINHARD_REACH = ModId.of("modifiers/reinhard/entity_reach");
+
+	public static final ResourceLocation REINHARD_PHASE_DAMAGE = ModId.of("modifiers/reinhard/phase_damage");
+	public static final ResourceLocation REINHARD_PHASE_ARMOR = ModId.of("modifiers/reinhard/phase_armor");
+	public static final ResourceLocation REINHARD_PHASE_HP = ModId.of("modifiers/reinhard/phase_max_health");
+	public static final ResourceLocation REINHARD_PHASE_SPEED = ModId.of("modifiers/reinhard/phase_speed");
+
+	public static final ResourceLocation REINHARD_DRAW_DAMAGE = ModId.of("modifiers/reinhard/draw_damage");
+	public static final ResourceLocation REINHARD_DRAW_SPEED = ModId.of("modifiers/reinhard/draw_speed");
+	public static final ResourceLocation REINHARD_DRAW_JUMP = ModId.of("modifiers/reinhard/draw_jump");
+	public static final ResourceLocation REINHARD_DRAW_ATTACK_SPEED = ModId.of("modifiers/reinhard/draw_attack_speed");
+
 
 
 
@@ -267,6 +288,37 @@ public final class HeroAttributes {
 			.add(Attributes.STEP_HEIGHT, THANOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.JUMP_STRENGTH, THANOS_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.SCALE, THANOS_SCALE, 0.25, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet REINHARD = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, REINHARD_ARMOR, 14.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, REINHARD_SPEED, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, REINHARD_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, REINHARD_JUMP, 0.3, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, REINHARD_STEP, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, REINHARD_REACH, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static AttributeModifierSet buildReinhardPhaseSet(int phase) {
+		int p = Math.max(1, Math.min(5, phase));
+		double f = (p - 1) / 4.0;
+		return AttributeModifierSet.builder()
+				.add(Attributes.ATTACK_DAMAGE, REINHARD_PHASE_DAMAGE, lerp(0.0, 8.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ARMOR, REINHARD_PHASE_ARMOR, lerp(0.0, 14.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MAX_HEALTH, REINHARD_PHASE_HP, lerp(0.0, 30.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MOVEMENT_SPEED, REINHARD_PHASE_SPEED, lerp(0.0, 0.30, f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+				.build();
+	}
+
+	public static final AttributeModifierSet REINHARD_DRAW = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_DRAW_DAMAGE, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, REINHARD_DRAW_SPEED, 0.50, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.JUMP_STRENGTH, REINHARD_DRAW_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_DRAW_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static void thanosClearStoneModifiers(net.minecraft.world.entity.LivingEntity entity) {

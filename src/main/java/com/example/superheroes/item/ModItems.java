@@ -147,6 +147,16 @@ public final class ModItems {
 			new KryptoniteShardItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE))
 	);
 
+	public static final ReinhardSuitItem REINHARD_SUIT = register(
+			"reinhard_suit",
+			new ReinhardSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final RoyalIcicleItem ROYAL_ICICLE = register(
+			"royal_icicle",
+			new RoyalIcicleItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
 	private ModItems() {
 	}
 

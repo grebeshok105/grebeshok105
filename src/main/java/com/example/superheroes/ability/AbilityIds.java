@@ -81,6 +81,12 @@ public final class AbilityIds {
 	public static final ResourceLocation THANOS_SOUL_PULSE = ModId.of("thanos_soul_pulse");
 	public static final ResourceLocation THANOS_SNAP = ModId.of("thanos_snap");
 
+	public static final ResourceLocation REINHARD_SWORD_DRAW = ModId.of("reinhard_sword_draw");
+	public static final ResourceLocation REINHARD_AIR_SLASH = ModId.of("reinhard_air_slash");
+	public static final ResourceLocation REINHARD_TELEPORT_BEHIND = ModId.of("reinhard_teleport_behind");
+	public static final ResourceLocation REINHARD_JUDGMENT_MARK = ModId.of("reinhard_judgment_mark");
+	public static final ResourceLocation REINHARD_WISH = ModId.of("reinhard_wish");
+
 
 	private AbilityIds() {
 	}

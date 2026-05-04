@@ -81,6 +81,12 @@ public final class AbilityRegistry {
 	public static final ThanosSoulPulseAbility THANOS_SOUL_PULSE = new ThanosSoulPulseAbility();
 	public static final ThanosSnapAbility THANOS_SNAP = new ThanosSnapAbility();
 
+	public static final ReinhardSwordDrawAbility REINHARD_SWORD_DRAW = new ReinhardSwordDrawAbility();
+	public static final ReinhardAirSlashAbility REINHARD_AIR_SLASH = new ReinhardAirSlashAbility();
+	public static final ReinhardTeleportBehindAbility REINHARD_TELEPORT_BEHIND = new ReinhardTeleportBehindAbility();
+	public static final ReinhardJudgmentMarkAbility REINHARD_JUDGMENT_MARK = new ReinhardJudgmentMarkAbility();
+	public static final ReinhardWishAbility REINHARD_WISH = new ReinhardWishAbility();
+
 
 	private AbilityRegistry() {
 	}
@@ -147,6 +153,11 @@ public final class AbilityRegistry {
 		register(THANOS_SPACE_PORTAL);
 		register(THANOS_SOUL_PULSE);
 		register(THANOS_SNAP);
+		register(REINHARD_SWORD_DRAW);
+		register(REINHARD_AIR_SLASH);
+		register(REINHARD_TELEPORT_BEHIND);
+		register(REINHARD_JUDGMENT_MARK);
+		register(REINHARD_WISH);
 	}
 
 	public static void register(Ability ability) {

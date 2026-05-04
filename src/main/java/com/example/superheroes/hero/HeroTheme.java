@@ -188,5 +188,26 @@ public record HeroTheme(
 			0x55D58CFF
 	);
 
+	public static final HeroTheme REINHARD = new HeroTheme(
+			0xE0181408,
+			0xD0080602,
+			0x88FFD45A,
+			0x33FFE9A0,
+			0xFFFFE060,
+			0xFF7A5500,
+			0xFFFFD040,
+			0x55FFE890,
+			0xFFFFE060,
+			0xFF180A00,
+			0xFFFFB060,
+			0x55FFD080,
+			0xFFFFB060,
+			0x55FFD040,
+			0xFFFFE060,
+			0xFFFFE060,
+			0xFFFFFFC0,
+			0x55FFE890
+	);
+
 	public static final HeroTheme DEFAULT = HOMELANDER;
 }

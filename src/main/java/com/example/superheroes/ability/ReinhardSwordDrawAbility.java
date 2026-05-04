@@ -1,0 +1,93 @@
+package com.example.superheroes.ability;
+
+import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.effect.ReinhardState;
+import com.example.superheroes.hero.HeroAttributes;
+import com.example.superheroes.item.ModItems;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
+
+/**
+ * Reid Draw — обнажение меча. Тогглится: пока активен, Рейнхард получает бонусы к статам
+ * (атака, скорость, прыжок, attack-speed) и может использовать sword-способности.
+ * При активации в руку выдаётся Royal Icicle. При деактивации — убирается.
+ */
+public final class ReinhardSwordDrawAbility implements Ability {
+	@Override
+	public ResourceLocation getId() {
+		return AbilityIds.REINHARD_SWORD_DRAW;
+	}
+
+	@Override
+	public boolean isToggle() {
+		return true;
+	}
+
+	@Override
+	public float costOnActivate() {
+		return 0f;
+	}
+
+	@Override
+	public float costPerTick() {
+		return 0.5f;
+	}
+
+	@Override
+	public boolean tryActivate(ServerPlayer player) {
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(true));
+		HeroAttributes.REINHARD_DRAW.apply(player);
+		giveSword(player);
+		ServerLevel level = player.serverLevel();
+		level.sendParticles(ParticleTypes.END_ROD,
+				player.getX(), player.getY() + 1.0, player.getZ(),
+				40, 0.5, 0.8, 0.5, 0.05);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				SoundEvents.NETHERITE_BLOCK_HIT, SoundSource.PLAYERS, 1.2f, 1.4f);
+		return true;
+	}
+
+	@Override
+	public void onDeactivate(ServerPlayer player) {
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
+		HeroAttributes.REINHARD_DRAW.remove(player);
+		removeSword(player);
+		ServerLevel level = player.serverLevel();
+		level.sendParticles(ParticleTypes.SMOKE,
+				player.getX(), player.getY() + 1.0, player.getZ(),
+				12, 0.4, 0.6, 0.4, 0.02);
+	}
+
+	public static void giveSword(ServerPlayer player) {
+		if (player.getMainHandItem().is(ModItems.ROYAL_ICICLE)) return;
+		if (player.getOffhandItem().is(ModItems.ROYAL_ICICLE)) return;
+		ItemStack stack = new ItemStack(ModItems.ROYAL_ICICLE);
+		ItemStack mainHand = player.getMainHandItem();
+		if (mainHand.isEmpty()) {
+			player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+		} else if (player.getOffhandItem().isEmpty()) {
+			player.setItemInHand(InteractionHand.OFF_HAND, stack);
+		} else {
+			if (!player.getInventory().add(stack)) {
+				player.drop(stack, false);
+			}
+		}
+	}
+
+	public static void removeSword(ServerPlayer player) {
+		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+			ItemStack s = player.getInventory().getItem(i);
+			if (s.is(ModItems.ROYAL_ICICLE)) {
+				player.getInventory().setItem(i, ItemStack.EMPTY);
+			}
+		}
+	}
+}
