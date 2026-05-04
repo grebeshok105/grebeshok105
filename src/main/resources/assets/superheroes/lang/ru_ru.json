@@ -492,7 +492,7 @@
   "hero.superheroes.reinhard.passive.1": "Иммунитет к урону от падения",
   "hero.superheroes.reinhard.passive.2": "Адаптация к урону — повторённый тип урона быстро гаснёт",
   "hero.superheroes.reinhard.passive.3": "Фазы 1–5 — с нанесённым уроном растёт атака/броня/ХП/скорость",
-  "hero.superheroes.reinhard.passive.4": "Дракон-меч Рейд — 10с церемония, замедление времени на первой атаке",
+  "hero.superheroes.reinhard.passive.4": "Дракон-меч Рейд — 5с церемония, замедление времени на первом нанесённом ударе",
   "hero.superheroes.reinhard.passive.5": "Возрождение Феникса — одним из желаний можно пережить смерть",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "Нет достойных противников в округе",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл",

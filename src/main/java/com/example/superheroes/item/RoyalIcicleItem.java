@@ -33,7 +33,7 @@ import java.util.UUID;
  */
 public class RoyalIcicleItem extends SwordItem {
 	public RoyalIcicleItem(Properties properties) {
-		super(Tiers.NETHERITE, properties.attributes(SwordItem.createAttributes(Tiers.NETHERITE, 5, -2.4f)));
+		super(Tiers.NETHERITE, properties.attributes(SwordItem.createAttributes(Tiers.NETHERITE, 100, -2.4f)));
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class RoyalIcicleItem extends SwordItem {
 			HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 			if (ReinhardHero.ID.equals(data.heroId())) {
 				ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-				if (state.swordDrawn() && ReinhardWorthyOpponent.isWorthy(target)) {
+				if (state.swordDrawn()) {
 					float bonus = 4.0f + state.phase() * 1.5f;
 					target.hurt(player.serverLevel().damageSources().playerAttack(player), bonus);
 					target.invulnerableTime = 0;

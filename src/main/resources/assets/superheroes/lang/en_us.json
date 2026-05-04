@@ -491,7 +491,7 @@
   "hero.superheroes.reinhard.passive.1": "Fall damage immunity",
   "hero.superheroes.reinhard.passive.2": "Damage adaptation — repeated damage type quickly stops affecting Reinhard",
   "hero.superheroes.reinhard.passive.3": "Phases 1–5 — attack/armor/HP/speed grow with damage dealt",
-  "hero.superheroes.reinhard.passive.4": "Dragon Sword Reid — 10s ceremony, time slows down on first strike",
+  "hero.superheroes.reinhard.passive.4": "Dragon Sword Reid — 5s ceremony, time slows down on first strike that lands",
   "hero.superheroes.reinhard.passive.5": "Phoenix Rebirth — a wish lets him survive death",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "No worthy opponent nearby",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent",

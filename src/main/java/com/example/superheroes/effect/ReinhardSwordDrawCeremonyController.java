@@ -52,7 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  */
 public final class ReinhardSwordDrawCeremonyController {
-	public static final int CEREMONY_DURATION_TICKS = 200;
+	public static final int CEREMONY_DURATION_TICKS = 100;
 	public static final double CEREMONY_RADIUS = 50.0;
 	private static final int FREEZE_EFFECT_REFRESH = 18; // re-apply slightly under 1s
 
