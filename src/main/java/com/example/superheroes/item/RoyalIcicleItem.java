@@ -53,6 +53,11 @@ public class RoyalIcicleItem extends SwordItem {
 	}
 
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
+	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		TooltipFrame.openDivider(tooltip, ChatFormatting.GOLD);
 		tooltip.add(TooltipFrame.flavor("item.superheroes.royal_icicle.lore.line1", ChatFormatting.GOLD));

@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -48,12 +49,19 @@ public final class ReinhardController {
 	private static final int COUNTER_LOCKOUT_TICKS = 40;
 
 	private static final java.util.concurrent.ConcurrentHashMap<UUID, Long> COUNTER_LOCKOUT = new java.util.concurrent.ConcurrentHashMap<>();
+	private static final Set<UUID> DAMAGE_REENTRY_GUARD = Collections.newSetFromMap(new java.util.concurrent.ConcurrentHashMap<>());
 	private static final Set<ResourceKey<DamageType>> NON_TRACKED = Set.of(
 			DamageTypes.STARVE,
 			DamageTypes.IN_WALL,
 			DamageTypes.DROWN,
 			DamageTypes.GENERIC_KILL,
 			DamageTypes.OUTSIDE_BORDER
+	);
+
+	private static final Set<ResourceKey<DamageType>> NON_ADAPTABLE = Set.of(
+			DamageTypes.MOB_ATTACK,
+			DamageTypes.MOB_ATTACK_NO_AGGRO,
+			DamageTypes.PLAYER_ATTACK
 	);
 
 	private ReinhardController() {
@@ -141,19 +149,33 @@ public final class ReinhardController {
 					player.getX(), player.getY() + 0.8, player.getZ(),
 					4, 0.4, 0.7, 0.4, 0.02);
 		}
-		if (state.phase() >= 5 && player.tickCount % 8 == 0) {
-			player.serverLevel().sendParticles(ParticleTypes.FLASH,
-					player.getX(), player.getY() + 1.2, player.getZ(),
-					1, 0, 0, 0, 0);
+
+		// Auto-sheathe sword if no worthy opponent nearby
+		if (state.swordDrawn() && player.tickCount % 40 == 0) {
+			if (!hasWorthyNearby(player, 30.0)) {
+				com.example.superheroes.ability.ReinhardSwordDrawAbility.forceSheathe(player);
+			}
 		}
 	}
 
 	private static boolean onIncomingDamage(ServerPlayer player, DamageSource source, float amount) {
+		UUID pid = player.getUUID();
+		if (!DAMAGE_REENTRY_GUARD.add(pid)) {
+			return true;
+		}
+		try {
+			return onIncomingDamageInner(player, source, amount);
+		} finally {
+			DAMAGE_REENTRY_GUARD.remove(pid);
+		}
+	}
+
+	private static boolean onIncomingDamageInner(ServerPlayer player, DamageSource source, float amount) {
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		String typeId = damageTypeKey(source);
 		long nowTick = player.serverLevel().getGameTime();
 
-		// Adapted — иммунитет
+		// Adapted — иммунитет (skip non-adaptable types like mob_attack)
 		if (state.adaptedDamageTypes().contains(typeId)) {
 			player.serverLevel().sendParticles(ParticleTypes.GLOW,
 					player.getX(), player.getY() + 1.0, player.getZ(),
@@ -178,8 +200,8 @@ public final class ReinhardController {
 			return false;
 		}
 
-		// Track recent damage type (FIFO 5)
-		if (typeId != null && !isNonTracked(source)) {
+		// Track recent damage type (FIFO 5) — exclude non-adaptable types (mob_attack, player_attack)
+		if (typeId != null && isAdaptable(source)) {
 			List<String> recent = new ArrayList<>(state.recentDamageTypes());
 			recent.remove(typeId);
 			recent.add(0, typeId);
@@ -319,11 +341,24 @@ public final class ReinhardController {
 	}
 
 	public static void onDeath(ServerPlayer player) {
-		// Сбросить phase-modifiers / DRAW при смерти
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
+	}
+
+	public static void clearAdaptations(ServerPlayer player) {
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		state = state.withAdaptedDamageTypes(List.of())
+				.withRecentDamageTypes(List.of())
+				.withAccumulatedDamage(0f)
+				.withPhase(1);
+		player.setAttached(ModAttachments.REINHARD_STATE, state);
+		for (int p = 1; p <= 5; p++) {
+			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
+		}
+		HeroAttributes.REINHARD_DRAW.remove(player);
+		COUNTER_LOCKOUT.remove(player.getUUID());
 	}
 
 	public static void onRespawn(ServerPlayer player) {
@@ -350,5 +385,19 @@ public final class ReinhardController {
 	public static boolean isJudgmentTarget(ServerPlayer reinhard, LivingEntity target) {
 		ReinhardState state = reinhard.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		return state.judgmentTarget().isPresent() && state.judgmentTarget().get().equals(target.getUUID());
+	}
+
+	public static boolean hasWorthyNearby(ServerPlayer player, double radius) {
+		for (Entity e : player.serverLevel().getEntities(player,
+				player.getBoundingBox().inflate(radius),
+				e -> e instanceof LivingEntity le && ReinhardWorthyOpponent.isWorthy(le))) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isAdaptable(DamageSource source) {
+		ResourceKey<DamageType> key = source.typeHolder().unwrapKey().orElse(null);
+		return key != null && !NON_ADAPTABLE.contains(key) && !NON_TRACKED.contains(key);
 	}
 }

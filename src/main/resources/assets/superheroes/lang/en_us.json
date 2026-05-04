@@ -483,5 +483,7 @@
   "screen.superheroes.reinhard_wish.title": "Make a Wish",
   "screen.superheroes.reinhard_wish.subtitle": "Used %s of %s. Pick a damage source for immunity:",
   "screen.superheroes.reinhard_wish.cancel": "Cancel",
-  "screen.superheroes.reinhard_wish.already_adapted": "%s (already adapted)"
+  "screen.superheroes.reinhard_wish.already_adapted": "%s (already adapted)",
+  "ability.superheroes.reinhard_sword_draw.no_worthy": "No worthy opponent nearby",
+  "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent"
 }
