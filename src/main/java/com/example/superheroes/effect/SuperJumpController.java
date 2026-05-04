@@ -5,6 +5,7 @@ import com.example.superheroes.hero.DoomsdayHero;
 import com.example.superheroes.hero.KratosHero;
 import com.example.superheroes.hero.NarutoHero;
 import com.example.superheroes.hero.RegulusHero;
+import com.example.superheroes.hero.ReinhardHero;
 import com.example.superheroes.hero.ThanosHero;
 import com.example.superheroes.transform.HeroData;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +34,8 @@ public final class SuperJumpController {
 			DoomsdayHero.ID,
 			KratosHero.ID,
 			ThanosHero.ID,
-			NarutoHero.ID
+			NarutoHero.ID,
+			ReinhardHero.ID
 	);
 
 	private static final Map<UUID, Long> COOLDOWN = new ConcurrentHashMap<>();

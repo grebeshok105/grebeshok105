@@ -42,7 +42,7 @@ public final class ReinhardJudgmentMarkAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 70f;
+		return 220f;
 	}
 
 	@Override

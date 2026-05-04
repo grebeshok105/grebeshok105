@@ -37,7 +37,7 @@ public final class ReinhardTeleportBehindAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 90f;
+		return 280f;
 	}
 
 	@Override

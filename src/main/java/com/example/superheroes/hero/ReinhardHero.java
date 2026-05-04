@@ -21,12 +21,12 @@ public final class ReinhardHero implements Hero {
 
 	@Override
 	public float getEnergyMax() {
-		return 300f;
+		return 1000f;
 	}
 
 	@Override
 	public float getEnergyRegenPerTick() {
-		return 1.6f;
+		return 2.5f;
 	}
 
 	@Override
@@ -48,6 +48,10 @@ public final class ReinhardHero implements Hero {
 		return List.of(
 				AbilityIds.REINHARD_SWORD_DRAW,
 				AbilityIds.REINHARD_AIR_SLASH,
+				AbilityIds.REINHARD_SWORD_WAVE,
+				AbilityIds.REINHARD_HEAVENS_STRIKE,
+				AbilityIds.REINHARD_COUNTER_RIPOSTE,
+				AbilityIds.REINHARD_DIVINE_AURA,
 				AbilityIds.REINHARD_TELEPORT_BEHIND,
 				AbilityIds.REINHARD_JUDGMENT_MARK,
 				AbilityIds.REINHARD_WISH

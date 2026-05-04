@@ -41,7 +41,7 @@ public final class ReinhardAirSlashAbility implements Ability {
 
 	@Override
 	public float costOnActivate() {
-		return 60f;
+		return 200f;
 	}
 
 	@Override

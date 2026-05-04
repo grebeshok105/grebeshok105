@@ -115,6 +115,7 @@ public final class HeroAttributes {
 
 	public static final ResourceLocation REINHARD_PHASE_DAMAGE = ModId.of("modifiers/reinhard/phase_damage");
 	public static final ResourceLocation REINHARD_PHASE_ARMOR = ModId.of("modifiers/reinhard/phase_armor");
+	public static final ResourceLocation REINHARD_PHASE_TOUGHNESS = ModId.of("modifiers/reinhard/phase_toughness");
 	public static final ResourceLocation REINHARD_PHASE_HP = ModId.of("modifiers/reinhard/phase_max_health");
 	public static final ResourceLocation REINHARD_PHASE_SPEED = ModId.of("modifiers/reinhard/phase_speed");
 
@@ -291,12 +292,12 @@ public final class HeroAttributes {
 			.build();
 
 	public static final AttributeModifierSet REINHARD = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, REINHARD_ARMOR, 14.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, REINHARD_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, REINHARD_ARMOR, 28.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_TOUGHNESS, 14.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_DAMAGE, 9.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, REINHARD_SPEED, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.MAX_HEALTH, REINHARD_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, REINHARD_HP, 60.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_KNOCKBACK, 0.7, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_SPEED, REINHARD_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.JUMP_STRENGTH, REINHARD_JUMP, 0.3, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.STEP_HEIGHT, REINHARD_STEP, 0.6, AttributeModifier.Operation.ADD_VALUE)
@@ -307,10 +308,11 @@ public final class HeroAttributes {
 		int p = Math.max(1, Math.min(5, phase));
 		double f = (p - 1) / 4.0;
 		return AttributeModifierSet.builder()
-				.add(Attributes.ATTACK_DAMAGE, REINHARD_PHASE_DAMAGE, lerp(0.0, 8.0, f), AttributeModifier.Operation.ADD_VALUE)
-				.add(Attributes.ARMOR, REINHARD_PHASE_ARMOR, lerp(0.0, 14.0, f), AttributeModifier.Operation.ADD_VALUE)
-				.add(Attributes.MAX_HEALTH, REINHARD_PHASE_HP, lerp(0.0, 30.0, f), AttributeModifier.Operation.ADD_VALUE)
-				.add(Attributes.MOVEMENT_SPEED, REINHARD_PHASE_SPEED, lerp(0.0, 0.30, f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+				.add(Attributes.ATTACK_DAMAGE, REINHARD_PHASE_DAMAGE, lerp(0.0, 14.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ARMOR, REINHARD_PHASE_ARMOR, lerp(0.0, 24.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ARMOR_TOUGHNESS, REINHARD_PHASE_TOUGHNESS, lerp(0.0, 10.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MAX_HEALTH, REINHARD_PHASE_HP, lerp(0.0, 60.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MOVEMENT_SPEED, REINHARD_PHASE_SPEED, lerp(0.0, 0.40, f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 				.build();
 	}
 

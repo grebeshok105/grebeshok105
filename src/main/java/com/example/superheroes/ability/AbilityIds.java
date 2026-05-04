@@ -86,6 +86,10 @@ public final class AbilityIds {
 	public static final ResourceLocation REINHARD_TELEPORT_BEHIND = ModId.of("reinhard_teleport_behind");
 	public static final ResourceLocation REINHARD_JUDGMENT_MARK = ModId.of("reinhard_judgment_mark");
 	public static final ResourceLocation REINHARD_WISH = ModId.of("reinhard_wish");
+	public static final ResourceLocation REINHARD_SWORD_WAVE = ModId.of("reinhard_sword_wave");
+	public static final ResourceLocation REINHARD_HEAVENS_STRIKE = ModId.of("reinhard_heavens_strike");
+	public static final ResourceLocation REINHARD_COUNTER_RIPOSTE = ModId.of("reinhard_counter_riposte");
+	public static final ResourceLocation REINHARD_DIVINE_AURA = ModId.of("reinhard_divine_aura");
 
 
 	private AbilityIds() {

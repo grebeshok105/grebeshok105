@@ -151,12 +151,30 @@ public final class ReinhardController {
 	private static boolean onIncomingDamage(ServerPlayer player, DamageSource source, float amount) {
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		String typeId = damageTypeKey(source);
+		long nowTick = player.serverLevel().getGameTime();
 
 		// Adapted — иммунитет
 		if (state.adaptedDamageTypes().contains(typeId)) {
 			player.serverLevel().sendParticles(ParticleTypes.GLOW,
 					player.getX(), player.getY() + 1.0, player.getZ(),
 					6, 0.3, 0.3, 0.3, 0.02);
+			return false;
+		}
+
+		// Counter Riposte — активное парирование, отражает 200% обратно
+		if (state.riposteExpireTick() > nowTick) {
+			if (source.getEntity() instanceof LivingEntity attacker && attacker != player) {
+				attacker.hurt(player.serverLevel().damageSources().playerAttack(player), amount * 2.0f);
+				attacker.hurtMarked = true;
+			}
+			player.serverLevel().sendParticles(ParticleTypes.FLASH,
+					player.getX(), player.getY() + 1.0, player.getZ(),
+					1, 0, 0, 0, 0);
+			player.serverLevel().sendParticles(ParticleTypes.END_ROD,
+					player.getX(), player.getY() + 1.0, player.getZ(),
+					24, 0.6, 0.6, 0.6, 0.15);
+			player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
+					SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.6f, 1.4f);
 			return false;
 		}
 
@@ -177,7 +195,7 @@ public final class ReinhardController {
 		}
 
 		// Super reflexes: 15% уворот + контр-удар (только если атакующий — LivingEntity и не на КД)
-		long now = player.serverLevel().getGameTime();
+		long now = nowTick;
 		Long lockUntil = COUNTER_LOCKOUT.get(player.getUUID());
 		boolean canCounter = lockUntil == null || now > lockUntil;
 		if (canCounter && source.getEntity() instanceof LivingEntity attacker && attacker != player) {

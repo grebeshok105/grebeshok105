@@ -111,5 +111,12 @@ public final class ClientNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.KratosRageS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> com.example.superheroes.client.ClientKratosRageState.update(payload.rage(), payload.active())));
 
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ReinhardWishOptionsS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> {
+					Minecraft mc = Minecraft.getInstance();
+					mc.setScreen(com.example.superheroes.client.screen.ReinhardWishScreen.of(
+							payload.damageTypeIds(), payload.adaptedDamageTypeIds(),
+							payload.wishesUsed(), payload.wishesMax()));
+				}));
 	}
 }

@@ -469,6 +469,20 @@
   "ability.superheroes.reinhard_wish": "Загадать желание",
   "ability.superheroes.reinhard_wish.desc": "Один раз в 30 секунд получает иммунитет к последнему типу урона. Всего 3 желания на жизнь. После 3-го — +30% входящий урон до конца жизни.",
   "ability.superheroes.reinhard_wish.granted": "Желание исполнено: иммунитет к %s",
+  "ability.superheroes.reinhard_wish.desc_v2": "Открывает меню желаний с последними 5 источниками урона. Выбери 1 и получи к нему иммунитет. 3 желания на жизнь.",
+  "ability.superheroes.reinhard_sword_wave": "Лезвие Ветра",
+  "ability.superheroes.reinhard_sword_wave.desc": "Запускает энергетический полумесяц на 25 блоков. По достойным — 18 урона, по мобам — 9. Пробивает врагов, КД 3с. Требует меч.",
+  "ability.superheroes.reinhard_heavens_strike": "Удар Небес",
+  "ability.superheroes.reinhard_heavens_strike.desc": "Опрокидывает меч в землю — AOE на 7 блоков. По достойным — 22 урона, по мобам — 12. Подбрасывает врагов, КД 10с. Требует меч.",
+  "ability.superheroes.reinhard_counter_riposte": "Парирование",
+  "ability.superheroes.reinhard_counter_riposte.desc": "На 2 секунды входит в стойку парирования: блокирует ВЕСЬ входящий урон и отражает 200% обратно атакующему. КД 12с. Требует меч.",
+  "ability.superheroes.reinhard_counter_riposte.armed": "Стойка парирования активна!",
+  "ability.superheroes.reinhard_divine_aura": "Аура Святого",
+  "ability.superheroes.reinhard_divine_aura.desc": "Тоггл. Враги в радиусе 7 блоков получают Slowness II + Glowing + Weakness. Ты — Resistance II + Strength I. 80 энергии/сек. Требует меч.",
   "ability.superheroes.reinhard.phase_up": "Фаза %s",
-  "ability.superheroes.reinhard.phoenix": "Возрождение Феникса"
+  "ability.superheroes.reinhard.phoenix": "Возрождение Феникса",
+  "screen.superheroes.reinhard_wish.title": "Загадать желание",
+  "screen.superheroes.reinhard_wish.subtitle": "Использовано %s из %s. Выбери источник для иммунитета:",
+  "screen.superheroes.reinhard_wish.cancel": "Отмена",
+  "screen.superheroes.reinhard_wish.already_adapted": "%s (уже адаптирован)"
 }

@@ -24,6 +24,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(DeactivateAbilityC2SPayload.TYPE, DeactivateAbilityC2SPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(BindAbilityResourceC2SPayload.TYPE, BindAbilityResourceC2SPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(SuperJumpC2SPayload.TYPE, SuperJumpC2SPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playC2S().register(ReinhardWishConfirmC2SPayload.TYPE, ReinhardWishConfirmC2SPayload.STREAM_CODEC);
 
 		PayloadTypeRegistry.playS2C().register(ResourceUpdateS2CPayload.TYPE, ResourceUpdateS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(HeroDataSyncS2CPayload.TYPE, HeroDataSyncS2CPayload.STREAM_CODEC);
@@ -41,6 +42,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(AbilityCooldownS2CPayload.TYPE, AbilityCooldownS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(ThanosStonesS2CPayload.TYPE, ThanosStonesS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(KratosRageS2CPayload.TYPE, KratosRageS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(ReinhardWishOptionsS2CPayload.TYPE, ReinhardWishOptionsS2CPayload.STREAM_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(ActivateAbilityC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();
@@ -57,6 +59,10 @@ public final class ModNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(SuperJumpC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();
 			context.server().execute(() -> SuperJumpController.activate(player));
+		});
+		ServerPlayNetworking.registerGlobalReceiver(ReinhardWishConfirmC2SPayload.TYPE, (payload, context) -> {
+			ServerPlayer player = context.player();
+			context.server().execute(() -> com.example.superheroes.ability.ReinhardWishAbility.confirm(player, payload.damageTypeId()));
 		});
 	}
 

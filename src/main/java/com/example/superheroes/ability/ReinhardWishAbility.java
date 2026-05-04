@@ -2,6 +2,8 @@ package com.example.superheroes.ability;
 
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.ReinhardState;
+import com.example.superheroes.network.ReinhardWishOptionsS2CPayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,16 +15,9 @@ import net.minecraft.sounds.SoundSource;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Wish (Загадать желание) — даёт иммунитет к самому свежему типу урона
- * из последних 5 источников. 3 заряда на жизнь, 30s КД между активациями.
- * После 3-х желаний игрок получает +30% входящий урон до конца жизни.
- *
- * Упрощено: вместо radial-меню берём первый из recentDamageTypes (последний источник).
- */
 public final class ReinhardWishAbility implements Ability {
-	private static final int MAX_WISHES = 3;
-	private static final int COOLDOWN_TICKS = 600; // 30s
+	public static final int MAX_WISHES = 3;
+	private static final int COOLDOWN_TICKS = 600;
 
 	@Override
 	public ResourceLocation getId() {
@@ -58,14 +53,35 @@ public final class ReinhardWishAbility implements Ability {
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
 		ReinhardState s = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		ServerLevel level = player.serverLevel();
-		long now = level.getGameTime();
 		List<String> recent = s.recentDamageTypes();
 		if (recent.isEmpty()) return false;
 
-		String pick = recent.get(0);
+		ServerPlayNetworking.send(player, new ReinhardWishOptionsS2CPayload(
+				List.copyOf(recent),
+				List.copyOf(s.adaptedDamageTypes()),
+				s.wishesUsed(),
+				MAX_WISHES
+		));
+
+		ServerLevel level = player.serverLevel();
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 0.6f, 1.8f);
+		return true;
+	}
+
+	public static void confirm(ServerPlayer player, String damageTypeId) {
+		ReinhardState s = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		ServerLevel level = player.serverLevel();
+		long now = level.getGameTime();
+
+		if (s.lastWishTick() != 0 && now - s.lastWishTick() < COOLDOWN_TICKS) return;
+		if (s.wishesUsed() >= MAX_WISHES) return;
+		if (damageTypeId == null || damageTypeId.isEmpty()) return;
+		if (!s.recentDamageTypes().contains(damageTypeId)) return;
+		if (s.adaptedDamageTypes().contains(damageTypeId)) return;
+
 		List<String> adapted = new ArrayList<>(s.adaptedDamageTypes());
-		if (!adapted.contains(pick)) adapted.add(pick);
+		adapted.add(damageTypeId);
 
 		ReinhardState updated = s.withAdaptedDamageTypes(adapted)
 				.withWishesUsed(s.wishesUsed() + 1)
@@ -83,10 +99,9 @@ public final class ReinhardWishAbility implements Ability {
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 1.4f, 1.4f);
 
-		String label = pick.startsWith("minecraft:") ? pick.substring("minecraft:".length()) : pick;
+		String label = damageTypeId.startsWith("minecraft:") ? damageTypeId.substring("minecraft:".length()) : damageTypeId;
 		player.displayClientMessage(
 				Component.translatable("ability.superheroes.reinhard_wish.granted", label),
 				true);
-		return true;
 	}
 }

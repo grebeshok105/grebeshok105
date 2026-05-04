@@ -86,6 +86,10 @@ public final class AbilityRegistry {
 	public static final ReinhardTeleportBehindAbility REINHARD_TELEPORT_BEHIND = new ReinhardTeleportBehindAbility();
 	public static final ReinhardJudgmentMarkAbility REINHARD_JUDGMENT_MARK = new ReinhardJudgmentMarkAbility();
 	public static final ReinhardWishAbility REINHARD_WISH = new ReinhardWishAbility();
+	public static final ReinhardSwordWaveAbility REINHARD_SWORD_WAVE = new ReinhardSwordWaveAbility();
+	public static final ReinhardHeavensStrikeAbility REINHARD_HEAVENS_STRIKE = new ReinhardHeavensStrikeAbility();
+	public static final ReinhardCounterRiposteAbility REINHARD_COUNTER_RIPOSTE = new ReinhardCounterRiposteAbility();
+	public static final ReinhardDivineAuraAbility REINHARD_DIVINE_AURA = new ReinhardDivineAuraAbility();
 
 
 	private AbilityRegistry() {
@@ -158,6 +162,10 @@ public final class AbilityRegistry {
 		register(REINHARD_TELEPORT_BEHIND);
 		register(REINHARD_JUDGMENT_MARK);
 		register(REINHARD_WISH);
+		register(REINHARD_SWORD_WAVE);
+		register(REINHARD_HEAVENS_STRIKE);
+		register(REINHARD_COUNTER_RIPOSTE);
+		register(REINHARD_DIVINE_AURA);
 	}
 
 	public static void register(Ability ability) {

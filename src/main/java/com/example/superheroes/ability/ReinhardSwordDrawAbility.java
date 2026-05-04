@@ -36,7 +36,7 @@ public final class ReinhardSwordDrawAbility implements Ability {
 
 	@Override
 	public float costPerTick() {
-		return 0.5f;
+		return 1.5f;
 	}
 
 	@Override
