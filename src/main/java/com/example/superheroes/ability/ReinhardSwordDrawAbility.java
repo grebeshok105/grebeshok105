@@ -1,10 +1,13 @@
 package com.example.superheroes.ability;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.effect.ReinhardController;
 import com.example.superheroes.effect.ReinhardState;
 import com.example.superheroes.hero.HeroAttributes;
 import com.example.superheroes.item.ModItems;
+import com.example.superheroes.transform.HeroData;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +43,18 @@ public final class ReinhardSwordDrawAbility implements Ability {
 	}
 
 	@Override
+	public boolean canActivate(ServerPlayer player) {
+		return ReinhardController.hasWorthyNearby(player, 30.0);
+	}
+
+	@Override
 	public boolean tryActivate(ServerPlayer player) {
+		if (!ReinhardController.hasWorthyNearby(player, 30.0)) {
+			player.displayClientMessage(
+					Component.translatable("ability.superheroes.reinhard_sword_draw.no_worthy"),
+					true);
+			return false;
+		}
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(true));
 		HeroAttributes.REINHARD_DRAW.apply(player);
@@ -89,5 +103,22 @@ public final class ReinhardSwordDrawAbility implements Ability {
 				player.getInventory().setItem(i, ItemStack.EMPTY);
 			}
 		}
+	}
+
+	public static void forceSheathe(ServerPlayer player) {
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		if (!state.swordDrawn()) return;
+		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
+		HeroAttributes.REINHARD_DRAW.remove(player);
+		removeSword(player);
+		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		if (data.activeAbilities().contains(AbilityIds.REINHARD_SWORD_DRAW)) {
+			data = data.withActive(AbilityIds.REINHARD_SWORD_DRAW, false);
+			player.setAttached(ModAttachments.HERO_DATA, data);
+			com.example.superheroes.network.ModNetworking.syncHeroData(player, data);
+		}
+		player.displayClientMessage(
+				Component.translatable("ability.superheroes.reinhard_sword_draw.sheathed"),
+				true);
 	}
 }

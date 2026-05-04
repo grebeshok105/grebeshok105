@@ -484,5 +484,7 @@
   "screen.superheroes.reinhard_wish.title": "Загадать желание",
   "screen.superheroes.reinhard_wish.subtitle": "Использовано %s из %s. Выбери источник для иммунитета:",
   "screen.superheroes.reinhard_wish.cancel": "Отмена",
-  "screen.superheroes.reinhard_wish.already_adapted": "%s (уже адаптирован)"
+  "screen.superheroes.reinhard_wish.already_adapted": "%s (уже адаптирован)",
+  "ability.superheroes.reinhard_sword_draw.no_worthy": "Поблизости нет достойного соперника",
+  "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл"
 }
