@@ -23,6 +23,7 @@ public class ShadowMonarchsCloakItem extends TransformationItem {
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.shadow_monarchs_cloak.lore.usage", ChatFormatting.YELLOW));
 		tooltip.add(TooltipFrame.bullet("item.superheroes.shadow_monarchs_cloak.lore.untransform", ChatFormatting.LIGHT_PURPLE));
+		TooltipFrame.containsStone(tooltip, com.example.superheroes.item.infinity.InfinityStoneType.REALITY);
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.LIGHT_PURPLE);
 	}
 }

@@ -37,4 +37,14 @@ public final class TooltipFrame {
 	public static Component flavor(String translationKey, ChatFormatting color) {
 		return Component.translatable(translationKey).withStyle(color, ChatFormatting.ITALIC);
 	}
+
+	public static void containsStone(List<Component> tooltip, com.example.superheroes.item.infinity.InfinityStoneType stone) {
+		tooltip.add(Component.empty());
+		Component stoneName = Component.translatable(stone.getStoneNameKey())
+				.withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD);
+		tooltip.add(Component.literal("◆ ").withStyle(ChatFormatting.LIGHT_PURPLE)
+				.append(Component.translatable("tooltip.superheroes.contains_stone").withStyle(ChatFormatting.GRAY))
+				.append(Component.literal(" "))
+				.append(stoneName));
+	}
 }

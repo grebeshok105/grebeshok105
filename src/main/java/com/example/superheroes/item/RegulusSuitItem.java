@@ -23,6 +23,7 @@ public class RegulusSuitItem extends TransformationItem {
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.regulus_suit.lore.usage", ChatFormatting.YELLOW));
 		tooltip.add(TooltipFrame.bullet("item.superheroes.regulus_suit.lore.untransform", ChatFormatting.GOLD));
+		TooltipFrame.containsStone(tooltip, com.example.superheroes.item.infinity.InfinityStoneType.TIME);
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.GOLD);
 	}
 }

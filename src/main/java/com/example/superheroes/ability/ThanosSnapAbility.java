@@ -1,9 +1,13 @@
 package com.example.superheroes.ability;
 
 import com.example.superheroes.effect.ModEffects;
+import com.example.superheroes.effect.ThanosCrossModSnapHook;
 import com.example.superheroes.effect.ThanosGauntletStateController;
 import com.example.superheroes.effect.ThanosSnapWindupController;
+import com.example.superheroes.item.InfinityGauntletItem;
+import com.example.superheroes.item.infinity.InfinityStoneItem;
 import com.example.superheroes.item.infinity.InfinityStoneType;
+import net.minecraft.world.item.ItemStack;
 import com.example.superheroes.particle.ModParticles;
 import com.example.superheroes.sound.ModSounds;
 import net.minecraft.ChatFormatting;
@@ -92,11 +96,15 @@ public final class ThanosSnapAbility implements Ability {
 
 		int snapped = 0;
 		for (Player victim : victims) {
-			victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, DURATION_TICKS, 2, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, DURATION_TICKS, 4, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, DURATION_TICKS, 4, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, DURATION_TICKS, 4, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, DURATION_TICKS, 0, false, true, true));
 			victim.addEffect(new MobEffectInstance(MobEffects.CONFUSION, DURATION_TICKS, 0, false, true, true));
 			victim.addEffect(new MobEffectInstance(ModEffects.SNAPPED, DURATION_TICKS, 0, false, true, true));
 			victim.addEffect(new MobEffectInstance(ModEffects.DISABLED_ABILITIES, DURATION_TICKS, 0, false, true, true));
 			victim.addEffect(new MobEffectInstance(ModEffects.HEAL_BLOCK, DURATION_TICKS, 0, false, true, true));
+			ThanosCrossModSnapHook.revokeHero(victim);
 			level.sendParticles(ModParticles.PURPLE_FLAME,
 					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
 					60, 0.5, 1.0, 0.5, 0.06);
@@ -164,6 +172,45 @@ public final class ThanosSnapAbility implements Ability {
 		player.displayClientMessage(
 				Component.translatable("ability.superheroes.thanos_snap.snapped", snapped)
 						.withStyle(ChatFormatting.LIGHT_PURPLE),
+				false);
+
+		consumeGauntletAndStones(player);
+	}
+
+	private static void consumeGauntletAndStones(ServerPlayer player) {
+		ServerLevel level = player.serverLevel();
+		double cx = player.getX();
+		double cy = player.getY() + 1.0;
+		double cz = player.getZ();
+
+		boolean removed = false;
+		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+			ItemStack stack = player.getInventory().getItem(i);
+			if (stack.isEmpty()) continue;
+			if (stack.getItem() instanceof InfinityGauntletItem || stack.getItem() instanceof InfinityStoneItem) {
+				player.getInventory().setItem(i, ItemStack.EMPTY);
+				removed = true;
+			}
+		}
+		if (!removed) return;
+
+		ThanosGauntletStateController.sendStones(player, java.util.EnumSet.noneOf(InfinityStoneType.class));
+		com.example.superheroes.hero.HeroAttributes.thanosClearStoneModifiers(player);
+
+		level.sendParticles(ParticleTypes.FLASH, cx, cy, cz, 6, 0.4, 0.4, 0.4, 0.0);
+		level.sendParticles(ModParticles.WHITE_BOOM, cx, cy, cz, 200, 2.5, 2.0, 2.5, 0.0);
+		level.sendParticles(ModParticles.PURPLE_FLAME, cx, cy, cz, 400, 3.0, 2.0, 3.0, 0.4);
+		level.sendParticles(ModParticles.SOUL_SPARK, cx, cy, cz, 250, 2.5, 2.0, 2.5, 0.3);
+		level.sendParticles(ModParticles.CHAOS_ORB, cx, cy, cz, 80, 2.0, 1.5, 2.0, 0.2);
+		level.sendParticles(ParticleTypes.LARGE_SMOKE, cx, cy, cz, 60, 1.5, 1.0, 1.5, 0.05);
+
+		level.playSound(null, cx, cy, cz, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 3.0f, 0.8f);
+		level.playSound(null, cx, cy, cz, SoundEvents.AMETHYST_BLOCK_BREAK, SoundSource.PLAYERS, 2.5f, 0.5f);
+		level.playSound(null, cx, cy, cz, SoundEvents.CONDUIT_DEACTIVATE, SoundSource.PLAYERS, 2.0f, 0.7f);
+
+		player.displayClientMessage(
+				Component.translatable("ability.superheroes.thanos_snap.gauntlet_destroyed")
+						.withStyle(ChatFormatting.DARK_PURPLE),
 				false);
 	}
 }

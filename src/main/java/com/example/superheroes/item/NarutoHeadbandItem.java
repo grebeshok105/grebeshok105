@@ -23,6 +23,7 @@ public class NarutoHeadbandItem extends TransformationItem {
 		tooltip.add(Component.empty());
 		tooltip.add(TooltipFrame.bullet("item.superheroes.naruto_headband.lore.usage", ChatFormatting.GOLD));
 		tooltip.add(TooltipFrame.bullet("item.superheroes.naruto_headband.lore.untransform", ChatFormatting.RED));
+		TooltipFrame.containsStone(tooltip, com.example.superheroes.item.infinity.InfinityStoneType.SPACE);
 		TooltipFrame.closeDivider(tooltip, ChatFormatting.YELLOW);
 	}
 }
