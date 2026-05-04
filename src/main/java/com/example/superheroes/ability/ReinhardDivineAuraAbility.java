@@ -40,8 +40,7 @@ public final class ReinhardDivineAuraAbility implements Ability {
 
 	@Override
 	public boolean canActivate(ServerPlayer player) {
-		ReinhardState s = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		return s.swordDrawn();
+		return true;
 	}
 
 	@Override

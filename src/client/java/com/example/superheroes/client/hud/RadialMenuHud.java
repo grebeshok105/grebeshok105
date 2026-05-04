@@ -113,13 +113,11 @@ public final class RadialMenuHud {
 		boolean isDoomsday = ModId.of("doomsday").equals(ClientHeroState.heroId());
 		boolean isThanos = ThanosHero.ID.equals(ClientHeroState.heroId());
 		int doomsdayTier = isDoomsday ? ClientDoomsdayState.tier() : 0;
-		boolean swordDrawn = ClientHeroState.data().isActive(AbilityIds.REINHARD_SWORD_DRAW);
 		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
 		for (ResourceLocation id : base) {
 			if (!ClientMadnessState.isMadness() && AbilityIds.COUNTER_STRIKE.equals(id)) continue;
 			if (isDoomsday && !isDoomsdayUnlocked(id, doomsdayTier)) continue;
 			if (isThanos && !isThanosUnlocked(id)) continue;
-			if (!swordDrawn && AbilityIds.isReinhardSwordOnly(id)) continue;
 			out.add(id);
 		}
 		return out;

@@ -341,16 +341,6 @@ public final class AbilitiesTooltipHud {
 			}
 			return out;
 		}
-		if (ModId.of("reinhard").equals(heroId)) {
-			boolean swordDrawn = ClientHeroState.data().isActive(AbilityIds.REINHARD_SWORD_DRAW);
-			if (swordDrawn) return base;
-			java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
-			for (ResourceLocation id : base) {
-				if (AbilityIds.isReinhardSwordOnly(id)) continue;
-				out.add(id);
-			}
-			return out;
-		}
 		return base;
 	}
 

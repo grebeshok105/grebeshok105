@@ -45,8 +45,7 @@ public final class ReinhardSwordWaveAbility implements Ability {
 
 	@Override
 	public boolean canActivate(ServerPlayer player) {
-		ReinhardState s = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		return s.swordDrawn() && !AbilityCooldowns.isOnCooldown(player, getId());
+		return !AbilityCooldowns.isOnCooldown(player, getId());
 	}
 
 	@Override

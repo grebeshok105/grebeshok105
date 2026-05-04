@@ -25,6 +25,7 @@ public final class AbilityRegistry {
 
 	public static final LionHeartAbility LION_HEART = new LionHeartAbility();
 	public static final ManiaOfGreedAbility MANIA_OF_GREED = new ManiaOfGreedAbility();
+	public static final GreedsEmbraceAbility GREEDS_EMBRACE = new GreedsEmbraceAbility();
 	public static final LionRoarAbility LION_ROAR = new LionRoarAbility();
 	public static final CounterStrikeAbility COUNTER_STRIKE = new CounterStrikeAbility();
 
@@ -110,6 +111,7 @@ public final class AbilityRegistry {
 		register(IRON_MAN_HULKBUSTER);
 		register(LION_HEART);
 		register(MANIA_OF_GREED);
+		register(GREEDS_EMBRACE);
 		register(LION_ROAR);
 		register(COUNTER_STRIKE);
 		register(ARISE);
