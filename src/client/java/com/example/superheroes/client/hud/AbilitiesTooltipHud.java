@@ -5,7 +5,10 @@ import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
+import com.example.superheroes.client.ClientThanosState;
 import com.example.superheroes.hero.HeroTheme;
+import com.example.superheroes.hero.ThanosHero;
+import com.example.superheroes.item.infinity.InfinityStoneType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -252,7 +255,8 @@ public final class AbilitiesTooltipHud {
 		int bulletColor = applyAlpha(ClientHudGlitch.tintColor(theme.energyIcon()), alpha, 1.0f);
 		g.drawString(mc.font, Component.literal("▸ ").withStyle(ChatFormatting.BOLD), x, y + NAME_Y_OFFSET, bulletColor, true);
 
-		List<FormattedCharSequence> lines = mc.font.split(name, maxTextWidth);
+		Component shown = ClientHudGlitch.maybeObfuscate(name);
+		List<FormattedCharSequence> lines = mc.font.split(shown, maxTextWidth);
 		int count = Math.min(MAX_PASSIVE_LINES, lines.size());
 		for (int i = 0; i < count; i++) {
 			FormattedCharSequence line = lines.get(i);
@@ -266,7 +270,7 @@ public final class AbilitiesTooltipHud {
 		boolean glitchSecret = AbilityIds.COUNTER_STRIKE.equals(abilityId) && !ClientMadnessState.isMadness();
 		int iconBg = applyAlpha(0xFF0A0B14, alpha, 1.0f);
 		int iconBorder = applyAlpha(
-				ClientHudGlitch.tintColor(kind == AbilityDescriptions.Kind.TOGGLE ? theme.manaIcon() : theme.energyIcon()),
+				ClientHudGlitch.tintColor(kind == AbilityDescriptions.Kind.TOGGLE ? theme.heroNameColor() : theme.energyIcon()),
 				alpha, 1.0f);
 		int badgeX = x + ClientHudGlitch.badgeJitterX();
 		int badgeY = y + ClientHudGlitch.badgeJitterY();
@@ -289,7 +293,7 @@ public final class AbilitiesTooltipHud {
 		int descColor = applyAlpha(ClientHudGlitch.tintColor(0xFFA2A6B8), alpha, 1.0f);
 		Component desc = glitchSecret
 				? Component.literal("????????????????????").withStyle(ChatFormatting.OBFUSCATED)
-				: Component.translatable(AbilityDescriptions.descKey(abilityId));
+				: ClientHudGlitch.maybeObfuscate(Component.translatable(AbilityDescriptions.descKey(abilityId)));
 
 		List<FormattedCharSequence> descLines = mc.font.split(desc, maxTextWidth);
 		int lineCount = Math.min(MAX_DESC_LINES, descLines.size());
@@ -322,15 +326,29 @@ public final class AbilitiesTooltipHud {
 	}
 
 	private static List<ResourceLocation> filterByTier(List<ResourceLocation> base, ResourceLocation heroId) {
-		if (!ModId.of("doomsday").equals(heroId)) {
-			return base;
+		if (ModId.of("doomsday").equals(heroId)) {
+			int tier = ClientDoomsdayState.tier();
+			java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
+			for (ResourceLocation id : base) {
+				if (isDoomsdayUnlocked(id, tier)) out.add(id);
+			}
+			return out;
 		}
-		int tier = ClientDoomsdayState.tier();
-		java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
-		for (ResourceLocation id : base) {
-			if (isDoomsdayUnlocked(id, tier)) out.add(id);
+		if (ThanosHero.ID.equals(heroId)) {
+			java.util.ArrayList<ResourceLocation> out = new java.util.ArrayList<>(base.size());
+			for (ResourceLocation id : base) {
+				if (isThanosUnlocked(id)) out.add(id);
+			}
+			return out;
 		}
-		return out;
+		return base;
+	}
+
+	private static boolean isThanosUnlocked(ResourceLocation id) {
+		if (ThanosHero.isSnapAbility(id)) return ClientThanosState.hasAllStones();
+		InfinityStoneType req = ThanosHero.getRequiredStoneFor(id);
+		if (req == null) return true;
+		return ClientThanosState.hasStone(req);
 	}
 
 	private static boolean isDoomsdayUnlocked(ResourceLocation id, int tier) {

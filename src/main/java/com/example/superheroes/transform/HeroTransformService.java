@@ -94,6 +94,7 @@ public final class HeroTransformService {
 		com.example.superheroes.effect.UnibeamController.clearState(player.getUUID());
 		com.example.superheroes.effect.RegulusTotemController.clear(player.getUUID());
 		com.example.superheroes.effect.RegulusMadnessController.clearMadness(player);
+		com.example.superheroes.effect.ReinhardController.clearAdaptations(player);
 		HeroData updated = data.withHero(null).withResources(0f, 0f).clearActive();
 		player.setAttached(ModAttachments.HERO_DATA, updated);
 		player.refreshDimensions();
@@ -137,9 +138,14 @@ public final class HeroTransformService {
 
 	public static void onPlayerJoin(ServerPlayer player) {
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		if (data.hasHero() && !data.activeAbilities().isEmpty()) {
+			data = data.clearActive();
+			player.setAttached(ModAttachments.HERO_DATA, data);
+		}
 		if (data.hasHero()) {
 			Hero hero = Heroes.get(data.heroId());
 			if (hero != null) {
+				hero.removePassives(player);
 				hero.applyPassives(player);
 			}
 		}
@@ -148,13 +154,24 @@ public final class HeroTransformService {
 
 	public static void onPlayerRespawn(ServerPlayer newPlayer) {
 		HeroData data = newPlayer.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		if (data.hasHero() && !data.activeAbilities().isEmpty()) {
+			data = data.clearActive();
+			newPlayer.setAttached(ModAttachments.HERO_DATA, data);
+		}
 		if (data.hasHero()) {
 			Hero hero = Heroes.get(data.heroId());
 			if (hero != null) {
+				hero.removePassives(newPlayer);
 				hero.applyPassives(newPlayer);
 			}
 		}
 		ModNetworking.syncHeroData(newPlayer, data);
+	}
+
+	public static void onPlayerDisconnect(ServerPlayer player) {
+		java.util.UUID id = player.getUUID();
+		com.example.superheroes.ability.AbilityCooldowns.clear(id);
+		com.example.superheroes.resource.EnergyLocks.clear(id);
 	}
 
 	private static void deactivateAll(ServerPlayer player, HeroData data) {

@@ -2,6 +2,8 @@ package com.example.superheroes.item;
 
 import com.example.superheroes.ModId;
 import com.example.superheroes.entity.ModEntities;
+import com.example.superheroes.item.infinity.InfinityStoneItem;
+import com.example.superheroes.item.infinity.InfinityStoneType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -95,9 +97,64 @@ public final class ModItems {
 			new VibraniumShieldItem(new Item.Properties().stacksTo(1).durability(2000).rarity(Rarity.EPIC))
 	);
 
-	public static final SlendermanSuitItem SLENDERMAN_SUIT = register(
-			"slenderman_suit",
-			new SlendermanSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	public static final BladeOfChaosItem BLADE_OF_CHAOS = register(
+			"blade_of_chaos",
+			new BladeOfChaosItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final LokiScepterItem LOKI_SCEPTER = register(
+			"loki_scepter",
+			new LokiScepterItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityGauntletItem INFINITY_GAUNTLET = register(
+			"infinity_gauntlet",
+			new InfinityGauntletItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityStoneItem POWER_STONE = register(
+			InfinityStoneType.POWER.getItemRegistryName(),
+			new InfinityStoneItem(InfinityStoneType.POWER, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityStoneItem SPACE_STONE = register(
+			InfinityStoneType.SPACE.getItemRegistryName(),
+			new InfinityStoneItem(InfinityStoneType.SPACE, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityStoneItem REALITY_STONE = register(
+			InfinityStoneType.REALITY.getItemRegistryName(),
+			new InfinityStoneItem(InfinityStoneType.REALITY, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityStoneItem SOUL_STONE = register(
+			InfinityStoneType.SOUL.getItemRegistryName(),
+			new InfinityStoneItem(InfinityStoneType.SOUL, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityStoneItem TIME_STONE = register(
+			InfinityStoneType.TIME.getItemRegistryName(),
+			new InfinityStoneItem(InfinityStoneType.TIME, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final InfinityStoneItem MIND_STONE = register(
+			InfinityStoneType.MIND.getItemRegistryName(),
+			new InfinityStoneItem(InfinityStoneType.MIND, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+	);
+
+	public static final KryptoniteShardItem KRYPTONITE_SHARD = register(
+			"kryptonite_shard",
+			new KryptoniteShardItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE))
+	);
+
+	public static final ReinhardSuitItem REINHARD_SUIT = register(
+			"reinhard_suit",
+			new ReinhardSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final RoyalIcicleItem ROYAL_ICICLE = register(
+			"royal_icicle",
+			new RoyalIcicleItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
 	);
 
 	private ModItems() {

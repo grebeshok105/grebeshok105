@@ -21,6 +21,7 @@ public final class AbilityRegistry {
 	public static final RepulsorAbility REPULSOR = new RepulsorAbility();
 	public static final BoxEspAbility BOX_ESP = new BoxEspAbility();
 	public static final UnibeamAbility UNIBEAM = new UnibeamAbility();
+	public static final IronManHulkbusterAbility IRON_MAN_HULKBUSTER = new IronManHulkbusterAbility();
 
 	public static final LionHeartAbility LION_HEART = new LionHeartAbility();
 	public static final ManiaOfGreedAbility MANIA_OF_GREED = new ManiaOfGreedAbility();
@@ -44,17 +45,52 @@ public final class AbilityRegistry {
 	public static final GokuKamehamehaAbility GOKU_KAMEHAMEHA = new GokuKamehamehaAbility();
 	public static final GokuInstantTransmissionAbility GOKU_INSTANT_TRANSMISSION = new GokuInstantTransmissionAbility();
 	public static final GokuKiChargeAbility GOKU_KI_CHARGE = new GokuKiChargeAbility();
+	public static final GokuSolarFlareAbility GOKU_SOLAR_FLARE = new GokuSolarFlareAbility();
+	public static final GokuSpiritBombAbility GOKU_SPIRIT_BOMB = new GokuSpiritBombAbility();
+	public static final GokuSuperSaiyanAuraAbility GOKU_SUPER_SAIYAN_AURA = new GokuSuperSaiyanAuraAbility();
 
 	public static final NarutoRasenganAbility NARUTO_RASENGAN = new NarutoRasenganAbility();
 	public static final NarutoShadowClonesAbility NARUTO_SHADOW_CLONES = new NarutoShadowClonesAbility();
+	public static final NarutoRasenshurikenAbility NARUTO_RASENSHURIKEN = new NarutoRasenshurikenAbility();
+	public static final NarutoSageModeAbility NARUTO_SAGE_MODE = new NarutoSageModeAbility();
+	public static final NarutoOodamaRasenganAbility NARUTO_OODAMA_RASENGAN = new NarutoOodamaRasenganAbility();
+	public static final NarutoBijuudamaAbility NARUTO_BIJUUDAMA = new NarutoBijuudamaAbility();
 
 	public static final CapShieldThrowAbility CAP_SHIELD_THROW = new CapShieldThrowAbility();
 	public static final CapShieldSlamAbility CAP_SHIELD_SLAM = new CapShieldSlamAbility();
+	public static final CapShieldDashAbility CAP_SHIELD_DASH = new CapShieldDashAbility();
+	public static final CapCounterStanceAbility CAP_COUNTER_STANCE = new CapCounterStanceAbility();
 
-	public static final SlenderBlinkAbility SLENDER_BLINK = new SlenderBlinkAbility();
-	public static final SlenderTendrilsAbility SLENDER_TENDRILS = new SlenderTendrilsAbility();
-	public static final SlenderPhaseStalkAbility SLENDER_PHASE_STALK = new SlenderPhaseStalkAbility();
-	public static final SlenderStaticFieldAbility SLENDER_STATIC_FIELD = new SlenderStaticFieldAbility();
+	public static final KratosSpartanRageAbility KRATOS_SPARTAN_RAGE = new KratosSpartanRageAbility();
+	public static final KratosBladeStormAbility KRATOS_BLADE_STORM = new KratosBladeStormAbility();
+	public static final KratosChainWhirlAbility KRATOS_CHAIN_WHIRL = new KratosChainWhirlAbility();
+	public static final KratosLeviathanThrowAbility KRATOS_LEVIATHAN_THROW = new KratosLeviathanThrowAbility();
+	public static final KratosGodSlayerAbility KRATOS_GOD_SLAYER = new KratosGodSlayerAbility();
+
+	public static final LokiAstralClonesAbility LOKI_ASTRAL_CLONES = new LokiAstralClonesAbility();
+	public static final LokiTesseractBlinkAbility LOKI_TESSERACT_BLINK = new LokiTesseractBlinkAbility();
+	public static final LokiMindCharmAbility LOKI_MIND_CHARM = new LokiMindCharmAbility();
+	public static final LokiGlamourAbility LOKI_GLAMOUR = new LokiGlamourAbility();
+	public static final LokiChaosBoltAbility LOKI_CHAOS_BOLT = new LokiChaosBoltAbility();
+
+	public static final ThanosCosmicSlamAbility THANOS_COSMIC_SLAM = new ThanosCosmicSlamAbility();
+	public static final ThanosRealityTearAbility THANOS_REALITY_TEAR = new ThanosRealityTearAbility();
+	public static final ThanosMindPulseAbility THANOS_MIND_PULSE = new ThanosMindPulseAbility();
+	public static final ThanosTimeRewindAbility THANOS_TIME_REWIND = new ThanosTimeRewindAbility();
+	public static final ThanosSpacePortalAbility THANOS_SPACE_PORTAL = new ThanosSpacePortalAbility();
+	public static final ThanosSoulPulseAbility THANOS_SOUL_PULSE = new ThanosSoulPulseAbility();
+	public static final ThanosSnapAbility THANOS_SNAP = new ThanosSnapAbility();
+
+	public static final ReinhardSwordDrawAbility REINHARD_SWORD_DRAW = new ReinhardSwordDrawAbility();
+	public static final ReinhardAirSlashAbility REINHARD_AIR_SLASH = new ReinhardAirSlashAbility();
+	public static final ReinhardTeleportBehindAbility REINHARD_TELEPORT_BEHIND = new ReinhardTeleportBehindAbility();
+	public static final ReinhardJudgmentMarkAbility REINHARD_JUDGMENT_MARK = new ReinhardJudgmentMarkAbility();
+	public static final ReinhardWishAbility REINHARD_WISH = new ReinhardWishAbility();
+	public static final ReinhardSwordWaveAbility REINHARD_SWORD_WAVE = new ReinhardSwordWaveAbility();
+	public static final ReinhardHeavensStrikeAbility REINHARD_HEAVENS_STRIKE = new ReinhardHeavensStrikeAbility();
+	public static final ReinhardCounterRiposteAbility REINHARD_COUNTER_RIPOSTE = new ReinhardCounterRiposteAbility();
+	public static final ReinhardDivineAuraAbility REINHARD_DIVINE_AURA = new ReinhardDivineAuraAbility();
+
 
 	private AbilityRegistry() {
 	}
@@ -71,6 +107,7 @@ public final class AbilityRegistry {
 		register(REPULSOR);
 		register(BOX_ESP);
 		register(UNIBEAM);
+		register(IRON_MAN_HULKBUSTER);
 		register(LION_HEART);
 		register(MANIA_OF_GREED);
 		register(LION_ROAR);
@@ -90,14 +127,45 @@ public final class AbilityRegistry {
 		register(GOKU_KAMEHAMEHA);
 		register(GOKU_INSTANT_TRANSMISSION);
 		register(GOKU_KI_CHARGE);
+		register(GOKU_SOLAR_FLARE);
+		register(GOKU_SPIRIT_BOMB);
+		register(GOKU_SUPER_SAIYAN_AURA);
 		register(NARUTO_RASENGAN);
 		register(NARUTO_SHADOW_CLONES);
+		register(NARUTO_RASENSHURIKEN);
+		register(NARUTO_SAGE_MODE);
+		register(NARUTO_OODAMA_RASENGAN);
+		register(NARUTO_BIJUUDAMA);
 		register(CAP_SHIELD_THROW);
 		register(CAP_SHIELD_SLAM);
-		register(SLENDER_BLINK);
-		register(SLENDER_TENDRILS);
-		register(SLENDER_PHASE_STALK);
-		register(SLENDER_STATIC_FIELD);
+		register(CAP_SHIELD_DASH);
+		register(CAP_COUNTER_STANCE);
+		register(KRATOS_SPARTAN_RAGE);
+		register(KRATOS_BLADE_STORM);
+		register(KRATOS_CHAIN_WHIRL);
+		register(KRATOS_LEVIATHAN_THROW);
+		register(KRATOS_GOD_SLAYER);
+		register(LOKI_ASTRAL_CLONES);
+		register(LOKI_TESSERACT_BLINK);
+		register(LOKI_MIND_CHARM);
+		register(LOKI_GLAMOUR);
+		register(LOKI_CHAOS_BOLT);
+		register(THANOS_COSMIC_SLAM);
+		register(THANOS_REALITY_TEAR);
+		register(THANOS_MIND_PULSE);
+		register(THANOS_TIME_REWIND);
+		register(THANOS_SPACE_PORTAL);
+		register(THANOS_SOUL_PULSE);
+		register(THANOS_SNAP);
+		register(REINHARD_SWORD_DRAW);
+		register(REINHARD_AIR_SLASH);
+		register(REINHARD_TELEPORT_BEHIND);
+		register(REINHARD_JUDGMENT_MARK);
+		register(REINHARD_WISH);
+		register(REINHARD_SWORD_WAVE);
+		register(REINHARD_HEAVENS_STRIKE);
+		register(REINHARD_COUNTER_RIPOSTE);
+		register(REINHARD_DIVINE_AURA);
 	}
 
 	public static void register(Ability ability) {

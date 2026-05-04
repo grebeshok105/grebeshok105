@@ -9,7 +9,10 @@
 		"LivingEntityFallDamageMixin",
 		"LivingEntityFallFlyingMixin",
 		"LivingEntityEffectMixin",
-		"SlenderDodgeMixin"
+		"LivingEntityHealBlockMixin",
+		"ThanosBlockBreakingMixin",
+		"KryptoniteShardPickupMixin",
+		"RoyalIcicleNoDropMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

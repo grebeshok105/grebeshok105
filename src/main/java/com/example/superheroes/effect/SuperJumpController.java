@@ -2,8 +2,15 @@ package com.example.superheroes.effect;
 
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.hero.DoomsdayHero;
+import com.example.superheroes.hero.KratosHero;
+import com.example.superheroes.hero.NarutoHero;
 import com.example.superheroes.hero.RegulusHero;
+import com.example.superheroes.hero.ReinhardHero;
+import com.example.superheroes.hero.ThanosHero;
 import com.example.superheroes.transform.HeroData;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.Set;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -22,8 +29,17 @@ public final class SuperJumpController {
 	private static final int COOLDOWN_TICKS = 40;
 	private static final int IMMUNITY_LIFE_TICKS = 400;
 
-	private static final Map<UUID, Integer> COOLDOWN = new ConcurrentHashMap<>();
-	private static final Map<UUID, Integer> FALL_IMMUNITY_UNTIL = new ConcurrentHashMap<>();
+	private static final Set<ResourceLocation> ALLOWED_HEROES = Set.of(
+			RegulusHero.ID,
+			DoomsdayHero.ID,
+			KratosHero.ID,
+			ThanosHero.ID,
+			NarutoHero.ID,
+			ReinhardHero.ID
+	);
+
+	private static final Map<UUID, Long> COOLDOWN = new ConcurrentHashMap<>();
+	private static final Map<UUID, Long> FALL_IMMUNITY_UNTIL = new ConcurrentHashMap<>();
 
 	private SuperJumpController() {
 	}
@@ -31,11 +47,11 @@ public final class SuperJumpController {
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-				Integer until = FALL_IMMUNITY_UNTIL.get(player.getUUID());
+				Long until = FALL_IMMUNITY_UNTIL.get(player.getUUID());
 				if (until == null) {
 					continue;
 				}
-				if (player.tickCount >= until) {
+				if (player.level().getGameTime() >= until) {
 					FALL_IMMUNITY_UNTIL.remove(player.getUUID());
 				} else if (player.onGround() && player.getDeltaMovement().y <= 0.0) {
 					player.fallDistance = 0f;
@@ -50,16 +66,17 @@ public final class SuperJumpController {
 		if (!data.hasHero()) {
 			return;
 		}
-		if (!RegulusHero.ID.equals(data.heroId()) && !DoomsdayHero.ID.equals(data.heroId())) {
+		if (!ALLOWED_HEROES.contains(data.heroId())) {
 			return;
 		}
 		UUID id = player.getUUID();
-		Integer ready = COOLDOWN.get(id);
-		if (ready != null && player.tickCount < ready) {
+		long now = player.level().getGameTime();
+		Long ready = COOLDOWN.get(id);
+		if (ready != null && now < ready) {
 			return;
 		}
-		COOLDOWN.put(id, player.tickCount + COOLDOWN_TICKS);
-		FALL_IMMUNITY_UNTIL.put(id, player.tickCount + IMMUNITY_LIFE_TICKS);
+		COOLDOWN.put(id, now + COOLDOWN_TICKS);
+		FALL_IMMUNITY_UNTIL.put(id, now + IMMUNITY_LIFE_TICKS);
 
 		Vec3 v = player.getDeltaMovement();
 		player.setDeltaMovement(v.x, JUMP_VELOCITY, v.z);
@@ -85,8 +102,8 @@ public final class SuperJumpController {
 	}
 
 	public static boolean hasFallImmunity(Player player) {
-		Integer until = FALL_IMMUNITY_UNTIL.get(player.getUUID());
-		return until != null && player.tickCount < until;
+		Long until = FALL_IMMUNITY_UNTIL.get(player.getUUID());
+		return until != null && player.level().getGameTime() < until;
 	}
 
 	public static void clear(UUID id) {

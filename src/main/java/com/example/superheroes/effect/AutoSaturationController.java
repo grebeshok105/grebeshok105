@@ -2,6 +2,7 @@ package com.example.superheroes.effect;
 
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.hero.CaptainAmericaHero;
+import com.example.superheroes.hero.KratosHero;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +29,7 @@ public final class AutoSaturationController {
 				ResourceLocation heroId = data.heroId();
 				int targetFood = DEFAULT_FOOD;
 				float targetSaturation = DEFAULT_SATURATION;
-				if (heroId != null && CaptainAmericaHero.ID.equals(heroId)) {
+				if (heroId != null && (CaptainAmericaHero.ID.equals(heroId) || KratosHero.ID.equals(heroId))) {
 					targetFood = CAP_FOOD;
 					targetSaturation = CAP_SATURATION;
 				}

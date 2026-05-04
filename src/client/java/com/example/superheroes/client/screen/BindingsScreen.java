@@ -3,6 +3,9 @@ package com.example.superheroes.client.screen;
 import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
+import com.example.superheroes.client.ClientThanosState;
+import com.example.superheroes.hero.ThanosHero;
+import com.example.superheroes.item.infinity.InfinityStoneType;
 import com.example.superheroes.network.BindAbilityResourceC2SPayload;
 import com.example.superheroes.resource.ResourceKind;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -28,8 +31,10 @@ public class BindingsScreen extends Screen {
 		List<ResourceLocation> source = ClientHeroState.abilities();
 		List<ResourceLocation> abilities = new ArrayList<>(source.size());
 		boolean madness = ClientMadnessState.isMadness();
+		boolean isThanos = ThanosHero.ID.equals(ClientHeroState.heroId());
 		for (ResourceLocation id : source) {
 			if (!madness && AbilityIds.COUNTER_STRIKE.equals(id)) continue;
+			if (isThanos && !isThanosUnlocked(id)) continue;
 			abilities.add(id);
 		}
 		int rows = abilities.size();
@@ -65,6 +70,13 @@ public class BindingsScreen extends Screen {
 				btn -> this.onClose()
 		).pos(xCenter - 50, yStart + totalHeight + 16).size(100, BUTTON_HEIGHT).build();
 		this.addRenderableWidget(done);
+	}
+
+	private static boolean isThanosUnlocked(ResourceLocation id) {
+		if (ThanosHero.isSnapAbility(id)) return ClientThanosState.hasAllStones();
+		InfinityStoneType req = ThanosHero.getRequiredStoneFor(id);
+		if (req == null) return true;
+		return ClientThanosState.hasStone(req);
 	}
 
 	private Component buildLabel(ResourceLocation abilityId, ResourceKind kind) {

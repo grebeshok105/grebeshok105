@@ -49,6 +49,7 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.SuperJumpController.init();
 		com.example.superheroes.effect.AutoSaturationController.init();
 		com.example.superheroes.effect.HomelanderRegenController.init();
+		com.example.superheroes.effect.HeroPassiveRegenController.init();
 		com.example.superheroes.effect.IronFistsController.init();
 		com.example.superheroes.effect.UraniumDefenseController.init();
 		com.example.superheroes.effect.UraniumOffhandController.init();
@@ -59,9 +60,15 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.DoomsdayFootstepsController.init();
 		com.example.superheroes.effect.DoomsdayTierController.init();
 		com.example.superheroes.effect.GokuKiStackController.init();
+		com.example.superheroes.effect.GokuKiResilienceController.init();
+		com.example.superheroes.effect.NarutoWallRunController.init();
 		com.example.superheroes.effect.KawarimiController.init();
-		com.example.superheroes.effect.SlendermanStaticController.init();
-		com.example.superheroes.effect.SlendermanFieldController.init();
+		com.example.superheroes.effect.ThanosGauntletStateController.init();
+		com.example.superheroes.effect.KratosRageController.init();
+		com.example.superheroes.effect.KratosHandStrikeFxController.init();
+		com.example.superheroes.effect.DoomsdayKryptoniteController.init();
+		com.example.superheroes.effect.ThanosStoneRewardController.init();
+		com.example.superheroes.effect.ReinhardController.init();
 		SuperheroesCommands.init();
 
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -69,13 +76,28 @@ public class SuperheroesMod implements ModInitializer {
 			for (ServerPlayer p : server.getPlayerList().getPlayers()) {
 				com.example.superheroes.ability.ChargeTackleAbility.serverTick(p);
 				com.example.superheroes.ability.GokuKamehamehaAbility.serverTick(p);
+				com.example.superheroes.ability.GokuSpiritBombAbility.serverTick(p);
 				com.example.superheroes.ability.NarutoRasenganAbility.serverTick(p);
+				com.example.superheroes.ability.NarutoOodamaRasenganAbility.serverTick(p);
+				com.example.superheroes.ability.NarutoRasenshurikenAbility.serverTick(p);
 				com.example.superheroes.ability.CapShieldSlamAbility.serverTick(p);
+				com.example.superheroes.transform.HeroData data = p
+						.getAttachedOrCreate(com.example.superheroes.attachment.ModAttachments.HERO_DATA);
+				if (data.isActive(com.example.superheroes.ability.AbilityIds.NARUTO_SAGE_MODE)) {
+					com.example.superheroes.ability.NarutoSageModeAbility.serverTick(p);
+				}
+				if (data.isActive(com.example.superheroes.ability.AbilityIds.GOKU_SUPER_SAIYAN_AURA)) {
+					com.example.superheroes.ability.GokuSuperSaiyanAuraAbility.serverTick(p);
+				}
 			}
 		});
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			HeroTransformService.onPlayerJoin(handler.getPlayer());
+		});
+
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			HeroTransformService.onPlayerDisconnect(handler.getPlayer());
 		});
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {

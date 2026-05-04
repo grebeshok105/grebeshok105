@@ -1,5 +1,7 @@
 package com.example.superheroes.ability;
 
+import com.example.superheroes.network.AbilityCooldownS2CPayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -14,9 +16,10 @@ public final class AbilityCooldowns {
 	}
 
 	public static void setCooldownTicks(ServerPlayer player, ResourceLocation abilityId, int ticks) {
-		long deadline = player.tickCount + ticks;
+		long deadline = player.level().getGameTime() + ticks;
 		MAP.computeIfAbsent(player.getUUID(), k -> new ConcurrentHashMap<>())
 				.put(abilityId, deadline);
+		ServerPlayNetworking.send(player, new AbilityCooldownS2CPayload(abilityId, ticks));
 	}
 
 	public static boolean isOnCooldown(ServerPlayer player, ResourceLocation abilityId) {
@@ -24,7 +27,7 @@ public final class AbilityCooldowns {
 		if (m == null) return false;
 		Long deadline = m.get(abilityId);
 		if (deadline == null) return false;
-		if (player.tickCount >= deadline) {
+		if (player.level().getGameTime() >= deadline) {
 			m.remove(abilityId);
 			return false;
 		}
@@ -36,7 +39,7 @@ public final class AbilityCooldowns {
 		if (m == null) return 0;
 		Long deadline = m.get(abilityId);
 		if (deadline == null) return 0;
-		long left = deadline - player.tickCount;
+		long left = deadline - player.level().getGameTime();
 		return left > 0 ? (int) left : 0;
 	}
 

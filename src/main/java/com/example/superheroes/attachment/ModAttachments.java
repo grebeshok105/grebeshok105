@@ -3,6 +3,7 @@ package com.example.superheroes.attachment;
 import com.example.superheroes.ModId;
 import com.example.superheroes.effect.DoomsdayProgress;
 import com.example.superheroes.effect.RegulusMadnessState;
+import com.example.superheroes.effect.ReinhardState;
 import com.example.superheroes.transform.HeroData;
 import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -30,6 +31,12 @@ public final class ModAttachments {
 			.persistent(DoomsdayProgress.CODEC)
 			.copyOnDeath()
 			.buildAndRegister(ModId.of("doomsday_progress"));
+
+	public static final AttachmentType<ReinhardState> REINHARD_STATE = AttachmentRegistry.<ReinhardState>builder()
+			.initializer(() -> ReinhardState.EMPTY)
+			.persistent(ReinhardState.CODEC)
+			.copyOnDeath()
+			.buildAndRegister(ModId.of("reinhard_state"));
 
 	private ModAttachments() {
 	}

@@ -8,7 +8,6 @@ import com.example.superheroes.client.hud.MadnessHudOverlay;
 import com.example.superheroes.client.hud.RadialMenuHud;
 import com.example.superheroes.client.hud.ReactorOverlayHud;
 import com.example.superheroes.client.hud.ResourceBarHud;
-import com.example.superheroes.client.hud.LowResourceVignetteHud;
 import com.example.superheroes.client.hud.ScreenFlashHud;
 import com.example.superheroes.client.hud.SunWindupHud;
 import com.example.superheroes.client.fx.ScreenShakeManager;
@@ -27,8 +26,8 @@ import com.example.superheroes.network.SuperJumpC2SPayload;
 import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -78,21 +77,24 @@ public class SuperheroesClient implements ClientModInitializer {
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		ParticleFactoryRegistry.getInstance().register(ModParticles.SUN_PARTICLE,
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SOUL_SPARK,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.NIGHTFALL,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.CHAOS_ORB,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_1,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_2,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_3,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		com.example.superheroes.client.config.SuperheroesClientConfig.load();
 
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> switch (tintIndex) {
-			case 1 -> 0xFFC1272D;
-			case 2 -> 0xFFFFFFFF;
-			case 3 -> 0xFFC1272D;
-			case 4 -> 0xFF1A4F8B;
-			case 5 -> 0xFFFFFFFF;
-			default -> 0xFFFFFFFF;
-		}, ModItems.VIBRANIUM_SHIELD);
-
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
-			LowResourceVignetteHud.render(graphics, tracker);
 			JarvisOverlayHud.render(graphics, tracker);
 			ResourceBarHud.render(graphics, tracker);
+			com.example.superheroes.client.hud.SpartanRageHud.render(graphics, tracker);
 			AbilitiesTooltipHud.render(graphics, tracker);
 			RadialMenuHud.render(graphics, tracker);
 			ScreenFlashHud.render(graphics, tracker);
@@ -104,8 +106,6 @@ public class SuperheroesClient implements ClientModInitializer {
 			com.example.superheroes.client.hud.UraniumThreatHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);
-			com.example.superheroes.client.hud.SlenderStaticHud.render(graphics, tracker);
-			com.example.superheroes.client.hud.SlenderJumpscareHud.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -138,12 +138,14 @@ public class SuperheroesClient implements ClientModInitializer {
 					if (client.player == null || !ClientHeroState.data().hasHero()) {
 						continue;
 					}
-					List<ResourceLocation> abilities = ClientHeroState.abilities();
+					List<ResourceLocation> abilities = ClientAbilityFilter.visible();
 					if (i < abilities.size()) {
 						ClientPlayNetworking.send(new ActivateAbilityC2SPayload(abilities.get(i)));
 					}
 				}
 			}
 		});
+
+
 	}
 }

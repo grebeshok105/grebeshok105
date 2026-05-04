@@ -74,15 +74,58 @@ public final class HeroAttributes {
 	public static final ResourceLocation CAP_HP = ModId.of("modifiers/captain_america/max_health");
 	public static final ResourceLocation CAP_KNOCKBACK = ModId.of("modifiers/captain_america/knockback_resistance");
 
-	public static final ResourceLocation SLENDERMAN_ARMOR = ModId.of("modifiers/slenderman/armor");
-	public static final ResourceLocation SLENDERMAN_TOUGHNESS = ModId.of("modifiers/slenderman/toughness");
-	public static final ResourceLocation SLENDERMAN_DAMAGE = ModId.of("modifiers/slenderman/damage");
-	public static final ResourceLocation SLENDERMAN_SPEED = ModId.of("modifiers/slenderman/speed");
-	public static final ResourceLocation SLENDERMAN_HP = ModId.of("modifiers/slenderman/max_health");
-	public static final ResourceLocation SLENDERMAN_KNOCKBACK = ModId.of("modifiers/slenderman/knockback_resistance");
-	public static final ResourceLocation SLENDERMAN_REACH = ModId.of("modifiers/slenderman/entity_reach");
-	public static final ResourceLocation SLENDERMAN_STEP = ModId.of("modifiers/slenderman/step_height");
-	public static final ResourceLocation SLENDERMAN_SCALE = ModId.of("modifiers/slenderman/scale");
+	public static final ResourceLocation KRATOS_ARMOR = ModId.of("modifiers/kratos/armor");
+	public static final ResourceLocation KRATOS_TOUGHNESS = ModId.of("modifiers/kratos/toughness");
+	public static final ResourceLocation KRATOS_DAMAGE = ModId.of("modifiers/kratos/damage");
+	public static final ResourceLocation KRATOS_ATTACK_SPEED = ModId.of("modifiers/kratos/attack_speed");
+	public static final ResourceLocation KRATOS_HP = ModId.of("modifiers/kratos/max_health");
+	public static final ResourceLocation KRATOS_KNOCKBACK = ModId.of("modifiers/kratos/knockback_resistance");
+	public static final ResourceLocation KRATOS_REACH = ModId.of("modifiers/kratos/entity_reach");
+	public static final ResourceLocation KRATOS_STEP = ModId.of("modifiers/kratos/step_height");
+	public static final ResourceLocation KRATOS_RAGE_DAMAGE = ModId.of("modifiers/kratos/rage_damage");
+	public static final ResourceLocation KRATOS_RAGE_SPEED = ModId.of("modifiers/kratos/rage_speed");
+
+	public static final ResourceLocation LOKI_ARMOR = ModId.of("modifiers/loki/armor");
+	public static final ResourceLocation LOKI_DAMAGE = ModId.of("modifiers/loki/damage");
+	public static final ResourceLocation LOKI_SPEED = ModId.of("modifiers/loki/speed");
+	public static final ResourceLocation LOKI_HP = ModId.of("modifiers/loki/max_health");
+	public static final ResourceLocation LOKI_JUMP = ModId.of("modifiers/loki/jump_strength");
+	public static final ResourceLocation LOKI_KNOCKBACK = ModId.of("modifiers/loki/knockback_resistance");
+
+	public static final ResourceLocation THANOS_ARMOR = ModId.of("modifiers/thanos/armor");
+	public static final ResourceLocation THANOS_TOUGHNESS = ModId.of("modifiers/thanos/toughness");
+	public static final ResourceLocation THANOS_DAMAGE = ModId.of("modifiers/thanos/damage");
+	public static final ResourceLocation THANOS_HP = ModId.of("modifiers/thanos/max_health");
+	public static final ResourceLocation THANOS_KNOCKBACK = ModId.of("modifiers/thanos/knockback_resistance");
+	public static final ResourceLocation THANOS_REACH = ModId.of("modifiers/thanos/entity_reach");
+	public static final ResourceLocation THANOS_STEP = ModId.of("modifiers/thanos/step_height");
+	public static final ResourceLocation THANOS_JUMP = ModId.of("modifiers/thanos/jump_strength");
+	public static final ResourceLocation THANOS_SCALE = ModId.of("modifiers/thanos/scale");
+
+	public static final ResourceLocation REINHARD_ARMOR = ModId.of("modifiers/reinhard/armor");
+	public static final ResourceLocation REINHARD_TOUGHNESS = ModId.of("modifiers/reinhard/toughness");
+	public static final ResourceLocation REINHARD_DAMAGE = ModId.of("modifiers/reinhard/damage");
+	public static final ResourceLocation REINHARD_SPEED = ModId.of("modifiers/reinhard/speed");
+	public static final ResourceLocation REINHARD_HP = ModId.of("modifiers/reinhard/max_health");
+	public static final ResourceLocation REINHARD_KNOCKBACK = ModId.of("modifiers/reinhard/knockback_resistance");
+	public static final ResourceLocation REINHARD_ATTACK_SPEED = ModId.of("modifiers/reinhard/attack_speed");
+	public static final ResourceLocation REINHARD_JUMP = ModId.of("modifiers/reinhard/jump_strength");
+	public static final ResourceLocation REINHARD_STEP = ModId.of("modifiers/reinhard/step_height");
+	public static final ResourceLocation REINHARD_REACH = ModId.of("modifiers/reinhard/entity_reach");
+
+	public static final ResourceLocation REINHARD_PHASE_DAMAGE = ModId.of("modifiers/reinhard/phase_damage");
+	public static final ResourceLocation REINHARD_PHASE_ARMOR = ModId.of("modifiers/reinhard/phase_armor");
+	public static final ResourceLocation REINHARD_PHASE_TOUGHNESS = ModId.of("modifiers/reinhard/phase_toughness");
+	public static final ResourceLocation REINHARD_PHASE_HP = ModId.of("modifiers/reinhard/phase_max_health");
+	public static final ResourceLocation REINHARD_PHASE_SPEED = ModId.of("modifiers/reinhard/phase_speed");
+
+	public static final ResourceLocation REINHARD_DRAW_DAMAGE = ModId.of("modifiers/reinhard/draw_damage");
+	public static final ResourceLocation REINHARD_DRAW_SPEED = ModId.of("modifiers/reinhard/draw_speed");
+	public static final ResourceLocation REINHARD_DRAW_JUMP = ModId.of("modifiers/reinhard/draw_jump");
+	public static final ResourceLocation REINHARD_DRAW_ATTACK_SPEED = ModId.of("modifiers/reinhard/draw_attack_speed");
+
+
+
 
 	public static final AttributeModifierSet HOMELANDER = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, HOMELANDER_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
@@ -93,12 +136,36 @@ public final class HeroAttributes {
 			.add(Attributes.KNOCKBACK_RESISTANCE, HOMELANDER_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
+	public static final ResourceLocation IRON_MAN_HP = ModId.of("modifiers/iron_man/max_health");
+
 	public static final AttributeModifierSet IRON_MAN = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, IRON_MAN_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, IRON_MAN_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, 7.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, IRON_MAN_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	/** Hulkbuster mode: больший масштаб, грубая прочность, экстра-урон, движение чуть медленнее. */
+	public static final ResourceLocation HULKBUSTER_ARMOR = ModId.of("modifiers/iron_man/hulkbuster_armor");
+	public static final ResourceLocation HULKBUSTER_TOUGHNESS = ModId.of("modifiers/iron_man/hulkbuster_toughness");
+	public static final ResourceLocation HULKBUSTER_DAMAGE = ModId.of("modifiers/iron_man/hulkbuster_damage");
+	public static final ResourceLocation HULKBUSTER_SPEED = ModId.of("modifiers/iron_man/hulkbuster_speed");
+	public static final ResourceLocation HULKBUSTER_HP = ModId.of("modifiers/iron_man/hulkbuster_max_health");
+	public static final ResourceLocation HULKBUSTER_SCALE = ModId.of("modifiers/iron_man/hulkbuster_scale");
+	public static final ResourceLocation HULKBUSTER_REACH = ModId.of("modifiers/iron_man/hulkbuster_reach");
+	public static final ResourceLocation HULKBUSTER_STEP = ModId.of("modifiers/iron_man/hulkbuster_step");
+
+	public static final AttributeModifierSet HULKBUSTER = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, HULKBUSTER_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, HULKBUSTER_TOUGHNESS, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, HULKBUSTER_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, HULKBUSTER_SPEED, -0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, HULKBUSTER_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SCALE, HULKBUSTER_SCALE, 0.20, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, HULKBUSTER_REACH, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, HULKBUSTER_STEP, 0.5, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet REGULUS = AttributeModifierSet.builder()
@@ -148,36 +215,123 @@ public final class HeroAttributes {
 			.build();
 
 	public static final AttributeModifierSet NARUTO = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, NARUTO_ARMOR, 12.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, NARUTO_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, NARUTO_DAMAGE, 7.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, NARUTO_SPEED, 0.35, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.ATTACK_SPEED, NARUTO_ATTACK_SPEED, 2.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MAX_HEALTH, NARUTO_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, NARUTO_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.JUMP_STRENGTH, NARUTO_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.STEP_HEIGHT, NARUTO_STEP, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, NARUTO_ARMOR, 22.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, NARUTO_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, NARUTO_DAMAGE, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, NARUTO_SPEED, 0.55, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ATTACK_SPEED, NARUTO_ATTACK_SPEED, 3.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, NARUTO_HP, 40.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, NARUTO_KNOCKBACK, 0.7, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, NARUTO_JUMP, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, NARUTO_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
+
+	public static final ResourceLocation CAP_SPEED = ModId.of("modifiers/captain_america/speed");
+	public static final ResourceLocation CAP_ATTACK_SPEED = ModId.of("modifiers/captain_america/attack_speed");
 
 	public static final AttributeModifierSet CAPTAIN_AMERICA = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, CAP_ARMOR, 25.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 4.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MAX_HEALTH, CAP_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, CAP_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, CAP_ATTACK_SPEED, 2.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, CAP_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, CAP_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
-	public static final AttributeModifierSet SLENDERMAN = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, SLENDERMAN_ARMOR, 5.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, SLENDERMAN_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, SLENDERMAN_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MOVEMENT_SPEED, SLENDERMAN_SPEED, 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.MAX_HEALTH, SLENDERMAN_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, SLENDERMAN_KNOCKBACK, 0.5, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ENTITY_INTERACTION_RANGE, SLENDERMAN_REACH, 1.5, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.STEP_HEIGHT, SLENDERMAN_STEP, 0.4, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.SCALE, SLENDERMAN_SCALE, 0.15, AttributeModifier.Operation.ADD_VALUE)
+	public static final AttributeModifierSet KRATOS = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, KRATOS_ARMOR, 18.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, KRATOS_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_DAMAGE, 2.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, KRATOS_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, KRATOS_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, KRATOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, KRATOS_REACH, 1.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, KRATOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
+
+	public static final ResourceLocation KRATOS_RAGE_ARMOR = ModId.of("modifiers/kratos/rage_armor");
+	public static final ResourceLocation KRATOS_RAGE_TOUGHNESS = ModId.of("modifiers/kratos/rage_toughness");
+	public static final ResourceLocation KRATOS_RAGE_HP = ModId.of("modifiers/kratos/rage_hp");
+	public static final ResourceLocation KRATOS_RAGE_KB = ModId.of("modifiers/kratos/rage_kb");
+	public static final ResourceLocation KRATOS_RAGE_FLAT = ModId.of("modifiers/kratos/rage_flat");
+
+	public static final AttributeModifierSet KRATOS_RAGE = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_RAGE_FLAT, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, KRATOS_RAGE_DAMAGE, 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+			.add(Attributes.MOVEMENT_SPEED, KRATOS_RAGE_SPEED, 0.30, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ARMOR, KRATOS_RAGE_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, KRATOS_RAGE_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, KRATOS_RAGE_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, KRATOS_RAGE_KB, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet LOKI = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, LOKI_ARMOR, 18.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, ModId.of("modifiers/loki/toughness"), 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, LOKI_DAMAGE, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, ModId.of("modifiers/loki/attack_speed"), 2.2, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, LOKI_SPEED, 0.60, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, LOKI_HP, 24.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, LOKI_JUMP, 0.7, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, LOKI_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SAFE_FALL_DISTANCE, ModId.of("modifiers/loki/safe_fall"), 16.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, ModId.of("modifiers/loki/reach"), 0.8, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet THANOS = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, THANOS_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, THANOS_TOUGHNESS, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, THANOS_DAMAGE, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, THANOS_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, THANOS_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, THANOS_REACH, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, THANOS_STEP, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, THANOS_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.SCALE, THANOS_SCALE, 0.25, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet REINHARD = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, REINHARD_ARMOR, 28.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_TOUGHNESS, 14.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_DAMAGE, 9.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, REINHARD_SPEED, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, REINHARD_HP, 60.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_KNOCKBACK, 0.7, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, REINHARD_JUMP, 0.3, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, REINHARD_STEP, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, REINHARD_REACH, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static AttributeModifierSet buildReinhardPhaseSet(int phase) {
+		int p = Math.max(1, Math.min(5, phase));
+		double f = (p - 1) / 4.0;
+		return AttributeModifierSet.builder()
+				.add(Attributes.ATTACK_DAMAGE, REINHARD_PHASE_DAMAGE, lerp(0.0, 14.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ARMOR, REINHARD_PHASE_ARMOR, lerp(0.0, 24.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.ARMOR_TOUGHNESS, REINHARD_PHASE_TOUGHNESS, lerp(0.0, 10.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MAX_HEALTH, REINHARD_PHASE_HP, lerp(0.0, 60.0, f), AttributeModifier.Operation.ADD_VALUE)
+				.add(Attributes.MOVEMENT_SPEED, REINHARD_PHASE_SPEED, lerp(0.0, 0.40, f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+				.build();
+	}
+
+	public static final AttributeModifierSet REINHARD_DRAW = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_DRAW_DAMAGE, 8.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, REINHARD_DRAW_SPEED, 0.50, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.JUMP_STRENGTH, REINHARD_DRAW_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_DRAW_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static void thanosClearStoneModifiers(net.minecraft.world.entity.LivingEntity entity) {
+		for (com.example.superheroes.item.infinity.InfinityStoneType t : com.example.superheroes.item.infinity.InfinityStoneType.values()) {
+			net.minecraft.world.entity.ai.attributes.AttributeInstance instance = entity.getAttribute(t.getAttribute());
+			if (instance != null) {
+				instance.removeModifier(t.getModifierId());
+			}
+		}
+	}
+
 
 	private HeroAttributes() {
 	}

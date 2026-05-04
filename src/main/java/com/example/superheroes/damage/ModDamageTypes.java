@@ -26,7 +26,17 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> SHADOW_ATTACK = key("shadow_attack");
 	public static final ResourceKey<DamageType> GOKU_KAMEHAMEHA = key("goku_kamehameha");
 	public static final ResourceKey<DamageType> GOKU_INSTANT_STRIKE = key("goku_instant_strike");
+	public static final ResourceKey<DamageType> GOKU_SPIRIT_BOMB = key("goku_spirit_bomb");
 	public static final ResourceKey<DamageType> NARUTO_RASENGAN = key("naruto_rasengan");
+	public static final ResourceKey<DamageType> NARUTO_RASENSHURIKEN = key("naruto_rasenshuriken");
+	public static final ResourceKey<DamageType> NARUTO_BIJUUDAMA = key("naruto_bijuudama");
+	public static final ResourceKey<DamageType> KRATOS_BLADE = key("kratos_blade");
+	public static final ResourceKey<DamageType> KRATOS_LEVIATHAN = key("kratos_leviathan");
+	public static final ResourceKey<DamageType> LOKI_CHAOS = key("loki_chaos");
+	public static final ResourceKey<DamageType> THANOS_SNAP = key("thanos_snap");
+	public static final ResourceKey<DamageType> THANOS_COSMIC_SLAM = key("thanos_cosmic_slam");
+	public static final ResourceKey<DamageType> THANOS_MIND_PULSE = key("thanos_mind_pulse");
+	public static final ResourceKey<DamageType> THANOS_REALITY_TEAR = key("thanos_reality_tear");
 	public static final ResourceKey<DamageType> CAP_SHIELD_THROW = key("cap_shield_throw");
 	public static final ResourceKey<DamageType> CAP_SHIELD_SLAM = key("cap_shield_slam");
 	public static final ResourceKey<DamageType> HOMELANDER_EYE_LASER = key("homelander_eye_laser");
@@ -37,9 +47,6 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> HOMELANDER_LIGHTNING_CALL = key("homelander_lightning_call");
 	public static final ResourceKey<DamageType> HOMELANDER_ROAR_BOSS = key("homelander_roar_boss");
 	public static final ResourceKey<DamageType> HOMELANDER_MELEE = key("homelander_melee");
-	public static final ResourceKey<DamageType> SLENDERMAN_STATIC = key("slenderman_static");
-	public static final ResourceKey<DamageType> SLENDERMAN_TENDRIL = key("slenderman_tendril");
-	public static final ResourceKey<DamageType> SLENDERMAN_FIELD = key("slenderman_field");
 
 	private ModDamageTypes() {
 	}
@@ -62,7 +69,17 @@ public final class ModDamageTypes {
 		context.register(SHADOW_ATTACK, new DamageType("shadow_attack", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.0F));
 		context.register(GOKU_KAMEHAMEHA, new DamageType("goku_kamehameha", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
 		context.register(GOKU_INSTANT_STRIKE, new DamageType("goku_instant_strike", DamageScaling.NEVER, 0.0F));
+		context.register(GOKU_SPIRIT_BOMB, new DamageType("goku_spirit_bomb", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
 		context.register(NARUTO_RASENGAN, new DamageType("naruto_rasengan", DamageScaling.NEVER, 0.0F));
+		context.register(NARUTO_RASENSHURIKEN, new DamageType("naruto_rasenshuriken", DamageScaling.NEVER, 0.0F));
+		context.register(NARUTO_BIJUUDAMA, new DamageType("naruto_bijuudama", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(KRATOS_BLADE, new DamageType("kratos_blade", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
+		context.register(KRATOS_LEVIATHAN, new DamageType("kratos_leviathan", DamageScaling.NEVER, 0.0F));
+		context.register(LOKI_CHAOS, new DamageType("loki_chaos", DamageScaling.NEVER, 0.0F));
+		context.register(THANOS_SNAP, new DamageType("thanos_snap", DamageScaling.NEVER, 0.0F));
+		context.register(THANOS_COSMIC_SLAM, new DamageType("thanos_cosmic_slam", DamageScaling.NEVER, 0.0F));
+		context.register(THANOS_MIND_PULSE, new DamageType("thanos_mind_pulse", DamageScaling.NEVER, 0.0F));
+		context.register(THANOS_REALITY_TEAR, new DamageType("thanos_reality_tear", DamageScaling.NEVER, 0.0F));
 		context.register(CAP_SHIELD_THROW, new DamageType("cap_shield_throw", DamageScaling.NEVER, 0.0F));
 		context.register(CAP_SHIELD_SLAM, new DamageType("cap_shield_slam", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_EYE_LASER, new DamageType("homelander_eye_laser", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
@@ -72,9 +89,6 @@ public final class ModDamageTypes {
 		context.register(HOMELANDER_SHOCKWAVE_DIVE, new DamageType("homelander_shockwave_dive", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_LIGHTNING_CALL, new DamageType("homelander_lightning_call", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_ROAR_BOSS, new DamageType("homelander_roar_boss", DamageScaling.NEVER, 0.0F));
-		context.register(SLENDERMAN_STATIC, new DamageType("slenderman_static", DamageScaling.NEVER, 0.0F));
-		context.register(SLENDERMAN_TENDRIL, new DamageType("slenderman_tendril", DamageScaling.NEVER, 0.0F));
-		context.register(SLENDERMAN_FIELD, new DamageType("slenderman_field", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_MELEE, new DamageType("homelander_melee", DamageScaling.NEVER, 0.0F));
 	}
 
@@ -130,8 +144,48 @@ public final class ModDamageTypes {
 		return source(level, GOKU_INSTANT_STRIKE, attacker);
 	}
 
+	public static DamageSource gokuSpiritBomb(ServerLevel level, Entity attacker) {
+		return source(level, GOKU_SPIRIT_BOMB, attacker);
+	}
+
 	public static DamageSource narutoRasengan(ServerLevel level, Entity attacker) {
 		return source(level, NARUTO_RASENGAN, attacker);
+	}
+
+	public static DamageSource narutoRasenshuriken(ServerLevel level, Entity attacker) {
+		return source(level, NARUTO_RASENSHURIKEN, attacker);
+	}
+
+	public static DamageSource narutoBijuudama(ServerLevel level, Entity attacker) {
+		return source(level, NARUTO_BIJUUDAMA, attacker);
+	}
+
+	public static DamageSource kratosBlade(ServerLevel level, Entity attacker) {
+		return source(level, KRATOS_BLADE, attacker);
+	}
+
+	public static DamageSource kratosLeviathan(ServerLevel level, Entity attacker) {
+		return source(level, KRATOS_LEVIATHAN, attacker);
+	}
+
+	public static DamageSource lokiChaos(ServerLevel level, Entity attacker) {
+		return source(level, LOKI_CHAOS, attacker);
+	}
+
+	public static DamageSource thanosSnap(ServerLevel level, Entity attacker) {
+		return source(level, THANOS_SNAP, attacker);
+	}
+
+	public static DamageSource thanosCosmicSlam(ServerLevel level, Entity attacker) {
+		return source(level, THANOS_COSMIC_SLAM, attacker);
+	}
+
+	public static DamageSource thanosMindPulse(ServerLevel level, Entity attacker) {
+		return source(level, THANOS_MIND_PULSE, attacker);
+	}
+
+	public static DamageSource thanosRealityTear(ServerLevel level, Entity attacker) {
+		return source(level, THANOS_REALITY_TEAR, attacker);
 	}
 
 	public static DamageSource capShieldThrow(ServerLevel level, Entity attacker) {
@@ -172,18 +226,6 @@ public final class ModDamageTypes {
 
 	public static DamageSource homelanderMelee(ServerLevel level, Entity attacker) {
 		return source(level, HOMELANDER_MELEE, attacker);
-	}
-
-	public static DamageSource slendermanStatic(ServerLevel level, Entity attacker) {
-		return source(level, SLENDERMAN_STATIC, attacker);
-	}
-
-	public static DamageSource slendermanTendril(ServerLevel level, Entity attacker) {
-		return source(level, SLENDERMAN_TENDRIL, attacker);
-	}
-
-	public static DamageSource slendermanField(ServerLevel level, Entity attacker) {
-		return source(level, SLENDERMAN_FIELD, attacker);
 	}
 
 	private static DamageSource source(ServerLevel level, ResourceKey<DamageType> key, Entity attacker) {

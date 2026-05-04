@@ -1,22 +1,23 @@
 package com.example.superheroes.client.network;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientAbilityCooldowns;
 import com.example.superheroes.client.ClientHeroState;
+import com.example.superheroes.client.ClientMadnessState;
 import com.example.superheroes.client.ClientReactorState;
 import com.example.superheroes.client.RemoteHeroSkins;
-import com.example.superheroes.network.MadnessSyncS2CPayload;
-import com.example.superheroes.network.MadnessVisualS2CPayload;
-import com.example.superheroes.network.ReactorStateS2CPayload;
-import com.example.superheroes.client.ClientMadnessState;
-import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.fx.ScreenShakeManager;
+import com.example.superheroes.client.hud.BloodRainHud;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
 import com.example.superheroes.network.HeroDataSyncS2CPayload;
 import com.example.superheroes.network.LaserFiredS2CPayload;
+import com.example.superheroes.network.MadnessSyncS2CPayload;
+import com.example.superheroes.network.MadnessVisualS2CPayload;
+import com.example.superheroes.network.ReactorStateS2CPayload;
 import com.example.superheroes.network.RepulsorBlastS2CPayload;
 import com.example.superheroes.network.RemoteHeroSkinS2CPayload;
-import com.example.superheroes.ability.AbilityIds;
 import com.example.superheroes.network.ResourceUpdateS2CPayload;
 import com.example.superheroes.network.ScreenShakeS2CPayload;
 import com.example.superheroes.transform.HeroData;
@@ -32,6 +33,9 @@ public final class ClientNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(HeroDataSyncS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> {
 					HeroData data = payload.data();
+					if (!data.hasHero() || !data.heroId().equals(ClientHeroState.heroId())) {
+						ClientAbilityCooldowns.clear();
+					}
 					ClientHeroState.update(data);
 					LocalPlayer self = Minecraft.getInstance().player;
 					if (self != null) {
@@ -98,21 +102,21 @@ public final class ClientNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.DoomsdayProgressS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> com.example.superheroes.client.ClientDoomsdayState.update(payload.tier(), payload.adaptations())));
 
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderStaticS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> com.example.superheroes.client.ClientSlenderState.updateStatic(payload.stacks(), payload.fadeAlpha())));
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.AbilityCooldownS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> ClientAbilityCooldowns.update(payload.abilityId(), payload.remainingTicks())));
 
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderFieldS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> {
-					LocalPlayer self = Minecraft.getInstance().player;
-					int tick = self != null ? self.tickCount : 0;
-					com.example.superheroes.client.ClientSlenderState.updateField(payload.inside(), payload.remainingTicks(), tick);
-				}));
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ThanosStonesS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> com.example.superheroes.client.ClientThanosState.updateFromBitmask(payload.bitmask())));
 
-		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.SlenderJumpscareS2CPayload.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.KratosRageS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> com.example.superheroes.client.ClientKratosRageState.update(payload.rage(), payload.active())));
+
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ReinhardWishOptionsS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> {
-					LocalPlayer self = Minecraft.getInstance().player;
-					int tick = self != null ? self.tickCount : 0;
-					com.example.superheroes.client.ClientSlenderState.triggerJumpscare(payload.durationTicks(), tick);
+					Minecraft mc = Minecraft.getInstance();
+					mc.setScreen(com.example.superheroes.client.screen.ReinhardWishScreen.of(
+							payload.damageTypeIds(), payload.adaptedDamageTypeIds(),
+							payload.wishesUsed(), payload.wishesMax()));
 				}));
 	}
 }

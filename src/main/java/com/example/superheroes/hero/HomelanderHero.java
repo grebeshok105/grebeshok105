@@ -76,7 +76,6 @@ public final class HomelanderHero implements Hero {
 	@Override
 	public void removePassives(Player player) {
 		HeroAttributes.HOMELANDER.remove(player);
-		player.removeEffect(MobEffects.REGENERATION);
 		player.removeEffect(MobEffects.FIRE_RESISTANCE);
 		player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
 	}

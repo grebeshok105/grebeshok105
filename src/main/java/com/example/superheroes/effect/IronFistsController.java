@@ -52,8 +52,8 @@ public final class IronFistsController {
 	private static final int LOOP_INTERVAL_TICKS = 100;
 	private static final int AURA_INTERVAL_TICKS = 4;
 
-	private static final Map<UUID, Integer> ACTIVATE_TICK = new HashMap<>();
-	private static final Map<UUID, Integer> LAST_DASH = new HashMap<>();
+	private static final Map<UUID, Long> ACTIVATE_TICK = new HashMap<>();
+	private static final Map<UUID, Long> LAST_DASH = new HashMap<>();
 
 	private IronFistsController() {
 	}
@@ -84,12 +84,13 @@ public final class IronFistsController {
 			boolean dashTarget = isDashTarget(target);
 
 			ServerLevel level = sp.serverLevel();
+			long now = sp.level().getGameTime();
 			if (dashTarget) {
-				Integer last = LAST_DASH.get(sp.getUUID());
-				if (last != null && (sp.tickCount - last) < LMB_COOLDOWN_TICKS) {
+				Long last = LAST_DASH.get(sp.getUUID());
+				if (last != null && (now - last) < LMB_COOLDOWN_TICKS) {
 					return InteractionResult.FAIL;
 				}
-				LAST_DASH.put(sp.getUUID(), sp.tickCount);
+				LAST_DASH.put(sp.getUUID(), now);
 
 				// dash в сторону цели
 				Vec3 toTarget = target.position().add(0, target.getBbHeight() * 0.4, 0)
@@ -143,7 +144,7 @@ public final class IronFistsController {
 	}
 
 	public static void markActivated(ServerPlayer player) {
-		ACTIVATE_TICK.put(player.getUUID(), player.tickCount);
+		ACTIVATE_TICK.put(player.getUUID(), player.level().getGameTime());
 		LAST_DASH.remove(player.getUUID());
 	}
 
@@ -154,12 +155,13 @@ public final class IronFistsController {
 
 	public static void tickActive(ServerPlayer player) {
 		UUID id = player.getUUID();
-		Integer started = ACTIVATE_TICK.get(id);
+		long now = player.level().getGameTime();
+		Long started = ACTIVATE_TICK.get(id);
 		if (started == null) {
-			started = player.tickCount;
+			started = now;
 			ACTIVATE_TICK.put(id, started);
 		}
-		int elapsed = player.tickCount - started;
+		long elapsed = now - started;
 		if (elapsed >= IronFistsAbility.DURATION_TICKS) {
 			AbilityRouter.deactivate(player, AbilityIds.IRON_FISTS);
 			return;

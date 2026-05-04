@@ -20,6 +20,11 @@ public final class AbilityRouter {
 		if (ModEffects.isAftermath(player)) {
 			return;
 		}
+		if (player.hasEffect(ModEffects.DISABLED_ABILITIES)) {
+			player.displayClientMessage(net.minecraft.network.chat.Component.translatable(
+					"ability.superheroes.disabled_by_snap").withStyle(net.minecraft.ChatFormatting.DARK_PURPLE), true);
+			return;
+		}
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		if (!data.hasHero()) {
 			return;
@@ -30,6 +35,11 @@ public final class AbilityRouter {
 		}
 		if (hero instanceof com.example.superheroes.hero.DoomsdayHero dh
 				&& !dh.isAbilityUnlocked(player, abilityId)) {
+			return;
+		}
+		if (hero instanceof com.example.superheroes.hero.ThanosHero th
+				&& !th.isAbilityUnlocked(player, abilityId)) {
+			com.example.superheroes.hero.ThanosHero.notifyMissingStone(player, abilityId);
 			return;
 		}
 		Ability ability = AbilityRegistry.get(abilityId);

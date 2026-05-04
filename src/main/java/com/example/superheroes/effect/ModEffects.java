@@ -23,6 +23,21 @@ public final class ModEffects {
 			new SuperheroWeaknessEffect(MobEffectCategory.HARMFUL, 0xFF7FFF30)
 	);
 
+	public static final Holder<MobEffect> SNAPPED = Registry.registerForHolder(
+			BuiltInRegistries.MOB_EFFECT, ModId.of("snapped"),
+			new SnappedMobEffect(MobEffectCategory.HARMFUL, 0xFF6A0DAD)
+	);
+
+	public static final Holder<MobEffect> DISABLED_ABILITIES = Registry.registerForHolder(
+			BuiltInRegistries.MOB_EFFECT, ModId.of("disabled_abilities"),
+			new DisabledAbilitiesMobEffect(MobEffectCategory.HARMFUL, 0xFF4A148C)
+	);
+
+	public static final Holder<MobEffect> HEAL_BLOCK = Registry.registerForHolder(
+			BuiltInRegistries.MOB_EFFECT, ModId.of("heal_block"),
+			new HealBlockMobEffect(MobEffectCategory.HARMFUL, 0xFF7C0045)
+	);
+
 	private ModEffects() {
 	}
 
