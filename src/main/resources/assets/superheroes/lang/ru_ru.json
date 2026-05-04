@@ -453,6 +453,10 @@
   "death.attack.thanos_cosmic_slam.player": "%1$s был испепелён лучом силы %2$s",
   "death.attack.thanos_mind_pulse": "%1$s лишился разума от %2$s",
   "death.attack.thanos_mind_pulse.player": "%1$s лишился разума от %2$s",
+  "death.attack.reinhard_heavens_strike": "%1$s был рассечён Ударом Небес %2$s",
+  "death.attack.reinhard_heavens_strike.player": "%1$s был рассечён Ударом Небес %2$s",
+  "death.attack.reinhard_dragons_breath": "%1$s сожжён Дыханием Дракона %2$s",
+  "death.attack.reinhard_dragons_breath.player": "%1$s сожжён Дыханием Дракона %2$s",
 
   "item.superheroes.reinhard_suit": "Облачение Меченосца",
   "item.superheroes.reinhard_suit.lore.line1": "\"Я — лишь меч, что служит будущему Королю.\"",

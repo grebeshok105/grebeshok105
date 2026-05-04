@@ -47,6 +47,8 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> HOMELANDER_LIGHTNING_CALL = key("homelander_lightning_call");
 	public static final ResourceKey<DamageType> HOMELANDER_ROAR_BOSS = key("homelander_roar_boss");
 	public static final ResourceKey<DamageType> HOMELANDER_MELEE = key("homelander_melee");
+	public static final ResourceKey<DamageType> REINHARD_HEAVENS_STRIKE = key("reinhard_heavens_strike");
+	public static final ResourceKey<DamageType> REINHARD_DRAGONS_BREATH = key("reinhard_dragons_breath");
 
 	private ModDamageTypes() {
 	}
@@ -90,6 +92,8 @@ public final class ModDamageTypes {
 		context.register(HOMELANDER_LIGHTNING_CALL, new DamageType("homelander_lightning_call", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_ROAR_BOSS, new DamageType("homelander_roar_boss", DamageScaling.NEVER, 0.0F));
 		context.register(HOMELANDER_MELEE, new DamageType("homelander_melee", DamageScaling.NEVER, 0.0F));
+		context.register(REINHARD_HEAVENS_STRIKE, new DamageType("reinhard_heavens_strike", DamageScaling.NEVER, 0.0F));
+		context.register(REINHARD_DRAGONS_BREATH, new DamageType("reinhard_dragons_breath", DamageScaling.NEVER, 0.0F, DamageEffects.BURNING));
 	}
 
 	public static DamageSource eyeLaser(ServerLevel level, Entity attacker) {
@@ -226,6 +230,14 @@ public final class ModDamageTypes {
 
 	public static DamageSource homelanderMelee(ServerLevel level, Entity attacker) {
 		return source(level, HOMELANDER_MELEE, attacker);
+	}
+
+	public static DamageSource reinhardHeavensStrike(ServerLevel level, Entity attacker) {
+		return source(level, REINHARD_HEAVENS_STRIKE, attacker);
+	}
+
+	public static DamageSource reinhardDragonsBreath(ServerLevel level, Entity attacker) {
+		return source(level, REINHARD_DRAGONS_BREATH, attacker);
 	}
 
 	private static DamageSource source(ServerLevel level, ResourceKey<DamageType> key, Entity attacker) {

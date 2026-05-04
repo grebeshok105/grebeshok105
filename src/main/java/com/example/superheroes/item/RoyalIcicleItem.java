@@ -1,6 +1,7 @@
 package com.example.superheroes.item;
 
 import com.example.superheroes.attachment.ModAttachments;
+import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.effect.ReinhardState;
 import com.example.superheroes.hero.ReinhardHero;
 import com.example.superheroes.transform.HeroData;
@@ -30,14 +31,17 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Reid — драконий меч Рейнхарда. Обычная атака — около ванильного netherite-меча.
- * Sword abilities (air slash, teleport, jump) идут через ability system.
+ * Reid — драконий меч Рейнхарда.
  *
- * При попадании в "достойного соперника" наносит +50% бонусного урона.
- * При попадании в обычного моба урона нет (нанесённый урон обнуляется).
+ * При обнажённом мече каждый удар по ЛКМ случайно выбирает один из трёх стилей атаки —
+ * у каждого свой DamageType (чтобы Думсдей не мог адаптироваться к одному типу за пару хитов):
+ *  1. Стандартный — playerAttack
+ *  2. Удар Небес — superheroes:reinhard_heavens_strike (разрез воздуха на скорости света)
+ *  3. Дыхание Дракона — superheroes:reinhard_dragons_breath (дыхание самого Reid'a, burning)
  *
- * Проверка достойности — на стороне сервера через ServerLivingEntityEvents.
- * Сам Item ничего не блокирует — только подсказывает в hurtEnemy().
+ * Все три варианта одинаковы по эффекту: 100 урона, AoE 5 блоков,
+ * BLINDNESS на 10 блоков, time-slow на первом ударе. Различие только в типе урона
+ * и цветовом фидбеке (партиклы/звук).
  */
 public class RoyalIcicleItem extends SwordItem {
 	public RoyalIcicleItem(Properties properties) {
@@ -56,12 +60,14 @@ public class RoyalIcicleItem extends SwordItem {
 			if (ReinhardHero.ID.equals(data.heroId())) {
 				ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 				if (state.swordDrawn()) {
+					ServerLevel level = player.serverLevel();
+					int variant = level.random.nextInt(3);
+					DamageSource swingSrc = pickDamageSource(level, player, variant);
+
 					float bonus = 4.0f + state.phase() * 1.5f;
-					target.hurt(player.serverLevel().damageSources().playerAttack(player), bonus);
+					target.hurt(swingSrc, bonus);
 					target.invulnerableTime = 0;
 
-					ServerLevel level = player.serverLevel();
-					DamageSource cleaveSrc = level.damageSources().playerAttack(player);
 					Vec3 origin = target.position().add(0, target.getBbHeight() * 0.5, 0);
 					AABB cleaveBox = new AABB(
 							origin.x - CLEAVE_RADIUS, origin.y - CLEAVE_RADIUS, origin.z - CLEAVE_RADIUS,
@@ -72,7 +78,7 @@ public class RoyalIcicleItem extends SwordItem {
 									&& !(e instanceof Player p && p.getUUID().equals(player.getUUID()))
 									&& e.position().add(0, e.getBbHeight() * 0.5, 0).distanceToSqr(origin) <= cleaveR2);
 					for (LivingEntity le : cleaveTargets) {
-						le.hurt(cleaveSrc, CLEAVE_DAMAGE);
+						le.hurt(swingSrc, CLEAVE_DAMAGE);
 						le.invulnerableTime = 0;
 						Vec3 push = le.position().subtract(origin);
 						double horiz = Math.max(0.01, Math.sqrt(push.x * push.x + push.z * push.z));
@@ -91,13 +97,50 @@ public class RoyalIcicleItem extends SwordItem {
 						le.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, DARKNESS_DURATION_TICKS, 0, false, false, false));
 					}
 
-					level.sendParticles(ParticleTypes.SWEEP_ATTACK, origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
-					level.playSound(null, origin.x, origin.y, origin.z,
-							SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.8f, 1.0f);
+					spawnVariantVfx(level, origin, variant);
 				}
 			}
 		}
 		return super.hurtEnemy(stack, target, attacker);
+	}
+
+	private static DamageSource pickDamageSource(ServerLevel level, ServerPlayer player, int variant) {
+		return switch (variant) {
+			case 1 -> ModDamageTypes.reinhardHeavensStrike(level, player);
+			case 2 -> ModDamageTypes.reinhardDragonsBreath(level, player);
+			default -> level.damageSources().playerAttack(player);
+		};
+	}
+
+	private static void spawnVariantVfx(ServerLevel level, Vec3 origin, int variant) {
+		switch (variant) {
+			case 1 -> {
+				level.sendParticles(ParticleTypes.END_ROD,
+						origin.x, origin.y, origin.z, 18, 0.6, 0.6, 0.6, 0.05);
+				level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+						origin.x, origin.y, origin.z, 24, 0.6, 0.6, 0.6, 0.15);
+				level.playSound(null, origin.x, origin.y, origin.z,
+						SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.9f, 1.6f);
+				level.playSound(null, origin.x, origin.y, origin.z,
+						SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.7f, 1.4f);
+			}
+			case 2 -> {
+				level.sendParticles(ParticleTypes.DRAGON_BREATH,
+						origin.x, origin.y, origin.z, 30, 0.7, 0.5, 0.7, 0.02);
+				level.sendParticles(ParticleTypes.FLAME,
+						origin.x, origin.y, origin.z, 18, 0.5, 0.5, 0.5, 0.05);
+				level.playSound(null, origin.x, origin.y, origin.z,
+						SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, 0.5f, 1.4f);
+				level.playSound(null, origin.x, origin.y, origin.z,
+						SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.7f, 0.8f);
+			}
+			default -> {
+				level.sendParticles(ParticleTypes.SWEEP_ATTACK,
+						origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+				level.playSound(null, origin.x, origin.y, origin.z,
+						SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.8f, 1.0f);
+			}
+		}
 	}
 
 	@Override
