@@ -86,28 +86,6 @@ public final class ReinhardController {
 			return true;
 		});
 
-		// Reid (драконий меч): базовая атака бьёт только достойных — обычные мобы атаку игнорируют
-		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register(
-				(player, world, hand, target, hitResult) -> {
-					if (world.isClientSide) return net.minecraft.world.InteractionResult.PASS;
-					if (!(player instanceof ServerPlayer sp) || !isReinhard(sp)) {
-						return net.minecraft.world.InteractionResult.PASS;
-					}
-					if (!(sp.getMainHandItem().getItem() instanceof com.example.superheroes.item.RoyalIcicleItem)) {
-						return net.minecraft.world.InteractionResult.PASS;
-					}
-					if (!(target instanceof LivingEntity living) || target == sp) {
-						return net.minecraft.world.InteractionResult.PASS;
-					}
-					if (!ReinhardWorthyOpponent.isWorthy(living)) {
-						sp.displayClientMessage(
-								Component.translatable("item.superheroes.royal_icicle.unworthy"),
-								true);
-						return net.minecraft.world.InteractionResult.FAIL;
-					}
-					return net.minecraft.world.InteractionResult.PASS;
-				});
-
 		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
 			if (entity instanceof ServerPlayer player && isReinhard(player)) {
 				return tryPhoenix(player, source);

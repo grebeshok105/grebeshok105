@@ -1,14 +1,14 @@
 package com.example.superheroes.effect;
 
 import com.example.superheroes.sound.ModSounds;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Iterator;
@@ -31,14 +31,18 @@ public final class ReinhardTimeSlowController {
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(ReinhardTimeSlowController::tick);
 
-		AttackEntityCallback.EVENT.register((player, world, hand, target, hitResult) -> {
-			if (world.isClientSide) return InteractionResult.PASS;
-			if (!(player instanceof ServerPlayer sp)) return InteractionResult.PASS;
-			if (!ReinhardController.isReinhard(sp)) return InteractionResult.PASS;
-			if (!(target instanceof LivingEntity living) || living == sp) return InteractionResult.PASS;
-			if (!ARMED.remove(sp.getUUID())) return InteractionResult.PASS;
-			triggerSlow(sp);
-			return InteractionResult.PASS;
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+			if (amount <= 0f) return true;
+			if (!(source.getEntity() instanceof ServerPlayer attacker)) return true;
+			if (!(entity instanceof LivingEntity living) || living == attacker) return true;
+			if (!ReinhardController.isReinhard(attacker)) return true;
+			if (!ARMED.contains(attacker.getUUID())) return true;
+			if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return true;
+			if (!(attacker.getMainHandItem().getItem() instanceof com.example.superheroes.item.RoyalIcicleItem)) return true;
+			if (!source.is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)) return true;
+			if (!ARMED.remove(attacker.getUUID())) return true;
+			triggerSlow(attacker);
+			return true;
 		});
 	}
 
