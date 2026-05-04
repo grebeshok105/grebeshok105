@@ -7,6 +7,7 @@ import com.example.superheroes.hero.ReinhardHero;
 import com.example.superheroes.item.ModItems;
 import com.example.superheroes.network.ModNetworking;
 import com.example.superheroes.network.ReinhardCeremonyS2CPayload;
+import com.example.superheroes.sound.ModSounds;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -87,6 +88,8 @@ public final class ReinhardSwordDrawCeremonyController {
 		FROZEN_MOBS.put(player.getUUID(), new HashSet<>());
 
 		ServerLevel level = player.serverLevel();
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				ModSounds.REINHARD_SWORD_DRAW_CEREMONY, SoundSource.PLAYERS, 1.4f, 1.0f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.6f, 0.6f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
