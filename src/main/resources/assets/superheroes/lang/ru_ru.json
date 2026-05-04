@@ -496,6 +496,8 @@
   "hero.superheroes.reinhard.passive.5": "Возрождение Феникса — одним из желаний можно пережить смерть",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "Нет достойных противников в округе",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл",
+  "ability.superheroes.reinhard_sword_draw.gate_locked": "Меч заперт — пропусти %s урона от одного противника",
+  "ability.superheroes.reinhard_sword_draw.ready": "Достоин! Меч готов к обнажению",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Рейд пробуждается...",
   "ability.superheroes.reinhard.time_slow.start": "«Огонь и смерть» — время замедлилось",
   "item.superheroes.royal_icicle.unworthy": "Рейд не разит недостойных"

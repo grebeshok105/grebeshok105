@@ -56,12 +56,14 @@ public final class ReinhardSwordDrawAbility implements Ability {
 		if (ReinhardSwordDrawCeremonyController.isInCeremony(player)) {
 			return false;
 		}
-		if (!ReinhardController.hasWorthyNearby(player, ReinhardSwordDrawCeremonyController.CEREMONY_RADIUS)) {
+		if (!com.example.superheroes.effect.ReinhardSwordDrawGateController.isReady(player)) {
 			player.displayClientMessage(
-					Component.translatable("ability.superheroes.reinhard_sword_draw.no_worthy"),
+					Component.translatable("ability.superheroes.reinhard_sword_draw.gate_locked",
+							(int) com.example.superheroes.effect.ReinhardSwordDrawGateController.DAMAGE_THRESHOLD),
 					true);
 			return false;
 		}
+		com.example.superheroes.effect.ReinhardSwordDrawGateController.consumeReady(player);
 		ReinhardSwordDrawCeremonyController.startCeremony(player);
 		return false;
 	}
