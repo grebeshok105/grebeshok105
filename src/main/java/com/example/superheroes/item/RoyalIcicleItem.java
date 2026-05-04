@@ -88,7 +88,7 @@ public class RoyalIcicleItem extends SwordItem {
 							e -> e.isAlive() && !e.isSpectator()
 									&& e.position().add(0, e.getBbHeight() * 0.5, 0).distanceToSqr(origin) <= darkR2);
 					for (LivingEntity le : nearbyForDark) {
-						le.addEffect(new MobEffectInstance(MobEffects.DARKNESS, DARKNESS_DURATION_TICKS, 0, false, false, false));
+						le.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, DARKNESS_DURATION_TICKS, 0, false, false, false));
 					}
 
 					level.sendParticles(ParticleTypes.SWEEP_ATTACK, origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);

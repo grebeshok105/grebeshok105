@@ -1,8 +1,5 @@
 package com.example.superheroes.client;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.sounds.SoundSource;
-
 public final class ClientReinhardCeremonyState {
 	private static volatile boolean active;
 	private static volatile float progress;
@@ -11,23 +8,8 @@ public final class ClientReinhardCeremonyState {
 	}
 
 	public static void update(boolean newActive, float newProgress) {
-		boolean wasActive = active;
 		active = newActive;
 		progress = Math.max(0f, Math.min(1f, newProgress));
-		if (newActive && !wasActive) {
-			silenceWorldSounds();
-		}
-	}
-
-	private static void silenceWorldSounds() {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc == null || mc.getSoundManager() == null) return;
-		mc.getSoundManager().stop(null, SoundSource.BLOCKS);
-		mc.getSoundManager().stop(null, SoundSource.HOSTILE);
-		mc.getSoundManager().stop(null, SoundSource.NEUTRAL);
-		mc.getSoundManager().stop(null, SoundSource.AMBIENT);
-		mc.getSoundManager().stop(null, SoundSource.WEATHER);
-		mc.getSoundManager().stop(null, SoundSource.RECORDS);
 	}
 
 	public static boolean active() {

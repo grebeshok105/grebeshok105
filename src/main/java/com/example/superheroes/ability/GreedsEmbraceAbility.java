@@ -23,8 +23,8 @@ public final class GreedsEmbraceAbility implements Ability {
 	private static final double AIM_RANGE = 40.0;
 	private static final double GATHER_RADIUS = 20.0;
 	private static final float DAMAGE = 35.0f;
-	private static final int LEVITATION_TICKS = 60;
-	private static final int CAGE_TICKS = 100;
+	private static final double LAUNCH_VELOCITY_Y = 4.0;
+	private static final int CAGE_TICKS = 120;
 
 	@Override
 	public ResourceLocation getId() {
@@ -76,16 +76,14 @@ public final class GreedsEmbraceAbility implements Ability {
 
 		DamageSource src = level.damageSources().playerAttack(player);
 		for (LivingEntity le : targets) {
-			le.teleportTo(anchor.x, anchor.y, anchor.z);
-			le.setDeltaMovement(0, 0.2, 0);
-			le.hurtMarked = true;
 			le.hurt(src, DAMAGE);
-			le.addEffect(new MobEffectInstance(MobEffects.LEVITATION, LEVITATION_TICKS, 3, false, true, true));
-			le.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, LEVITATION_TICKS + 40, 1, false, true, true));
+			le.fallDistance = 0;
+			le.setDeltaMovement(0, LAUNCH_VELOCITY_Y, 0);
+			le.hurtMarked = true;
+			le.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, CAGE_TICKS + 40, 1, false, true, true));
 		}
 
 		level.sendParticles(ParticleTypes.PORTAL, anchor.x, anchor.y + 1.0, anchor.z, 200, 2.5, 2.0, 2.5, 1.2);
-		level.sendParticles(ParticleTypes.END_ROD, anchor.x, anchor.y + 1.0, anchor.z, 120, 1.5, 1.5, 1.5, 0.15);
 		level.sendParticles(ParticleTypes.FLASH, anchor.x, anchor.y + 1.0, anchor.z, 4, 0, 0, 0, 0);
 		level.sendParticles(ParticleTypes.SONIC_BOOM, anchor.x, anchor.y + 1.0, anchor.z, 1, 0, 0, 0, 0);
 
@@ -93,7 +91,7 @@ public final class GreedsEmbraceAbility implements Ability {
 		level.playSound(null, anchor.x, anchor.y, anchor.z, SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.4f, 0.6f);
 		level.playSound(null, anchor.x, anchor.y, anchor.z, SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, 0.8f, 1.4f);
 
-		GreedCageController.create(level, anchor, CAGE_TICKS);
+		GreedCageController.create(level, anchor, targets, CAGE_TICKS);
 
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;
