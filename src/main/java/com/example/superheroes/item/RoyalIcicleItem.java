@@ -4,6 +4,7 @@ import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.damage.ModDamageTypes;
 import com.example.superheroes.effect.ReinhardState;
 import com.example.superheroes.hero.ReinhardHero;
+import com.example.superheroes.particle.ModParticles;
 import com.example.superheroes.transform.HeroData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -115,27 +116,45 @@ public class RoyalIcicleItem extends SwordItem {
 	private static void spawnVariantVfx(ServerLevel level, Vec3 origin, int variant) {
 		switch (variant) {
 			case 1 -> {
-				level.sendParticles(ParticleTypes.END_ROD,
-						origin.x, origin.y, origin.z, 18, 0.6, 0.6, 0.6, 0.05);
-				level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
-						origin.x, origin.y, origin.z, 24, 0.6, 0.6, 0.6, 0.15);
+				level.sendParticles(ModParticles.ANOMALY_SLICE,
+						origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+				level.sendParticles(ModParticles.SUN_PARTICLE,
+						origin.x, origin.y, origin.z, 22, 0.7, 0.6, 0.7, 0.12);
+				level.sendParticles(ModParticles.DAZZLING,
+						origin.x, origin.y, origin.z, 16, 0.6, 0.5, 0.6, 0.08);
+				level.sendParticles(ModParticles.SPARKS,
+						origin.x, origin.y, origin.z, 14, 0.6, 0.4, 0.6, 0.18);
+				level.sendParticles(ModParticles.WHITE_BOOM,
+						origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
 				level.playSound(null, origin.x, origin.y, origin.z,
 						SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.9f, 1.6f);
 				level.playSound(null, origin.x, origin.y, origin.z,
 						SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.7f, 1.4f);
 			}
 			case 2 -> {
-				level.sendParticles(ParticleTypes.DRAGON_BREATH,
-						origin.x, origin.y, origin.z, 30, 0.7, 0.5, 0.7, 0.02);
-				level.sendParticles(ParticleTypes.FLAME,
-						origin.x, origin.y, origin.z, 18, 0.5, 0.5, 0.5, 0.05);
+				level.sendParticles(ModParticles.PHOENIX_FEATHER,
+						origin.x, origin.y, origin.z, 14, 0.7, 0.5, 0.7, 0.05);
+				level.sendParticles(ModParticles.PURPLE_FLAME,
+						origin.x, origin.y, origin.z, 22, 0.7, 0.5, 0.7, 0.05);
+				level.sendParticles(ModParticles.DARK_STAR,
+						origin.x, origin.y, origin.z, 12, 0.6, 0.5, 0.6, 0.06);
+				level.sendParticles(ModParticles.NIGHTFALL,
+						origin.x, origin.y, origin.z, 14, 0.7, 0.4, 0.7, 0.04);
+				level.sendParticles(ModParticles.CHAOS_ORB,
+						origin.x, origin.y, origin.z, 6, 0.5, 0.4, 0.5, 0.05);
 				level.playSound(null, origin.x, origin.y, origin.z,
 						SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, 0.5f, 1.4f);
 				level.playSound(null, origin.x, origin.y, origin.z,
 						SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.7f, 0.8f);
 			}
 			default -> {
-				level.sendParticles(ParticleTypes.SWEEP_ATTACK,
+				level.sendParticles(ModParticles.SWORD_EXPLOSION,
+						origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+				level.sendParticles(ModParticles.ICE_SHARD,
+						origin.x, origin.y, origin.z, 14, 0.6, 0.4, 0.6, 0.15);
+				level.sendParticles(ModParticles.SOUL_SPARK,
+						origin.x, origin.y, origin.z, 10, 0.5, 0.4, 0.5, 0.08);
+				level.sendParticles(ModParticles.WHITE_BOOM,
 						origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
 				level.playSound(null, origin.x, origin.y, origin.z,
 						SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.8f, 1.0f);

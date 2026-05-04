@@ -36,6 +36,10 @@ public final class ModParticles {
 	public static final SimpleParticleType KRATOS_HAND_BURST_1 = register("kratos_hand_burst_1", FabricParticleTypes.simple());
 	public static final SimpleParticleType KRATOS_HAND_BURST_2 = register("kratos_hand_burst_2", FabricParticleTypes.simple());
 	public static final SimpleParticleType KRATOS_HAND_BURST_3 = register("kratos_hand_burst_3", FabricParticleTypes.simple());
+	public static final SimpleParticleType SWORD_EXPLOSION = register("sword_explosion", FabricParticleTypes.simple());
+	public static final SimpleParticleType PHOENIX_FEATHER = register("phoenix_feather", FabricParticleTypes.simple());
+	public static final SimpleParticleType ICE_SHARD = register("ice_shard", FabricParticleTypes.simple());
+	public static final SimpleParticleType ANOMALY_SLICE = register("anomaly_slice", FabricParticleTypes.simple());
 
 	private ModParticles() {
 	}
