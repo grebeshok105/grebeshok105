@@ -455,7 +455,7 @@
   "item.superheroes.royal_icicle": "Royal Icicle",
   "item.superheroes.royal_icicle.lore.line1": "Frozen blade. Its true edge cuts only the worthy.",
   "item.superheroes.royal_icicle.lore.line2": "The Sword Saint's sacred weapon",
-  "item.superheroes.royal_icicle.lore.worthy": "▶ Bonus damage only against worthy opponents (players/bosses)",
+  "item.superheroes.royal_icicle.lore.worthy": "▶ Damages only worthy opponents (players/bosses); ignores common mobs",
   "item.superheroes.royal_icicle.lore.bound": "▶ Summoned/dismissed with the sword draw",
   "hero.superheroes.reinhard": "Reinhard van Astrea",
   "ability.superheroes.reinhard_sword_draw": "Draw Sword",
@@ -485,5 +485,6 @@
   "screen.superheroes.reinhard_wish.cancel": "Cancel",
   "screen.superheroes.reinhard_wish.already_adapted": "%s (already adapted)",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "No worthy opponent nearby",
-  "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent"
+  "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent",
+  "item.superheroes.royal_icicle.unworthy": "Royal Icicle ignores the unworthy"
 }

@@ -42,13 +42,17 @@ import java.util.UUID;
  */
 public final class ReinhardController {
 	private static final int INSTA_REGEN_INTERVAL = 600; // 30 сек
-	private static final float[] PHASE_THRESHOLDS = {0f, 12f, 28f, 50f, 80f}; // вход в фазу 2/3/4/5
+	private static final float[] PHASE_THRESHOLDS = {0f, 30f, 70f, 130f, 220f}; // вход в фазу 2/3/4/5
+	private static final float PHASE_ACCUM_PER_HIT_CAP = 15f;
+	private static final float PHASE_DECAY_PER_TICK = 0.05f; // 1.0 in 20 ticks (~1/sec)
+	private static final int PHASE_DECAY_DELAY_TICKS = 200; // 10s without damage
 	private static final int RECENT_DAMAGE_LIMIT = 5;
 	private static final float SUPER_REFLEX_DODGE_CHANCE = 0.15f;
 	private static final float COUNTER_DAMAGE = 12.0f;
 	private static final int COUNTER_LOCKOUT_TICKS = 40;
 
 	private static final java.util.concurrent.ConcurrentHashMap<UUID, Long> COUNTER_LOCKOUT = new java.util.concurrent.ConcurrentHashMap<>();
+	private static final java.util.concurrent.ConcurrentHashMap<UUID, Long> LAST_DAMAGE_TICK = new java.util.concurrent.ConcurrentHashMap<>();
 	private static final Set<UUID> DAMAGE_REENTRY_GUARD = Collections.newSetFromMap(new java.util.concurrent.ConcurrentHashMap<>());
 	private static final Set<ResourceKey<DamageType>> NON_TRACKED = Set.of(
 			DamageTypes.STARVE,
@@ -81,6 +85,28 @@ public final class ReinhardController {
 			}
 			return true;
 		});
+
+		// Royal Icicle: базовая атака бьёт только достойных — обычные мобы атаку игнорируют
+		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register(
+				(player, world, hand, target, hitResult) -> {
+					if (world.isClientSide) return net.minecraft.world.InteractionResult.PASS;
+					if (!(player instanceof ServerPlayer sp) || !isReinhard(sp)) {
+						return net.minecraft.world.InteractionResult.PASS;
+					}
+					if (!(sp.getMainHandItem().getItem() instanceof com.example.superheroes.item.RoyalIcicleItem)) {
+						return net.minecraft.world.InteractionResult.PASS;
+					}
+					if (!(target instanceof LivingEntity living) || target == sp) {
+						return net.minecraft.world.InteractionResult.PASS;
+					}
+					if (!ReinhardWorthyOpponent.isWorthy(living)) {
+						sp.displayClientMessage(
+								Component.translatable("item.superheroes.royal_icicle.unworthy"),
+								true);
+						return net.minecraft.world.InteractionResult.FAIL;
+					}
+					return net.minecraft.world.InteractionResult.PASS;
+				});
 
 		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
 			if (entity instanceof ServerPlayer player && isReinhard(player)) {
@@ -156,6 +182,35 @@ public final class ReinhardController {
 				com.example.superheroes.ability.ReinhardSwordDrawAbility.forceSheathe(player);
 			}
 		}
+
+		// Phase decay — рассасывание накопленного урона если игрок не получает урон
+		if (player.tickCount % 20 == 0) {
+			Long lastDamage = LAST_DAMAGE_TICK.get(player.getUUID());
+			if (lastDamage != null && now - lastDamage >= PHASE_DECAY_DELAY_TICKS && state.accumulatedDamage() > 0f) {
+				float decayed = Math.max(0f, state.accumulatedDamage() - PHASE_DECAY_PER_TICK * 20f);
+				int newPhase = computePhase(decayed);
+				ReinhardState updated = state.withAccumulatedDamage(decayed);
+				if (newPhase < state.phase()) {
+					for (int p = 1; p <= 5; p++) {
+						HeroAttributes.buildReinhardPhaseSet(p).remove(player);
+					}
+					HeroAttributes.buildReinhardPhaseSet(newPhase).apply(player);
+					updated = updated.withPhase(newPhase);
+				}
+				player.setAttached(ModAttachments.REINHARD_STATE, updated);
+			}
+		}
+	}
+
+	private static int computePhase(float accum) {
+		int phase = 1;
+		for (int i = PHASE_THRESHOLDS.length - 1; i >= 0; i--) {
+			if (accum >= PHASE_THRESHOLDS[i]) {
+				phase = i + 1;
+				break;
+			}
+		}
+		return phase;
 	}
 
 	private static boolean onIncomingDamage(ServerPlayer player, DamageSource source, float amount) {
@@ -189,9 +244,6 @@ public final class ReinhardController {
 				attacker.hurt(player.serverLevel().damageSources().playerAttack(player), amount * 2.0f);
 				attacker.hurtMarked = true;
 			}
-			player.serverLevel().sendParticles(ParticleTypes.FLASH,
-					player.getX(), player.getY() + 1.0, player.getZ(),
-					1, 0, 0, 0, 0);
 			player.serverLevel().sendParticles(ParticleTypes.END_ROD,
 					player.getX(), player.getY() + 1.0, player.getZ(),
 					24, 0.6, 0.6, 0.6, 0.15);
@@ -236,18 +288,19 @@ public final class ReinhardController {
 			}
 		}
 
-		// Track accumulated damage for phase-up
-		float newAccum = state.accumulatedDamage() + effective;
+		// Track accumulated damage for phase-up — cap per-hit contribution
+		float accumDelta = Math.min(Math.max(effective, 0f), PHASE_ACCUM_PER_HIT_CAP);
+		float newAccum = state.accumulatedDamage() + accumDelta;
 		int newPhase = state.phase();
-		for (int i = state.phase() - 1; i < PHASE_THRESHOLDS.length; i++) {
-			if (newAccum >= PHASE_THRESHOLDS[i] && newPhase < i + 1) {
-				newPhase = i + 1;
-			}
+		if (newAccum >= PHASE_THRESHOLDS[Math.min(state.phase(), PHASE_THRESHOLDS.length - 1)]
+				&& state.phase() < PHASE_THRESHOLDS.length) {
+			newPhase = state.phase() + 1;
 		}
 		if (newPhase > state.phase()) {
 			advancePhase(player, newPhase);
 		}
 		state = state.withAccumulatedDamage(newAccum).withPhase(newPhase);
+		LAST_DAMAGE_TICK.put(player.getUUID(), nowTick);
 
 		// Worthy opponent tracker (минимум 4 dmg single hit или 12 cumulative за 6 секунд)
 		float worthyAccum = state.worthyAccumulatedDamage();
@@ -294,9 +347,6 @@ public final class ReinhardController {
 		}
 		HeroAttributes.buildReinhardPhaseSet(newPhase).apply(player);
 		player.heal(4f * newPhase);
-		level.sendParticles(ParticleTypes.FLASH,
-				player.getX(), player.getY() + 1.0, player.getZ(),
-				1, 0, 0, 0, 0);
 		level.sendParticles(ParticleTypes.END_ROD,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				40, 0.6, 1.0, 0.6, 0.15);
@@ -359,6 +409,7 @@ public final class ReinhardController {
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
 		COUNTER_LOCKOUT.remove(player.getUUID());
+		LAST_DAMAGE_TICK.remove(player.getUUID());
 	}
 
 	public static void onRespawn(ServerPlayer player) {

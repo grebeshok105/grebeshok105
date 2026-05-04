@@ -455,7 +455,7 @@
   "item.superheroes.royal_icicle": "Royal Icicle",
   "item.superheroes.royal_icicle.lore.line1": "Меч-сосулька. Полная сила открыта только пред достойным.",
   "item.superheroes.royal_icicle.lore.line2": "Священное оружие Меченосца",
-  "item.superheroes.royal_icicle.lore.worthy": "▶ +урон только по достойным соперникам (игроки/боссы)",
+  "item.superheroes.royal_icicle.lore.worthy": "▶ Бьёт только достойных (игроки/боссы) — обычным мобам урона нет",
   "item.superheroes.royal_icicle.lore.bound": "▶ Появляется/исчезает с обнажением меча",
   "hero.superheroes.reinhard": "Рейнхард ван Астрея",
   "ability.superheroes.reinhard_sword_draw": "Обнажить меч",
@@ -486,5 +486,6 @@
   "screen.superheroes.reinhard_wish.cancel": "Отмена",
   "screen.superheroes.reinhard_wish.already_adapted": "%s (уже адаптирован)",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "Поблизости нет достойного соперника",
-  "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл"
+  "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл",
+  "item.superheroes.royal_icicle.unworthy": "Royal Icicle не разит недостойных"
 }
