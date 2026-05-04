@@ -122,5 +122,9 @@ public final class ClientNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ReinhardCeremonyS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> com.example.superheroes.client.ClientReinhardCeremonyState.update(
 						payload.active(), payload.progress())));
+
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ReinhardSwordGateS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> com.example.superheroes.client.ClientReinhardSwordGateState.update(
+						payload.ready(), payload.progress())));
 	}
 }

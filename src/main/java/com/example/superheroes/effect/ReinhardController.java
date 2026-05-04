@@ -176,13 +176,6 @@ public final class ReinhardController {
 					4, 0.4, 0.7, 0.4, 0.02);
 		}
 
-		// Auto-sheathe sword if no worthy opponent nearby
-		if (state.swordDrawn() && player.tickCount % 40 == 0) {
-			if (!hasWorthyNearby(player, 30.0)) {
-				com.example.superheroes.ability.ReinhardSwordDrawAbility.forceSheathe(player);
-			}
-		}
-
 		// Phase decay — рассасывание накопленного урона если игрок не получает урон
 		if (player.tickCount % 20 == 0) {
 			Long lastDamage = LAST_DAMAGE_TICK.get(player.getUUID());
@@ -316,6 +309,11 @@ public final class ReinhardController {
 			lastWorthy = now;
 		}
 		state = state.withWorthy(lastWorthy, worthyAccum);
+
+		// Sword-draw gate — track per-attacker accumulated damage
+		if (!state.swordDrawn() && source.getEntity() != null && source.getEntity() != player) {
+			ReinhardSwordDrawGateController.recordHit(player, source.getEntity(), Math.max(amount, 0f));
+		}
 
 		// Phase 5 — God-tier damage reduction (50%)
 		if (newPhase >= 5) {

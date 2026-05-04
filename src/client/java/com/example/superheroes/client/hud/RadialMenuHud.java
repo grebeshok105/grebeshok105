@@ -168,6 +168,12 @@ public final class RadialMenuHud {
 			int slotWidth = Math.max(SLOT_MIN_WIDTH, textWidth + SLOT_PADDING_X * 2);
 			int slotX = x - slotWidth / 2;
 			int slotY = y - SLOT_HEIGHT / 2;
+			boolean swordDrawReady = AbilityIds.REINHARD_SWORD_DRAW.equals(aid)
+					&& !ClientHeroState.data().isActive(AbilityIds.REINHARD_SWORD_DRAW)
+					&& com.example.superheroes.client.ClientReinhardSwordGateState.ready();
+			if (swordDrawReady) {
+				drawReadyHalo(graphics, slotX, slotY, slotWidth, SLOT_HEIGHT);
+			}
 			drawSlot(graphics, slotX, slotY, slotWidth, SLOT_HEIGHT, active, cooldownTicks > 0, theme);
 			graphics.drawCenteredString(mc.font, name, x, y - 9,
 					cooldownTicks > 0 ? 0xFFA7AAB8 : (active ? theme.radialTextActive() : COLOR_TEXT_IDLE));
@@ -224,6 +230,16 @@ public final class RadialMenuHud {
 			int py = y0 + Math.round(fy * i);
 			graphics.fill(px, py, px + 1, py + 1, color);
 		}
+	}
+
+	private static void drawReadyHalo(GuiGraphics graphics, int x, int y, int width, int height) {
+		long now = System.currentTimeMillis();
+		float pulse = 0.55f + 0.45f * (float) Math.sin(now / 220.0);
+		int alpha = Math.max(70, Math.min(255, (int) (180 * pulse)));
+		int glow = (alpha << 24) | 0x00FFD24A;
+		int outer = (Math.max(40, alpha / 2) << 24) | 0x00FFB23A;
+		HudUtil.roundedRectFill(graphics, x - 6, y - 6, width + 12, height + 12, outer);
+		HudUtil.roundedRectFill(graphics, x - 3, y - 3, width + 6, height + 6, glow);
 	}
 
 	private static void drawSlot(GuiGraphics graphics, int x, int y, int width, int height,

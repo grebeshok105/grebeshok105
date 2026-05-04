@@ -71,6 +71,7 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.ReinhardTimeSlowController.init();
 		com.example.superheroes.effect.ReinhardController.init();
 		com.example.superheroes.effect.ReinhardSwordDrawCeremonyController.init();
+		com.example.superheroes.effect.ReinhardSwordDrawGateController.init();
 		com.example.superheroes.effect.ThanosSnapWindupController.init();
 		SuperheroesCommands.init();
 
