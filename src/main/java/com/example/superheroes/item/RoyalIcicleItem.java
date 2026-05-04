@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Royal Icicle — меч Рейнхарда. Обычная атака — около ванильного netherite-меча.
+ * Reid — драконий меч Рейнхарда. Обычная атака — около ванильного netherite-меча.
  * Sword abilities (air slash, teleport, jump) идут через ability system.
  *
  * При попадании в "достойного соперника" наносит +50% бонусного урона.

@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Reid Draw — обнажение меча. Тогглится: пока активен, Рейнхард получает бонусы к статам
  * (атака, скорость, прыжок, attack-speed) и может использовать sword-способности.
- * При активации в руку выдаётся Royal Icicle. При деактивации — убирается.
+ * При активации в руку выдаётся Reid (драконий меч). При деактивации — убирается.
  */
 public final class ReinhardSwordDrawAbility implements Ability {
 	@Override

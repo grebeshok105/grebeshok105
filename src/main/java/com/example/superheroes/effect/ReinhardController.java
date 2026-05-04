@@ -86,7 +86,7 @@ public final class ReinhardController {
 			return true;
 		});
 
-		// Royal Icicle: базовая атака бьёт только достойных — обычные мобы атаку игнорируют
+		// Reid (драконий меч): базовая атака бьёт только достойных — обычные мобы атаку игнорируют
 		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register(
 				(player, world, hand, target, hitResult) -> {
 					if (world.isClientSide) return net.minecraft.world.InteractionResult.PASS;
