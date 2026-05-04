@@ -452,14 +452,14 @@
   "item.superheroes.reinhard_suit.lore.line2": "Robes of Reinhard van Astrea",
   "item.superheroes.reinhard_suit.lore.usage": "▶ Right-click — Don",
   "item.superheroes.reinhard_suit.lore.untransform": "▶ Shift + Right-click — Doff",
-  "item.superheroes.royal_icicle": "Royal Icicle",
-  "item.superheroes.royal_icicle.lore.line1": "Frozen blade. Its true edge cuts only the worthy.",
+  "item.superheroes.royal_icicle": "Dragon Sword Reid",
+  "item.superheroes.royal_icicle.lore.line1": "The Dragon Sword. Its true edge cuts only the worthy.",
   "item.superheroes.royal_icicle.lore.line2": "The Sword Saint's sacred weapon",
   "item.superheroes.royal_icicle.lore.worthy": "▶ Damages only worthy opponents (players/bosses); ignores common mobs",
   "item.superheroes.royal_icicle.lore.bound": "▶ Summoned/dismissed with the sword draw",
   "hero.superheroes.reinhard": "Reinhard van Astrea",
   "ability.superheroes.reinhard_sword_draw": "Draw Sword",
-  "ability.superheroes.reinhard_sword_draw.desc": "Toggle. Summons Royal Icicle and grants +6 damage, +50% speed, +0.4 jump, +1 attack-speed. Unlocks sword abilities.",
+  "ability.superheroes.reinhard_sword_draw.desc": "Toggle. Summons Reid and grants +6 damage, +50% speed, +0.4 jump, +1 attack-speed. Unlocks sword abilities.",
   "ability.superheroes.reinhard_air_slash": "Spirit Slash",
   "ability.superheroes.reinhard_air_slash.desc": "Cuts the air with a spirit wave 9 blocks ahead. 14 damage to worthy opponents + heavy knockback. 8 damage to regular mobs. 1.5s cooldown. Requires drawn sword.",
   "ability.superheroes.reinhard_teleport_behind": "Heaven's Step",
@@ -486,5 +486,6 @@
   "screen.superheroes.reinhard_wish.already_adapted": "%s (already adapted)",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "No worthy opponent nearby",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent",
-  "item.superheroes.royal_icicle.unworthy": "Royal Icicle ignores the unworthy"
+  "ability.superheroes.reinhard_sword_draw.ceremony": "Reid awakens...",
+  "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy"
 }

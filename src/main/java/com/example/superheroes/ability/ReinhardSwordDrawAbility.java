@@ -3,6 +3,7 @@ package com.example.superheroes.ability;
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.ReinhardController;
 import com.example.superheroes.effect.ReinhardState;
+import com.example.superheroes.effect.ReinhardSwordDrawCeremonyController;
 import com.example.superheroes.hero.HeroAttributes;
 import com.example.superheroes.item.ModItems;
 import com.example.superheroes.transform.HeroData;
@@ -11,15 +12,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
 /**
  * Reid Draw — обнажение меча. Тогглится: пока активен, Рейнхард получает бонусы к статам
  * (атака, скорость, прыжок, attack-speed) и может использовать sword-способности.
- * При активации в руку выдаётся Royal Icicle. При деактивации — убирается.
+ * При активации в руку выдаётся Reid (драконий меч). При деактивации — убирается.
  */
 public final class ReinhardSwordDrawAbility implements Ability {
 	@Override
@@ -44,28 +43,29 @@ public final class ReinhardSwordDrawAbility implements Ability {
 
 	@Override
 	public boolean canActivate(ServerPlayer player) {
-		return ReinhardController.hasWorthyNearby(player, 30.0);
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		if (state.swordDrawn()) return true;
+		if (ReinhardSwordDrawCeremonyController.isInCeremony(player)) return false;
+		return ReinhardController.hasWorthyNearby(player, ReinhardSwordDrawCeremonyController.CEREMONY_RADIUS);
 	}
 
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
-		if (!ReinhardController.hasWorthyNearby(player, 30.0)) {
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		if (state.swordDrawn()) {
+			return true;
+		}
+		if (ReinhardSwordDrawCeremonyController.isInCeremony(player)) {
+			return false;
+		}
+		if (!ReinhardController.hasWorthyNearby(player, ReinhardSwordDrawCeremonyController.CEREMONY_RADIUS)) {
 			player.displayClientMessage(
 					Component.translatable("ability.superheroes.reinhard_sword_draw.no_worthy"),
 					true);
 			return false;
 		}
-		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(true));
-		HeroAttributes.REINHARD_DRAW.apply(player);
-		giveSword(player);
-		ServerLevel level = player.serverLevel();
-		level.sendParticles(ParticleTypes.END_ROD,
-				player.getX(), player.getY() + 1.0, player.getZ(),
-				40, 0.5, 0.8, 0.5, 0.05);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.NETHERITE_BLOCK_HIT, SoundSource.PLAYERS, 1.2f, 1.4f);
-		return true;
+		ReinhardSwordDrawCeremonyController.startCeremony(player);
+		return false;
 	}
 
 	@Override

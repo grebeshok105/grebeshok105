@@ -86,7 +86,7 @@ public final class ReinhardController {
 			return true;
 		});
 
-		// Royal Icicle: базовая атака бьёт только достойных — обычные мобы атаку игнорируют
+		// Reid (драконий меч): базовая атака бьёт только достойных — обычные мобы атаку игнорируют
 		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register(
 				(player, world, hand, target, hitResult) -> {
 					if (world.isClientSide) return net.minecraft.world.InteractionResult.PASS;
@@ -404,6 +404,7 @@ public final class ReinhardController {
 				.withAccumulatedDamage(0f)
 				.withPhase(1);
 		player.setAttached(ModAttachments.REINHARD_STATE, state);
+		com.example.superheroes.effect.ReinhardSwordDrawCeremonyController.cancelCeremony(player);
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}

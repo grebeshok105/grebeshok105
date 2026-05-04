@@ -92,6 +92,15 @@ public final class AbilityIds {
 	public static final ResourceLocation REINHARD_DIVINE_AURA = ModId.of("reinhard_divine_aura");
 
 
+	public static boolean isReinhardSwordOnly(ResourceLocation id) {
+		return REINHARD_AIR_SLASH.equals(id)
+				|| REINHARD_TELEPORT_BEHIND.equals(id)
+				|| REINHARD_SWORD_WAVE.equals(id)
+				|| REINHARD_HEAVENS_STRIKE.equals(id)
+				|| REINHARD_COUNTER_RIPOSTE.equals(id)
+				|| REINHARD_DIVINE_AURA.equals(id);
+	}
+
 	private AbilityIds() {
 	}
 }

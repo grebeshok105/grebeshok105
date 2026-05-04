@@ -452,14 +452,14 @@
   "item.superheroes.reinhard_suit.lore.line2": "Облачение Рейнхарда ван Астрея",
   "item.superheroes.reinhard_suit.lore.usage": "▶ ПКМ — Облачиться",
   "item.superheroes.reinhard_suit.lore.untransform": "▶ Shift + ПКМ — Снять",
-  "item.superheroes.royal_icicle": "Royal Icicle",
-  "item.superheroes.royal_icicle.lore.line1": "Меч-сосулька. Полная сила открыта только пред достойным.",
+  "item.superheroes.royal_icicle": "Драконий меч Рейд",
+  "item.superheroes.royal_icicle.lore.line1": "Драконий меч. Полная сила открыта только пред достойным.",
   "item.superheroes.royal_icicle.lore.line2": "Священное оружие Меченосца",
   "item.superheroes.royal_icicle.lore.worthy": "▶ Бьёт только достойных (игроки/боссы) — обычным мобам урона нет",
   "item.superheroes.royal_icicle.lore.bound": "▶ Появляется/исчезает с обнажением меча",
   "hero.superheroes.reinhard": "Рейнхард ван Астрея",
   "ability.superheroes.reinhard_sword_draw": "Обнажить меч",
-  "ability.superheroes.reinhard_sword_draw.desc": "Тоггл. Достать Royal Icicle и получить +6 урона, +50% скорости, +0.4 прыжка, +1 attack-speed. Открывает меч-способности.",
+  "ability.superheroes.reinhard_sword_draw.desc": "Тоггл. Достать Рейд и получить +6 урона, +50% скорости, +0.4 прыжка, +1 attack-speed. Открывает меч-способности.",
   "ability.superheroes.reinhard_air_slash": "Удар Духа",
   "ability.superheroes.reinhard_air_slash.desc": "Режет воздух духовной волной на 9 блоков. По достойным соперникам — 14 урона + сильный отброс. По обычным мобам — 8 урона. КД 1.5с. Требует обнажённый меч.",
   "ability.superheroes.reinhard_teleport_behind": "Шаг Небес",
@@ -485,7 +485,8 @@
   "screen.superheroes.reinhard_wish.subtitle": "Использовано %s из %s. Выбери источник для иммунитета:",
   "screen.superheroes.reinhard_wish.cancel": "Отмена",
   "screen.superheroes.reinhard_wish.already_adapted": "%s (уже адаптирован)",
-  "ability.superheroes.reinhard_sword_draw.no_worthy": "Поблизости нет достойного соперника",
+  "ability.superheroes.reinhard_sword_draw.no_worthy": "Нет достойных противников в округе",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл",
-  "item.superheroes.royal_icicle.unworthy": "Royal Icicle не разит недостойных"
+  "ability.superheroes.reinhard_sword_draw.ceremony": "Рейд пробуждается...",
+  "item.superheroes.royal_icicle.unworthy": "Рейд не разит недостойных"
 }
