@@ -30,6 +30,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(HeroDataSyncS2CPayload.TYPE, HeroDataSyncS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(LaserFiredS2CPayload.TYPE, LaserFiredS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(RepulsorBlastS2CPayload.TYPE, RepulsorBlastS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(ThanosCosmicBeamS2CPayload.TYPE, ThanosCosmicBeamS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(ScreenShakeS2CPayload.TYPE, ScreenShakeS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(RemoteHeroSkinS2CPayload.TYPE, RemoteHeroSkinS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(ReactorStateS2CPayload.TYPE, ReactorStateS2CPayload.STREAM_CODEC);
@@ -122,6 +123,16 @@ public final class ModNetworking {
 
 	public static void broadcastRepulsor(ServerPlayer shooter, Vec3 start, Vec3 end) {
 		RepulsorBlastS2CPayload payload = new RepulsorBlastS2CPayload(shooter.getUUID(), start, end);
+		ServerPlayNetworking.send(shooter, payload);
+		for (ServerPlayer observer : PlayerLookup.tracking(shooter)) {
+			if (observer != shooter) {
+				ServerPlayNetworking.send(observer, payload);
+			}
+		}
+	}
+
+	public static void broadcastThanosCosmicBeam(ServerPlayer shooter, Vec3 start, Vec3 end) {
+		ThanosCosmicBeamS2CPayload payload = new ThanosCosmicBeamS2CPayload(shooter.getUUID(), start, end);
 		ServerPlayNetworking.send(shooter, payload);
 		for (ServerPlayer observer : PlayerLookup.tracking(shooter)) {
 			if (observer != shooter) {

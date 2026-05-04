@@ -9,10 +9,12 @@ import com.example.superheroes.client.ClientReactorState;
 import com.example.superheroes.client.RemoteHeroSkins;
 import com.example.superheroes.client.fx.ScreenShakeManager;
 import com.example.superheroes.client.hud.BloodRainHud;
+import com.example.superheroes.client.render.CosmicBeamRenderer;
 import com.example.superheroes.client.render.LaserBeamRenderer;
 import com.example.superheroes.client.render.RepulsorBeamRenderer;
 import com.example.superheroes.network.HeroDataSyncS2CPayload;
 import com.example.superheroes.network.LaserFiredS2CPayload;
+import com.example.superheroes.network.ThanosCosmicBeamS2CPayload;
 import com.example.superheroes.network.MadnessSyncS2CPayload;
 import com.example.superheroes.network.MadnessVisualS2CPayload;
 import com.example.superheroes.network.ReactorStateS2CPayload;
@@ -65,6 +67,9 @@ public final class ClientNetworking {
 
 		ClientPlayNetworking.registerGlobalReceiver(RepulsorBlastS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> RepulsorBeamRenderer.add(payload.start(), payload.end())));
+
+		ClientPlayNetworking.registerGlobalReceiver(ThanosCosmicBeamS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> CosmicBeamRenderer.add(payload.start(), payload.end())));
 
 		ClientPlayNetworking.registerGlobalReceiver(ScreenShakeS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> ScreenShakeManager.shake(payload.intensity(), payload.durationTicks())));
