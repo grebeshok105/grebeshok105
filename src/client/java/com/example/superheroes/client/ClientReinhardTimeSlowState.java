@@ -3,18 +3,18 @@ package com.example.superheroes.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 
-public final class ClientReinhardCeremonyState {
+public final class ClientReinhardTimeSlowState {
 	private static volatile boolean active;
-	private static volatile float progress;
+	private static volatile long activatedAtMs;
 
-	private ClientReinhardCeremonyState() {
+	private ClientReinhardTimeSlowState() {
 	}
 
-	public static void update(boolean newActive, float newProgress) {
+	public static void update(boolean newActive) {
 		boolean wasActive = active;
 		active = newActive;
-		progress = Math.max(0f, Math.min(1f, newProgress));
 		if (newActive && !wasActive) {
+			activatedAtMs = System.currentTimeMillis();
 			silenceWorldSounds();
 		}
 	}
@@ -34,7 +34,7 @@ public final class ClientReinhardCeremonyState {
 		return active;
 	}
 
-	public static float progress() {
-		return progress;
+	public static long activatedAtMs() {
+		return activatedAtMs;
 	}
 }

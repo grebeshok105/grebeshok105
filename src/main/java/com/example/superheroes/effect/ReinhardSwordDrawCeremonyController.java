@@ -89,8 +89,6 @@ public final class ReinhardSwordDrawCeremonyController {
 
 		ServerLevel level = player.serverLevel();
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				ModSounds.REINHARD_SWORD_DRAW_CEREMONY, SoundSource.PLAYERS, 1.4f, 1.0f);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.6f, 0.6f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.PORTAL_AMBIENT, SoundSource.PLAYERS, 1.0f, 0.4f);
@@ -124,7 +122,10 @@ public final class ReinhardSwordDrawCeremonyController {
 		spawnAuraVfx(level, player, progress);
 
 		// Sound build-up
-		if (elapsed == 40) {
+		if (elapsed == 30) {
+			level.playSound(null, player.getX(), player.getY(), player.getZ(),
+					ModSounds.REINHARD_SWORD_DRAW_CEREMONY, SoundSource.PLAYERS, 1.6f, 1.0f);
+		} else if (elapsed == 40) {
 			level.playSound(null, player.getX(), player.getY(), player.getZ(),
 					SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1.4f, 0.7f);
 		} else if (elapsed == 100) {

@@ -2,7 +2,6 @@ package com.example.superheroes.item;
 
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.ReinhardState;
-import com.example.superheroes.effect.ReinhardWorthyOpponent;
 import com.example.superheroes.hero.ReinhardHero;
 import com.example.superheroes.transform.HeroData;
 import net.minecraft.ChatFormatting;
@@ -13,6 +12,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -44,8 +45,9 @@ public class RoyalIcicleItem extends SwordItem {
 	}
 
 	private static final double CLEAVE_RADIUS = 5.0;
-	private static final float CLEAVE_DAMAGE = 12.0f;
-	private static final float CLEAVE_DAMAGE_WORTHY = 22.0f;
+	private static final float CLEAVE_DAMAGE = 100.0f;
+	private static final double DARKNESS_RADIUS = 10.0;
+	private static final int DARKNESS_DURATION_TICKS = 80;
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -61,18 +63,16 @@ public class RoyalIcicleItem extends SwordItem {
 					ServerLevel level = player.serverLevel();
 					DamageSource cleaveSrc = level.damageSources().playerAttack(player);
 					Vec3 origin = target.position().add(0, target.getBbHeight() * 0.5, 0);
-					AABB box = new AABB(
+					AABB cleaveBox = new AABB(
 							origin.x - CLEAVE_RADIUS, origin.y - CLEAVE_RADIUS, origin.z - CLEAVE_RADIUS,
 							origin.x + CLEAVE_RADIUS, origin.y + CLEAVE_RADIUS, origin.z + CLEAVE_RADIUS);
-					List<LivingEntity> cleaveTargets = level.getEntitiesOfClass(LivingEntity.class, box,
+					double cleaveR2 = CLEAVE_RADIUS * CLEAVE_RADIUS;
+					List<LivingEntity> cleaveTargets = level.getEntitiesOfClass(LivingEntity.class, cleaveBox,
 							e -> e != player && e != target && e.isAlive() && !e.isSpectator()
 									&& !(e instanceof Player p && p.getUUID().equals(player.getUUID()))
-									&& e.position().add(0, e.getBbHeight() * 0.5, 0).distanceToSqr(origin)
-											<= CLEAVE_RADIUS * CLEAVE_RADIUS);
+									&& e.position().add(0, e.getBbHeight() * 0.5, 0).distanceToSqr(origin) <= cleaveR2);
 					for (LivingEntity le : cleaveTargets) {
-						boolean worthy = ReinhardWorthyOpponent.isWorthy(le);
-						float dmg = worthy ? CLEAVE_DAMAGE_WORTHY : CLEAVE_DAMAGE;
-						le.hurt(cleaveSrc, dmg);
+						le.hurt(cleaveSrc, CLEAVE_DAMAGE);
 						le.invulnerableTime = 0;
 						Vec3 push = le.position().subtract(origin);
 						double horiz = Math.max(0.01, Math.sqrt(push.x * push.x + push.z * push.z));
@@ -80,25 +80,20 @@ public class RoyalIcicleItem extends SwordItem {
 						le.hurtMarked = true;
 					}
 
-					int rings = 3;
-					for (int ring = 1; ring <= rings; ring++) {
-						double r = (CLEAVE_RADIUS * ring) / rings;
-						int count = 24 + ring * 12;
-						for (int i = 0; i < count; i++) {
-							double a = (Math.PI * 2 * i) / count;
-							double px = origin.x + Math.cos(a) * r;
-							double pz = origin.z + Math.sin(a) * r;
-							level.sendParticles(ParticleTypes.SWEEP_ATTACK, px, origin.y, pz, 1, 0, 0, 0, 0);
-							if (ring == rings) {
-								level.sendParticles(ParticleTypes.END_ROD, px, origin.y + 0.4, pz, 1, 0, 0, 0, 0);
-							}
-						}
+					double darkR2 = DARKNESS_RADIUS * DARKNESS_RADIUS;
+					AABB darkBox = new AABB(
+							origin.x - DARKNESS_RADIUS, origin.y - DARKNESS_RADIUS, origin.z - DARKNESS_RADIUS,
+							origin.x + DARKNESS_RADIUS, origin.y + DARKNESS_RADIUS, origin.z + DARKNESS_RADIUS);
+					List<LivingEntity> nearbyForDark = level.getEntitiesOfClass(LivingEntity.class, darkBox,
+							e -> e.isAlive() && !e.isSpectator()
+									&& e.position().add(0, e.getBbHeight() * 0.5, 0).distanceToSqr(origin) <= darkR2);
+					for (LivingEntity le : nearbyForDark) {
+						le.addEffect(new MobEffectInstance(MobEffects.DARKNESS, DARKNESS_DURATION_TICKS, 0, false, false, false));
 					}
-					level.sendParticles(ParticleTypes.FLASH, origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+
+					level.sendParticles(ParticleTypes.SWEEP_ATTACK, origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
 					level.playSound(null, origin.x, origin.y, origin.z,
-							SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.6f, 0.7f);
-					level.playSound(null, origin.x, origin.y, origin.z,
-							SoundEvents.WIND_CHARGE_BURST, SoundSource.PLAYERS, 1.0f, 1.1f);
+							SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.8f, 1.0f);
 				}
 			}
 		}

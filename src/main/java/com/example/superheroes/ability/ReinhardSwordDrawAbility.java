@@ -58,8 +58,7 @@ public final class ReinhardSwordDrawAbility implements Ability {
 		}
 		if (!com.example.superheroes.effect.ReinhardSwordDrawGateController.isReady(player)) {
 			player.displayClientMessage(
-					Component.translatable("ability.superheroes.reinhard_sword_draw.gate_locked",
-							(int) com.example.superheroes.effect.ReinhardSwordDrawGateController.DAMAGE_THRESHOLD),
+					Component.translatable("ability.superheroes.reinhard_sword_draw.no_worthy"),
 					true);
 			return false;
 		}
