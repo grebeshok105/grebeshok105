@@ -50,6 +50,8 @@
   "subtitles.superheroes.homelander.hand_clap": "Thunderclap",
   "subtitles.superheroes.homelander.iron_fists": "Iron fists impact",
   "subtitles.superheroes.doomsday.roar": "Doomsday roars",
+  "subtitles.superheroes.thanos.snap_voice": "Thanos snaps his fingers",
+  "subtitles.superheroes.reinhard.sword_strike_voice": "Reinhard strikes with sword",
   "ability.superheroes.iron_man_flight": "Repulsor Flight",
   "ability.superheroes.supersonic": "Supersonic Boost",
   "ability.superheroes.repulsor": "Repulsor Blast",
@@ -486,6 +488,7 @@
   "screen.superheroes.reinhard_wish.already_adapted": "%s (already adapted)",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "No worthy opponent nearby",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent",
+  "ability.superheroes.reinhard.time_slow.start": "\"Fire and death\" — time slowed down",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Reid awakens...",
   "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy"
 }

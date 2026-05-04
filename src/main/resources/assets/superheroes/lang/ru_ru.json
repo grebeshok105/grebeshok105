@@ -50,6 +50,8 @@
   "subtitles.superheroes.homelander.hand_clap": "Громовой хлопок",
   "subtitles.superheroes.homelander.iron_fists": "Удар железных кулаков",
   "subtitles.superheroes.doomsday.roar": "Думсдей рычит",
+  "subtitles.superheroes.thanos.snap_voice": "Танос щелкает пальцами",
+  "subtitles.superheroes.reinhard.sword_strike_voice": "Рейнхард наносит удар мечом",
   "ability.superheroes.iron_man_flight": "Репульсорный полёт",
   "ability.superheroes.supersonic": "Сверхзвуковой буст",
   "ability.superheroes.repulsor": "Залп репульсора",
@@ -488,5 +490,6 @@
   "ability.superheroes.reinhard_sword_draw.no_worthy": "Нет достойных противников в округе",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Рейд пробуждается...",
+  "ability.superheroes.reinhard.time_slow.start": "«Огонь и смерть» — время замедлилось",
   "item.superheroes.royal_icicle.unworthy": "Рейд не разит недостойных"
 }
