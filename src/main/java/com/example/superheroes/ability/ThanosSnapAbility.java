@@ -2,8 +2,10 @@ package com.example.superheroes.ability;
 
 import com.example.superheroes.effect.ModEffects;
 import com.example.superheroes.effect.ThanosGauntletStateController;
+import com.example.superheroes.effect.ThanosSnapWindupController;
 import com.example.superheroes.item.infinity.InfinityStoneType;
 import com.example.superheroes.particle.ModParticles;
+import com.example.superheroes.sound.ModSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -24,6 +26,8 @@ public final class ThanosSnapAbility implements Ability {
 	private static final int COOLDOWN_TICKS = 1800;
 	private static final double RADIUS = 128.0;
 	private static final int DURATION_TICKS = 600;
+	private static final int WINDUP_TOTAL_TICKS = 100;
+	private static final int WINDUP_SNAP_AT_TICK = 80;
 
 	@Override
 	public ResourceLocation getId() {
@@ -64,6 +68,18 @@ public final class ThanosSnapAbility implements Ability {
 
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
+		if (ThanosSnapWindupController.isWindingUp(player)) {
+			return false;
+		}
+		ServerLevel level = player.serverLevel();
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				ModSounds.THANOS_SNAP_VOICE, SoundSource.PLAYERS, 1.6f, 1.0f);
+		ThanosSnapWindupController.schedule(player, WINDUP_SNAP_AT_TICK, WINDUP_TOTAL_TICKS);
+		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
+		return true;
+	}
+
+	public static void executeSnap(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
 		double cx = player.getX();
 		double cy = player.getY();
@@ -149,8 +165,5 @@ public final class ThanosSnapAbility implements Ability {
 				Component.translatable("ability.superheroes.thanos_snap.snapped", snapped)
 						.withStyle(ChatFormatting.LIGHT_PURPLE),
 				false);
-
-		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
-		return true;
 	}
 }

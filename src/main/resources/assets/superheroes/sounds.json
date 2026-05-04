@@ -99,5 +99,23 @@
 				"weight": 1
 			}
 		]
+	},
+	"thanos.snap.voice": {
+		"subtitle": "subtitles.superheroes.thanos.snap_voice",
+		"sounds": [
+			{
+				"name": "superheroes:thanos/snap_voice",
+				"stream": true
+			}
+		]
+	},
+	"reinhard.sword_strike.voice": {
+		"subtitle": "subtitles.superheroes.reinhard.sword_strike_voice",
+		"sounds": [
+			{
+				"name": "superheroes:reinhard/sword_strike_voice",
+				"stream": true
+			}
+		]
 	}
 }

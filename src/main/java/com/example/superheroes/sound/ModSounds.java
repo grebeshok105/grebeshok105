@@ -20,6 +20,8 @@ public final class ModSounds {
 	public static final SoundEvent HOMELANDER_IRON_FISTS_IMPACT = register("homelander.iron_fists.impact");
 	public static final SoundEvent HOMELANDER_IRON_FISTS_CHARGE = register("homelander.iron_fists.charge");
 	public static final SoundEvent DOOMSDAY_ROAR = register("doomsday.roar");
+	public static final SoundEvent THANOS_SNAP_VOICE = register("thanos.snap.voice");
+	public static final SoundEvent REINHARD_SWORD_STRIKE_VOICE = register("reinhard.sword_strike.voice");
 
 	private ModSounds() {
 	}

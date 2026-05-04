@@ -43,10 +43,8 @@ public final class ReinhardSwordDrawAbility implements Ability {
 
 	@Override
 	public boolean canActivate(ServerPlayer player) {
-		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		if (state.swordDrawn()) return true;
 		if (ReinhardSwordDrawCeremonyController.isInCeremony(player)) return false;
-		return ReinhardController.hasWorthyNearby(player, ReinhardSwordDrawCeremonyController.CEREMONY_RADIUS);
+		return true;
 	}
 
 	@Override
@@ -74,6 +72,7 @@ public final class ReinhardSwordDrawAbility implements Ability {
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
 		HeroAttributes.REINHARD_DRAW.remove(player);
 		removeSword(player);
+		com.example.superheroes.effect.ReinhardTimeSlowController.disarmForFirstStrike(player);
 		ServerLevel level = player.serverLevel();
 		level.sendParticles(ParticleTypes.SMOKE,
 				player.getX(), player.getY() + 1.0, player.getZ(),
@@ -111,6 +110,7 @@ public final class ReinhardSwordDrawAbility implements Ability {
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
 		HeroAttributes.REINHARD_DRAW.remove(player);
 		removeSword(player);
+		com.example.superheroes.effect.ReinhardTimeSlowController.disarmForFirstStrike(player);
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		if (data.activeAbilities().contains(AbilityIds.REINHARD_SWORD_DRAW)) {
 			data = data.withActive(AbilityIds.REINHARD_SWORD_DRAW, false);

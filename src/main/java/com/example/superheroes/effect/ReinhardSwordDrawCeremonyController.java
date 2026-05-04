@@ -148,6 +148,7 @@ public final class ReinhardSwordDrawCeremonyController {
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(true));
 		HeroAttributes.REINHARD_DRAW.apply(player);
 		giveSword(player);
+		ReinhardTimeSlowController.armForFirstStrike(player);
 
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 		if (!data.isActive(AbilityIds.REINHARD_SWORD_DRAW)) {

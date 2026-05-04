@@ -68,8 +68,10 @@ public class SuperheroesMod implements ModInitializer {
 		com.example.superheroes.effect.KratosHandStrikeFxController.init();
 		com.example.superheroes.effect.DoomsdayKryptoniteController.init();
 		com.example.superheroes.effect.ThanosStoneRewardController.init();
+		com.example.superheroes.effect.ReinhardTimeSlowController.init();
 		com.example.superheroes.effect.ReinhardController.init();
 		com.example.superheroes.effect.ReinhardSwordDrawCeremonyController.init();
+		com.example.superheroes.effect.ThanosSnapWindupController.init();
 		SuperheroesCommands.init();
 
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
