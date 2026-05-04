@@ -485,8 +485,8 @@
   "screen.superheroes.reinhard_wish.subtitle": "Использовано %s из %s. Выбери источник для иммунитета:",
   "screen.superheroes.reinhard_wish.cancel": "Отмена",
   "screen.superheroes.reinhard_wish.already_adapted": "%s (уже адаптирован)",
-  "ability.superheroes.reinhard_sword_draw.no_worthy": "Поблизости нет достойного соперника",
+  "ability.superheroes.reinhard_sword_draw.no_worthy": "Нет достойных противников в округе",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Меч вложен — достойный соперник ушёл",
-  "ability.superheroes.reinhard_sword_draw.not_enough_damage": "Royal Icicle спит — выдержи ещё %s урона",
+  "ability.superheroes.reinhard_sword_draw.ceremony": "Royal Icicle пробуждается...",
   "item.superheroes.royal_icicle.unworthy": "Royal Icicle не разит недостойных"
 }

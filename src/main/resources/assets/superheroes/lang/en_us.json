@@ -486,6 +486,6 @@
   "screen.superheroes.reinhard_wish.already_adapted": "%s (already adapted)",
   "ability.superheroes.reinhard_sword_draw.no_worthy": "No worthy opponent nearby",
   "ability.superheroes.reinhard_sword_draw.sheathed": "Sword sheathed — no worthy opponent",
-  "ability.superheroes.reinhard_sword_draw.not_enough_damage": "Royal Icicle stays sealed — endure %s more damage first",
+  "ability.superheroes.reinhard_sword_draw.ceremony": "Royal Icicle awakens...",
   "item.superheroes.royal_icicle.unworthy": "Royal Icicle ignores the unworthy"
 }

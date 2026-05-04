@@ -299,10 +299,7 @@ public final class ReinhardController {
 		if (newPhase > state.phase()) {
 			advancePhase(player, newPhase);
 		}
-		float effectiveForTotal = Math.max(effective, 0f);
-		state = state.withAccumulatedDamage(newAccum)
-				.withPhase(newPhase)
-				.withTotalDamageTaken(state.totalDamageTaken() + effectiveForTotal);
+		state = state.withAccumulatedDamage(newAccum).withPhase(newPhase);
 		LAST_DAMAGE_TICK.put(player.getUUID(), nowTick);
 
 		// Worthy opponent tracker (минимум 4 dmg single hit или 12 cumulative за 6 секунд)
@@ -405,9 +402,9 @@ public final class ReinhardController {
 		state = state.withAdaptedDamageTypes(List.of())
 				.withRecentDamageTypes(List.of())
 				.withAccumulatedDamage(0f)
-				.withPhase(1)
-				.withTotalDamageTaken(0f);
+				.withPhase(1);
 		player.setAttached(ModAttachments.REINHARD_STATE, state);
+		com.example.superheroes.effect.ReinhardSwordDrawCeremonyController.cancelCeremony(player);
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}

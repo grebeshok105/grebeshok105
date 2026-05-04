@@ -118,5 +118,9 @@ public final class ClientNetworking {
 							payload.damageTypeIds(), payload.adaptedDamageTypeIds(),
 							payload.wishesUsed(), payload.wishesMax()));
 				}));
+
+		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ReinhardCeremonyS2CPayload.TYPE, (payload, context) ->
+				context.client().execute(() -> com.example.superheroes.client.ClientReinhardCeremonyState.update(
+						payload.active(), payload.progress())));
 	}
 }
