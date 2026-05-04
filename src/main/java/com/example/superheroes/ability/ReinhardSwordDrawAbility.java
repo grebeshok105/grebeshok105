@@ -22,6 +22,8 @@ import net.minecraft.world.item.ItemStack;
  * При активации в руку выдаётся Royal Icicle. При деактивации — убирается.
  */
 public final class ReinhardSwordDrawAbility implements Ability {
+	public static final float SWORD_UNLOCK_DAMAGE = 50f;
+
 	@Override
 	public ResourceLocation getId() {
 		return AbilityIds.REINHARD_SWORD_DRAW;
@@ -44,11 +46,22 @@ public final class ReinhardSwordDrawAbility implements Ability {
 
 	@Override
 	public boolean canActivate(ServerPlayer player) {
-		return ReinhardController.hasWorthyNearby(player, 30.0);
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		return state.totalDamageTaken() >= SWORD_UNLOCK_DAMAGE
+				&& ReinhardController.hasWorthyNearby(player, 30.0);
 	}
 
 	@Override
 	public boolean tryActivate(ServerPlayer player) {
+		ReinhardState gateState = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		if (gateState.totalDamageTaken() < SWORD_UNLOCK_DAMAGE) {
+			float remaining = SWORD_UNLOCK_DAMAGE - gateState.totalDamageTaken();
+			player.displayClientMessage(
+					Component.translatable("ability.superheroes.reinhard_sword_draw.not_enough_damage",
+							String.format(java.util.Locale.ROOT, "%.0f", remaining)),
+					true);
+			return false;
+		}
 		if (!ReinhardController.hasWorthyNearby(player, 30.0)) {
 			player.displayClientMessage(
 					Component.translatable("ability.superheroes.reinhard_sword_draw.no_worthy"),
