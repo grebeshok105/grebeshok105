@@ -499,6 +499,8 @@
   "ability.superheroes.reinhard_sword_draw.gate_locked": "Меч заперт — пропусти %s урона от одного противника",
   "ability.superheroes.reinhard_sword_draw.ready": "Достоин! Меч готов к обнажению",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Рейд пробуждается...",
-  "ability.superheroes.reinhard.time_slow.start": "«Огонь и смерть» — время замедлилось",
+  "ability.superheroes.reinhard.time_slow.start": "",
+  "hud.superheroes.reinhard.death_mark.title": "СРАЖЁН МЕЧОМ РЕЙНХАРДА",
+  "hud.superheroes.reinhard.death_mark.subtitle": "Время остановилось — твой удар уже нанесён",
   "item.superheroes.royal_icicle.unworthy": "Рейд не разит недостойных"
 }

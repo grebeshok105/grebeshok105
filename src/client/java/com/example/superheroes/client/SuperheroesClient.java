@@ -107,6 +107,7 @@ public class SuperheroesClient implements ClientModInitializer {
 			com.example.superheroes.client.hud.CracksOverlayHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.DoomsdayGlitchHud.render(graphics, tracker);
 			com.example.superheroes.client.hud.ReinhardCeremonyOverlay.render(graphics, tracker);
+			com.example.superheroes.client.hud.ReinhardSwordDeathOverlay.render(graphics, tracker);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {

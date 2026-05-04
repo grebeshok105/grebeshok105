@@ -30,8 +30,8 @@ public final class ThanosSnapAbility implements Ability {
 	private static final int COOLDOWN_TICKS = 1800;
 	private static final double RADIUS = 128.0;
 	private static final int DURATION_TICKS = 600;
-	private static final int WINDUP_TOTAL_TICKS = 100;
-	private static final int WINDUP_SNAP_AT_TICK = 80;
+	private static final int WINDUP_TOTAL_TICKS = 115;
+	private static final int WINDUP_SNAP_AT_TICK = 95;
 
 	@Override
 	public ResourceLocation getId() {
