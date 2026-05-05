@@ -123,12 +123,12 @@ public final class DoomsdayHero implements Hero {
 
         public boolean isAbilityUnlocked(Player player, ResourceLocation abilityId) {
                 int tier = getTier(player);
-                if (AbilityIds.DOOMSDAY_SMASH.equals(abilityId)) return tier >= 1;
-                if (AbilityIds.DOOMSDAY_ROAR.equals(abilityId)) return tier >= 2;
-                if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(abilityId)) return tier >= 3;
-                if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(abilityId)) return tier >= 4;
-                if (AbilityIds.DOOMSDAY_BERSERK.equals(abilityId)) return tier >= 5;
-                if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(abilityId)) return tier >= 6;
+                if (AbilityIds.DOOMSDAY_SMASH.equals(abilityId)) return tier >= 2;
+                if (AbilityIds.DOOMSDAY_ROAR.equals(abilityId)) return tier >= 3;
+                if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(abilityId)) return tier >= 4;
+                if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(abilityId)) return tier >= 5;
+                if (AbilityIds.DOOMSDAY_BERSERK.equals(abilityId)) return tier >= 6;
+                if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(abilityId)) return tier >= 7;
                 return false;
         }
 
