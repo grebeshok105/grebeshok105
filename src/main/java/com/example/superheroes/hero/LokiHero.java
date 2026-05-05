@@ -50,7 +50,8 @@ public final class LokiHero implements Hero {
 				AbilityIds.LOKI_TESSERACT_BLINK,
 				AbilityIds.LOKI_MIND_CHARM,
 				AbilityIds.LOKI_GLAMOUR,
-				AbilityIds.LOKI_CHAOS_BOLT
+				AbilityIds.LOKI_CHAOS_BOLT,
+				AbilityIds.LOKI_MIND_MANIPULATION
 		);
 	}
 

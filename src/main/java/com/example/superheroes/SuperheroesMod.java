@@ -119,7 +119,10 @@ public class SuperheroesMod implements ModInitializer {
 		});
 
 		net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents.AFTER_RESPAWN.register(
-				(oldPlayer, newPlayer, alive) -> HeroTransformService.onPlayerRespawn(newPlayer));
+				(oldPlayer, newPlayer, alive) -> {
+					HeroTransformService.onPlayerRespawn(newPlayer);
+					com.example.superheroes.effect.ReinhardSwordDeathMarkController.clearMark(newPlayer.getUUID());
+				});
 
 		EntityTrackingEvents.START_TRACKING.register((tracked, observer) -> {
 			if (tracked instanceof ServerPlayer trackedPlayer) {

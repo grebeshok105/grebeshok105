@@ -48,6 +48,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(ReinhardSwordGateS2CPayload.TYPE, ReinhardSwordGateS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(ReinhardSwordKillS2CPayload.TYPE, ReinhardSwordKillS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(ReinhardTimeSlowS2CPayload.TYPE, ReinhardTimeSlowS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(LokiMindManipulationS2CPayload.TYPE, LokiMindManipulationS2CPayload.STREAM_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(ActivateAbilityC2SPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();

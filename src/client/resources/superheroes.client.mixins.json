@@ -9,7 +9,12 @@
 		"AbstractClientPlayerSkinMixin",
 		"GameRendererFovMixin",
 		"GuiVanillaGlitchMixin",
-		"SoundEngineMixin"
+		"SoundEngineMixin",
+		"MouseHandlerAccessor",
+		"MindManipulationKeyboardInputMixin",
+		"MindManipulationMouseHandlerMixin",
+		"MindManipulationCameraMixin",
+		"MindManipulationGuiMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

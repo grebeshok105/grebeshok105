@@ -73,6 +73,7 @@ public final class AbilityIds {
 	public static final ResourceLocation LOKI_MIND_CHARM = ModId.of("loki_mind_charm");
 	public static final ResourceLocation LOKI_GLAMOUR = ModId.of("loki_glamour");
 	public static final ResourceLocation LOKI_CHAOS_BOLT = ModId.of("loki_chaos_bolt");
+	public static final ResourceLocation LOKI_MIND_MANIPULATION = ModId.of("loki_mind_manipulation");
 
 	public static final ResourceLocation THANOS_COSMIC_SLAM = ModId.of("thanos_cosmic_slam");
 	public static final ResourceLocation THANOS_REALITY_TEAR = ModId.of("thanos_reality_tear");

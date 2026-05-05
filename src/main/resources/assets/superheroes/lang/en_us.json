@@ -380,6 +380,8 @@
   "ability.superheroes.loki_glamour.desc": "Toggle: Invisibility + Speed III + Strength III + Haste II. Perfect backstab setup.",
   "ability.superheroes.loki_chaos_bolt": "Chaos Bolt",
   "ability.superheroes.loki_chaos_bolt.desc": "32b hitscan: 28 dmg primary + 18 splash 5b. Random effect + Weakness/Confusion/Levitation.",
+  "ability.superheroes.loki_mind_manipulation": "Mind Manipulation",
+  "ability.superheroes.loki_mind_manipulation.desc": "24b beam: victim's screen and HUD flip 180\u00b0 for 10s, with mouse and WASD/jump inverted.",
   "ability.superheroes.naruto_bijuudama": "Bijuudama",
   "ability.superheroes.naruto_bijuudama.desc": "Tailed Beast Bomb — 32-block hitscan with a 7-block sphere: 40 damage at the centre, 16 at the edge, sets the area on fire for 6s.",
   "death.attack.kratos_blade": "%1$s was butchered by %2$s's Blades of Chaos",

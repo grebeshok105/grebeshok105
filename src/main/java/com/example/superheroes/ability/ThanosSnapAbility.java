@@ -1,12 +1,12 @@
 package com.example.superheroes.ability;
 
-import com.example.superheroes.effect.ModEffects;
 import com.example.superheroes.effect.ThanosCrossModSnapHook;
 import com.example.superheroes.effect.ThanosGauntletStateController;
 import com.example.superheroes.effect.ThanosSnapWindupController;
 import com.example.superheroes.item.InfinityGauntletItem;
 import com.example.superheroes.item.infinity.InfinityStoneItem;
 import com.example.superheroes.item.infinity.InfinityStoneType;
+import com.example.superheroes.transform.HeroTransformService;
 import net.minecraft.world.item.ItemStack;
 import com.example.superheroes.particle.ModParticles;
 import com.example.superheroes.sound.ModSounds;
@@ -29,7 +29,7 @@ import java.util.List;
 public final class ThanosSnapAbility implements Ability {
 	private static final int COOLDOWN_TICKS = 1800;
 	private static final double RADIUS = 128.0;
-	private static final int DURATION_TICKS = 600;
+	private static final int SHOCK_DURATION_TICKS = 100;
 	private static final int WINDUP_TOTAL_TICKS = 115;
 	private static final int WINDUP_SNAP_AT_TICK = 95;
 
@@ -96,14 +96,14 @@ public final class ThanosSnapAbility implements Ability {
 
 		int snapped = 0;
 		for (Player victim : victims) {
-			victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, DURATION_TICKS, 4, false, true, true));
-			victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, DURATION_TICKS, 4, false, true, true));
-			victim.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, DURATION_TICKS, 4, false, true, true));
-			victim.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, DURATION_TICKS, 0, false, true, true));
-			victim.addEffect(new MobEffectInstance(MobEffects.CONFUSION, DURATION_TICKS, 0, false, true, true));
-			victim.addEffect(new MobEffectInstance(ModEffects.SNAPPED, DURATION_TICKS, 0, false, true, true));
-			victim.addEffect(new MobEffectInstance(ModEffects.DISABLED_ABILITIES, DURATION_TICKS, 0, false, true, true));
-			victim.addEffect(new MobEffectInstance(ModEffects.HEAL_BLOCK, DURATION_TICKS, 0, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, SHOCK_DURATION_TICKS, 0, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.CONFUSION, SHOCK_DURATION_TICKS, 0, false, true, true));
+			victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, SHOCK_DURATION_TICKS, 2, false, true, true));
+			if (victim instanceof ServerPlayer victimSp) {
+				HeroTransformService.forceUntransform(victimSp);
+				victimSp.getInventory().clearContent();
+				victimSp.inventoryMenu.broadcastChanges();
+			}
 			ThanosCrossModSnapHook.revokeHero(victim);
 			level.sendParticles(ModParticles.PURPLE_FLAME,
 					victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),

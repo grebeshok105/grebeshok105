@@ -35,6 +35,7 @@ public final class ReinhardTimeSlowController {
 		ServerTickEvents.END_SERVER_TICK.register(ReinhardTimeSlowController::tick);
 
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+			if (ReinhardSwordDeathMarkController.isFlushing()) return true;
 			if (amount <= 0f) return true;
 			if (!(source.getEntity() instanceof ServerPlayer attacker)) return true;
 			if (!(entity instanceof LivingEntity living) || living == attacker) return true;

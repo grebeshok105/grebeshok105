@@ -73,6 +73,7 @@ public final class AbilityRegistry {
 	public static final LokiMindCharmAbility LOKI_MIND_CHARM = new LokiMindCharmAbility();
 	public static final LokiGlamourAbility LOKI_GLAMOUR = new LokiGlamourAbility();
 	public static final LokiChaosBoltAbility LOKI_CHAOS_BOLT = new LokiChaosBoltAbility();
+	public static final LokiMindManipulationAbility LOKI_MIND_MANIPULATION = new LokiMindManipulationAbility();
 
 	public static final ThanosCosmicSlamAbility THANOS_COSMIC_SLAM = new ThanosCosmicSlamAbility();
 	public static final ThanosRealityTearAbility THANOS_REALITY_TEAR = new ThanosRealityTearAbility();
@@ -152,6 +153,7 @@ public final class AbilityRegistry {
 		register(LOKI_MIND_CHARM);
 		register(LOKI_GLAMOUR);
 		register(LOKI_CHAOS_BOLT);
+		register(LOKI_MIND_MANIPULATION);
 		register(THANOS_COSMIC_SLAM);
 		register(THANOS_REALITY_TEAR);
 		register(THANOS_MIND_PULSE);
