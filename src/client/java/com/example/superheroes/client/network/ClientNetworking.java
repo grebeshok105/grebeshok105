@@ -111,7 +111,13 @@ public final class ClientNetworking {
 				context.client().execute(() -> ClientAbilityCooldowns.update(payload.abilityId(), payload.remainingTicks())));
 
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.ThanosStonesS2CPayload.TYPE, (payload, context) ->
-				context.client().execute(() -> com.example.superheroes.client.ClientThanosState.updateFromBitmask(payload.bitmask())));
+				context.client().execute(() -> {
+					LocalPlayer localPlayer = Minecraft.getInstance().player;
+					if (localPlayer != null && localPlayer.getUUID().equals(payload.playerId())) {
+						com.example.superheroes.client.ClientThanosState.updateLocal(payload.bitmask(), payload.broken());
+					}
+					com.example.superheroes.client.ClientThanosState.updateRemote(payload.playerId(), payload.bitmask(), payload.broken());
+				}));
 
 		ClientPlayNetworking.registerGlobalReceiver(com.example.superheroes.network.KratosRageS2CPayload.TYPE, (payload, context) ->
 				context.client().execute(() -> com.example.superheroes.client.ClientKratosRageState.update(payload.rage(), payload.active())));

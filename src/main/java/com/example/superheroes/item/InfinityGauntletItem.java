@@ -58,6 +58,17 @@ public class InfinityGauntletItem extends TransformationItem {
 
 		if (other.getItem() instanceof InfinityStoneItem stoneItem) {
 			InfinityStoneType type = stoneItem.getStoneType();
+			boolean broken = Boolean.TRUE.equals(serverPlayer.getAttachedOrCreate(
+					com.example.superheroes.attachment.ModAttachments.THANOS_GAUNTLET_BROKEN));
+			if (broken) {
+				serverPlayer.displayClientMessage(
+						Component.translatable("item.superheroes.infinity_gauntlet.broken")
+								.withStyle(ChatFormatting.DARK_RED),
+						true);
+				level.playSound(null, player.getX(), player.getY(), player.getZ(),
+						SoundEvents.AMETHYST_BLOCK_BREAK, SoundSource.PLAYERS, 0.7f, 0.5f);
+				return InteractionResultHolder.fail(gauntlet);
+			}
 			if (!InfinityGauntletData.hasStone(gauntlet, type) && !InfinityGauntletData.isFull(gauntlet)) {
 				if (InfinityGauntletData.tryInsert(gauntlet, type)) {
 					other.shrink(1);

@@ -196,7 +196,15 @@ public final class ThanosSnapAbility implements Ability {
 				removed = true;
 			}
 		}
-		if (!removed) return;
+
+		// Mark gauntlet as permanently broken — Thanos is wounded and cannot insert stones again.
+		player.setAttached(com.example.superheroes.attachment.ModAttachments.THANOS_GAUNTLET_BROKEN, Boolean.TRUE);
+
+		if (!removed) {
+			// Even if no items removed (e.g. snap via cross-mod hook), still broadcast the broken state.
+			ThanosGauntletStateController.sendStones(player, java.util.EnumSet.noneOf(InfinityStoneType.class));
+			return;
+		}
 
 		ThanosGauntletStateController.sendStones(player, java.util.EnumSet.noneOf(InfinityStoneType.class));
 		com.example.superheroes.hero.HeroAttributes.thanosClearStoneModifiers(player);

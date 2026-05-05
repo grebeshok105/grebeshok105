@@ -3,12 +3,15 @@ package com.example.superheroes.client.mixin;
 import com.example.superheroes.ModId;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientShadowArmyState;
+import com.example.superheroes.client.ClientThanosState;
 import com.example.superheroes.client.ClientUraniumPressureState;
 import com.example.superheroes.client.RemoteHeroSkins;
+import com.example.superheroes.client.render.ThanosSkinComposer;
 import com.example.superheroes.hero.Hero;
 import com.example.superheroes.hero.Heroes;
 import com.example.superheroes.hero.HomelanderHero;
 import com.example.superheroes.hero.SungJinwooHero;
+import com.example.superheroes.hero.ThanosHero;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -38,6 +41,20 @@ public abstract class AbstractClientPlayerSkinMixin {
 		}
 		if (SungJinwooHero.ID.equals(heroId) && ClientShadowArmyState.hasShadows(self.getUUID())) {
 			heroTexture = SungJinwooHero.SKIN_PHASE_2;
+		}
+		if (ThanosHero.ID.equals(heroId)) {
+			Minecraft mcInst = Minecraft.getInstance();
+			boolean isLocal = mcInst.player != null && self.getUUID().equals(mcInst.player.getUUID());
+			int mask;
+			boolean broken;
+			if (isLocal) {
+				mask = ClientThanosState.localBitmask();
+				broken = ClientThanosState.isLocalBroken();
+			} else {
+				mask = ClientThanosState.bitmaskFor(self.getUUID());
+				broken = ClientThanosState.isBroken(self.getUUID());
+			}
+			heroTexture = ThanosSkinComposer.getTextureFor(mask, broken);
 		}
 		PlayerSkin orig = cir.getReturnValue();
 		cir.setReturnValue(new PlayerSkin(

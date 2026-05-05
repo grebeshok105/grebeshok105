@@ -127,6 +127,7 @@ public class SuperheroesMod implements ModInitializer {
 		EntityTrackingEvents.START_TRACKING.register((tracked, observer) -> {
 			if (tracked instanceof ServerPlayer trackedPlayer) {
 				ModNetworking.sendRemoteHeroSkinTo(observer, trackedPlayer);
+				com.example.superheroes.effect.ThanosGauntletStateController.sendStonesTo(observer, trackedPlayer);
 			}
 		});
 

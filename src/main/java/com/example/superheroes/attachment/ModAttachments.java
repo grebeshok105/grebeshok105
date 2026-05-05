@@ -38,6 +38,12 @@ public final class ModAttachments {
 			.copyOnDeath()
 			.buildAndRegister(ModId.of("reinhard_state"));
 
+	public static final AttachmentType<Boolean> THANOS_GAUNTLET_BROKEN = AttachmentRegistry.<Boolean>builder()
+			.initializer(() -> Boolean.FALSE)
+			.persistent(Codec.BOOL)
+			.copyOnDeath()
+			.buildAndRegister(ModId.of("thanos_gauntlet_broken"));
+
 	private ModAttachments() {
 	}
 

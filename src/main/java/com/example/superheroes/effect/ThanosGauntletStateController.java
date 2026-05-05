@@ -9,6 +9,7 @@ import com.example.superheroes.item.infinity.InfinityStoneType;
 import com.example.superheroes.network.ThanosStonesS2CPayload;
 import com.example.superheroes.transform.HeroData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -60,7 +61,31 @@ public final class ThanosGauntletStateController {
 		for (InfinityStoneType t : stones) {
 			mask |= (1 << t.ordinal());
 		}
-		ServerPlayNetworking.send(player, new ThanosStonesS2CPayload(mask));
+		boolean broken = Boolean.TRUE.equals(player.getAttachedOrCreate(ModAttachments.THANOS_GAUNTLET_BROKEN));
+		ThanosStonesS2CPayload payload = new ThanosStonesS2CPayload(player.getUUID(), mask, broken);
+		ServerPlayNetworking.send(player, payload);
+		for (ServerPlayer observer : PlayerLookup.tracking(player)) {
+			if (!observer.getUUID().equals(player.getUUID())) {
+				ServerPlayNetworking.send(observer, payload);
+			}
+		}
+	}
+
+	public static void rebroadcast(ServerPlayer player) {
+		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		EnumSet<InfinityStoneType> stones = ThanosHero.ID.equals(data.heroId()) ? scan(player) : EnumSet.noneOf(InfinityStoneType.class);
+		sendStones(player, stones);
+	}
+
+	public static void sendStonesTo(ServerPlayer observer, ServerPlayer subject) {
+		HeroData data = subject.getAttachedOrCreate(ModAttachments.HERO_DATA);
+		EnumSet<InfinityStoneType> stones = ThanosHero.ID.equals(data.heroId()) ? scan(subject) : EnumSet.noneOf(InfinityStoneType.class);
+		int mask = 0;
+		for (InfinityStoneType t : stones) {
+			mask |= (1 << t.ordinal());
+		}
+		boolean broken = Boolean.TRUE.equals(subject.getAttachedOrCreate(ModAttachments.THANOS_GAUNTLET_BROKEN));
+		ServerPlayNetworking.send(observer, new ThanosStonesS2CPayload(subject.getUUID(), mask, broken));
 	}
 
 	public static EnumSet<InfinityStoneType> getCurrentStones(ServerPlayer player) {

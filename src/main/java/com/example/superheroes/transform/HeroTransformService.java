@@ -152,6 +152,7 @@ public final class HeroTransformService {
 			}
 		}
 		ModNetworking.syncHeroData(player, data);
+		com.example.superheroes.effect.ThanosGauntletStateController.rebroadcast(player);
 	}
 
 	public static void onPlayerRespawn(ServerPlayer newPlayer) {
@@ -168,6 +169,7 @@ public final class HeroTransformService {
 			}
 		}
 		ModNetworking.syncHeroData(newPlayer, data);
+		com.example.superheroes.effect.ThanosGauntletStateController.rebroadcast(newPlayer);
 	}
 
 	public static void onPlayerDisconnect(ServerPlayer player) {
