@@ -30,6 +30,13 @@ public interface Hero {
 
 	void removePassives(Player player);
 
+	/**
+	 * Called only when the hero is fully removed (untransform / switch to another hero).
+	 * Use this for persistent state that must NOT be cleared on death/respawn refresh.
+	 */
+	default void onUntransform(Player player) {
+	}
+
 	boolean cancelsFallDamage(Player player);
 
 	@Nullable

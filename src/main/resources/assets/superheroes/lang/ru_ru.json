@@ -381,7 +381,7 @@
   "ability.superheroes.loki_chaos_bolt": "Болт Хаоса",
   "ability.superheroes.loki_chaos_bolt.desc": "Хитскан 32б: 28 урона в цель + 18 splash 5б. Случайный эффект + Weakness/Confusion/Levitation.",
   "ability.superheroes.loki_mind_manipulation": "Манипуляция Разумом",
-  "ability.superheroes.loki_mind_manipulation.desc": "Луч 24б: жертва на 10с теряет ориентацию — экран и HUD переворачиваются вверх ногами, мышь и WASD/прыжок инвертируются.",
+  "ability.superheroes.loki_mind_manipulation.desc": "Луч 24б: жертва на 10с теряет ориентацию — экран и HUD переворачиваются вверх ногами, WASD/прыжок инвертируются.",
   "ability.superheroes.naruto_bijuudama": "Бидзюдама",
   "ability.superheroes.naruto_bijuudama.desc": "Бомба Хвостатого Зверя — хитскан 32 блока со сферой 7 блоков: 40 урона в центре, 16 на краю, поджиг 6с.",
   "death.attack.kratos_blade": "%1$s был разорван клинками %2$s",

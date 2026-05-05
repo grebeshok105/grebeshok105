@@ -131,12 +131,12 @@ public final class RadialMenuHud {
 	}
 
 	private static boolean isDoomsdayUnlocked(ResourceLocation id, int tier) {
-		if (AbilityIds.DOOMSDAY_SMASH.equals(id)) return tier >= 2;
-		if (AbilityIds.DOOMSDAY_ROAR.equals(id)) return tier >= 3;
-		if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(id)) return tier >= 4;
-		if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(id)) return tier >= 5;
-		if (AbilityIds.DOOMSDAY_BERSERK.equals(id)) return tier >= 6;
-		if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(id)) return tier >= 7;
+		if (AbilityIds.DOOMSDAY_SMASH.equals(id)) return tier >= 1;
+		if (AbilityIds.DOOMSDAY_ROAR.equals(id)) return tier >= 2;
+		if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(id)) return tier >= 3;
+		if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(id)) return tier >= 4;
+		if (AbilityIds.DOOMSDAY_BERSERK.equals(id)) return tier >= 5;
+		if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(id)) return tier >= 6;
 		return true;
 	}
 

@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.tags.DamageTypeTags;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -61,7 +62,7 @@ public final class ReinhardSwordDeathMarkController {
 
 			boolean firstMark = MARKED.putIfAbsent(victim.getUUID(), attacker.getUUID()) == null;
 			MARK_END_AT.put(victim.getUUID(), System.currentTimeMillis() + MAX_MARK_DURATION_MS);
-			victim.setHealth(1.0f);
+			victim.setHealth(0.5f);
 			victim.invulnerableTime = 0;
 			if (firstMark) {
 				ServerPlayNetworking.send(victim, new ReinhardSwordKillS2CPayload(true));
@@ -69,10 +70,30 @@ public final class ReinhardSwordDeathMarkController {
 			return false;
 		});
 
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+			if (isFlushing()) return true;
+			if (!(entity instanceof ServerPlayer victim)) return true;
+			if (!MARKED.containsKey(victim.getUUID())) return true;
+			if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return true;
+			victim.setHealth(0.5f);
+			victim.invulnerableTime = 0;
+			return false;
+		});
+
 		ServerTickEvents.END_SERVER_TICK.register(ReinhardSwordDeathMarkController::tick);
 	}
 
 	private static void tick(MinecraftServer server) {
+		// Pin marked victims at 0.5 HP every tick so health regen / etc. can't pull them above the freeze.
+		for (UUID id : MARKED.keySet()) {
+			ServerPlayer victim = server.getPlayerList().getPlayer(id);
+			if (victim == null || victim.isRemoved() || !victim.isAlive()) continue;
+			if (victim.getHealth() > 0.5f) {
+				victim.setHealth(0.5f);
+			}
+			victim.invulnerableTime = 0;
+		}
+
 		if (MARK_END_AT.isEmpty()) return;
 		long now = System.currentTimeMillis();
 		Iterator<Map.Entry<UUID, Long>> it = MARK_END_AT.entrySet().iterator();

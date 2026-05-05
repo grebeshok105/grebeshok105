@@ -50,7 +50,10 @@ public final class DoomsdayTierController {
 		Vec3 deathPos = player.position();
 
 		long tick = player.serverLevel().getGameTime();
-		boolean canTierUp = (tick - progress.lastTierUpTick()) >= TIER_UP_COOLDOWN_TICKS;
+		// First tier-up should always succeed (lastTierUpTick==0 means "never tiered up"),
+		// otherwise enforce 60-second cooldown between subsequent tier-ups.
+		boolean canTierUp = progress.lastTierUpTick() <= 0L
+				|| (tick - progress.lastTierUpTick()) >= TIER_UP_COOLDOWN_TICKS;
 		int oldTier = progress.tier();
 
 		DoomsdayProgress next = progress.withDeathSource(sourceKey, deathPos);

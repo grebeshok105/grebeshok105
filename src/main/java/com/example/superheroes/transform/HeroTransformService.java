@@ -44,6 +44,7 @@ public final class HeroTransformService {
 			Hero current = Heroes.get(data.heroId());
 			if (current != null) {
 				current.removePassives(player);
+				current.onUntransform(player);
 				deactivateAll(player, data);
 			}
 		}
@@ -89,6 +90,7 @@ public final class HeroTransformService {
 		Hero current = Heroes.get(data.heroId());
 		if (current != null) {
 			current.removePassives(player);
+			current.onUntransform(player);
 			deactivateAll(player, data);
 		}
 		com.example.superheroes.effect.UnibeamController.clearState(player.getUUID());

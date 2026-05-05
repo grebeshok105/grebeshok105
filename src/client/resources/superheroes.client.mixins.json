@@ -10,9 +10,7 @@
 		"GameRendererFovMixin",
 		"GuiVanillaGlitchMixin",
 		"SoundEngineMixin",
-		"MouseHandlerAccessor",
 		"MindManipulationKeyboardInputMixin",
-		"MindManipulationMouseHandlerMixin",
 		"MindManipulationCameraMixin",
 		"MindManipulationGuiMixin"
 	],

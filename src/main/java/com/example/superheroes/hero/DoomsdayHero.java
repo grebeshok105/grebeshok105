@@ -123,17 +123,21 @@ public final class DoomsdayHero implements Hero {
 
         public boolean isAbilityUnlocked(Player player, ResourceLocation abilityId) {
                 int tier = getTier(player);
-                if (AbilityIds.DOOMSDAY_SMASH.equals(abilityId)) return tier >= 2;
-                if (AbilityIds.DOOMSDAY_ROAR.equals(abilityId)) return tier >= 3;
-                if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(abilityId)) return tier >= 4;
-                if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(abilityId)) return tier >= 5;
-                if (AbilityIds.DOOMSDAY_BERSERK.equals(abilityId)) return tier >= 6;
-                if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(abilityId)) return tier >= 7;
+                if (AbilityIds.DOOMSDAY_SMASH.equals(abilityId)) return tier >= 1;
+                if (AbilityIds.DOOMSDAY_ROAR.equals(abilityId)) return tier >= 2;
+                if (AbilityIds.DOOMSDAY_BONE_SPIKE.equals(abilityId)) return tier >= 3;
+                if (AbilityIds.DOOMSDAY_CHARGE_TACKLE.equals(abilityId)) return tier >= 4;
+                if (AbilityIds.DOOMSDAY_BERSERK.equals(abilityId)) return tier >= 5;
+                if (AbilityIds.DOOMSDAY_DOOM_GRIP.equals(abilityId)) return tier >= 6;
                 return false;
         }
 
         @Override
         public void removePassives(Player player) {
+                // NOTE: removePassives is also used as part of the join/respawn refresh
+                // pattern (removePassives + applyPassives), so it MUST be safe to call
+                // without losing tier progression. Persistent progress (DoomsdayProgress)
+                // is reset only on actual untransform via {@link #onUntransform}.
                 HeroAttributes.DOOMSDAY.remove(player);
                 player.removeEffect(MobEffects.REGENERATION);
                 player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
@@ -141,12 +145,18 @@ public final class DoomsdayHero implements Hero {
                 player.removeEffect(MobEffects.JUMP);
                 player.removeEffect(MobEffects.FIRE_RESISTANCE);
                 if (player instanceof ServerPlayer sp) {
-                        com.example.superheroes.effect.DoomsdayAdaptationController.clear(sp);
-                        com.example.superheroes.effect.DoomsdayEffectAdaptationController.clear(sp);
                         com.example.superheroes.ability.DoomsdayBerserkAbility.clearBuff(sp);
-                        com.example.superheroes.effect.DoomsdayTierController.resetProgress(sp);
                         com.example.superheroes.ability.ChargeTackleAbility.clear(sp);
                         com.example.superheroes.effect.DoomGripController.clear(sp);
+                }
+        }
+
+        @Override
+        public void onUntransform(Player player) {
+                if (player instanceof ServerPlayer sp) {
+                        com.example.superheroes.effect.DoomsdayAdaptationController.clear(sp);
+                        com.example.superheroes.effect.DoomsdayEffectAdaptationController.clear(sp);
+                        com.example.superheroes.effect.DoomsdayTierController.resetProgress(sp);
                 }
         }
 
