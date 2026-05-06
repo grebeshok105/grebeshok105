@@ -387,21 +387,15 @@ public final class ReinhardController {
 
 	private static void applySecondComingEffects(ServerPlayer player) {
 		int duration = 24000; // 20 минут — фактически постоянно для одной жизни
-		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.JUMP, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, duration, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, duration, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, duration, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, 4, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.SATURATION, 200, 4, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, duration, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, duration, 0, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.LUCK, duration, 1, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, duration, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, duration, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, duration, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, duration, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, duration, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.JUMP, duration, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, duration, 0, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, duration, 0, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, 4, true, false, false));
 	}
 
 	private static void refreshSecondComingEffects(ServerPlayer player) {
