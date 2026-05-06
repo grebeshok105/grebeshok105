@@ -14,6 +14,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -29,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class HeavensStrikeController {
 	public static final int WINDUP_TICKS = 80;
+	private static final int FREEZE_REFRESH_TICKS = 18;
 
 	public record Variant(int depth, int radius, float shakeIntensity, float damage,
 	                      float pitch, double pillarRadius, double pillarHeight) {
@@ -36,7 +39,7 @@ public final class HeavensStrikeController {
 		public static final Variant RAIDEN = new Variant(8, 5, 3.5f, 60f, 0.78f, 0.9, 65.0);
 	}
 
-	public record Pending(Vec3 target, long startTick, long impactTick, Variant variant) {}
+	public record Pending(Vec3 target, long startTick, long impactTick, Variant variant, Vec3 lockPos, float lockYaw, float lockPitch) {}
 
 	private static final Map<UUID, Pending> PENDING = new ConcurrentHashMap<>();
 
@@ -75,7 +78,10 @@ public final class HeavensStrikeController {
 		ServerLevel level = player.serverLevel();
 		long now = level.getGameTime();
 		Vec3 target = findGroundTarget(player);
-		PENDING.put(player.getUUID(), new Pending(target, now, now + WINDUP_TICKS, variant));
+		Vec3 lockPos = player.position();
+		PENDING.put(player.getUUID(), new Pending(target, now, now + WINDUP_TICKS, variant,
+				lockPos, player.getYRot(), player.getXRot()));
+		applyFreeze(player);
 		level.playSound(null, target.x, target.y, target.z,
 				SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 2.0f, 0.6f);
 		level.playSound(null, target.x, target.y, target.z,
@@ -87,6 +93,41 @@ public final class HeavensStrikeController {
 
 	public static void cancel(UUID id) {
 		PENDING.remove(id);
+	}
+
+	private static void applyFreeze(ServerPlayer player) {
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+				FREEZE_REFRESH_TICKS + 6, 6, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,
+				FREEZE_REFRESH_TICKS + 6, 4, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN,
+				FREEZE_REFRESH_TICKS + 6, 4, true, false, false));
+	}
+
+	private static void clearFreeze(ServerPlayer player) {
+		player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+		player.removeEffect(MobEffects.WEAKNESS);
+		player.removeEffect(MobEffects.DIG_SLOWDOWN);
+	}
+
+	private static void enforceLock(ServerPlayer player, Pending p, long now) {
+		long elapsed = now - p.startTick;
+		if (elapsed > 0 && elapsed % FREEZE_REFRESH_TICKS == 0) {
+			applyFreeze(player);
+		}
+		player.setDeltaMovement(Vec3.ZERO);
+		player.hasImpulse = true;
+		player.fallDistance = 0f;
+		Vec3 cur = player.position();
+		double dx = cur.x - p.lockPos.x;
+		double dy = cur.y - p.lockPos.y;
+		double dz = cur.z - p.lockPos.z;
+		if (dx * dx + dy * dy + dz * dz > 0.04) {
+			player.teleportTo(p.lockPos.x, p.lockPos.y, p.lockPos.z);
+			player.setYRot(p.lockYaw);
+			player.setXRot(p.lockPitch);
+			player.hurtMarked = true;
+		}
 	}
 
 	public static void init() {
@@ -102,7 +143,9 @@ public final class HeavensStrikeController {
 				}
 				Pending p = e.getValue();
 				long now = player.serverLevel().getGameTime();
+				enforceLock(player, p, now);
 				if (now >= p.impactTick) {
+					clearFreeze(player);
 					impact(player, p);
 					it.remove();
 				} else {
