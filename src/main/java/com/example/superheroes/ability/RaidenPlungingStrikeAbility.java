@@ -47,8 +47,6 @@ public final class RaidenPlungingStrikeAbility implements Ability {
 		if (!HeavensStrikeController.start(player, HeavensStrikeController.Variant.RAIDEN)) {
 			return false;
 		}
-		player.displayClientMessage(
-				Component.translatable("ability.superheroes.raiden_plunging_strike.charging", "4.0"), true);
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;
 	}

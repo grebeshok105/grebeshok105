@@ -46,8 +46,6 @@ public final class ReinhardHeavensStrikeAbility implements Ability {
 		if (!HeavensStrikeController.start(player, HeavensStrikeController.Variant.REINHARD)) {
 			return false;
 		}
-		player.displayClientMessage(
-				Component.translatable("ability.superheroes.reinhard_heavens_strike.charging", "4.0"), true);
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 		return true;
 	}
