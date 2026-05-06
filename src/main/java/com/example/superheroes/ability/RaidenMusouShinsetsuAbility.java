@@ -4,7 +4,7 @@ import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.RaidenState;
 import com.example.superheroes.hero.HeroAttributes;
 import com.example.superheroes.item.MusouNoHitotachiItem;
-import net.minecraft.core.particles.ParticleTypes;
+import com.example.superheroes.particle.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -71,12 +71,18 @@ public final class RaidenMusouShinsetsuAbility implements Ability {
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+		level.sendParticles(ModParticles.SPARKS,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				120, 1.2, 1.6, 1.2, 0.6);
-		level.sendParticles(ParticleTypes.END_ROD,
+		level.sendParticles(ModParticles.SWORD_EXPLOSION,
+				player.getX(), player.getY() + 1.5, player.getZ(),
+				24, 0.8, 1.0, 0.8, 0.15);
+		level.sendParticles(ModParticles.PURPLE_FLAME,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				40, 0.8, 1.0, 0.8, 0.1);
+		level.sendParticles(ModParticles.DARK_STAR,
+				player.getX(), player.getY() + 1.5, player.getZ(),
+				12, 0.6, 0.6, 0.6, 0.05);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0f, 0.6f);
 		return true;

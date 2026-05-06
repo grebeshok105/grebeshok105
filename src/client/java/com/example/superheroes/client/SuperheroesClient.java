@@ -67,6 +67,8 @@ public class SuperheroesClient implements ClientModInitializer {
 		ParticleFactoryRegistry.getInstance().register(ModParticles.CAP_SHIELD_SLAM_BURST, EndRodParticle.Provider::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.WHITE_BOOM,
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SWORD_EXPLOSION,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		ParticleFactoryRegistry.getInstance().register(ModParticles.SPARKS,
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		ParticleFactoryRegistry.getInstance().register(ModParticles.DARK_STAR,

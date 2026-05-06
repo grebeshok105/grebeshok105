@@ -388,6 +388,9 @@ public final class ReinhardController {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
+		com.example.superheroes.ability.ReinhardSwordDrawAbility.removeSword(player);
 		COUNTER_LOCKOUT.remove(player.getUUID());
 		LAST_DAMAGE_TICK.remove(player.getUUID());
 	}

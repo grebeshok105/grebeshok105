@@ -2,6 +2,7 @@ package com.example.superheroes.client.hud;
 
 import com.example.superheroes.ModId;
 import com.example.superheroes.ability.AbilityIds;
+import com.example.superheroes.client.ClientAbilityCooldowns;
 import com.example.superheroes.client.ClientDoomsdayState;
 import com.example.superheroes.client.ClientHeroState;
 import com.example.superheroes.client.ClientMadnessState;
@@ -268,10 +269,15 @@ public final class AbilitiesTooltipHud {
 	private static void drawAbilityRow(GuiGraphics g, Minecraft mc, int x, int y, int width, ResourceLocation abilityId, HeroTheme theme, int alpha) {
 		AbilityDescriptions.Kind kind = AbilityDescriptions.kindOf(abilityId);
 		boolean glitchSecret = AbilityIds.COUNTER_STRIKE.equals(abilityId) && !ClientMadnessState.isMadness();
+		boolean isActive = !glitchSecret && ClientHeroState.data().activeAbilities().contains(abilityId);
+		int cooldownTicks = glitchSecret ? 0 : ClientAbilityCooldowns.remainingTicks(abilityId);
+
 		int iconBg = applyAlpha(0xFF0A0B14, alpha, 1.0f);
-		int iconBorder = applyAlpha(
-				ClientHudGlitch.tintColor(kind == AbilityDescriptions.Kind.TOGGLE ? theme.heroNameColor() : theme.energyIcon()),
-				alpha, 1.0f);
+		int themeColor = kind == AbilityDescriptions.Kind.TOGGLE ? theme.heroNameColor() : theme.energyIcon();
+		int activeBorder = applyAlpha(ClientHudGlitch.tintColor(0xFF6BFF8C), alpha, 1.0f);
+		int cdBorder = applyAlpha(ClientHudGlitch.tintColor(0xFFFF8866), alpha, 1.0f);
+		int normalBorder = applyAlpha(ClientHudGlitch.tintColor(themeColor), alpha, 1.0f);
+		int iconBorder = isActive ? activeBorder : (cooldownTicks > 0 ? cdBorder : normalBorder);
 		int badgeX = x + ClientHudGlitch.badgeJitterX();
 		int badgeY = y + ClientHudGlitch.badgeJitterY();
 		HudUtil.roundedRectFill(g, badgeX, badgeY, ICON_SIZE, ICON_SIZE, iconBg);
@@ -281,9 +287,36 @@ public final class AbilitiesTooltipHud {
 				: Component.literal(kind.badge()).withStyle(ChatFormatting.BOLD);
 		g.drawCenteredString(mc.font, badge, badgeX + ICON_SIZE / 2, badgeY + (ICON_SIZE - 8) / 2, iconBorder);
 
+		int statusBadgeX = x + width;
+		int statusBadgeY = y + NAME_Y_OFFSET;
+		Component statusText = null;
+		int statusColor = 0;
+		if (!glitchSecret) {
+			if (cooldownTicks > 0) {
+				int seconds = (cooldownTicks + 19) / 20;
+				statusText = Component.literal(seconds + "с").withStyle(ChatFormatting.BOLD);
+				statusColor = applyAlpha(ClientHudGlitch.tintColor(0xFFFF9D6E), alpha, 1.0f);
+			} else if (isActive && kind == AbilityDescriptions.Kind.TOGGLE) {
+				statusText = Component.translatable("ability.superheroes.status.on").withStyle(ChatFormatting.BOLD);
+				statusColor = applyAlpha(ClientHudGlitch.tintColor(0xFF6BFF8C), alpha, 1.0f);
+			} else if (kind == AbilityDescriptions.Kind.TOGGLE) {
+				statusText = Component.translatable("ability.superheroes.status.off").withStyle(ChatFormatting.BOLD);
+				statusColor = applyAlpha(ClientHudGlitch.tintColor(0xFF8E94A8), alpha, 1.0f);
+			} else if (kind == AbilityDescriptions.Kind.ACTIVE) {
+				statusText = Component.translatable("ability.superheroes.status.ready").withStyle(ChatFormatting.BOLD);
+				statusColor = applyAlpha(ClientHudGlitch.tintColor(0xFFB6D4FF), alpha, 1.0f);
+			}
+		}
+		int statusWidth = statusText == null ? 0 : (mc.font.width(statusText) + 4);
+		if (statusText != null) {
+			int sx = statusBadgeX - statusWidth + 2;
+			g.drawString(mc.font, statusText, sx, statusBadgeY, statusColor, true);
+		}
+
 		int textX = x + ICON_SIZE + 6;
-		int maxTextWidth = width - ICON_SIZE - 6;
-		int nameColor = applyAlpha(ClientHudGlitch.tintColor(0xFFF4F5FC), alpha, 1.0f);
+		int maxTextWidth = width - ICON_SIZE - 6 - statusWidth;
+		int baseNameColor = isActive ? 0xFF6BFF8C : (cooldownTicks > 0 ? 0xFFFFD0AE : 0xFFF4F5FC);
+		int nameColor = applyAlpha(ClientHudGlitch.tintColor(baseNameColor), alpha, 1.0f);
 		Component name = glitchSecret
 				? Component.literal("????????").withStyle(ChatFormatting.OBFUSCATED, ChatFormatting.BOLD)
 				: Component.translatable(AbilityDescriptions.nameKey(abilityId)).withStyle(ChatFormatting.BOLD);
@@ -301,6 +334,20 @@ public final class AbilitiesTooltipHud {
 			FormattedCharSequence line = descLines.get(i);
 			int lineY = y + DESC_Y_OFFSET + i * LINE_HEIGHT;
 			g.drawString(mc.font, line, textX, lineY, descColor, true);
+		}
+
+		if (cooldownTicks > 0) {
+			int barX = textX;
+			int barY = y + DESC_Y_OFFSET + lineCount * LINE_HEIGHT - 1;
+			int barW = Math.max(20, maxTextWidth - 2);
+			int barH = 2;
+			int rawTotal = ClientAbilityCooldowns.totalTicks(abilityId);
+			int total = rawTotal > 0 ? rawTotal : Math.max(20, cooldownTicks);
+			float frac = Math.max(0f, Math.min(1f, 1f - (cooldownTicks / (float) total)));
+			int trackBg = applyAlpha(0xFF1A1B25, alpha, 1.0f);
+			int barFg = applyAlpha(ClientHudGlitch.tintColor(0xFFFF9D6E), alpha, 1.0f);
+			g.fill(barX, barY, barX + barW, barY + barH, trackBg);
+			g.fill(barX, barY, barX + (int) (barW * frac), barY + barH, barFg);
 		}
 	}
 

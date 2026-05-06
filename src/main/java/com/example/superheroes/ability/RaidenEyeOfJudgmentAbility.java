@@ -3,7 +3,7 @@ package com.example.superheroes.ability;
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.RaidenState;
 import com.example.superheroes.item.MusouNoHitotachiItem;
-import net.minecraft.core.particles.ParticleTypes;
+import com.example.superheroes.particle.ModParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -62,12 +62,15 @@ public final class RaidenEyeOfJudgmentAbility implements Ability {
 		player.setAttached(ModAttachments.RAIDEN_STATE, state.withEyeExpireTick(expireAt));
 
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+		level.sendParticles(ModParticles.SPARKS,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				40, 0.6, 0.8, 0.6, 0.25);
-		level.sendParticles(ParticleTypes.END_ROD,
+		level.sendParticles(ModParticles.DAZZLING,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				16, 0.4, 0.6, 0.4, 0.05);
+		level.sendParticles(ModParticles.PURPLE_FLAME,
+				player.getX(), player.getY() + 1.0, player.getZ(),
+				12, 0.4, 0.6, 0.4, 0.04);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 0.6f, 1.4f);
 		return true;
@@ -83,7 +86,7 @@ public final class RaidenEyeOfJudgmentAbility implements Ability {
 		}
 		if (now % 6 == 0) {
 			ServerLevel level = player.serverLevel();
-			level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+			level.sendParticles(ModParticles.SPARKS,
 					player.getX(), player.getY() + 1.0, player.getZ(),
 					3, 0.4, 0.5, 0.4, 0.05);
 		}
@@ -94,7 +97,7 @@ public final class RaidenEyeOfJudgmentAbility implements Ability {
 		RaidenState state = player.getAttachedOrCreate(ModAttachments.RAIDEN_STATE);
 		player.setAttached(ModAttachments.RAIDEN_STATE, state.withEyeExpireTick(0L));
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ParticleTypes.SMOKE,
+		level.sendParticles(ModParticles.PURPLE_FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				12, 0.4, 0.6, 0.4, 0.02);
 	}

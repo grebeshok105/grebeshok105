@@ -531,5 +531,19 @@
 
   "ability.superheroes.raiden_musou_shinsetsu": "Musou Shinsetsu",
   "ability.superheroes.raiden_musou_shinsetsu.desc": "Burst (активная). На 7 секунд: +6 урона, +50% скорости, +1.5 attack speed. Каждый удар Ямато бьёт +50% с 4-блочным AoE. Финальный слэш — взрыв 8 блоков электро (22 по игрокам, 12 по мобам). КД 25с. Стоимость 500 энергии.",
-  "ability.superheroes.raiden_musou_shinsetsu.no_sword": "Ямато не в руках"
+  "ability.superheroes.raiden_musou_shinsetsu.no_sword": "Ямато не в руках",
+
+  "ability.superheroes.raiden_sword_draw": "Призвать Ямато",
+  "ability.superheroes.raiden_sword_draw.desc": "Тоггл. Призывает или развоплощает Musou no Hitotachi (Ямато) в руке. Без меча нельзя активировать Глаз Грозного Суда и Musou Shinsetsu.",
+  "ability.superheroes.raiden_plunging_strike": "Удар Сверху",
+  "ability.superheroes.raiden_plunging_strike.desc": "Активная. Прыжок в воздух; в течение 3 секунд при приземлении наносит электро-AoE 5 блоков (10 урона игрокам, 5 мобам). КД 8с. Стоимость 200 энергии.",
+  "ability.superheroes.raiden_plunging_strike.armed": "Удар Сверху готов — падай чтобы ударить",
+  "ability.superheroes.raiden_plunging_strike.cooldown": "Удар Сверху на КД",
+  "ability.superheroes.raiden_plunging_strike.no_sword": "Ямато не в руках",
+  "ability.superheroes.raiden_transcendence": "Аура Превосходства",
+  "ability.superheroes.raiden_transcendence.desc": "Тоггл. Окутывает игрока электро-аурой; каждые 1.5 сек бьёт ближайшего врага в радиусе 6 блоков (4 урона игрокам, 2 мобам). Расходует 12 энергии в секунду.",
+
+  "ability.superheroes.status.on": "ВКЛ",
+  "ability.superheroes.status.off": "ВЫКЛ",
+  "ability.superheroes.status.ready": "ГОТОВ"
 }

@@ -93,8 +93,11 @@ public final class AbilityIds {
 	public static final ResourceLocation REINHARD_DIVINE_AURA = ModId.of("reinhard_divine_aura");
 	public static final ResourceLocation REINHARD_RIFT_STRIKE = ModId.of("reinhard_rift_strike");
 
+	public static final ResourceLocation RAIDEN_SWORD_DRAW = ModId.of("raiden_sword_draw");
 	public static final ResourceLocation RAIDEN_EYE_OF_JUDGMENT = ModId.of("raiden_eye_of_judgment");
 	public static final ResourceLocation RAIDEN_MUSOU_SHINSETSU = ModId.of("raiden_musou_shinsetsu");
+	public static final ResourceLocation RAIDEN_PLUNGING_STRIKE = ModId.of("raiden_plunging_strike");
+	public static final ResourceLocation RAIDEN_TRANSCENDENCE = ModId.of("raiden_transcendence");
 
 
 	public static boolean isReinhardSwordOnly(ResourceLocation id) {

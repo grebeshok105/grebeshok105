@@ -3,6 +3,7 @@ package com.example.superheroes.item;
 import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.effect.RaidenState;
 import com.example.superheroes.hero.RaidenHero;
+import com.example.superheroes.particle.ModParticles;
 import com.example.superheroes.transform.HeroData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -57,10 +58,10 @@ public class MusouNoHitotachiItem extends SwordItem {
 					target.invulnerableTime = 0;
 					target.hurt(level.damageSources().playerAttack(player), bonus);
 
-					level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+					level.sendParticles(ModParticles.SPARKS,
 							target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(),
 							24, 0.4, 0.6, 0.4, 0.18);
-					level.sendParticles(ParticleTypes.END_ROD,
+					level.sendParticles(ModParticles.PURPLE_FLAME,
 							target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
 							8, 0.3, 0.4, 0.3, 0.02);
 					level.playSound(null, target.getX(), target.getY(), target.getZ(),
@@ -95,9 +96,12 @@ public class MusouNoHitotachiItem extends SwordItem {
 					level.sendParticles(ParticleTypes.SWEEP_ATTACK,
 							target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
 							1, 0, 0, 0, 0);
-					level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+					level.sendParticles(ModParticles.SPARKS,
 							target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
 							30, 0.6, 0.8, 0.6, 0.25);
+					level.sendParticles(ModParticles.SWORD_EXPLOSION,
+							target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(),
+							8, 0.4, 0.4, 0.4, 0.1);
 					level.playSound(null, target.getX(), target.getY(), target.getZ(),
 							SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 0.9f, 0.9f);
 				}

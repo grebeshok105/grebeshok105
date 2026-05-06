@@ -4,6 +4,7 @@ import com.example.superheroes.attachment.ModAttachments;
 import com.example.superheroes.hero.HeroAttributes;
 import com.example.superheroes.hero.RaidenHero;
 import com.example.superheroes.transform.HeroData;
+import com.example.superheroes.particle.ModParticles;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -57,9 +58,12 @@ public final class RaidenBurstController {
 		} else if (burstAt > now) {
 			if (now % 4 == 0) {
 				ServerLevel level = player.serverLevel();
-				level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+				level.sendParticles(ModParticles.SPARKS,
 						player.getX(), player.getY() + 1.0, player.getZ(),
 						3, 0.4, 0.6, 0.4, 0.05);
+				level.sendParticles(ModParticles.PURPLE_FLAME,
+						player.getX(), player.getY() + 1.0, player.getZ(),
+						1, 0.3, 0.5, 0.3, 0.02);
 			}
 		}
 	}
@@ -86,10 +90,15 @@ public final class RaidenBurstController {
 		}
 
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK, origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
-		level.sendParticles(ParticleTypes.ELECTRIC_SPARK, origin.x, origin.y + 1.0, origin.z,
+		level.sendParticles(ModParticles.WHITE_BOOM, origin.x, origin.y + 0.5, origin.z, 1, 0, 0, 0, 0);
+		level.sendParticles(ModParticles.SPARKS, origin.x, origin.y + 1.0, origin.z,
 				200, 2.0, 1.5, 2.0, 0.6);
-		level.sendParticles(ParticleTypes.END_ROD, origin.x, origin.y + 1.0, origin.z,
-				80, 1.5, 1.5, 1.5, 0.15);
+		level.sendParticles(ModParticles.SWORD_EXPLOSION, origin.x, origin.y + 1.0, origin.z,
+				40, 1.5, 0.6, 1.5, 0.15);
+		level.sendParticles(ModParticles.PURPLE_FLAME, origin.x, origin.y + 1.0, origin.z,
+				80, 1.5, 1.5, 1.5, 0.1);
+		level.sendParticles(ModParticles.DARK_STAR, origin.x, origin.y + 1.0, origin.z,
+				14, 0.8, 0.4, 0.8, 0.05);
 		level.playSound(null, origin.x, origin.y, origin.z,
 				SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 1.4f, 0.7f);
 		level.playSound(null, origin.x, origin.y, origin.z,
