@@ -172,6 +172,8 @@ public final class ReinhardController {
 					}
 					HeroAttributes.buildReinhardPhaseSet(newPhase).apply(player);
 					updated = updated.withPhase(newPhase);
+					player.setAttached(ModAttachments.REINHARD_STATE, updated);
+					refreshBladeDamageGates(player);
 				}
 				player.setAttached(ModAttachments.REINHARD_STATE, updated);
 			}
@@ -327,6 +329,7 @@ public final class ReinhardController {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.buildReinhardPhaseSet(newPhase).apply(player);
+		refreshBladeDamageGates(player);
 		player.heal(4f * newPhase);
 		level.sendParticles(ParticleTypes.END_ROD,
 				player.getX(), player.getY() + 1.0, player.getZ(),
@@ -350,6 +353,9 @@ public final class ReinhardController {
 		player.setHealth(1f);
 		player.removeAllEffects();
 		HeroAttributes.REINHARD_SECOND_COMING.apply(player);
+		player.setAttached(ModAttachments.REINHARD_STATE,
+				state.withPhoenixUsed(true).withPhoenixCount(nextCount).withInSecondComing(true));
+		refreshBladeDamageGates(player);
 		player.setHealth(player.getMaxHealth());
 		applySecondComingEffects(player);
 
@@ -377,8 +383,6 @@ public final class ReinhardController {
 				SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 2.0f, 1.0f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 2.0f, 0.8f);
-		player.setAttached(ModAttachments.REINHARD_STATE,
-				state.withPhoenixUsed(true).withPhoenixCount(nextCount).withInSecondComing(true));
 		player.displayClientMessage(
 				Component.translatable("ability.superheroes.reinhard.phoenix", nextCount),
 				true);
@@ -407,12 +411,43 @@ public final class ReinhardController {
 		return player.getAttachedOrCreate(ModAttachments.REINHARD_STATE).inSecondComing();
 	}
 
+	public static void refreshBladeDamageGates(ServerPlayer player) {
+		if (!isReinhard(player)) {
+			removeAllBladeDamage(player);
+			return;
+		}
+		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		if (state.swordDrawn()) {
+			HeroAttributes.REINHARD_BLADE_DAMAGE.apply(player);
+			for (int p = 1; p <= 5; p++) {
+				HeroAttributes.buildReinhardPhaseBladeDamageSet(p).remove(player);
+			}
+			HeroAttributes.buildReinhardPhaseBladeDamageSet(state.phase()).apply(player);
+			if (state.inSecondComing()) {
+				HeroAttributes.REINHARD_SECOND_COMING_BLADE_DAMAGE.apply(player);
+			} else {
+				HeroAttributes.REINHARD_SECOND_COMING_BLADE_DAMAGE.remove(player);
+			}
+		} else {
+			removeAllBladeDamage(player);
+		}
+	}
+
+	public static void removeAllBladeDamage(ServerPlayer player) {
+		HeroAttributes.REINHARD_BLADE_DAMAGE.remove(player);
+		for (int p = 1; p <= 5; p++) {
+			HeroAttributes.buildReinhardPhaseBladeDamageSet(p).remove(player);
+		}
+		HeroAttributes.REINHARD_SECOND_COMING_BLADE_DAMAGE.remove(player);
+	}
+
 	public static void onDeath(ServerPlayer player) {
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
 		HeroAttributes.REINHARD_SECOND_COMING.remove(player);
+		removeAllBladeDamage(player);
 	}
 
 	public static void clearAdaptations(ServerPlayer player) {
@@ -431,6 +466,7 @@ public final class ReinhardController {
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
 		HeroAttributes.REINHARD_SECOND_COMING.remove(player);
+		removeAllBladeDamage(player);
 		state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
 		com.example.superheroes.ability.ReinhardSwordDrawAbility.removeSword(player);
@@ -454,6 +490,7 @@ public final class ReinhardController {
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
 		HeroAttributes.REINHARD_SECOND_COMING.remove(player);
+		removeAllBladeDamage(player);
 	}
 
 	private static String damageTypeKey(DamageSource source) {

@@ -55,8 +55,7 @@ public final class ReinhardHero implements Hero {
 				AbilityIds.REINHARD_TELEPORT_BEHIND,
 				AbilityIds.REINHARD_RIFT_STRIKE,
 				AbilityIds.REINHARD_JUDGMENT_MARK,
-				AbilityIds.REINHARD_WISH,
-				AbilityIds.REINHARD_SECOND_COMING_RIFT
+				AbilityIds.REINHARD_WISH
 		);
 	}
 
@@ -74,8 +73,11 @@ public final class ReinhardHero implements Hero {
 	public void removePassives(Player player) {
 		HeroAttributes.REINHARD.remove(player);
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		HeroAttributes.REINHARD_BLADE_DAMAGE.remove(player);
+		HeroAttributes.REINHARD_SECOND_COMING_BLADE_DAMAGE.remove(player);
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
+			HeroAttributes.buildReinhardPhaseBladeDamageSet(p).remove(player);
 		}
 	}
 

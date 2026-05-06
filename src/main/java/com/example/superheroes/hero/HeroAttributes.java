@@ -115,6 +115,10 @@ public final class HeroAttributes {
 	public static final ResourceLocation REINHARD_STEP = ModId.of("modifiers/reinhard/step_height");
 	public static final ResourceLocation REINHARD_REACH = ModId.of("modifiers/reinhard/entity_reach");
 
+	public static final ResourceLocation REINHARD_BASE_DAMAGE = ModId.of("modifiers/reinhard/base_damage");
+	public static final ResourceLocation REINHARD_BASE_ATTACK_SPEED = ModId.of("modifiers/reinhard/base_attack_speed");
+	public static final ResourceLocation REINHARD_PHASE_BLADE_DAMAGE = ModId.of("modifiers/reinhard/phase_blade_damage");
+
 	public static final ResourceLocation REINHARD_PHASE_DAMAGE = ModId.of("modifiers/reinhard/phase_damage");
 	public static final ResourceLocation REINHARD_PHASE_ARMOR = ModId.of("modifiers/reinhard/phase_armor");
 	public static final ResourceLocation REINHARD_PHASE_TOUGHNESS = ModId.of("modifiers/reinhard/phase_toughness");
@@ -309,25 +313,35 @@ public final class HeroAttributes {
 	public static final AttributeModifierSet REINHARD = AttributeModifierSet.builder()
 			.add(Attributes.ARMOR, REINHARD_ARMOR, 28.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_TOUGHNESS, 14.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_DAMAGE, REINHARD_DAMAGE, 9.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, REINHARD_SPEED, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.MAX_HEALTH, REINHARD_HP, 60.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_KNOCKBACK, 0.7, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_SPEED, REINHARD_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.JUMP_STRENGTH, REINHARD_JUMP, 0.3, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.STEP_HEIGHT, REINHARD_STEP, 0.6, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ENTITY_INTERACTION_RANGE, REINHARD_REACH, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet REINHARD_BLADE_DAMAGE = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_BASE_DAMAGE, 9.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_BASE_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static AttributeModifierSet buildReinhardPhaseSet(int phase) {
 		int p = Math.max(1, Math.min(5, phase));
 		double f = (p - 1) / 4.0;
 		return AttributeModifierSet.builder()
-				.add(Attributes.ATTACK_DAMAGE, REINHARD_PHASE_DAMAGE, lerp(0.0, 14.0, f), AttributeModifier.Operation.ADD_VALUE)
 				.add(Attributes.ARMOR, REINHARD_PHASE_ARMOR, lerp(0.0, 24.0, f), AttributeModifier.Operation.ADD_VALUE)
 				.add(Attributes.ARMOR_TOUGHNESS, REINHARD_PHASE_TOUGHNESS, lerp(0.0, 10.0, f), AttributeModifier.Operation.ADD_VALUE)
 				.add(Attributes.MAX_HEALTH, REINHARD_PHASE_HP, lerp(0.0, 60.0, f), AttributeModifier.Operation.ADD_VALUE)
 				.add(Attributes.MOVEMENT_SPEED, REINHARD_PHASE_SPEED, lerp(0.0, 0.40, f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+				.build();
+	}
+
+	public static AttributeModifierSet buildReinhardPhaseBladeDamageSet(int phase) {
+		int p = Math.max(1, Math.min(5, phase));
+		double f = (p - 1) / 4.0;
+		return AttributeModifierSet.builder()
+				.add(Attributes.ATTACK_DAMAGE, REINHARD_PHASE_BLADE_DAMAGE, lerp(0.0, 14.0, f), AttributeModifier.Operation.ADD_VALUE)
 				.build();
 	}
 
@@ -338,19 +352,20 @@ public final class HeroAttributes {
 			.add(Attributes.ATTACK_SPEED, REINHARD_DRAW_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
-	// Второе пришествие — одноразовое возрождение Рейнхарда. Колоссальный buff к статам:
-	// +900 атаки (с мечом ~1000 за удар), огромная броня/ХП/скорость/прыжок/реч.
 	public static final AttributeModifierSet REINHARD_SECOND_COMING = AttributeModifierSet.builder()
-			.add(Attributes.ATTACK_DAMAGE, REINHARD_SECOND_COMING_DAMAGE, 900.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR, REINHARD_SECOND_COMING_ARMOR, 30.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_SECOND_COMING_TOUGHNESS, 20.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MAX_HEALTH, REINHARD_SECOND_COMING_HP, 200.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, REINHARD_SECOND_COMING_SPEED, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_SECOND_COMING_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ATTACK_SPEED, REINHARD_SECOND_COMING_ATTACK_SPEED, 4.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ENTITY_INTERACTION_RANGE, REINHARD_SECOND_COMING_REACH, 2.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.JUMP_STRENGTH, REINHARD_SECOND_COMING_JUMP, 0.6, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.STEP_HEIGHT, REINHARD_SECOND_COMING_STEP, 0.5, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final AttributeModifierSet REINHARD_SECOND_COMING_BLADE_DAMAGE = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_SECOND_COMING_DAMAGE, 900.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_SECOND_COMING_ATTACK_SPEED, 4.0, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final ResourceLocation RAIDEN_ARMOR = ModId.of("modifiers/raiden/armor");

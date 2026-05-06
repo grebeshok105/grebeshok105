@@ -38,10 +38,10 @@ public final class HeavensStrikeController {
 	private static final int FREEZE_REFRESH_TICKS = 18;
 	private static final double SKY_DROP_HEIGHT = 80.0;
 
-	public record Variant(int length, int width, int depth, float shakeIntensity,
+	public record Variant(int length, int width, int depth, int height, float shakeIntensity,
 	                      float damage, float pitch, double shakeRadius) {
-		public static final Variant REINHARD = new Variant(500, 12, 16, 12.0f, 2500f, 0.45f, 400.0);
-		public static final Variant RAIDEN = new Variant(90, 6, 8, 8.0f, 110f, 0.78f, 80.0);
+		public static final Variant REINHARD = new Variant(500, 25, 20, 30, 12.0f, 2500f, 0.45f, 400.0);
+		public static final Variant RAIDEN = new Variant(90, 6, 8, 0, 8.0f, 110f, 0.78f, 80.0);
 	}
 
 	public static final class Pending {
@@ -275,25 +275,35 @@ public final class HeavensStrikeController {
 		if (sliceTo > v.length) sliceTo = v.length;
 
 		int destroyed = 0;
-		final int destroyBudget = 1500;
-		for (int i = sliceFrom; i <= sliceTo && destroyed < destroyBudget; i++) {
+		final int destroyBudget = 12000;
+		int lastCompletedI = sliceFrom - 1;
+		boolean budgetReached = false;
+		for (int i = sliceFrom; i <= sliceTo && !budgetReached; i++) {
 			Vec3 point = origin.add(lookFlat.scale(i));
-			for (int w = -halfWidth; w <= halfWidth && destroyed < destroyBudget; w++) {
+			for (int w = -halfWidth; w <= halfWidth && !budgetReached; w++) {
 				Vec3 offset = perpendicular.scale(w);
 				int ox = (int) Math.floor(point.x + offset.x);
 				int oz = (int) Math.floor(point.z + offset.z);
 				int sy = findSurface(level, ox, (int) origin.y, oz);
-				int localDepth = depthAt(v, i, w, halfWidth);
 
-				for (int dy = 0; dy < localDepth && destroyed < destroyBudget; dy++) {
-					BlockPos pos = new BlockPos(ox, sy - dy, oz);
+				int yFrom = sy - v.depth + 1;
+				int yTo = sy + v.height;
+				for (int y = yTo; y >= yFrom; y--) {
+					BlockPos pos = new BlockPos(ox, y, oz);
 					BlockState state = level.getBlockState(pos);
 					if (state.isAir()) continue;
 					if (UNBREAKABLE.contains(state.getBlock())) continue;
 					if (state.getDestroySpeed(level, pos) < 0) continue;
-					level.destroyBlock(pos, false);
+					level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
 					destroyed++;
+					if (destroyed >= destroyBudget) {
+						budgetReached = true;
+						break;
+					}
 				}
+			}
+			if (!budgetReached) {
+				lastCompletedI = i;
 			}
 
 			if (i % Math.max(1, v.length / 10) == 0) {
@@ -310,7 +320,7 @@ public final class HeavensStrikeController {
 						point.x, sy + 0.8, point.z, 1, 0, 0, 0, 0);
 			}
 		}
-		p.sweptIndex = Math.max(p.sweptIndex, sliceTo);
+		p.sweptIndex = Math.max(p.sweptIndex, lastCompletedI);
 
 		if (sliceTo > sliceFrom) {
 			Vec3 frontPoint = origin.add(lookFlat.scale(sliceTo));
@@ -392,22 +402,16 @@ public final class HeavensStrikeController {
 		double minZ = Math.min(a.z, b.z) - widthMargin;
 		double maxZ = Math.max(a.z, b.z) + widthMargin;
 		double minY = origin.y - v.depth - 2;
-		double maxY = origin.y + 6;
+		double maxY = origin.y + Math.max(6, v.height + 2);
 		return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
-	private static int depthAt(Variant v, int alongIdx, int widthIdx, int halfWidth) {
-		double tAlong = (double) alongIdx / Math.max(1, v.length);
-		double centerWeight = 1.0 - Math.abs((double) widthIdx) / Math.max(1, halfWidth + 1);
-		double profile = Math.sin(Math.PI * tAlong) * 0.55 + 0.45;
-		double d = v.depth * profile * (0.5 + 0.5 * centerWeight);
-		return Math.max(1, (int) Math.round(d));
-	}
-
 	private static int findSurface(ServerLevel level, int x, int originY, int z) {
-		for (int y = originY + 6; y >= originY - 16; y--) {
+		int hm = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, x, z) - 1;
+		int top = Math.min(hm, originY + 6);
+		for (int y = top; y >= originY - 16; y--) {
 			BlockPos pos = new BlockPos(x, y, z);
-			if (!level.getBlockState(pos).isAir() && level.getBlockState(pos.above()).isAir()) {
+			if (!level.getBlockState(pos).isAir()) {
 				return y;
 			}
 		}
