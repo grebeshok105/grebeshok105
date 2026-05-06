@@ -92,6 +92,7 @@ public final class AbilityRegistry {
 	public static final ReinhardCounterRiposteAbility REINHARD_COUNTER_RIPOSTE = new ReinhardCounterRiposteAbility();
 	public static final ReinhardDivineAuraAbility REINHARD_DIVINE_AURA = new ReinhardDivineAuraAbility();
 	public static final ReinhardRiftStrikeAbility REINHARD_RIFT_STRIKE = new ReinhardRiftStrikeAbility();
+	public static final ReinhardSecondComingRiftAbility REINHARD_SECOND_COMING_RIFT = new ReinhardSecondComingRiftAbility();
 
 	public static final RaidenSwordDrawAbility RAIDEN_SWORD_DRAW = new RaidenSwordDrawAbility();
 	public static final RaidenEyeOfJudgmentAbility RAIDEN_EYE_OF_JUDGMENT = new RaidenEyeOfJudgmentAbility();
@@ -177,6 +178,7 @@ public final class AbilityRegistry {
 		register(REINHARD_COUNTER_RIPOSTE);
 		register(REINHARD_DIVINE_AURA);
 		register(REINHARD_RIFT_STRIKE);
+		register(REINHARD_SECOND_COMING_RIFT);
 		register(RAIDEN_SWORD_DRAW);
 		register(RAIDEN_EYE_OF_JUDGMENT);
 		register(RAIDEN_MUSOU_SHINSETSU);

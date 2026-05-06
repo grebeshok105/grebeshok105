@@ -108,6 +108,11 @@ public final class ReinhardController {
 			player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 1, true, false, true));
 		}
 
+		// Second Coming — обновляем длительные баффы каждые 5 секунд (хронически держим эффекты).
+		if (state.inSecondComing() && player.tickCount % 100 == 0) {
+			refreshSecondComingEffects(player);
+		}
+
 		// 30-сек инст-регенерация
 		long lastInsta = state.lastInstaRegenTick();
 		if (lastInsta == 0L) {
@@ -335,36 +340,77 @@ public final class ReinhardController {
 
 	private static boolean tryPhoenix(ServerPlayer player, DamageSource source) {
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		if (state.phoenixUsed()) {
+			// Второе пришествие уже было — позволяем умереть по-настоящему.
+			HeroAttributes.REINHARD_SECOND_COMING.remove(player);
+			return true;
+		}
 		int nextCount = state.phoenixCount() + 1;
-		// Каждое пришествие — heal + 3s resistance + fire VFX (без лимита)
-		player.setHealth(player.getMaxHealth() * 0.5f);
+		// Полная регенерация — Второе пришествие
+		player.setHealth(1f);
 		player.removeAllEffects();
-		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 4, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 120, 2, true, false, true));
-		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200, 0, true, false, true));
+		HeroAttributes.REINHARD_SECOND_COMING.apply(player);
+		player.setHealth(player.getMaxHealth());
+		applySecondComingEffects(player);
+
 		ServerLevel level = player.serverLevel();
 		level.sendParticles(ParticleTypes.FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
-				120, 0.8, 1.4, 0.8, 0.2);
+				240, 1.2, 1.8, 1.2, 0.3);
 		level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
-				60, 0.6, 1.2, 0.6, 0.15);
+				160, 1.0, 1.4, 1.0, 0.25);
 		level.sendParticles(ParticleTypes.END_ROD,
 				player.getX(), player.getY() + 1.0, player.getZ(),
-				40, 0.5, 0.8, 0.5, 0.10);
+				120, 0.8, 1.2, 0.8, 0.20);
+		level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
+				player.getX(), player.getY() + 1.0, player.getZ(),
+				80, 0.7, 1.0, 0.7, 0.4);
 		level.sendParticles(ParticleTypes.FLASH,
 				player.getX(), player.getY() + 1.0, player.getZ(),
-				3, 0, 0, 0, 0);
+				6, 0, 0, 0, 0);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 1.0f, 1.4f);
+				SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 1.6f, 1.2f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
-				SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.PLAYERS, 1.4f, 1.0f);
+				SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.PLAYERS, 2.0f, 1.0f);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 2.0f, 1.0f);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(),
+				SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 2.0f, 0.8f);
 		player.setAttached(ModAttachments.REINHARD_STATE,
-				state.withPhoenixUsed(true).withPhoenixCount(nextCount));
+				state.withPhoenixUsed(true).withPhoenixCount(nextCount).withInSecondComing(true));
 		player.displayClientMessage(
 				Component.translatable("ability.superheroes.reinhard.phoenix", nextCount),
 				true);
 		return false;
+	}
+
+	private static void applySecondComingEffects(ServerPlayer player) {
+		int duration = 24000; // 20 минут — фактически постоянно для одной жизни
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.JUMP, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, duration, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, duration, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, duration, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, 4, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.SATURATION, 200, 4, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, duration, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, duration, 0, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.LUCK, duration, 1, true, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, duration, 0, true, false, true));
+	}
+
+	private static void refreshSecondComingEffects(ServerPlayer player) {
+		applySecondComingEffects(player);
+	}
+
+	public static boolean isInSecondComing(ServerPlayer player) {
+		if (!isReinhard(player)) return false;
+		return player.getAttachedOrCreate(ModAttachments.REINHARD_STATE).inSecondComing();
 	}
 
 	public static void onDeath(ServerPlayer player) {
@@ -372,6 +418,7 @@ public final class ReinhardController {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		HeroAttributes.REINHARD_SECOND_COMING.remove(player);
 	}
 
 	public static void clearAdaptations(ServerPlayer player) {
@@ -381,13 +428,15 @@ public final class ReinhardController {
 				.withAccumulatedDamage(0f)
 				.withPhase(1)
 				.withPhoenixUsed(false)
-				.withPhoenixCount(0);
+				.withPhoenixCount(0)
+				.withInSecondComing(false);
 		player.setAttached(ModAttachments.REINHARD_STATE, state);
 		com.example.superheroes.effect.ReinhardSwordDrawCeremonyController.cancelCeremony(player);
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		HeroAttributes.REINHARD_SECOND_COMING.remove(player);
 		state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
 		com.example.superheroes.ability.ReinhardSwordDrawAbility.removeSword(player);
@@ -396,14 +445,21 @@ public final class ReinhardController {
 	}
 
 	public static void onRespawn(ServerPlayer player) {
-		// Восстановить phase-modifiers согласно state
 		if (!isReinhard(player)) return;
+		// На реальном респавне — сбрасываем Второе пришествие, фазы и feniks-флаг,
+		// чтобы новая жизнь начиналась чисто и Второе пришествие было снова доступно.
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		HeroAttributes.buildReinhardPhaseSet(state.phase()).apply(player);
-		if (state.swordDrawn()) {
-			HeroAttributes.REINHARD_DRAW.apply(player);
-			com.example.superheroes.ability.ReinhardSwordDrawAbility.giveSword(player);
+		state = state.withPhase(1)
+				.withAccumulatedDamage(0f)
+				.withPhoenixUsed(false)
+				.withInSecondComing(false)
+				.withSwordDrawn(false);
+		player.setAttached(ModAttachments.REINHARD_STATE, state);
+		for (int p = 1; p <= 5; p++) {
+			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
+		HeroAttributes.REINHARD_DRAW.remove(player);
+		HeroAttributes.REINHARD_SECOND_COMING.remove(player);
 	}
 
 	private static String damageTypeKey(DamageSource source) {

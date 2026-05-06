@@ -38,7 +38,7 @@ public final class AbilityDescriptions {
 		HERO_PASSIVE_COUNT.put("kratos", 4);
 		HERO_PASSIVE_COUNT.put("loki", 3);
 		HERO_PASSIVE_COUNT.put("thanos", 4);
-		HERO_PASSIVE_COUNT.put("reinhard", 5);
+		HERO_PASSIVE_COUNT.put("reinhard", 6);
 		HERO_PASSIVE_COUNT.put("raiden_shogun", 0);
 	}
 

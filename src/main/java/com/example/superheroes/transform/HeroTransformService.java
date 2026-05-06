@@ -166,6 +166,7 @@ public final class HeroTransformService {
 				hero.applyPassives(newPlayer);
 			}
 		}
+		com.example.superheroes.effect.ReinhardController.onRespawn(newPlayer);
 		ModNetworking.syncHeroData(newPlayer, data);
 	}
 

@@ -48,6 +48,9 @@ public class RoyalIcicleItem extends SwordItem {
 	private static final float CLEAVE_DAMAGE = 100.0f;
 	private static final double DARKNESS_RADIUS = 10.0;
 	private static final int DARKNESS_DURATION_TICKS = 80;
+	private static final float SECOND_COMING_HIT_DAMAGE = 1000.0f;
+	private static final float SECOND_COMING_CLEAVE_DAMAGE = 1000.0f;
+	private static final double SECOND_COMING_CLEAVE_RADIUS = 7.0;
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -55,6 +58,38 @@ public class RoyalIcicleItem extends SwordItem {
 			HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
 			if (ReinhardHero.ID.equals(data.heroId())) {
 				ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+				if (state.inSecondComing()) {
+					ServerLevel level = player.serverLevel();
+					DamageSource scSrc = level.damageSources().playerAttack(player);
+					target.invulnerableTime = 0;
+					target.hurt(scSrc, SECOND_COMING_HIT_DAMAGE);
+					Vec3 origin = target.position().add(0, target.getBbHeight() * 0.5, 0);
+					double scR2 = SECOND_COMING_CLEAVE_RADIUS * SECOND_COMING_CLEAVE_RADIUS;
+					AABB scBox = new AABB(
+							origin.x - SECOND_COMING_CLEAVE_RADIUS, origin.y - SECOND_COMING_CLEAVE_RADIUS, origin.z - SECOND_COMING_CLEAVE_RADIUS,
+							origin.x + SECOND_COMING_CLEAVE_RADIUS, origin.y + SECOND_COMING_CLEAVE_RADIUS, origin.z + SECOND_COMING_CLEAVE_RADIUS);
+					List<LivingEntity> scTargets = level.getEntitiesOfClass(LivingEntity.class, scBox,
+							e -> e != player && e != target && e.isAlive() && !e.isSpectator()
+									&& !(e instanceof Player p && p.getUUID().equals(player.getUUID()))
+									&& e.position().add(0, e.getBbHeight() * 0.5, 0).distanceToSqr(origin) <= scR2);
+					for (LivingEntity le : scTargets) {
+						le.invulnerableTime = 0;
+						le.hurt(scSrc, SECOND_COMING_CLEAVE_DAMAGE);
+						Vec3 push = le.position().subtract(origin);
+						double horiz = Math.max(0.01, Math.sqrt(push.x * push.x + push.z * push.z));
+						le.setDeltaMovement(push.x / horiz * 0.9, 0.35, push.z / horiz * 0.9);
+						le.hurtMarked = true;
+					}
+					level.sendParticles(ParticleTypes.SWEEP_ATTACK, origin.x, origin.y, origin.z, 4, 0.6, 0.6, 0.6, 0.0);
+					level.sendParticles(ParticleTypes.FLASH, origin.x, origin.y + 0.5, origin.z, 2, 0, 0, 0, 0);
+					level.sendParticles(ParticleTypes.END_ROD, origin.x, origin.y + 0.5, origin.z,
+							30, 0.7, 0.6, 0.7, 0.15);
+					level.playSound(null, origin.x, origin.y, origin.z,
+							SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1.4f, 1.0f);
+					level.playSound(null, origin.x, origin.y, origin.z,
+							SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0f, 1.4f);
+					return super.hurtEnemy(stack, target, attacker);
+				}
 				if (state.swordDrawn()) {
 					float bonus = 4.0f + state.phase() * 1.5f;
 					target.hurt(player.serverLevel().damageSources().playerAttack(player), bonus);

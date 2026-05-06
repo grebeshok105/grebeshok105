@@ -126,6 +126,17 @@ public final class HeroAttributes {
 	public static final ResourceLocation REINHARD_DRAW_JUMP = ModId.of("modifiers/reinhard/draw_jump");
 	public static final ResourceLocation REINHARD_DRAW_ATTACK_SPEED = ModId.of("modifiers/reinhard/draw_attack_speed");
 
+	public static final ResourceLocation REINHARD_SECOND_COMING_DAMAGE = ModId.of("modifiers/reinhard/second_coming_damage");
+	public static final ResourceLocation REINHARD_SECOND_COMING_ARMOR = ModId.of("modifiers/reinhard/second_coming_armor");
+	public static final ResourceLocation REINHARD_SECOND_COMING_TOUGHNESS = ModId.of("modifiers/reinhard/second_coming_toughness");
+	public static final ResourceLocation REINHARD_SECOND_COMING_HP = ModId.of("modifiers/reinhard/second_coming_max_health");
+	public static final ResourceLocation REINHARD_SECOND_COMING_SPEED = ModId.of("modifiers/reinhard/second_coming_speed");
+	public static final ResourceLocation REINHARD_SECOND_COMING_KNOCKBACK = ModId.of("modifiers/reinhard/second_coming_knockback_resistance");
+	public static final ResourceLocation REINHARD_SECOND_COMING_ATTACK_SPEED = ModId.of("modifiers/reinhard/second_coming_attack_speed");
+	public static final ResourceLocation REINHARD_SECOND_COMING_REACH = ModId.of("modifiers/reinhard/second_coming_entity_reach");
+	public static final ResourceLocation REINHARD_SECOND_COMING_JUMP = ModId.of("modifiers/reinhard/second_coming_jump_strength");
+	public static final ResourceLocation REINHARD_SECOND_COMING_STEP = ModId.of("modifiers/reinhard/second_coming_step_height");
+
 
 
 
@@ -325,6 +336,21 @@ public final class HeroAttributes {
 			.add(Attributes.MOVEMENT_SPEED, REINHARD_DRAW_SPEED, 0.50, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.JUMP_STRENGTH, REINHARD_DRAW_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_SPEED, REINHARD_DRAW_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	// Второе пришествие — одноразовое возрождение Рейнхарда. Колоссальный buff к статам:
+	// +900 атаки (с мечом ~1000 за удар), огромная броня/ХП/скорость/прыжок/реч.
+	public static final AttributeModifierSet REINHARD_SECOND_COMING = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, REINHARD_SECOND_COMING_DAMAGE, 900.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, REINHARD_SECOND_COMING_ARMOR, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, REINHARD_SECOND_COMING_TOUGHNESS, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, REINHARD_SECOND_COMING_HP, 200.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, REINHARD_SECOND_COMING_SPEED, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, REINHARD_SECOND_COMING_KNOCKBACK, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, REINHARD_SECOND_COMING_ATTACK_SPEED, 4.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ENTITY_INTERACTION_RANGE, REINHARD_SECOND_COMING_REACH, 2.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.JUMP_STRENGTH, REINHARD_SECOND_COMING_JUMP, 0.6, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.STEP_HEIGHT, REINHARD_SECOND_COMING_STEP, 0.5, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final ResourceLocation RAIDEN_ARMOR = ModId.of("modifiers/raiden/armor");
