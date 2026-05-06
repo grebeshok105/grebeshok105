@@ -72,6 +72,7 @@ public final class ReinhardSwordDrawAbility implements Ability {
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		com.example.superheroes.effect.ReinhardController.refreshBladeDamageGates(player);
 		removeSword(player);
 		com.example.superheroes.effect.ReinhardTimeSlowController.disarmForFirstStrike(player);
 		ServerLevel level = player.serverLevel();
@@ -110,6 +111,7 @@ public final class ReinhardSwordDrawAbility implements Ability {
 		if (!state.swordDrawn()) return;
 		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		com.example.superheroes.effect.ReinhardController.refreshBladeDamageGates(player);
 		removeSword(player);
 		com.example.superheroes.effect.ReinhardTimeSlowController.disarmForFirstStrike(player);
 		HeroData data = player.getAttachedOrCreate(ModAttachments.HERO_DATA);
