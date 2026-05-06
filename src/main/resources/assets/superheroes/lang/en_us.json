@@ -508,5 +508,27 @@
   "hud.superheroes.reinhard.death_mark.title": "CUT DOWN BY REINHARD'S SWORD",
   "hud.superheroes.reinhard.death_mark.subtitle": "Time stops — the strike has already landed",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Reid awakens...",
-  "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy"
+  "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy",
+
+  "hero.superheroes.raiden_shogun": "Raiden Shogun",
+
+  "item.superheroes.raiden_suit": "Vision of Electro",
+  "item.superheroes.raiden_suit.lore.line1": "\"Eternity is engraved upon a single thunderclap.\"",
+  "item.superheroes.raiden_suit.lore.line2": "Vision of the Inazuma Shogun",
+  "item.superheroes.raiden_suit.lore.usage": "▶ Right-click — Transform",
+  "item.superheroes.raiden_suit.lore.untransform": "▶ Shift + Right-click — Untransform",
+
+  "item.superheroes.musou_no_hitotachi": "Musou no Hitotachi",
+  "item.superheroes.musou_no_hitotachi.lore.line1": "\"One sword cleaves the heavens.\"",
+  "item.superheroes.musou_no_hitotachi.lore.line2": "Yamato, dyed in the Archon's electro",
+  "item.superheroes.musou_no_hitotachi.lore.eye": "▶ While Eye of Stormy Judgment is active — every strike triggers a thunder hit + AoE",
+  "item.superheroes.musou_no_hitotachi.lore.burst": "▶ During Musou Shinsetsu — strikes deal +50% with electro AoE",
+
+  "ability.superheroes.raiden_eye_of_judgment": "Eye of Stormy Judgment",
+  "ability.superheroes.raiden_eye_of_judgment.desc": "Toggle. For 25 seconds every Yamato strike triggers a Glaive of Judgment thunder hit (+9 damage to players, +4 to mobs) plus a 3-block electro splash. Costs 50 energy on activation.",
+  "ability.superheroes.raiden_eye_of_judgment.no_sword": "Yamato is not in your hands",
+
+  "ability.superheroes.raiden_musou_shinsetsu": "Musou Shinsetsu",
+  "ability.superheroes.raiden_musou_shinsetsu.desc": "Burst (active). For 7 seconds: +6 attack damage, +50% movement speed, +1.5 attack speed. Every Yamato strike deals +50% with a 4-block AoE. Final slash detonates an 8-block electro AoE (22 damage to players, 12 to mobs). 25-second cooldown. Costs 500 energy.",
+  "ability.superheroes.raiden_musou_shinsetsu.no_sword": "Yamato is not in your hands"
 }

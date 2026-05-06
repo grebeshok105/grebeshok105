@@ -509,5 +509,27 @@
   "ability.superheroes.reinhard.time_slow.start": "",
   "hud.superheroes.reinhard.death_mark.title": "СРАЖЁН МЕЧОМ РЕЙНХАРДА",
   "hud.superheroes.reinhard.death_mark.subtitle": "Время остановилось — твой удар уже нанесён",
-  "item.superheroes.royal_icicle.unworthy": "Рейд не разит недостойных"
+  "item.superheroes.royal_icicle.unworthy": "Рейд не разит недостойных",
+
+  "hero.superheroes.raiden_shogun": "Райден Сёгун",
+
+  "item.superheroes.raiden_suit": "Видение Электро",
+  "item.superheroes.raiden_suit.lore.line1": "\"Вечность высечена в одной вспышке молнии.\"",
+  "item.superheroes.raiden_suit.lore.line2": "Видение Сёгуна Иназумы",
+  "item.superheroes.raiden_suit.lore.usage": "▶ ПКМ — Трансформация",
+  "item.superheroes.raiden_suit.lore.untransform": "▶ Shift + ПКМ — Отмена трансформации",
+
+  "item.superheroes.musou_no_hitotachi": "Мусоу но Хитотачи",
+  "item.superheroes.musou_no_hitotachi.lore.line1": "\"Один взмах рассечёт небо.\"",
+  "item.superheroes.musou_no_hitotachi.lore.line2": "Ямато в электро-окрасе Архонта",
+  "item.superheroes.musou_no_hitotachi.lore.eye": "▶ Пока активен Глаз Грозного Суда — каждый удар триггерит электро-проц + AoE",
+  "item.superheroes.musou_no_hitotachi.lore.burst": "▶ Во время Musou Shinsetsu — удары бьют +50% с электро-AoE",
+
+  "ability.superheroes.raiden_eye_of_judgment": "Глаз Грозного Суда",
+  "ability.superheroes.raiden_eye_of_judgment.desc": "Тоггл. На 25 секунд каждый удар Ямато триггерит электро-проц (+9 урона по игрокам, +4 по мобам) и 3-блочный AoE-сплеш. Стоимость 50 энергии при активации.",
+  "ability.superheroes.raiden_eye_of_judgment.no_sword": "Ямато не в руках",
+
+  "ability.superheroes.raiden_musou_shinsetsu": "Musou Shinsetsu",
+  "ability.superheroes.raiden_musou_shinsetsu.desc": "Burst (активная). На 7 секунд: +6 урона, +50% скорости, +1.5 attack speed. Каждый удар Ямато бьёт +50% с 4-блочным AoE. Финальный слэш — взрыв 8 блоков электро (22 по игрокам, 12 по мобам). КД 25с. Стоимость 500 энергии.",
+  "ability.superheroes.raiden_musou_shinsetsu.no_sword": "Ямато не в руках"
 }

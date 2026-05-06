@@ -57,6 +57,10 @@ public final class ModItemGroups {
 				output.accept(ModItems.MIND_STONE);
 
 				output.accept(ModItems.REINHARD_SUIT);
+				output.accept(ModItems.ROYAL_ICICLE);
+
+				output.accept(ModItems.RAIDEN_SUIT);
+				output.accept(ModItems.MUSOU_NO_HITOTACHI);
 			})
 			.build();
 
