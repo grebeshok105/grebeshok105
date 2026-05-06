@@ -99,7 +99,6 @@ public final class AbilityRegistry {
 	public static final RaidenMusouShinsetsuAbility RAIDEN_MUSOU_SHINSETSU = new RaidenMusouShinsetsuAbility();
 	public static final RaidenPlungingStrikeAbility RAIDEN_PLUNGING_STRIKE = new RaidenPlungingStrikeAbility();
 	public static final RaidenTranscendenceAbility RAIDEN_TRANSCENDENCE = new RaidenTranscendenceAbility();
-	public static final RaidenMusouIsshinAbility RAIDEN_MUSOU_ISSHIN = new RaidenMusouIsshinAbility();
 
 
 	private AbilityRegistry() {
@@ -184,7 +183,6 @@ public final class AbilityRegistry {
 		register(RAIDEN_MUSOU_SHINSETSU);
 		register(RAIDEN_PLUNGING_STRIKE);
 		register(RAIDEN_TRANSCENDENCE);
-		register(RAIDEN_MUSOU_ISSHIN);
 	}
 
 	public static void register(Ability ability) {
