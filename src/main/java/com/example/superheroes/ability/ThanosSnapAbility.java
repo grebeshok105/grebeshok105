@@ -4,7 +4,6 @@ import com.example.superheroes.effect.ModEffects;
 import com.example.superheroes.effect.ThanosCrossModSnapHook;
 import com.example.superheroes.effect.ThanosGauntletStateController;
 import com.example.superheroes.effect.ThanosSnapWindupController;
-import com.example.superheroes.item.InfinityGauntletItem;
 import com.example.superheroes.item.infinity.InfinityStoneItem;
 import com.example.superheroes.item.infinity.InfinityStoneType;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +28,7 @@ import java.util.List;
 public final class ThanosSnapAbility implements Ability {
 	private static final int COOLDOWN_TICKS = 1800;
 	private static final double RADIUS = 128.0;
-	private static final int DURATION_TICKS = 600;
+	private static final int DURATION_TICKS = 200;
 	private static final int WINDUP_TOTAL_TICKS = 115;
 	private static final int WINDUP_SNAP_AT_TICK = 95;
 
@@ -187,7 +186,7 @@ public final class ThanosSnapAbility implements Ability {
 		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stack = player.getInventory().getItem(i);
 			if (stack.isEmpty()) continue;
-			if (stack.getItem() instanceof InfinityGauntletItem || stack.getItem() instanceof InfinityStoneItem) {
+			if (stack.getItem() instanceof InfinityStoneItem) {
 				player.getInventory().setItem(i, ItemStack.EMPTY);
 				removed = true;
 			}
@@ -209,7 +208,7 @@ public final class ThanosSnapAbility implements Ability {
 		level.playSound(null, cx, cy, cz, SoundEvents.CONDUIT_DEACTIVATE, SoundSource.PLAYERS, 2.0f, 0.7f);
 
 		player.displayClientMessage(
-				Component.translatable("ability.superheroes.thanos_snap.gauntlet_destroyed")
+				Component.translatable("ability.superheroes.thanos_snap.stones_consumed")
 						.withStyle(ChatFormatting.DARK_PURPLE),
 				false);
 	}

@@ -157,6 +157,16 @@ public final class ModItems {
 			new RoyalIcicleItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
 	);
 
+	public static final RaidenSuitItem RAIDEN_SUIT = register(
+			"raiden_suit",
+			new RaidenSuitItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
+	public static final MusouNoHitotachiItem MUSOU_NO_HITOTACHI = register(
+			"musou_no_hitotachi",
+			new MusouNoHitotachiItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC))
+	);
+
 	private ModItems() {
 	}
 

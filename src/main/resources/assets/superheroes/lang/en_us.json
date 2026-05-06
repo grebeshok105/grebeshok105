@@ -443,6 +443,7 @@
   "ability.superheroes.thanos_snap.gate_failed": "The Snap demands all six Stones — only %s of %s seated.",
   "ability.superheroes.thanos_snap.snapped": "Perfectly balanced. Players snapped: %s.",
   "ability.superheroes.thanos_snap.gauntlet_destroyed": "The Gauntlet collapses to dust along with the Stones.",
+  "ability.superheroes.thanos_snap.stones_consumed": "The Stones are dust. The Gauntlet stands empty.",
   "ability.superheroes.disabled_by_snap": "Your abilities are dust.",
   "effect.superheroes.snapped": "Snapped",
   "effect.superheroes.disabled_abilities": "Ability Lock",
@@ -486,7 +487,10 @@
   "ability.superheroes.reinhard_divine_aura": "Saintly Aura",
   "ability.superheroes.reinhard_divine_aura.desc": "Toggle. Enemies within 7 blocks get Slowness II + Glowing + Weakness. You get Resistance II + Strength I. 80 energy/sec. Requires sword.",
   "ability.superheroes.reinhard.phase_up": "Phase %s",
-  "ability.superheroes.reinhard.phoenix": "Phoenix Rebirth",
+  "ability.superheroes.reinhard.phoenix": "Phoenix Rebirth #%s",
+  "ability.superheroes.reinhard_rift_strike": "Rift Strike",
+  "ability.superheroes.reinhard_rift_strike.desc": "Active. Locks onto the fastest moving target within 32 blocks, blinks behind them at light speed, and lands an automatic sword strike. 22 damage to worthy targets, 12 to mobs. Requires drawn sword. 14s cooldown.",
+  "ability.superheroes.reinhard_rift_strike.no_target": "No fast targets nearby.",
   "screen.superheroes.reinhard_wish.title": "Make a Wish",
   "screen.superheroes.reinhard_wish.subtitle": "Used %s of %s. Pick a damage source for immunity:",
   "screen.superheroes.reinhard_wish.cancel": "Cancel",
@@ -504,5 +508,48 @@
   "hud.superheroes.reinhard.death_mark.title": "CUT DOWN BY REINHARD'S SWORD",
   "hud.superheroes.reinhard.death_mark.subtitle": "Time stops — the strike has already landed",
   "ability.superheroes.reinhard_sword_draw.ceremony": "Reid awakens...",
-  "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy"
+  "item.superheroes.royal_icicle.unworthy": "Reid ignores the unworthy",
+
+  "hero.superheroes.raiden_shogun": "Raiden Shogun",
+
+  "item.superheroes.raiden_suit": "Vision of Electro",
+  "item.superheroes.raiden_suit.lore.line1": "\"Eternity is engraved upon a single thunderclap.\"",
+  "item.superheroes.raiden_suit.lore.line2": "Vision of the Inazuma Shogun",
+  "item.superheroes.raiden_suit.lore.usage": "▶ Right-click — Transform",
+  "item.superheroes.raiden_suit.lore.untransform": "▶ Shift + Right-click — Untransform",
+
+  "item.superheroes.musou_no_hitotachi": "Musou no Hitotachi",
+  "item.superheroes.musou_no_hitotachi.lore.line1": "\"One sword cleaves the heavens.\"",
+  "item.superheroes.musou_no_hitotachi.lore.line2": "Yamato, dyed in the Archon's electro",
+  "item.superheroes.musou_no_hitotachi.lore.eye": "▶ While Eye of Stormy Judgment is active — every strike triggers a thunder hit + AoE",
+  "item.superheroes.musou_no_hitotachi.lore.burst": "▶ During Musou Shinsetsu — strikes deal +50% with electro AoE",
+
+  "ability.superheroes.raiden_eye_of_judgment": "Eye of Stormy Judgment",
+  "ability.superheroes.raiden_eye_of_judgment.desc": "Toggle. For 25 seconds every Yamato strike triggers a Glaive of Judgment thunder hit (+9 damage to players, +4 to mobs) plus a 3-block electro splash. Costs 50 energy on activation.",
+  "ability.superheroes.raiden_eye_of_judgment.no_sword": "Yamato is not in your hands",
+
+  "ability.superheroes.raiden_musou_shinsetsu": "Musou Shinsetsu",
+  "ability.superheroes.raiden_musou_shinsetsu.desc": "Burst (active). For 7 seconds: +6 attack damage, +50% movement speed, +1.5 attack speed. Every Yamato strike deals +50% with a 4-block AoE. Final slash detonates an 8-block electro AoE (22 damage to players, 12 to mobs). 25-second cooldown. Costs 500 energy.",
+  "ability.superheroes.raiden_musou_shinsetsu.no_sword": "Yamato is not in your hands",
+
+  "ability.superheroes.raiden_sword_draw": "Manifest Yamato",
+  "ability.superheroes.raiden_sword_draw.desc": "Toggle. Summons or dismisses Musou no Hitotachi (Yamato) into your hand. The blade is required for Eye of Stormy Judgment and Musou Shinsetsu.",
+  "ability.superheroes.raiden_plunging_strike": "Plunging Strike",
+  "ability.superheroes.raiden_plunging_strike.desc": "Active. Leap into the air; on landing within 3 seconds detonate a 5-block electro AoE (10 damage to players, 5 to mobs). 8-second cooldown. Costs 200 energy.",
+  "ability.superheroes.raiden_plunging_strike.armed": "Plunging Strike armed — fall to slam",
+  "ability.superheroes.raiden_plunging_strike.cooldown": "Plunging Strike on cooldown",
+  "ability.superheroes.raiden_plunging_strike.no_sword": "Yamato is not in your hands",
+  "ability.superheroes.raiden_transcendence": "Transcendence Aura",
+  "ability.superheroes.raiden_transcendence.desc": "Toggle. Engulf yourself in an electro aura; every 1.5 seconds zaps the closest enemy within 6 blocks (4 damage to players, 2 to mobs). Drains 12 energy per second.",
+
+  "ability.superheroes.raiden_musou_isshin": "Musou Isshin",
+  "ability.superheroes.raiden_musou_isshin.desc": "Active. The legendary slash that split an island. Carves a 35-block trench in the direction you face, dealing 30 damage to players and 18 to mobs in its path. 45-second cooldown. Costs 800 energy.",
+  "ability.superheroes.raiden_musou_isshin.cooldown": "Musou Isshin on cooldown",
+  "ability.superheroes.raiden_musou_isshin.no_sword": "Yamato is not in your hands",
+
+  "key.superheroes.raiden_sword_draw": "Raiden: Manifest Yamato",
+
+  "ability.superheroes.status.on": "ON",
+  "ability.superheroes.status.off": "OFF",
+  "ability.superheroes.status.ready": "READY"
 }

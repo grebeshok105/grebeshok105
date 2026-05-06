@@ -141,12 +141,12 @@ public final class HeroAttributes {
 	public static final ResourceLocation IRON_MAN_HP = ModId.of("modifiers/iron_man/max_health");
 
 	public static final AttributeModifierSet IRON_MAN = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, IRON_MAN_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, IRON_MAN_ARMOR, 22.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, IRON_MAN_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_DAMAGE, IRON_MAN_DAMAGE, 7.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, IRON_MAN_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.MAX_HEALTH, IRON_MAN_HP, 20.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, IRON_MAN_HP, 10.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, IRON_MAN_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	/** Hulkbuster mode: больший масштаб, грубая прочность, экстра-урон, движение чуть медленнее. */
@@ -233,13 +233,13 @@ public final class HeroAttributes {
 	public static final ResourceLocation CAP_ATTACK_SPEED = ModId.of("modifiers/captain_america/attack_speed");
 
 	public static final AttributeModifierSet CAPTAIN_AMERICA = AttributeModifierSet.builder()
-			.add(Attributes.ARMOR, CAP_ARMOR, 35.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 12.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR, CAP_ARMOR, 18.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, CAP_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_DAMAGE, CAP_DAMAGE, 8.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_SPEED, CAP_ATTACK_SPEED, 2.0, AttributeModifier.Operation.ADD_VALUE)
-			.add(Attributes.MAX_HEALTH, CAP_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MAX_HEALTH, CAP_HP, 12.0, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.MOVEMENT_SPEED, CAP_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.85, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, CAP_KNOCKBACK, 0.6, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static final AttributeModifierSet KRATOS = AttributeModifierSet.builder()
@@ -325,6 +325,34 @@ public final class HeroAttributes {
 			.add(Attributes.MOVEMENT_SPEED, REINHARD_DRAW_SPEED, 0.50, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
 			.add(Attributes.JUMP_STRENGTH, REINHARD_DRAW_JUMP, 0.4, AttributeModifier.Operation.ADD_VALUE)
 			.add(Attributes.ATTACK_SPEED, REINHARD_DRAW_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	public static final ResourceLocation RAIDEN_ARMOR = ModId.of("modifiers/raiden/armor");
+	public static final ResourceLocation RAIDEN_TOUGHNESS = ModId.of("modifiers/raiden/toughness");
+	public static final ResourceLocation RAIDEN_DAMAGE = ModId.of("modifiers/raiden/damage");
+	public static final ResourceLocation RAIDEN_SPEED = ModId.of("modifiers/raiden/speed");
+	public static final ResourceLocation RAIDEN_HP = ModId.of("modifiers/raiden/max_health");
+	public static final ResourceLocation RAIDEN_KNOCKBACK = ModId.of("modifiers/raiden/knockback_resistance");
+	public static final ResourceLocation RAIDEN_ATTACK_SPEED = ModId.of("modifiers/raiden/attack_speed");
+	public static final ResourceLocation RAIDEN_BURST_DAMAGE = ModId.of("modifiers/raiden/burst_damage");
+	public static final ResourceLocation RAIDEN_BURST_SPEED = ModId.of("modifiers/raiden/burst_speed");
+	public static final ResourceLocation RAIDEN_BURST_ATTACK_SPEED = ModId.of("modifiers/raiden/burst_attack_speed");
+
+	public static final AttributeModifierSet RAIDEN = AttributeModifierSet.builder()
+			.add(Attributes.ARMOR, RAIDEN_ARMOR, 20.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ARMOR_TOUGHNESS, RAIDEN_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_DAMAGE, RAIDEN_DAMAGE, 5.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, RAIDEN_SPEED, 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.MAX_HEALTH, RAIDEN_HP, 30.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.KNOCKBACK_RESISTANCE, RAIDEN_KNOCKBACK, 0.7, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.ATTACK_SPEED, RAIDEN_ATTACK_SPEED, 1.0, AttributeModifier.Operation.ADD_VALUE)
+			.build();
+
+	// Бафф во время Burst (Q): +50% movement speed, +1.5 attack speed, +6 attack damage.
+	public static final AttributeModifierSet RAIDEN_BURST = AttributeModifierSet.builder()
+			.add(Attributes.ATTACK_DAMAGE, RAIDEN_BURST_DAMAGE, 6.0, AttributeModifier.Operation.ADD_VALUE)
+			.add(Attributes.MOVEMENT_SPEED, RAIDEN_BURST_SPEED, 0.50, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+			.add(Attributes.ATTACK_SPEED, RAIDEN_BURST_ATTACK_SPEED, 1.5, AttributeModifier.Operation.ADD_VALUE)
 			.build();
 
 	public static void thanosClearStoneModifiers(net.minecraft.world.entity.LivingEntity entity) {

@@ -24,6 +24,7 @@ public final class ModParticles {
 	public static final SimpleParticleType CAP_SHIELD_SLAM_BURST = register("cap_shield_slam_burst", FabricParticleTypes.simple());
 
 	public static final SimpleParticleType WHITE_BOOM = register("white_boom", FabricParticleTypes.simple());
+	public static final SimpleParticleType SWORD_EXPLOSION = register("sword_explosion", FabricParticleTypes.simple());
 	public static final SimpleParticleType SPARKS = register("sparks", FabricParticleTypes.simple());
 	public static final SimpleParticleType DARK_STAR = register("dark_star", FabricParticleTypes.simple());
 	public static final SimpleParticleType PURPLE_FLAME = register("purple_flame", FabricParticleTypes.simple());
@@ -36,6 +37,13 @@ public final class ModParticles {
 	public static final SimpleParticleType KRATOS_HAND_BURST_1 = register("kratos_hand_burst_1", FabricParticleTypes.simple());
 	public static final SimpleParticleType KRATOS_HAND_BURST_2 = register("kratos_hand_burst_2", FabricParticleTypes.simple());
 	public static final SimpleParticleType KRATOS_HAND_BURST_3 = register("kratos_hand_burst_3", FabricParticleTypes.simple());
+
+	public static final SimpleParticleType ANOMALY_SLICE = register("anomaly_slice", FabricParticleTypes.simple());
+	public static final SimpleParticleType JIWALD_EFFECT = register("jiwald_effect", FabricParticleTypes.simple());
+	public static final SimpleParticleType FULA_PARTICLE = register("fula_particle", FabricParticleTypes.simple());
+	public static final SimpleParticleType SHAMAK = register("shamak", FabricParticleTypes.simple());
+	public static final SimpleParticleType BLUE_FLAME = register("blue_flame", FabricParticleTypes.simple());
+	public static final SimpleParticleType MOONVEIL = register("moonveil", FabricParticleTypes.simple());
 
 	private ModParticles() {
 	}

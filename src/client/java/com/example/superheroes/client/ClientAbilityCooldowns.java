@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class ClientAbilityCooldowns {
 	private static final Map<ResourceLocation, Integer> DEADLINES = new ConcurrentHashMap<>();
+	private static final Map<ResourceLocation, Integer> TOTALS = new ConcurrentHashMap<>();
 
 	private ClientAbilityCooldowns() {
 	}
@@ -17,8 +18,10 @@ public final class ClientAbilityCooldowns {
 		int now = mc.player != null ? mc.player.tickCount : 0;
 		if (remainingTicks <= 0) {
 			DEADLINES.remove(abilityId);
+			TOTALS.remove(abilityId);
 		} else {
 			DEADLINES.put(abilityId, now + remainingTicks);
+			TOTALS.put(abilityId, remainingTicks);
 		}
 	}
 
@@ -30,12 +33,19 @@ public final class ClientAbilityCooldowns {
 		int remaining = deadline - now;
 		if (remaining <= 0) {
 			DEADLINES.remove(abilityId);
+			TOTALS.remove(abilityId);
 			return 0;
 		}
 		return remaining;
 	}
 
+	public static int totalTicks(ResourceLocation abilityId) {
+		Integer total = TOTALS.get(abilityId);
+		return total == null ? 0 : total;
+	}
+
 	public static void clear() {
 		DEADLINES.clear();
+		TOTALS.clear();
 	}
 }

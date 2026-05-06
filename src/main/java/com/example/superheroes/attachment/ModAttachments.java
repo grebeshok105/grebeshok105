@@ -2,6 +2,7 @@ package com.example.superheroes.attachment;
 
 import com.example.superheroes.ModId;
 import com.example.superheroes.effect.DoomsdayProgress;
+import com.example.superheroes.effect.RaidenState;
 import com.example.superheroes.effect.RegulusMadnessState;
 import com.example.superheroes.effect.ReinhardState;
 import com.example.superheroes.transform.HeroData;
@@ -37,6 +38,12 @@ public final class ModAttachments {
 			.persistent(ReinhardState.CODEC)
 			.copyOnDeath()
 			.buildAndRegister(ModId.of("reinhard_state"));
+
+	// ВАЖНО: state Райден умышленно НЕ persistent и БЕЗ copyOnDeath —
+	// смерть/выход полностью обнуляет таймеры Глаза/Burst, как и просил пользователь.
+	public static final AttachmentType<RaidenState> RAIDEN_STATE = AttachmentRegistry.<RaidenState>builder()
+			.initializer(() -> RaidenState.EMPTY)
+			.buildAndRegister(ModId.of("raiden_state"));
 
 	private ModAttachments() {
 	}

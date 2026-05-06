@@ -2,14 +2,15 @@ package com.example.superheroes.effect;
 
 import com.example.superheroes.network.ReinhardTimeSlowS2CPayload;
 import com.example.superheroes.sound.ModSounds;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 
@@ -34,20 +35,22 @@ public final class ReinhardTimeSlowController {
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(ReinhardTimeSlowController::tick);
 
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
-			if (amount <= 0f) return true;
-			if (!(source.getEntity() instanceof ServerPlayer attacker)) return true;
-			if (!(entity instanceof LivingEntity living) || living == attacker) return true;
-			if (!ReinhardController.isReinhard(attacker)) return true;
-			if (!ARMED.contains(attacker.getUUID())) return true;
-			if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return true;
-			if (!(attacker.getMainHandItem().getItem() instanceof com.example.superheroes.item.RoyalIcicleItem)) return true;
-			if (!source.is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)) return true;
+		// Триггер ТОЛЬКО от ручного ЛКМ (AttackEntityCallback), а не от любого источника урона.
+		// Контратаки/риспосты/AoE-абилки больше не активируют замедление.
+		AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			if (world.isClientSide()) return InteractionResult.PASS;
+			if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
+			if (!(player instanceof ServerPlayer attacker)) return InteractionResult.PASS;
+			if (!(entity instanceof LivingEntity living) || living == attacker) return InteractionResult.PASS;
+			if (!living.isAlive()) return InteractionResult.PASS;
+			if (!ReinhardController.isReinhard(attacker)) return InteractionResult.PASS;
+			if (!ARMED.contains(attacker.getUUID())) return InteractionResult.PASS;
+			if (!(attacker.getMainHandItem().getItem() instanceof com.example.superheroes.item.RoyalIcicleItem)) return InteractionResult.PASS;
 			ReinhardState rstate = attacker.getAttachedOrCreate(com.example.superheroes.attachment.ModAttachments.REINHARD_STATE);
-			if (!rstate.swordDrawn()) return true;
-			if (!ARMED.remove(attacker.getUUID())) return true;
+			if (!rstate.swordDrawn()) return InteractionResult.PASS;
+			if (!ARMED.remove(attacker.getUUID())) return InteractionResult.PASS;
 			triggerSlow(attacker);
-			return true;
+			return InteractionResult.PASS;
 		});
 	}
 

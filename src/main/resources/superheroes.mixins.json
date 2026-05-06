@@ -12,7 +12,8 @@
 		"LivingEntityHealBlockMixin",
 		"ThanosBlockBreakingMixin",
 		"KryptoniteShardPickupMixin",
-		"RoyalIcicleNoDropMixin"
+		"RoyalIcicleNoDropMixin",
+		"YamatoNoDropMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

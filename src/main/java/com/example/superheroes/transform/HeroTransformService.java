@@ -95,6 +95,7 @@ public final class HeroTransformService {
 		com.example.superheroes.effect.RegulusTotemController.clear(player.getUUID());
 		com.example.superheroes.effect.RegulusMadnessController.clearMadness(player);
 		com.example.superheroes.effect.ReinhardController.clearAdaptations(player);
+		com.example.superheroes.effect.RaidenLifecycleController.clearOnUntransform(player);
 		HeroData updated = data.withHero(null).withResources(0f, 0f).clearActive();
 		player.setAttached(ModAttachments.HERO_DATA, updated);
 		player.refreshDimensions();

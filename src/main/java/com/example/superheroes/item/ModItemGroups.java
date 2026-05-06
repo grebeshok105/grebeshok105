@@ -57,6 +57,8 @@ public final class ModItemGroups {
 				output.accept(ModItems.MIND_STONE);
 
 				output.accept(ModItems.REINHARD_SUIT);
+
+				output.accept(ModItems.RAIDEN_SUIT);
 			})
 			.build();
 

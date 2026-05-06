@@ -335,8 +335,8 @@ public final class ReinhardController {
 
 	private static boolean tryPhoenix(ServerPlayer player, DamageSource source) {
 		ReinhardState state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
-		if (state.phoenixUsed()) return true;
-		// Spare death — heal full + 3s resistance + fire VFX
+		int nextCount = state.phoenixCount() + 1;
+		// Каждое пришествие — heal + 3s resistance + fire VFX (без лимита)
 		player.setHealth(player.getMaxHealth() * 0.5f);
 		player.removeAllEffects();
 		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 4, true, false, true));
@@ -359,9 +359,10 @@ public final class ReinhardController {
 				SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 1.0f, 1.4f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.PLAYERS, 1.4f, 1.0f);
-		player.setAttached(ModAttachments.REINHARD_STATE, state.withPhoenixUsed(true));
+		player.setAttached(ModAttachments.REINHARD_STATE,
+				state.withPhoenixUsed(true).withPhoenixCount(nextCount));
 		player.displayClientMessage(
-				Component.translatable("ability.superheroes.reinhard.phoenix"),
+				Component.translatable("ability.superheroes.reinhard.phoenix", nextCount),
 				true);
 		return false;
 	}
@@ -378,13 +379,18 @@ public final class ReinhardController {
 		state = state.withAdaptedDamageTypes(List.of())
 				.withRecentDamageTypes(List.of())
 				.withAccumulatedDamage(0f)
-				.withPhase(1);
+				.withPhase(1)
+				.withPhoenixUsed(false)
+				.withPhoenixCount(0);
 		player.setAttached(ModAttachments.REINHARD_STATE, state);
 		com.example.superheroes.effect.ReinhardSwordDrawCeremonyController.cancelCeremony(player);
 		for (int p = 1; p <= 5; p++) {
 			HeroAttributes.buildReinhardPhaseSet(p).remove(player);
 		}
 		HeroAttributes.REINHARD_DRAW.remove(player);
+		state = player.getAttachedOrCreate(ModAttachments.REINHARD_STATE);
+		player.setAttached(ModAttachments.REINHARD_STATE, state.withSwordDrawn(false));
+		com.example.superheroes.ability.ReinhardSwordDrawAbility.removeSword(player);
 		COUNTER_LOCKOUT.remove(player.getUUID());
 		LAST_DAMAGE_TICK.remove(player.getUUID());
 	}
