@@ -91,6 +91,7 @@ public final class AbilityRegistry {
 	public static final ReinhardHeavensStrikeAbility REINHARD_HEAVENS_STRIKE = new ReinhardHeavensStrikeAbility();
 	public static final ReinhardCounterRiposteAbility REINHARD_COUNTER_RIPOSTE = new ReinhardCounterRiposteAbility();
 	public static final ReinhardDivineAuraAbility REINHARD_DIVINE_AURA = new ReinhardDivineAuraAbility();
+	public static final ReinhardRiftStrikeAbility REINHARD_RIFT_STRIKE = new ReinhardRiftStrikeAbility();
 
 
 	private AbilityRegistry() {
@@ -168,6 +169,7 @@ public final class AbilityRegistry {
 		register(REINHARD_HEAVENS_STRIKE);
 		register(REINHARD_COUNTER_RIPOSTE);
 		register(REINHARD_DIVINE_AURA);
+		register(REINHARD_RIFT_STRIKE);
 	}
 
 	public static void register(Ability ability) {

@@ -91,6 +91,7 @@ public final class AbilityIds {
 	public static final ResourceLocation REINHARD_HEAVENS_STRIKE = ModId.of("reinhard_heavens_strike");
 	public static final ResourceLocation REINHARD_COUNTER_RIPOSTE = ModId.of("reinhard_counter_riposte");
 	public static final ResourceLocation REINHARD_DIVINE_AURA = ModId.of("reinhard_divine_aura");
+	public static final ResourceLocation REINHARD_RIFT_STRIKE = ModId.of("reinhard_rift_strike");
 
 
 	public static boolean isReinhardSwordOnly(ResourceLocation id) {
@@ -99,7 +100,8 @@ public final class AbilityIds {
 				|| REINHARD_SWORD_WAVE.equals(id)
 				|| REINHARD_HEAVENS_STRIKE.equals(id)
 				|| REINHARD_COUNTER_RIPOSTE.equals(id)
-				|| REINHARD_DIVINE_AURA.equals(id);
+				|| REINHARD_DIVINE_AURA.equals(id)
+				|| REINHARD_RIFT_STRIKE.equals(id);
 	}
 
 	private AbilityIds() {

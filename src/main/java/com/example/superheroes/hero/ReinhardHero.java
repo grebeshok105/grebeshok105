@@ -53,6 +53,7 @@ public final class ReinhardHero implements Hero {
 				AbilityIds.REINHARD_COUNTER_RIPOSTE,
 				AbilityIds.REINHARD_DIVINE_AURA,
 				AbilityIds.REINHARD_TELEPORT_BEHIND,
+				AbilityIds.REINHARD_RIFT_STRIKE,
 				AbilityIds.REINHARD_JUDGMENT_MARK,
 				AbilityIds.REINHARD_WISH
 		);
