@@ -49,7 +49,6 @@ public final class RaidenHero implements Hero {
 				AbilityIds.RAIDEN_SWORD_DRAW,
 				AbilityIds.RAIDEN_EYE_OF_JUDGMENT,
 				AbilityIds.RAIDEN_MUSOU_SHINSETSU,
-				AbilityIds.RAIDEN_MUSOU_ISSHIN,
 				AbilityIds.RAIDEN_PLUNGING_STRIKE,
 				AbilityIds.RAIDEN_TRANSCENDENCE
 		);

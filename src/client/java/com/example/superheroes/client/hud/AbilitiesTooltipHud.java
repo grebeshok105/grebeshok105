@@ -108,16 +108,7 @@ public final class AbilitiesTooltipHud {
 		List<ResourceLocation> abilities = filterByTier(ClientHeroState.abilities(), heroId);
 		int passiveCount = AbilityDescriptions.passiveCount(heroId);
 
-		int togglesCount = 0;
-		int activesCount = 0;
-		for (ResourceLocation id : abilities) {
-			AbilityDescriptions.Kind kind = AbilityDescriptions.kindOf(id);
-			if (kind == AbilityDescriptions.Kind.TOGGLE) {
-				togglesCount++;
-			} else {
-				activesCount++;
-			}
-		}
+		int abilitiesCount = abilities.size();
 
 		Minecraft mc = Minecraft.getInstance();
 		int contentWidth = PANEL_WIDTH - PADDING_X * 2;
@@ -133,18 +124,8 @@ public final class AbilitiesTooltipHud {
 			}
 			panelHeight += SECTION_SPACING;
 		}
-		if (activesCount > 0) {
-			panelHeight += SECTION_HEADER_HEIGHT;
+		if (abilitiesCount > 0) {
 			for (ResourceLocation id : abilities) {
-				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.ACTIVE) continue;
-				panelHeight += abilityRowHeight(mc, id, abilityTextWidth);
-			}
-			panelHeight += SECTION_SPACING;
-		}
-		if (togglesCount > 0) {
-			panelHeight += SECTION_HEADER_HEIGHT;
-			for (ResourceLocation id : abilities) {
-				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.TOGGLE) continue;
 				panelHeight += abilityRowHeight(mc, id, abilityTextWidth);
 			}
 			panelHeight += SECTION_SPACING;
@@ -184,29 +165,8 @@ public final class AbilitiesTooltipHud {
 			cursorY += SECTION_SPACING;
 		}
 
-		if (activesCount > 0) {
-			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, contentWidth,
-					Component.translatable("hud.superheroes.abilities.active"), theme, alpha);
-			cursorY += SECTION_HEADER_HEIGHT;
+		if (abilitiesCount > 0) {
 			for (ResourceLocation id : abilities) {
-				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.ACTIVE) {
-					continue;
-				}
-				int rowHeight = abilityRowHeight(mc, id, abilityTextWidth);
-				drawAbilityRow(graphics, mc, x + PADDING_X, cursorY, contentWidth, id, theme, alpha);
-				cursorY += rowHeight;
-			}
-			cursorY += SECTION_SPACING;
-		}
-
-		if (togglesCount > 0) {
-			drawSectionHeader(graphics, mc, x + PADDING_X, cursorY, contentWidth,
-					Component.translatable("hud.superheroes.abilities.toggle"), theme, alpha);
-			cursorY += SECTION_HEADER_HEIGHT;
-			for (ResourceLocation id : abilities) {
-				if (AbilityDescriptions.kindOf(id) != AbilityDescriptions.Kind.TOGGLE) {
-					continue;
-				}
 				int rowHeight = abilityRowHeight(mc, id, abilityTextWidth);
 				drawAbilityRow(graphics, mc, x + PADDING_X, cursorY, contentWidth, id, theme, alpha);
 				cursorY += rowHeight;
