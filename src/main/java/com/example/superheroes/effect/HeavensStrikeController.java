@@ -262,32 +262,51 @@ public final class HeavensStrikeController {
 		double prevProgress = (double) (impactElapsed - 1) / IMPACT_TICKS;
 		if (impactElapsed == 0) prevProgress = 0.0;
 
-		double sweepFromDist = Math.max(1.0, v.length * Math.max(0.0, prevProgress));
+		double sweepFromDist = Math.max(0.0, v.length * Math.max(0.0, prevProgress));
 		double sweepToDist = v.length * Math.min(1.0, progress);
 
 		Vec3 lookFlat = p.lookFlat;
 		Vec3 perpendicular = new Vec3(-lookFlat.z, 0, lookFlat.x);
 		Vec3 origin = p.origin;
-		int halfWidth = v.width / 2;
+		double halfWidthD = v.width / 2.0;
 
-		int sliceFrom = Math.max(p.sweptIndex + 1, (int) Math.floor(sweepFromDist));
-		int sliceTo = (int) Math.ceil(sweepToDist);
-		if (sliceTo > v.length) sliceTo = v.length;
+		// Bounding box of the slice [sweepFromDist..sweepToDist] in world XZ
+		Vec3 a = origin.add(lookFlat.scale(sweepFromDist));
+		Vec3 b = origin.add(lookFlat.scale(sweepToDist));
+		double margin = halfWidthD + 1.5;
+		int minX = (int) Math.floor(Math.min(a.x, b.x) - margin);
+		int maxX = (int) Math.floor(Math.max(a.x, b.x) + margin);
+		int minZ = (int) Math.floor(Math.min(a.z, b.z) - margin);
+		int maxZ = (int) Math.floor(Math.max(a.z, b.z) + margin);
 
 		int destroyed = 0;
-		final int destroyBudget = 12000;
-		int lastCompletedI = sliceFrom - 1;
+		final int destroyBudget = 16000;
 		boolean budgetReached = false;
-		for (int i = sliceFrom; i <= sliceTo && !budgetReached; i++) {
-			Vec3 point = origin.add(lookFlat.scale(i));
-			for (int w = -halfWidth; w <= halfWidth && !budgetReached; w++) {
-				Vec3 offset = perpendicular.scale(w);
-				int ox = (int) Math.floor(point.x + offset.x);
-				int oz = (int) Math.floor(point.z + offset.z);
-				int sy = findSurface(level, ox, (int) origin.y, oz);
+		long noiseSeed = p.startTick;
+		int oy = (int) origin.y;
 
-				int yFrom = sy - v.depth + 1;
-				int yTo = sy + v.height;
+		for (int ox = minX; ox <= maxX && !budgetReached; ox++) {
+			for (int oz = minZ; oz <= maxZ && !budgetReached; oz++) {
+				double dxRel = (ox + 0.5) - origin.x;
+				double dzRel = (oz + 0.5) - origin.z;
+				double along = dxRel * lookFlat.x + dzRel * lookFlat.z;
+				double across = dxRel * perpendicular.x + dzRel * perpendicular.z;
+				double absAcross = Math.abs(across);
+				if (along < sweepFromDist - 0.5 || along > sweepToDist + 0.5) continue;
+				if (absAcross > halfWidthD + 0.5) continue;
+
+				double tAlong = along / Math.max(1.0, v.length);
+				double profile = Math.sin(Math.PI * Math.max(0.0, Math.min(1.0, tAlong))) * 0.55 + 0.45;
+				double centerWeight = 1.0 - absAcross / Math.max(1.0, halfWidthD + 0.5);
+				double shape = profile * (0.45 + 0.55 * centerWeight);
+				double jitter = 0.85 + 0.30 * cellNoise01(ox, oz, noiseSeed);
+				int localDepth = Math.max(1, (int) Math.round(v.depth * shape * jitter));
+				int localHeight = (v.height <= 0)
+						? 0
+						: Math.max(0, (int) Math.round(v.height * shape * jitter));
+
+				int yFrom = oy - localDepth + 1;
+				int yTo = oy + localHeight;
 				for (int y = yTo; y >= yFrom; y--) {
 					BlockPos pos = new BlockPos(ox, y, oz);
 					BlockState state = level.getBlockState(pos);
@@ -302,28 +321,30 @@ public final class HeavensStrikeController {
 					}
 				}
 			}
-			if (!budgetReached) {
-				lastCompletedI = i;
-			}
-
-			if (i % Math.max(1, v.length / 10) == 0) {
-				int sy = findSurface(level, (int) Math.floor(point.x), (int) origin.y, (int) Math.floor(point.z));
-				level.sendParticles(ParticleTypes.FLASH,
-						point.x, sy + 1.0, point.z, 1, 0, 0, 0, 0);
-				level.sendParticles(ParticleTypes.END_ROD,
-						point.x, sy + 1.5, point.z,
-						20, v.width * 0.15, 1.4, v.width * 0.15, 0.18);
-				level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
-						point.x, sy + 1.0, point.z,
-						22, v.width * 0.12, 1.0, v.width * 0.12, 0.10);
-				level.sendParticles(ParticleTypes.EXPLOSION,
-						point.x, sy + 0.8, point.z, 1, 0, 0, 0, 0);
-			}
 		}
-		p.sweptIndex = Math.max(p.sweptIndex, lastCompletedI);
 
-		if (sliceTo > sliceFrom) {
-			Vec3 frontPoint = origin.add(lookFlat.scale(sliceTo));
+		// Particles at the leading edge of this tick's slice, at fixed length intervals.
+		int particleStep = Math.max(1, v.length / 10);
+		int sliceFromI = Math.max(0, (int) Math.floor(sweepFromDist));
+		int sliceToI = Math.min(v.length, (int) Math.ceil(sweepToDist));
+		for (int i = sliceFromI; i <= sliceToI; i++) {
+			if (i % particleStep != 0) continue;
+			Vec3 point = origin.add(lookFlat.scale(i));
+			int sy = findSurface(level, (int) Math.floor(point.x), oy, (int) Math.floor(point.z));
+			level.sendParticles(ParticleTypes.FLASH,
+					point.x, sy + 1.0, point.z, 1, 0, 0, 0, 0);
+			level.sendParticles(ParticleTypes.END_ROD,
+					point.x, sy + 1.5, point.z,
+					20, v.width * 0.15, 1.4, v.width * 0.15, 0.18);
+			level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+					point.x, sy + 1.0, point.z,
+					22, v.width * 0.12, 1.0, v.width * 0.12, 0.10);
+			level.sendParticles(ParticleTypes.EXPLOSION,
+					point.x, sy + 0.8, point.z, 1, 0, 0, 0, 0);
+		}
+
+		if (sweepToDist > sweepFromDist) {
+			Vec3 frontPoint = origin.add(lookFlat.scale(sweepToDist));
 			AABB sliceBox = buildSliceAABB(origin, lookFlat, perpendicular, sweepFromDist, sweepToDist, v);
 			DamageSource src = level.damageSources().playerAttack(player);
 			java.util.List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, sliceBox,
@@ -404,6 +425,16 @@ public final class HeavensStrikeController {
 		double minY = origin.y - v.depth - 2;
 		double maxY = origin.y + Math.max(6, v.height + 2);
 		return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+	}
+
+	private static double cellNoise01(int x, int z, long seed) {
+		long h = seed * 0x9E3779B97F4A7C15L
+				^ (long) x * 0xC2B2AE3D27D4EB4FL
+				^ (long) z * 0x165667B19E3779F9L;
+		h ^= h >>> 33; h *= 0xFF51AFD7ED558CCDL;
+		h ^= h >>> 33; h *= 0xC4CEB9FE1A85EC53L;
+		h ^= h >>> 33;
+		return (h & 0xFFFFFFFFL) / (double) 0x100000000L;
 	}
 
 	private static int findSurface(ServerLevel level, int x, int originY, int z) {
