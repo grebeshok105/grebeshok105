@@ -46,6 +46,7 @@ public final class RaidenHero implements Hero {
 	@Override
 	public List<ResourceLocation> getAbilities() {
 		return List.of(
+				AbilityIds.RAIDEN_SWORD_DRAW,
 				AbilityIds.RAIDEN_EYE_OF_JUDGMENT,
 				AbilityIds.RAIDEN_MUSOU_SHINSETSU,
 				AbilityIds.RAIDEN_MUSOU_ISSHIN,
