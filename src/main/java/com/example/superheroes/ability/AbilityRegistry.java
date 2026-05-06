@@ -93,6 +93,9 @@ public final class AbilityRegistry {
 	public static final ReinhardDivineAuraAbility REINHARD_DIVINE_AURA = new ReinhardDivineAuraAbility();
 	public static final ReinhardRiftStrikeAbility REINHARD_RIFT_STRIKE = new ReinhardRiftStrikeAbility();
 
+	public static final RaidenEyeOfJudgmentAbility RAIDEN_EYE_OF_JUDGMENT = new RaidenEyeOfJudgmentAbility();
+	public static final RaidenMusouShinsetsuAbility RAIDEN_MUSOU_SHINSETSU = new RaidenMusouShinsetsuAbility();
+
 
 	private AbilityRegistry() {
 	}
@@ -170,6 +173,8 @@ public final class AbilityRegistry {
 		register(REINHARD_COUNTER_RIPOSTE);
 		register(REINHARD_DIVINE_AURA);
 		register(REINHARD_RIFT_STRIKE);
+		register(RAIDEN_EYE_OF_JUDGMENT);
+		register(RAIDEN_MUSOU_SHINSETSU);
 	}
 
 	public static void register(Ability ability) {

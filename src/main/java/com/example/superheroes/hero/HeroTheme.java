@@ -209,5 +209,26 @@ public record HeroTheme(
 			0x66FF6464
 	);
 
+	public static final HeroTheme RAIDEN = new HeroTheme(
+			0xE01A0A2E,
+			0xD00A0418,
+			0x99A464FF,
+			0x44E0CCFF,
+			0xFFB890FF,
+			0xFF3A1A88,
+			0xFFA464FF,
+			0x66C8A0FF,
+			0xFFB890FF,
+			0xFF1A0044,
+			0xFFC8A0FF,
+			0x66E0C8FF,
+			0xFFC8A0FF,
+			0x66A464FF,
+			0xFFB890FF,
+			0xFFB890FF,
+			0xFFFFE8FF,
+			0x66C8A0FF
+	);
+
 	public static final HeroTheme DEFAULT = HOMELANDER;
 }
