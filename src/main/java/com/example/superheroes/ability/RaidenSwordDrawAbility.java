@@ -52,7 +52,7 @@ public final class RaidenSwordDrawAbility implements Ability {
 		level.sendParticles(ModParticles.SWORD_EXPLOSION,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				24, 0.4, 0.7, 0.4, 0.18);
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				40, 0.5, 0.7, 0.5, 0.25);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -68,7 +68,7 @@ public final class RaidenSwordDrawAbility implements Ability {
 		player.setAttached(ModAttachments.RAIDEN_STATE, state.withSwordDrawn(false));
 		removeSword(player);
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				18, 0.4, 0.6, 0.4, 0.04);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),

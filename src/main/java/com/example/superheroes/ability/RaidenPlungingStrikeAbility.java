@@ -78,10 +78,10 @@ public final class RaidenPlungingStrikeAbility implements Ability {
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				player.getX(), player.getY() + 0.2, player.getZ(),
 				40, 0.5, 0.1, 0.5, 0.4);
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				player.getX(), player.getY() + 0.5, player.getZ(),
 				18, 0.4, 0.4, 0.4, 0.02);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -121,10 +121,10 @@ public final class RaidenPlungingStrikeAbility implements Ability {
 		level.sendParticles(ModParticles.SWORD_EXPLOSION,
 				origin.x, origin.y + 0.5, origin.z,
 				36, 1.2, 0.4, 1.2, 0.2);
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				origin.x, origin.y + 0.5, origin.z,
 				120, 1.5, 0.4, 1.5, 0.5);
-		level.sendParticles(ModParticles.DARK_STAR,
+		level.sendParticles(ModParticles.MOONVEIL,
 				origin.x, origin.y + 1.0, origin.z,
 				14, 0.8, 0.4, 0.8, 0.05);
 		level.playSound(null, origin.x, origin.y, origin.z,

@@ -62,13 +62,13 @@ public final class RaidenEyeOfJudgmentAbility implements Ability {
 		player.setAttached(ModAttachments.RAIDEN_STATE, state.withEyeExpireTick(expireAt));
 
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				40, 0.6, 0.8, 0.6, 0.25);
-		level.sendParticles(ModParticles.DAZZLING,
+		level.sendParticles(ModParticles.FULA_PARTICLE,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				16, 0.4, 0.6, 0.4, 0.05);
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				12, 0.4, 0.6, 0.4, 0.04);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -86,7 +86,7 @@ public final class RaidenEyeOfJudgmentAbility implements Ability {
 		}
 		if (now % 6 == 0) {
 			ServerLevel level = player.serverLevel();
-			level.sendParticles(ModParticles.SPARKS,
+			level.sendParticles(ModParticles.JIWALD_EFFECT,
 					player.getX(), player.getY() + 1.0, player.getZ(),
 					3, 0.4, 0.5, 0.4, 0.05);
 		}
@@ -97,7 +97,7 @@ public final class RaidenEyeOfJudgmentAbility implements Ability {
 		RaidenState state = player.getAttachedOrCreate(ModAttachments.RAIDEN_STATE);
 		player.setAttached(ModAttachments.RAIDEN_STATE, state.withEyeExpireTick(0L));
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				12, 0.4, 0.6, 0.4, 0.02);
 	}

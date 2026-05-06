@@ -75,11 +75,11 @@ public final class RaidenAuraController {
 		nearest.hurt(level.damageSources().playerAttack(player), dmg);
 
 		Vec3 t = nearest.position().add(0, nearest.getBbHeight() * 0.5, 0);
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				t.x, t.y, t.z, 18, 0.4, 0.5, 0.4, 0.25);
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				t.x, t.y, t.z, 8, 0.3, 0.4, 0.3, 0.04);
-		level.sendParticles(ModParticles.DAZZLING,
+		level.sendParticles(ModParticles.FULA_PARTICLE,
 				origin.x, origin.y, origin.z, 4, 0.3, 0.3, 0.3, 0.05);
 		level.playSound(null, t.x, t.y, t.z,
 				SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.5f, 1.7f);

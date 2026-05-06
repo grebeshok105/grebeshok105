@@ -46,10 +46,10 @@ public final class RaidenTranscendenceAbility implements Ability {
 		player.setAttached(ModAttachments.RAIDEN_STATE,
 				state.withTranscendenceUntilTick(Long.MAX_VALUE));
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				24, 0.4, 0.6, 0.4, 0.04);
-		level.sendParticles(ModParticles.DAZZLING,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				14, 0.4, 0.4, 0.4, 0.05);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -61,7 +61,7 @@ public final class RaidenTranscendenceAbility implements Ability {
 	public void onTickActive(ServerPlayer player) {
 		if (player.tickCount % 8 == 0) {
 			ServerLevel level = player.serverLevel();
-			level.sendParticles(ModParticles.PURPLE_FLAME,
+			level.sendParticles(ModParticles.BLUE_FLAME,
 					player.getX(), player.getY() + 1.0, player.getZ(),
 					2, 0.3, 0.4, 0.3, 0.02);
 		}
@@ -72,7 +72,7 @@ public final class RaidenTranscendenceAbility implements Ability {
 		RaidenState state = player.getAttachedOrCreate(ModAttachments.RAIDEN_STATE);
 		player.setAttached(ModAttachments.RAIDEN_STATE, state.withTranscendenceUntilTick(0L));
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				12, 0.4, 0.5, 0.4, 0.05);
 	}

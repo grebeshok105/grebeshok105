@@ -543,6 +543,13 @@
   "ability.superheroes.raiden_transcendence": "Аура Превосходства",
   "ability.superheroes.raiden_transcendence.desc": "Тоггл. Окутывает игрока электро-аурой; каждые 1.5 сек бьёт ближайшего врага в радиусе 6 блоков (4 урона игрокам, 2 мобам). Расходует 12 энергии в секунду.",
 
+  "ability.superheroes.raiden_musou_isshin": "Musou Isshin",
+  "ability.superheroes.raiden_musou_isshin.desc": "Активная. Легендарный удар, разрубивший остров. Прорезает траншею длиной 35 блоков в направлении взгляда, нанося 30 урона игрокам и 18 мобам на пути. КД 45 сек. Стоимость 800 энергии.",
+  "ability.superheroes.raiden_musou_isshin.cooldown": "Musou Isshin на КД",
+  "ability.superheroes.raiden_musou_isshin.no_sword": "Ямато не в руках",
+
+  "key.superheroes.raiden_sword_draw": "Райден: Призвать Ямато",
+
   "ability.superheroes.status.on": "ВКЛ",
   "ability.superheroes.status.off": "ВЫКЛ",
   "ability.superheroes.status.ready": "ГОТОВ"

@@ -71,16 +71,16 @@ public final class RaidenMusouShinsetsuAbility implements Ability {
 		AbilityCooldowns.setCooldownTicks(player, getId(), COOLDOWN_TICKS);
 
 		ServerLevel level = player.serverLevel();
-		level.sendParticles(ModParticles.SPARKS,
+		level.sendParticles(ModParticles.JIWALD_EFFECT,
 				player.getX(), player.getY() + 1.0, player.getZ(),
 				120, 1.2, 1.6, 1.2, 0.6);
 		level.sendParticles(ModParticles.SWORD_EXPLOSION,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				24, 0.8, 1.0, 0.8, 0.15);
-		level.sendParticles(ModParticles.PURPLE_FLAME,
+		level.sendParticles(ModParticles.BLUE_FLAME,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				40, 0.8, 1.0, 0.8, 0.1);
-		level.sendParticles(ModParticles.DARK_STAR,
+		level.sendParticles(ModParticles.MOONVEIL,
 				player.getX(), player.getY() + 1.5, player.getZ(),
 				12, 0.6, 0.6, 0.6, 0.05);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),

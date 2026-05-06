@@ -93,6 +93,18 @@ public class SuperheroesClient implements ClientModInitializer {
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		ParticleFactoryRegistry.getInstance().register(ModParticles.KRATOS_HAND_BURST_3,
 				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.ANOMALY_SLICE,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.JIWALD_EFFECT,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.FULA_PARTICLE,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SHAMAK,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.BLUE_FLAME,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
+		ParticleFactoryRegistry.getInstance().register(ModParticles.MOONVEIL,
+				sprites -> new com.example.superheroes.client.fx.CustomParticleGate(sprites, EndRodParticle.Provider::new));
 		com.example.superheroes.client.config.SuperheroesClientConfig.load();
 
 		HudRenderCallback.EVENT.register((graphics, tracker) -> {
@@ -137,6 +149,13 @@ public class SuperheroesClient implements ClientModInitializer {
 			while (ModKeys.SUPER_JUMP.consumeClick()) {
 				if (client.player != null) {
 					ClientPlayNetworking.send(SuperJumpC2SPayload.INSTANCE);
+				}
+			}
+			while (ModKeys.RAIDEN_SWORD_DRAW.consumeClick()) {
+				if (client.player != null && ClientHeroState.data().hasHero()
+						&& com.example.superheroes.hero.RaidenHero.ID.equals(ClientHeroState.heroId())) {
+					ClientPlayNetworking.send(new ActivateAbilityC2SPayload(
+							com.example.superheroes.ability.AbilityIds.RAIDEN_SWORD_DRAW));
 				}
 			}
 			for (int i = 0; i < ModKeys.ABILITY_SLOTS.length; i++) {

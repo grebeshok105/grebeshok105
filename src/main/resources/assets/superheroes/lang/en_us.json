@@ -542,6 +542,13 @@
   "ability.superheroes.raiden_transcendence": "Transcendence Aura",
   "ability.superheroes.raiden_transcendence.desc": "Toggle. Engulf yourself in an electro aura; every 1.5 seconds zaps the closest enemy within 6 blocks (4 damage to players, 2 to mobs). Drains 12 energy per second.",
 
+  "ability.superheroes.raiden_musou_isshin": "Musou Isshin",
+  "ability.superheroes.raiden_musou_isshin.desc": "Active. The legendary slash that split an island. Carves a 35-block trench in the direction you face, dealing 30 damage to players and 18 to mobs in its path. 45-second cooldown. Costs 800 energy.",
+  "ability.superheroes.raiden_musou_isshin.cooldown": "Musou Isshin on cooldown",
+  "ability.superheroes.raiden_musou_isshin.no_sword": "Yamato is not in your hands",
+
+  "key.superheroes.raiden_sword_draw": "Raiden: Manifest Yamato",
+
   "ability.superheroes.status.on": "ON",
   "ability.superheroes.status.off": "OFF",
   "ability.superheroes.status.ready": "READY"
